@@ -1,0 +1,1236 @@
+object FrmArPrepostTax: TFrmArPrepostTax
+  Left = 18
+  Top = 163
+  ClientHeight = 292
+  ClientWidth = 309
+  Caption = 'Tax Breakdown'
+  OnShow = FormShow
+  OldCreateOrder = False
+  OnClose = FormClose
+  OnActivate = FormActivate
+  MonitoredKeys.Keys = <>
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object pnlTop: TUniPanel
+    Left = 0
+    Top = 0
+    Width = 309
+    Height = 27
+    Hint = ''
+    Align = alTop
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 0
+    Caption = ''
+    object sbtnRecalcTaxes: TUniSpeedButton
+      Left = 1
+      Top = 1
+      Width = 23
+      Height = 25
+      Hint = 'Calculate taxes'
+      ShowHint = True
+      ParentShowHint = False
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        18000000000000030000C21E0000C21E00000000000000000000FF00FFFF00FF
+        FF00FFC9CACBA1B4C585ACC67CA9C780A8C48AA9C1989EA396827057923D8481
+        38B98B76C14CBAFF00FFFF00FFFF00FF9EB2C455A1CE26B9EA0CB9EB159FDD31
+        9CD8648AA4AF8268539E4300CD555EB348D66631BA7E67C14CBAC7C9CB719BBD
+        0086CE02AEFA01BEFA00C5FF06D3FD1CE5FFC38C78A2803A39C9658AC970C6A2
+        63EE8557BC79378E9C76A6B6C52382C0129AD70873BA027CD003A0EF00BFF200
+        C8F98E844878A753E1A672F1B18BF8B692D5B07867B554569744ABBAC6438DC2
+        1B85C5007CC500A2E607B8E725C8F441C3EF709A4D70C05EDAB584FBCFB0FCD6
+        B8BACE932DD6776C9B55BAC2C94686B80081CF00B1FE06D6FF0AD5F728CCEC52
+        CEEA93977635D0585BDF7CC3CF9CFADABDEEC6A19EBA7B9E947F7A9FBE0678BE
+        0FB4F015B5EE0C9FE906A4E902ACE716B6E95CA3BD93A67887B05DC0B77EEBC2
+        9AEEAF89CB9A83CC2CC76393BB1C86C818A0DC0286D305B1FA08DEFF09EAFF20
+        ECFF4CF9FF5EBBCB93977B74984DB49964C39C83CC2FCAFF00FF99B1C42972B2
+        096DB616C3F415D9FF10C3EF09BAF115B6F60AAAF104AAEA11D2F90EE1FF09C0
+        FD92ADC3FF00FFFF00FFFF00FFA6B4C415BEEE0ECEF80085CF00A0E80BB9EF33
+        BCEA2BA9E50088E600A0F103FFFF0DFAFF81A3C1FF00FFFF00FFFF00FFFF00FF
+        309DCD0088D40391DB08AAE12EAEE11F97DC0084DD0AC0F40ABCF400D4FF0FD2
+        F3AFBBC7FF00FFFF00FFFF00FFFF00FF4985B7067EC6038EE103ACE920C3EC43
+        C2EC0A84E40092E913B6DF659DC2BCC2C9FF00FFFF00FFFF00FFFF00FFFF00FF
+        3880B70F8DCD0BCEF706E5FF0BCEFF15CFFF0DC9FD09BEF95191C1FF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FF8AA4BF0BCDFA01FFFF00FFFF00B9FF00
+        BCFF00FFFF03FFFF4B9FC8FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FF66A1C51CC1E401D4FA00B9FF01B5FD0CBDEE45ABD1AEBCC7FF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF97B0C471A9C65DA4CA67
+        A6C784AAC4BAC1C8FF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
+      Caption = ''
+      Align = alLeft
+      Anchors = [akLeft, akTop, akBottom]
+      ParentColor = False
+      Color = clWindow
+      OnClick = sbtnRecalcTaxesClick
+    end
+  end
+  object PnlCarrier: TUniPanel
+    Left = 0
+    Top = 27
+    Width = 309
+    Height = 265
+    Hint = ''
+    Align = alClient
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    TabOrder = 1
+    Caption = ''
+    object PageControl1: TUniPageControl
+      Left = 1
+      Top = 1
+      Width = 307
+      Height = 263
+      Hint = ''
+      ActivePage = TabSheet2
+      TabBarVisible = True
+      Align = alClient
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      TabOrder = 0
+      object TabSheet1: TUniTabSheet
+        Hint = ''
+        TabVisible = False
+        Caption = 'TabSheet1'
+        object IQSearch1: TIQUniGridControl
+          Left = 0
+          Top = 0
+          Width = 299
+          Height = 235
+          Layout = 'border'
+          ParentAlignmentControl = False
+          AlignmentControl = uniAlignmentClient
+          Align = alClient
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          TabOrder = 0
+          IQComponents.Grid.Left = 0
+          IQComponents.Grid.Top = 29
+          IQComponents.Grid.Width = 82
+          IQComponents.Grid.Height = 149
+          IQComponents.Grid.Hint = ''
+          IQComponents.Grid.DataSource = Src
+          IQComponents.Grid.LoadMask.Message = 'Loading data...'
+          IQComponents.Grid.Align = alClient
+          IQComponents.Grid.Anchors = [akLeft, akTop, akRight, akBottom]
+          IQComponents.Grid.TabOrder = 0
+          IQComponents.Navigator.Left = 410
+          IQComponents.Navigator.Top = 0
+          IQComponents.Navigator.Width = 241
+          IQComponents.Navigator.Height = 25
+          IQComponents.Navigator.Hint = ''
+          IQComponents.Navigator.ShowHint = True
+          IQComponents.Navigator.DataSource = Src
+          IQComponents.Navigator.LayoutConfig.Region = 'east'
+          IQComponents.Navigator.TabOrder = 3
+          IQComponents.HiddenPanel.Left = 82
+          IQComponents.HiddenPanel.Top = 29
+          IQComponents.HiddenPanel.Width = 209
+          IQComponents.HiddenPanel.Height = 149
+          IQComponents.HiddenPanel.Hint = ''
+          IQComponents.HiddenPanel.Visible = True
+          IQComponents.HiddenPanel.Align = alRight
+          IQComponents.HiddenPanel.Anchors = [akTop, akRight, akBottom]
+          IQComponents.FormTab.Hint = ''
+          IQComponents.FormTab.ImageIndex = 1
+          IQComponents.FormTab.Caption = 'Form'
+          IQComponents.FormTab.Layout = 'border'
+          DataSource = Src
+          Columns = <
+            item
+              FieldName = 'DESCRIP'
+              Title.Caption = 'Tax'
+              Width = 64
+              CheckBoxField.FieldValues = 'true;false'
+            end
+            item
+              FieldName = 'TAX_RATE'
+              Title.Caption = 'Tax Rate'
+              Width = 64
+              CheckBoxField.FieldValues = 'true;false'
+            end
+            item
+              FieldName = 'AMOUNT'
+              Title.Caption = 'Amount'
+              Width = 64
+              CheckBoxField.FieldValues = 'true;false'
+            end>
+          Marker = 0
+        end
+      end
+      object TabSheet2: TUniTabSheet
+        Hint = ''
+        TabVisible = False
+        ImageIndex = 1
+        Caption = 'TabSheet2'
+        object IQSearch2: TIQUniGridControl
+          Left = 0
+          Top = 0
+          Width = 299
+          Height = 235
+          Layout = 'border'
+          ParentAlignmentControl = False
+          AlignmentControl = uniAlignmentClient
+          Align = alClient
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          TabOrder = 0
+          IQComponents.Grid.Left = 0
+          IQComponents.Grid.Top = 29
+          IQComponents.Grid.Width = 82
+          IQComponents.Grid.Height = 149
+          IQComponents.Grid.Hint = ''
+          IQComponents.Grid.DataSource = Src
+          IQComponents.Grid.LoadMask.Message = 'Loading data...'
+          IQComponents.Grid.Align = alClient
+          IQComponents.Grid.Anchors = [akLeft, akTop, akRight, akBottom]
+          IQComponents.Grid.TabOrder = 0
+          IQComponents.Navigator.Left = 410
+          IQComponents.Navigator.Top = 0
+          IQComponents.Navigator.Width = 241
+          IQComponents.Navigator.Height = 25
+          IQComponents.Navigator.Hint = ''
+          IQComponents.Navigator.ShowHint = True
+          IQComponents.Navigator.DataSource = Src
+          IQComponents.Navigator.LayoutConfig.Region = 'east'
+          IQComponents.Navigator.TabOrder = 3
+          IQComponents.HiddenPanel.Left = 82
+          IQComponents.HiddenPanel.Top = 29
+          IQComponents.HiddenPanel.Width = 209
+          IQComponents.HiddenPanel.Height = 149
+          IQComponents.HiddenPanel.Hint = ''
+          IQComponents.HiddenPanel.Visible = True
+          IQComponents.HiddenPanel.Align = alRight
+          IQComponents.HiddenPanel.Anchors = [akTop, akRight, akBottom]
+          IQComponents.FormTab.Hint = ''
+          IQComponents.FormTab.ImageIndex = 1
+          IQComponents.FormTab.Caption = 'Form'
+          IQComponents.FormTab.Layout = 'border'
+          DataSource = Src
+          Columns = <
+            item
+              FieldName = 'DESCRIP'
+              Title.Caption = 'Tax'
+              Width = 64
+              CheckBoxField.FieldValues = 'true;false'
+            end
+            item
+              FieldName = 'TAX_RATE'
+              Title.Caption = 'Tax Rate'
+              Width = 64
+              CheckBoxField.FieldValues = 'true;false'
+            end
+            item
+              FieldName = 'AMOUNT'
+              Title.Caption = 'Amount'
+              Width = 64
+              CheckBoxField.FieldValues = 'true;false'
+            end>
+          Marker = 0
+        end
+      end
+    end
+  end
+  object Src: TDataSource
+    Left = 8
+    Top = 48
+  end
+  object QryARTaxCode: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select e.descrip,'
+      '       e.tax_rate,'
+      '       sum(nvl(e.tax_amount, 0)) as amount,'
+      '       d.eplant_id'
+      '  from arprepost_tax e,'
+      '          arprepost_detail d'
+      ' where e.arprepost_detail_id = :Arprepostdetailid'
+      '  and e.arprepost_detail_id(+) = d.id'
+      'group by e.descrip, e.tax_rate, d.eplant_id'
+      '   ')
+    Left = 40
+    Top = 48
+    ParamData = <
+      item
+        Name = 'Arprepostdetailid'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object QryARTaxCodeDESCRIP: TStringField
+      DisplayLabel = 'Tax'
+      DisplayWidth = 25
+      FieldName = 'DESCRIP'
+      Origin = 'e.descrip'
+      Size = 60
+    end
+    object QryARTaxCodeTAX_RATE: TFMTBCDField
+      DisplayLabel = 'Tax Rate'
+      DisplayWidth = 10
+      FieldName = 'TAX_RATE'
+      Origin = 'e.tax_rate'
+      Size = 6
+    end
+    object QryARTaxCodeAMOUNT: TFMTBCDField
+      DisplayLabel = 'Amount'
+      DisplayWidth = 10
+      FieldName = 'AMOUNT'
+      Origin = 'sum(nvl(e.tax_amount, 0))'
+      currency = True
+      Size = 38
+    end
+    object QryARTaxCodeEPLANT_ID: TBCDField
+      FieldName = 'EPLANT_ID'
+      Origin = 'd.eplant_id'
+      Size = 0
+    end
+  end
+  object QryARAllTaxes: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select e.descrip,'
+      '       e.tax_rate,'
+      '       sum(nvl(e.tax_amount, 0)) as amount,'
+      '       d.eplant_id'
+      '  from arprepost_tax e,'
+      '       arprepost_detail d'
+      ' where e.arprepost_detail_id(+) = d.id'
+      '   and d.arprepost_id = :ArpreposId'
+      'group by e.descrip, e.tax_rate, d.eplant_id')
+    Left = 72
+    Top = 48
+    ParamData = <
+      item
+        Name = 'ArpreposId'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object QryARAllTaxesDESCRIP: TStringField
+      DisplayLabel = 'Tax'
+      DisplayWidth = 25
+      FieldName = 'DESCRIP'
+      Origin = 'e.descrip'
+      Size = 60
+    end
+    object QryARAllTaxesTAX_RATE: TFMTBCDField
+      DisplayLabel = 'Tax Rate'
+      DisplayWidth = 10
+      FieldName = 'TAX_RATE'
+      Origin = 'e.tax_rate'
+      Size = 6
+    end
+    object QryARAllTaxesAMOUNT: TFMTBCDField
+      DisplayLabel = 'Amount'
+      DisplayWidth = 10
+      FieldName = 'AMOUNT'
+      Origin = 'sum(nvl(e.tax_amount, 0))'
+      currency = True
+      Size = 38
+    end
+    object QryARAllTaxesEPLANT_ID: TBCDField
+      FieldName = 'EPLANT_ID'
+      Origin = 'd.eplant_id'
+      Size = 0
+    end
+  end
+  object QryARPostTaxCode: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select e.tax_elements_descrip as descrip,'
+      '       e.tax_elements_tax_rate as tax_rate,'
+      
+        '--       Round(Round(NVL(a.invoice_qty, 0) * NVL(a.unit_price, 0' +
+        '), 2) * NVL(e.tax_elements_tax_rate, 0)/100, 2) as amount'
+      
+        '--       Round(NVL(a.invoice_qty, 0) * NVL(a.unit_price, 0) * NV' +
+        'L(e.tax_elements_tax_rate, 0)/100, 3) as amount'
+      '       Round(e.tax_amount, 3) as amount'
+      '  from arinvoice_detail_taxes e,                    '
+      '       arinvoice_detail a'
+      ' where e.arinvoice_detail_id = a.id'
+      '   and a.id = :Arinvoicedetailid'
+      '   ')
+    Left = 40
+    Top = 80
+    ParamData = <
+      item
+        Name = 'Arinvoicedetailid'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object QryARPostTaxCodeDESCRIP: TStringField
+      DisplayLabel = 'Tax'
+      FieldName = 'DESCRIP'
+      Origin = 'e.tax_elements_descrip'
+      Size = 60
+    end
+    object QryARPostTaxCodeTAX_RATE: TFMTBCDField
+      DisplayLabel = 'Tax Rate'
+      FieldName = 'TAX_RATE'
+      Origin = 'e.tax_elements_tax_rate'
+      Size = 6
+    end
+    object QryARPostTaxCodeAMOUNT: TFMTBCDField
+      DisplayLabel = 'Amount'
+      FieldName = 'AMOUNT'
+      Origin = 'Round(e.tax_amount, 3)'
+      currency = True
+      Size = 38
+    end
+  end
+  object QryARPostAllTaxes: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select descrip, tax_rate, sum(amount) as amount from ('
+      'select e.tax_elements_descrip as descrip,'
+      '       e.tax_elements_tax_rate as tax_rate,'
+      
+        '--       Round(Round(NVL(a.invoice_qty, 0) * NVL(a.unit_price, 0' +
+        '), 2) * NVL(e.tax_elements_tax_rate, 0)/100, 2) as amount'
+      
+        '--       Round(NVL(a.invoice_qty, 0) * NVL(a.unit_price, 0) * NV' +
+        'L(e.tax_elements_tax_rate, 0)/100, 3) as amount'
+      '       Round(e.tax_amount, 3) as amount'
+      
+        '  from arinvoice_detail_taxes e,                                ' +
+        '         '
+      '       arinvoice_detail a,'
+      '       arinvoice h'
+      ' where e.arinvoice_detail_id = a.id'
+      '   and a.arinvoice_id = h.id'
+      '   and h.id = :ArInvoiceId)'
+      'group by descrip, tax_rate'
+      '   ')
+    Left = 72
+    Top = 80
+    ParamData = <
+      item
+        Name = 'ArInvoiceId'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object QryARPostAllTaxesDESCRIP: TStringField
+      DisplayLabel = 'Tax'
+      FieldName = 'DESCRIP'
+      Origin = 'descrip'
+      Size = 60
+    end
+    object QryARPostAllTaxesTAX_RATE: TFMTBCDField
+      DisplayLabel = 'Tax Rate'
+      FieldName = 'TAX_RATE'
+      Origin = 'tax_rate'
+      Size = 6
+    end
+    object QryARPostAllTaxesAMOUNT: TFMTBCDField
+      DisplayLabel = 'Amount'
+      FieldName = 'AMOUNT'
+      Origin = 'amount'
+      currency = True
+      Size = 38
+    end
+  end
+  object QryARVoidTaxCode: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select e.tax_elements_descrip as descrip,'
+      '       e.tax_elements_tax_rate as tax_rate,'
+      
+        '--       Round(Round(NVL(a.invoice_qty, 0) * NVL(a.unit_price, 0' +
+        '), 2) * NVL(e.tax_elements_tax_rate, 0)/100, 2) as amount'
+      
+        '       Round(NVL(a.invoice_qty, 0) * NVL(a.unit_price, 0) * NVL(' +
+        'e.tax_elements_tax_rate, 0)/100, 3) as amount'
+      '  from arinvoice_detail_void_taxes e,               '
+      '       arinvoice_detail_void a'
+      ' where e.arinvoice_detail_void_id = a.id'
+      '   and a.id = :Adetailid'
+      '                                        ')
+    Left = 40
+    Top = 120
+    ParamData = <
+      item
+        Name = 'Adetailid'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object QryARVoidTaxCodeDESCRIP: TStringField
+      DisplayLabel = 'Tax'
+      FieldName = 'DESCRIP'
+      Origin = 'e.tax_elements_descrip'
+      Size = 60
+    end
+    object QryARVoidTaxCodeTAX_RATE: TFMTBCDField
+      DisplayLabel = 'Tax Rate'
+      FieldName = 'TAX_RATE'
+      Origin = 'e.tax_elements_tax_rate'
+      Size = 6
+    end
+    object QryARVoidTaxCodeAMOUNT: TFMTBCDField
+      DisplayLabel = 'Amount'
+      FieldName = 'AMOUNT'
+      Origin = 
+        'Round(NVL(a.invoice_qty, 0) * NVL(a.unit_price, 0) * NVL(e.tax_e' +
+        'lements_tax_rate, 0)/100, 3)'
+      currency = True
+      Size = 38
+    end
+  end
+  object QryARVoidAllTaxes: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select e.tax_elements_descrip as descrip,'
+      '       e.tax_elements_tax_rate as tax_rate,'
+      
+        '--       Round(Round(NVL(a.invoice_qty, 0) * NVL(a.unit_price, 0' +
+        '), 2) * NVL(e.tax_elements_tax_rate, 0)/100, 2) as amount'
+      
+        '       Round(NVL(a.invoice_qty, 0) * NVL(a.unit_price, 0) * NVL(' +
+        'e.tax_elements_tax_rate, 0)/100, 3) as amount'
+      '  from arinvoice_detail_void_taxes e,           '
+      '       arinvoice_detail_void a,'
+      '       arinvoice_void h'
+      ' where e.arinvoice_detail_void_id = a.id'
+      '   and a.arinvoice_void_id = h.id'
+      '   and h.id = :AId')
+    Left = 72
+    Top = 120
+    ParamData = <
+      item
+        Name = 'AId'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object QryARVoidAllTaxesDESCRIP: TStringField
+      DisplayLabel = 'Tax'
+      FieldName = 'DESCRIP'
+      Origin = 'e.tax_elements_descrip'
+      Size = 60
+    end
+    object QryARVoidAllTaxesTAX_RATE: TFMTBCDField
+      DisplayLabel = 'Tax Rate'
+      FieldName = 'TAX_RATE'
+      Origin = 'e.tax_elements_tax_rate'
+      Size = 6
+    end
+    object QryARVoidAllTaxesAMOUNT: TFMTBCDField
+      DisplayLabel = 'Amount'
+      FieldName = 'AMOUNT'
+      Origin = 
+        'Round(NVL(a.invoice_qty, 0) * NVL(a.unit_price, 0) * NVL(e.tax_e' +
+        'lements_tax_rate, 0)/100, 3)'
+      currency = True
+      Size = 38
+    end
+  end
+  object QryApPrepostTax: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select e.descrip,'
+      '       e.tax_rate,'
+      '       e.tax_amount as amount,'
+      '       d.eplant_id as eplant_id'
+      '  from apprepost_tax e,'
+      '       apprepost_detail d'
+      ' where e.apprepost_detail_id = d.id'
+      '   and d.apprepost_id = :AId'
+      'order by e.descrip  ')
+    Left = 40
+    Top = 152
+    ParamData = <
+      item
+        Name = 'AId'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object QryApPrepostTaxDESCRIP: TStringField
+      DisplayLabel = 'Tax'
+      DisplayWidth = 25
+      FieldName = 'DESCRIP'
+      Origin = 'e.descrip'
+      Size = 60
+    end
+    object QryApPrepostTaxTAX_RATE: TFMTBCDField
+      DisplayLabel = 'Tax Rate'
+      DisplayWidth = 10
+      FieldName = 'TAX_RATE'
+      Origin = 'e.Tax_rate'
+      Size = 6
+    end
+    object QryApPrepostTaxAMOUNT: TFMTBCDField
+      DisplayLabel = 'Amount'
+      DisplayWidth = 10
+      FieldName = 'AMOUNT'
+      Origin = 'e.tax_amount'
+      currency = True
+      Size = 6
+    end
+    object QryApPrepostTaxEPLANT_ID: TBCDField
+      FieldName = 'EPLANT_ID'
+      Origin = 'd.eplant_id'
+      Size = 0
+    end
+  end
+  object QryApInvoiceTax: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select e.descrip,'
+      '       e.tax_rate,'
+      '       Round(e.tax_amount, 2) as amount'
+      '  from apinvoice_tax e,'
+      '       apinvoice_detail d'
+      ' where e.apinvoice_detail_id = d.id'
+      '   and d.apinvoice_id = :AId'
+      ''
+      '')
+    Left = 72
+    Top = 152
+    ParamData = <
+      item
+        Name = 'AId'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object QryApInvoiceTaxDESCRIP: TStringField
+      DisplayLabel = 'Tax'
+      FieldName = 'DESCRIP'
+      Origin = 'e.Descrip'
+      Size = 60
+    end
+    object QryApInvoiceTaxTAX_RATE: TFMTBCDField
+      DisplayLabel = 'Tax Rate'
+      FieldName = 'TAX_RATE'
+      Origin = 'e.tax_rate'
+      Size = 6
+    end
+    object QryApInvoiceTaxAMOUNT: TFMTBCDField
+      DisplayLabel = 'Amount'
+      FieldName = 'AMOUNT'
+      Origin = 'e.tax_amount'
+      currency = True
+      Size = 6
+    end
+  end
+  object QryApVoidTax: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select e.descrip,'
+      '       e.tax_rate,'
+      '       e.tax_amount as amount'
+      '  from apinvoice_void_tax e,'
+      '       apinvoice_detail_void d'
+      ' where e.apinvoice_detail_void_id = d.id'
+      '   and d.apinvoice_void_id = :AId'
+      ''
+      '')
+    Left = 104
+    Top = 152
+    ParamData = <
+      item
+        Name = 'AId'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object QryApVoidTaxDESCRIP: TStringField
+      DisplayLabel = 'Tax'
+      FieldName = 'DESCRIP'
+      Origin = 'e.descrip'
+      Size = 60
+    end
+    object QryApVoidTaxTAX_RATE: TFMTBCDField
+      DisplayLabel = 'Tax Rate'
+      FieldName = 'TAX_RATE'
+      Origin = 'e.tax_rate'
+      Size = 6
+    end
+    object QryApVoidTaxAMOUNT: TFMTBCDField
+      DisplayLabel = 'Amount'
+      FieldName = 'AMOUNT'
+      Origin = 'e.tax_amount'
+      currency = True
+      Size = 6
+    end
+  end
+  object QryOeTaxCode: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select e.descrip,'
+      '       e.tax_rate,'
+      '       e.tax_amount as amount,'
+      '       o.eplant_id'
+      '  from ord_detail_tax e,'
+      '       ord_detail d,'
+      '       orders o'
+      ' where e.ord_detail_id(+) = d.id'
+      '   and d.orders_id = o.id'
+      '   and d.id = :Adetailid'
+      '')
+    Left = 40
+    Top = 184
+    ParamData = <
+      item
+        Name = 'Adetailid'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object QryOeTaxCodeDESCRIP: TStringField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'Tax'
+      FieldName = 'DESCRIP'
+      ProviderFlags = []
+      Size = 60
+    end
+    object QryOeTaxCodeTAX_RATE: TFMTBCDField
+      DisplayLabel = 'Tax Rate'
+      FieldName = 'TAX_RATE'
+      Origin = 'TAX_RATE'
+      Precision = 9
+      Size = 6
+    end
+    object QryOeTaxCodeAMOUNT: TFMTBCDField
+      DisplayLabel = 'Amount'
+      FieldName = 'AMOUNT'
+      Origin = 'AMOUNT'
+      Precision = 14
+      Size = 6
+    end
+    object QryOeTaxCodeEPLANT_ID: TBCDField
+      FieldName = 'EPLANT_ID'
+      Origin = 'EPLANT_ID'
+      Visible = False
+      Precision = 15
+      Size = 0
+    end
+  end
+  object QryOeAllTaxes: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      
+        'select descrip, tax_rate, sum(nvl(amount, 0)) as amount, eplant_' +
+        'id from ('
+      'select e.descrip,'
+      '       e.tax_rate,'
+      '       e.tax_amount as amount,'
+      '       d.eplant_id'
+      '  from ord_detail_tax e,'
+      '       ord_detail d'
+      ' where e.ord_detail_id = d.id'
+      '   and d.orders_id = :AId'
+      'union all'
+      'select e.descrip,'
+      '       e.tax_rate,'
+      '       e.tax_amount as amount,'
+      '       o.eplant_id'
+      '  from orders_tax e,'
+      '       orders o'
+      ' where e.orders_id = o.id'
+      '   and o.id = :AId'
+      ')'
+      'group by descrip, tax_rate, eplant_id')
+    Left = 72
+    Top = 184
+    ParamData = <
+      item
+        Name = 'AId'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object QryOeAllTaxesDESCRIP: TStringField
+      DisplayLabel = 'Tax'
+      FieldName = 'DESCRIP'
+      Origin = 'descrip'
+      Size = 25
+    end
+    object QryOeAllTaxesTAX_RATE: TFMTBCDField
+      DisplayLabel = 'Tax Rate'
+      FieldName = 'TAX_RATE'
+      Origin = 'tax_rate'
+    end
+    object QryOeAllTaxesAMOUNT: TFMTBCDField
+      DisplayLabel = 'Amount'
+      FieldName = 'AMOUNT'
+      Origin = 'amount'
+      currency = True
+    end
+    object QryOeAllTaxesEPLANT_ID: TBCDField
+      FieldName = 'EPLANT_ID'
+      Origin = 'eplant_id'
+      Size = 0
+    end
+  end
+  object QryOeHistTaxCode: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select e.descrip,'
+      '       e.tax_rate,'
+      
+        '       Round(Round(NVL(a.total_qty_ord, 0) * NVL(a.unit_price, 0' +
+        '), 2) * NVL(e.tax_rate, 0)/100, 2) as amount'
+      '  from hist_ord_detail_taxes e,'
+      '       hist_ord_detail a'
+      ' where e.ord_detail_id = a.id'
+      '   and a.id = :Adetailid')
+    Left = 40
+    Top = 216
+    ParamData = <
+      item
+        Name = 'Adetailid'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object QryOeHistTaxCodeDESCRIP: TStringField
+      DisplayLabel = 'Tax'
+      FieldName = 'DESCRIP'
+      Origin = 'e.descrip'
+      Size = 60
+    end
+    object QryOeHistTaxCodeTAX_RATE: TFMTBCDField
+      DisplayLabel = 'Tax Rate'
+      FieldName = 'TAX_RATE'
+      Origin = 'e.tax_rate'
+      Size = 6
+    end
+    object QryOeHistTaxCodeAMOUNT: TFMTBCDField
+      DisplayLabel = 'Amount'
+      FieldName = 'AMOUNT'
+      Origin = 
+        'Round(Round(NVL(a.total_qty_ord, 0) * NVL(a.unit_price, 0), 2) *' +
+        ' NVL(e.tax_rate, 0)/100, 2)'
+      currency = True
+      Size = 38
+    end
+  end
+  object QryOeHistAllTaxes: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select e.descrip,'
+      '       e.tax_rate,'
+      
+        '       Round(Round(NVL(a.total_qty_ord, 0) * NVL(a.unit_price, 0' +
+        '), 2) * NVL(e.tax_rate, 0)/100, 2) as amount'
+      '  from hist_ord_detail_taxes e,'
+      '       hist_ord_detail a,'
+      '       hist_orders h'
+      ' where a.orders_id = h.id'
+      '   and h.id = :AId'
+      '   and e.ord_detail_id = a.id')
+    Left = 72
+    Top = 216
+    ParamData = <
+      item
+        Name = 'AId'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object QryOeHistAllTaxesDESCRIP: TStringField
+      DisplayLabel = 'Tax'
+      FieldName = 'DESCRIP'
+      Origin = 'e.descrip'
+      Size = 60
+    end
+    object QryOeHistAllTaxesTAX_RATE: TFMTBCDField
+      DisplayLabel = 'Tax Rate'
+      FieldName = 'TAX_RATE'
+      Origin = 'e.tax_rate'
+      Size = 6
+    end
+    object QryOeHistAllTaxesAMOUNT: TFMTBCDField
+      DisplayLabel = 'Amount'
+      FieldName = 'AMOUNT'
+      Origin = 
+        'Round(Round(NVL(a.total_qty_ord, 0) * NVL(a.unit_price, 0), 2) *' +
+        ' NVL(e.tax_rate, 0)/100, 2) '
+      currency = True
+      Size = 38
+    end
+  end
+  object QryPOTaxCode: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select e.descrip,'
+      '       e.tax_rate,'
+      '       e.tax_amount as amount,'
+      '       d.eplant_id as eplant_id'
+      '  from po_detail_tax e,'
+      '       po_detail d'
+      ' where e.po_detail_id = d.id'
+      '   and d.po_id = :AId'
+      'order by e.descrip')
+    Left = 40
+    Top = 248
+    ParamData = <
+      item
+        Name = 'Aid'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object QryPOTaxCodeDESCRIP: TStringField
+      DisplayLabel = 'Tax'
+      DisplayWidth = 25
+      FieldName = 'DESCRIP'
+      Origin = 'descrip'
+      Size = 60
+    end
+    object QryPOTaxCodeTAX_RATE: TFMTBCDField
+      DisplayLabel = 'Tax Rate'
+      DisplayWidth = 10
+      FieldName = 'TAX_RATE'
+      Origin = 'tax_rate'
+      Size = 6
+    end
+    object QryPOTaxCodeAMOUNT: TFMTBCDField
+      DisplayLabel = 'Amount'
+      DisplayWidth = 10
+      FieldName = 'AMOUNT'
+      Origin = 'e.tax_amount'
+      currency = True
+      Size = 6
+    end
+    object QryPOTaxCodeEPLANT_ID: TBCDField
+      FieldName = 'EPLANT_ID'
+      Origin = 'd.eplant_id'
+      Size = 0
+    end
+  end
+  object QryPOHistTaxCode: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select e.descrip,'
+      '       e.tax_rate,'
+      
+        '       Round(Round(NVL(a.total_qty_ord, 0) * NVL(a.unit_price, 0' +
+        '), 2) * NVL(e.tax_rate, 0)/100, 2) as amount'
+      '  from po_tax_hist e,'
+      '       po_detail_hist a,'
+      '       po_hist p'
+      ' where e.po_id = p.id'
+      '   and a.po_id = :Aid'
+      '   and a.po_id = p.id')
+    Left = 72
+    Top = 248
+    ParamData = <
+      item
+        Name = 'Aid'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object QryPOHistTaxCodeDESCRIP: TStringField
+      DisplayLabel = 'Tax'
+      FieldName = 'DESCRIP'
+      Origin = 'e.descrip'
+      Size = 25
+    end
+    object QryPOHistTaxCodeTAX_RATE: TFMTBCDField
+      DisplayLabel = 'Tax Rate'
+      FieldName = 'TAX_RATE'
+      Origin = 'e.tax_rate'
+      Size = 6
+    end
+    object QryPOHistTaxCodeAMOUNT: TFMTBCDField
+      DisplayLabel = 'Amount'
+      FieldName = 'AMOUNT'
+      Origin = 
+        'Round(Round(NVL(a.total_qty_ord, 0) * NVL(a.unit_price, 0), 2) *' +
+        ' NVL(e.tax_rate, 0)/100, 2)'
+      currency = True
+      Size = 38
+    end
+  end
+  object QryApPrepostUseTax: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select e.descrip,'
+      '       e.tax_rate,'
+      '       e.tax_amount as amount'
+      '  from apprepost_use_tax e,'
+      '       apprepost_detail d'
+      ' where e.apprepost_detail_id = d.id'
+      '   and d.apprepost_id = :AId'
+      ''
+      '')
+    Left = 152
+    Top = 152
+    ParamData = <
+      item
+        Name = 'AId'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object StringField1: TStringField
+      DisplayLabel = 'Tax'
+      FieldName = 'DESCRIP'
+      Origin = 'e.descrip'
+      Size = 60
+    end
+    object FloatField1: TFMTBCDField
+      DisplayLabel = 'Tax Rate'
+      FieldName = 'TAX_RATE'
+      Origin = 'e.Tax_rate'
+      Size = 6
+    end
+    object FloatField2: TFMTBCDField
+      DisplayLabel = 'Amount'
+      FieldName = 'AMOUNT'
+      Origin = 'e.tax_amount'
+      currency = True
+      Size = 6
+    end
+  end
+  object QryApInvoiceUseTax: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select e.descrip,'
+      '       e.tax_rate,'
+      '       e.tax_amount as amount'
+      '  from apinvoice_use_tax e,'
+      '       apinvoice_detail d'
+      ' where e.apinvoice_detail_id = d.id'
+      '   and d.apinvoice_id = :AId'
+      ''
+      '')
+    Left = 184
+    Top = 152
+    ParamData = <
+      item
+        Name = 'AId'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object StringField2: TStringField
+      DisplayLabel = 'Tax'
+      FieldName = 'DESCRIP'
+      Origin = 'e.Descrip'
+      Size = 60
+    end
+    object FloatField3: TFMTBCDField
+      DisplayLabel = 'Tax Rate'
+      FieldName = 'TAX_RATE'
+      Origin = 'e.tax_rate'
+      Size = 6
+    end
+    object FloatField4: TFMTBCDField
+      DisplayLabel = 'Amount'
+      FieldName = 'AMOUNT'
+      Origin = 'e.tax_amount'
+      currency = True
+      Size = 6
+    end
+  end
+  object QryApVoidUseTax: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select e.descrip,'
+      '       e.tax_rate,'
+      '       e.tax_amount as amount'
+      '  from apinvoice_void_use_tax e,'
+      '       apinvoice_detail_void d'
+      ' where e.apinvoice_detail_void_id = d.id'
+      '   and d.apinvoice_void_id = :AId'
+      ''
+      '')
+    Left = 216
+    Top = 152
+    ParamData = <
+      item
+        Name = 'AId'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object StringField3: TStringField
+      DisplayLabel = 'Tax'
+      FieldName = 'DESCRIP'
+      Origin = 'e.descrip'
+      Size = 60
+    end
+    object FloatField5: TFMTBCDField
+      DisplayLabel = 'Tax Rate'
+      FieldName = 'TAX_RATE'
+      Origin = 'e.tax_rate'
+      Size = 6
+    end
+    object FloatField6: TFMTBCDField
+      DisplayLabel = 'Amount'
+      FieldName = 'AMOUNT'
+      Origin = 'e.tax_amount'
+      currency = True
+      Size = 6
+    end
+  end
+  object qryQuoteAllTaxes: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      
+        'select descrip, tax_rate, sum(nvl(amount, 0)) as amount, eplant_' +
+        'id from ('
+      'select e.descrip,'
+      '       e.tax_rate,'
+      '       e.tax_amount as amount,'
+      '       d.eplant_id'
+      '  from crm_quote_detail_tax e,'
+      '       crm_quote_detail d'
+      ' where e.crm_quote_detail_id = d.id'
+      '   and d.crm_quote_id = :AId'
+      'union all'
+      'select e.descrip,'
+      '       e.tax_rate,'
+      '       e.tax_amount as amount,'
+      '       q.eplant_id'
+      '  from crm_quote_tax e,'
+      '       crm_quote q'
+      ' where e.crm_quote_id = q.id'
+      '   and q.id = :AId'
+      ')'
+      'group by descrip, tax_rate, eplant_id')
+    Left = 176
+    Top = 208
+    ParamData = <
+      item
+        Name = 'AId'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object qryQuoteAllTaxesDESCRIP: TStringField
+      DisplayLabel = 'Tax'
+      FieldName = 'DESCRIP'
+      Origin = 'descrip'
+      Size = 25
+    end
+    object qryQuoteAllTaxesTAX_RATE: TFMTBCDField
+      DisplayLabel = 'Tax Rate'
+      FieldName = 'TAX_RATE'
+      Origin = 'tax_rate'
+    end
+    object qryQuoteAllTaxesAMOUNT: TFMTBCDField
+      DisplayLabel = 'Amount'
+      FieldName = 'AMOUNT'
+      Origin = 'amount'
+      currency = True
+    end
+    object qryQuoteAllTaxesEPLANT_ID: TBCDField
+      FieldName = 'EPLANT_ID'
+      Origin = 'eplant_id'
+      Size = 0
+    end
+  end
+  object qryQuoteTaxes: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      
+        'select descrip, tax_rate, sum(nvl(amount, 0)) as amount, eplant_' +
+        'id from ('
+      'select e.descrip,'
+      '       e.tax_rate,'
+      '       e.tax_amount as amount,'
+      '       d.eplant_id'
+      '  from crm_quote_detail_tax e,'
+      '       crm_quote_detail d'
+      ' where e.crm_quote_detail_id = d.id'
+      '   and d.id = :AId'
+      ')'
+      'group by descrip, tax_rate, eplant_id')
+    Left = 144
+    Top = 208
+    ParamData = <
+      item
+        Name = 'AId'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object StringField4: TStringField
+      DisplayLabel = 'Tax'
+      FieldName = 'DESCRIP'
+      Origin = 'descrip'
+      Size = 25
+    end
+    object FloatField7: TFMTBCDField
+      DisplayLabel = 'Tax Rate'
+      FieldName = 'TAX_RATE'
+      Origin = 'tax_rate'
+    end
+    object FloatField8: TFMTBCDField
+      DisplayLabel = 'Amount'
+      FieldName = 'AMOUNT'
+      Origin = 'amount'
+      currency = True
+    end
+    object FloatField9: TBCDField
+      FieldName = 'EPLANT_ID'
+      Origin = 'eplant_id'
+      Size = 0
+    end
+  end
+end

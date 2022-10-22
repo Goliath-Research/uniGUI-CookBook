@@ -1,0 +1,94 @@
+unit TagErr;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Forms,
+  Vcl.Controls,
+  FireDAC.Comp.Client,
+//db_dm,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniSplitter,
+  uniPanel,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniButton, uniMemo, uniBasicGrid, uniStringGrid;
+
+type
+  TFrmTagErrorHandler = class(TUniForm)
+    Panel1: TUniPanel;
+    Panel2: TUniPanel;
+    btnAbort: TUniButton;
+    Splitter1: TUniSplitter;
+    btnIgnore: TUniButton;
+    UniMemo1: TUniMemo;
+    UniStringGrid1: TUniStringGrid;
+    procedure FormResize(Sender: TObject);
+  private
+    procedure SetMessage(const Value: String);
+    procedure SetQry(const Value: TFDQuery);
+    { Private declarations }
+  public
+    { Public declarations }
+
+     property Message   : string    write SetMessage;
+     property Query     : TFDQuery  write SetQry;
+     property CanIgnore : boolean   write SetCanIgnore;
+  end;
+
+
+function TagErrHandled( const EMesg: string; Qry: TFDQuery; ACanIgnore: Boolean = TRUE ): Boolean;
+
+implementation
+
+{$R *.DFM}
+
+class function TagErrHandled( const EMesg: string; Qry: TFDQuery; ACanIgnore: Boolean = TRUE ): Boolean;
+var
+  frm : TFrmTagErrorHandler;
+begin
+  frm := TFrmTagErrorHandler.Create(UniApplication);
+
+  frm.Mesg      := EMesg;
+  frm.Qry       := Qry;
+  frm.CanIgnore := ACanIgnore;
+
+  frm.btnIgnore.Enabled:= frm.btnIgnore.Enabled and ACanIgnore;
+  Result:= frm.ShowModal = mrIgnore;
+end;
+
+procedure TFrmTagErrorHandler.FormResize(Sender: TObject);
+begin
+  with UniStringGrid1 do
+    Columns[ 1 ].Width:= ClientWidth - Columns[ 0 ].Width - 2;
+end;
+
+procedure TFrmTagErrorHandler.SetMessage(const Value: String);
+begin
+  UniMemo1.Text := Value;
+end;
+
+procedure TFrmTagErrorHandler.SetQry(const Value: TFDQuery);
+var
+  I:Integer;
+begin
+  uniStringGrid1.ReadOnly   := True;
+  uniStringGrid1.Cells[0,0] := 'Field';
+  uniStringGrid1.Cells[1,0] := 'Value';
+
+  with Value do
+  for I:= 0 to FieldCount - 1 do
+    begin
+      uniStringGrid1.RowCount   := uniStringGrid1.RowCount + 1;
+      uniStringGrid1.Cells[0,I] := Fields[ I ].FieldName;
+      uniStringGrid1.Cells[1,I] := Fields[ I ].asString;
+    end;
+end;
+
+end.

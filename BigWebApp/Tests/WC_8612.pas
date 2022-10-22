@@ -1,0 +1,25 @@
+unit WC_8612;
+
+interface
+
+implementation
+
+uses
+  TestReg,
+  SysUtils,
+  uniGUIDialogs,
+  uniGUIApplication,
+  snd_base;
+
+procedure Test1;
+var
+  LSndBase : TSndBase;
+begin
+  LSndBase := TSndBase.Create(uniGUIApplication.UniApplication);
+end;
+
+initialization
+
+  TTestRepo.RegisterTest('WC-8612', 'SNDOP', 'snd_base', 'FormCreate', Test1);
+
+end.

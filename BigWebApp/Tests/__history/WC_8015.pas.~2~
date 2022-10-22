@@ -1,0 +1,31 @@
+unit WC_8015;
+
+interface
+
+implementation
+
+uses
+
+  TestReg,
+  SysUtils,
+  uniGUIDialogs,
+  QC_Del_Action;
+
+procedure Test1;
+var
+  a,b,c : string;
+  d,e : Real;
+begin
+  a := 'a';
+  b := 'b';
+  c := 'c';
+  d := 1;
+  e := 2;
+  TFrmQCDelAction.DoShowModal(a,b,d,c,e);
+end;
+
+initialization
+
+  TTestRepo.RegisterTest('WC-8015', 'Qc',  'Qc_Del_Action', 'DoShowModal', Test1);
+
+end.

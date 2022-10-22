@@ -1,0 +1,108 @@
+unit IQMS.Common.EmbeddedWebIISForm;
+
+interface
+
+type
+   TEmbeddedWebIISApplication = ( eEnterpriseIQ, eWebDirect );
+
+   TEmbeddedWebIISForm = class
+   private
+     class function GetEncryptedPwd:String;
+     class function AppToString(AWebIISApp: TEmbeddedWebIISApplication): String;
+   public
+     class procedure DoExecute(AWebIISApp:TEmbeddedWebIISApplication; AUrlWithoutIIS:String; AUserName:String = '');
+     class procedure CheckShowSetupChecklist(AWorkCenterId:Real);
+   end;
+
+implementation
+
+uses
+//    inv_rscstr
+(*UG_rem_AMB*)
+//  , IQMisc
+//  , IQMS.ChromeEmbeddedBrowser
+//  , IQMS.ChromeEmbeddedBrowserForm
+  , IQMS.Common.DataLib
+//  , IQSecMan
+  , IQMS.Common.JumpDispatcher
+  , REST.Utils
+  , System.SysUtils
+  ;
+
+
+{ TEmbeddedWebIISForm }
+class procedure TEmbeddedWebIISForm.CheckShowSetupChecklist( AWorkCenterId: Real);
+var
+  AReturn_URL :String;
+  ACurrentWorkOrdID:Real;
+begin
+  if AWorkCenterId = 0 then
+    EXIT;
+
+  ACurrentWorkOrdID:= SelectValueFmtAsFloat('select workorder_id from cntr_sched where work_center_id = %.0f and cntr_seq = 1', [ AWorkCenterId ]);
+  if ACurrentWorkOrdID = 0 then
+    EXIT;
+
+  if 0 = SelectValueFmtAsFloat( 'select 1 from v_setupchecklist_sched cl where cl.WORK_CENTER_ID = %.0f and cl.WORKORDER_ID = %.0f',
+   [ AWorkCenterId, ACurrentWorkOrdID ] )
+  then
+    EXIT;
+
+  AReturn_URL := Format( '/EnterpriseIQ/Manufacturing/Scheduling/SetupChecklist?WorkOrderId=%.0f%sWorkCenterId=%.0f',
+                         [ ACurrentWorkOrdID, '%26', AWorkCenterId ] );
+
+  DoExecute( eEnterpriseIQ, AReturn_URL );
+end;
+
+class procedure TEmbeddedWebIISForm.DoExecute( AWebIISApp:TEmbeddedWebIISApplication; AUrlWithoutIIS: String; AUserName:String = '' );
+var
+  AIisUrl, ACompleteUrl:String;
+begin
+  if trim( AUserName ) = '' then ;
+//    AUserName:= SecurityManager.UserName;
+
+  //ex: 'http://abiery-win7.iqms.com:8080/'
+  (*UG_rem_AMB*)
+//  AIisUrl := IQMisc.IQGetIISServerBaseURL;
+  if trim( AIisUrl ) = '' then
+    EXIT;
+
+  ACompleteUrl := Format(
+     '%s/%s/Account/ManualLogOnWithProxy?username=%s&password=%s&returnurl=%s',
+       [ AIisUrl, AppToString(AWebIISApp), URIEncode(AUserName), URIEncode(GetEncryptedPwd), AUrlWithoutIIS ]);
+
+       (*UG_rem_AMB*)
+//  TChromeEmbeddedBrowserForm.DoShow(
+//   ACompleteUrl,
+//   '',
+//   '',
+//   True,
+//   True
+//   );
+
+//  DoDNETCOMJump( 'ChromeEmbeddedFramework',
+//                 'ChromeEmbeddedFramework.IQInterface',
+//                 [ ACompleteUrl,
+//                   '', // todo                   //.chm file ]);
+//                   '', // todo              help topic ID, as string
+//                   True,                       // Modal?
+//                   True,                       // fullscreen?
+//                   True ] );
+end;
+
+class function TEmbeddedWebIISForm.GetEncryptedPwd: String;
+begin
+  Result:= SelectValueAsString('select iqms_log from iqorder2');
+end;
+
+class function TEmbeddedWebIISForm.AppToString( AWebIISApp:TEmbeddedWebIISApplication ):String;
+begin
+  case AWebIISApp of
+    eEnterpriseIQ: Result:= 'EnterpriseIQ';
+    eWebDirect: Result:= 'WebDirect';
+    else
+      raise Exception.Create('Unknown TEmbeddedWebIISApplication!');
+  end;
+end;
+
+end.

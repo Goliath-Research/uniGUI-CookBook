@@ -1,0 +1,1693 @@
+inherited FrmIQSysCCEncrypt: TFrmIQSysCCEncrypt
+  Left = 209
+  Top = 134
+  ClientHeight = 406
+  ClientWidth = 655
+  Caption = 'Credit Card Data Encryption'
+  OldCreateOrder = True
+  OnActivate = FormActivate
+  ExplicitWidth = 671
+  ExplicitHeight = 465
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited PnlButtons: TUniPanel
+    Top = 372
+    Width = 655
+    ExplicitTop = 372
+    ExplicitWidth = 655
+    inherited PnlWizardBtnsRight: TUniPanel
+      Left = 221
+      ExplicitLeft = 221
+    end
+  end
+  inherited PnlMain: TUniPanel
+    Width = 655
+    Height = 372
+    ExplicitWidth = 655
+    ExplicitHeight = 372
+    inherited pcMain: TUniPageControl
+      Width = 653
+      Height = 370
+      ActivePage = TabOption
+      ExplicitWidth = 653
+      ExplicitHeight = 370
+      object TabOption: TUniTabSheet
+        Hint = ''
+        Caption = 'TabOption'
+        object Bevel7: TUniPanel
+          Left = 185
+          Top = 0
+          Width = 32
+          Height = 342
+          Hint = ''
+          Align = alLeft
+          Anchors = [akLeft, akTop, akBottom]
+          TabOrder = 2
+          Caption = ''
+        end
+        object PnlWelcomeCarrier: TUniPanel
+          Left = 217
+          Top = 0
+          Width = 428
+          Height = 342
+          Hint = ''
+          Align = alClient
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          TabOrder = 0
+          Caption = ''
+          object PnlIntroduction: TUniPanel
+            Left = 1
+            Top = 1
+            Width = 426
+            Height = 214
+            Hint = ''
+            Align = alTop
+            Anchors = [akLeft, akTop, akRight]
+            TabOrder = 0
+            Caption = ''
+            object Label2: TUniLabel
+              Left = 1
+              Top = 19
+              Width = 293
+              Height = 13
+              Hint = ''
+              Caption = ' Welcome to the Credit Card Data Encryption Wizard'
+              Align = alTop
+              Anchors = [akLeft, akTop, akRight]
+              ParentFont = False
+              Font.Style = [fsBold]
+              TabOrder = 1
+              ExplicitLeft = 5
+              ExplicitWidth = 290
+            end
+            object Bevel5: TUniPanel
+              Left = 1
+              Top = 32
+              Width = 424
+              Height = 3
+              Hint = ''
+              Align = alTop
+              Anchors = [akLeft, akTop, akRight]
+              TabOrder = 2
+              Caption = ''
+            end
+            object lblPrompt2: TUniLabel
+              Left = 5
+              Top = 86
+              Width = 418
+              Height = 13
+              Hint = ''
+              AutoSize = False
+              Caption = 
+                'It is recommended you do the following before updating to the ne' +
+                'w keys:'
+              TabOrder = 3
+            end
+            object Bevel2: TUniPanel
+              Left = 1
+              Top = 104
+              Width = 424
+              Height = 3
+              Hint = ''
+              TabOrder = 4
+              Caption = ''
+            end
+            object lblPrompt3: TUniLabel
+              Left = 5
+              Top = 113
+              Width = 418
+              Height = 31
+              Hint = ''
+              AutoSize = False
+              Caption = 
+                '1.  Run your regularly scheduled data purge to remove old data, ' +
+                'and limit the amount of records that must be changed.'
+              Transparent = False
+              TabOrder = 5
+            end
+            object Bevel3: TUniPanel
+              Left = 1
+              Top = 144
+              Width = 424
+              Height = 3
+              Hint = ''
+              TabOrder = 6
+              Caption = ''
+            end
+            object lblPrompt4: TUniLabel
+              Left = 5
+              Top = 150
+              Width = 418
+              Height = 43
+              Hint = ''
+              AutoSize = False
+              Caption = 
+                '2.  Users should exit out of areas where credit card data might ' +
+                'be modified, such as Accounts Receivable, Sales Orders, Credit C' +
+                'ard Charges, Customer Credit Cards and Credit Card Settlements.'
+              TabOrder = 7
+            end
+            object lblPrompt1: TUniLabel
+              Left = 5
+              Top = 38
+              Width = 418
+              Height = 42
+              Hint = ''
+              AutoSize = False
+              Caption = 
+                'Encryption keys are used to secure credit card data against unau' +
+                'thorized access.  After you change the keys, EnterpriseIQ will u' +
+                'pdate data to the new format; the process may take a while, depe' +
+                'nding on the number of records.  '
+              TabOrder = 8
+            end
+            object Bevel6: TUniPanel
+              Left = -1
+              Top = 79
+              Width = 424
+              Height = 3
+              Hint = ''
+              TabOrder = 9
+              Caption = ''
+            end
+            object Bevel10: TUniPanel
+              Left = 1
+              Top = 1
+              Width = 424
+              Height = 18
+              Hint = ''
+              Align = alTop
+              Anchors = [akLeft, akTop, akRight]
+              TabOrder = 10
+              Caption = ''
+            end
+          end
+          object PnlOptions: TUniPanel
+            Left = 1
+            Top = 215
+            Width = 426
+            Height = 126
+            Hint = ''
+            Align = alClient
+            Anchors = [akLeft, akTop, akRight, akBottom]
+            TabOrder = 1
+            Caption = ''
+            object rbEdit: TUniRadioButton
+              Left = 96
+              Top = 0
+              Width = 185
+              Height = 17
+              Hint = ''
+              Checked = True
+              Caption = 'Add or change encryption keys'
+              TabOrder = 0
+            end
+            object rbRemove: TUniRadioButton
+              Left = 96
+              Top = 24
+              Width = 121
+              Height = 17
+              Hint = ''
+              Caption = 'Remove encryption'
+              TabOrder = 1
+            end
+            object PnlVersionInfo: TUniPanel
+              Left = 1
+              Top = 51
+              Width = 424
+              Height = 74
+              Hint = ''
+              Visible = False
+              Align = alBottom
+              Anchors = [akLeft, akRight, akBottom]
+              TabOrder = 2
+              Caption = ''
+              object lblVInfo_Encrypted_Label: TUniLabel
+                Left = 16
+                Top = 0
+                Width = 53
+                Height = 13
+                Hint = ''
+                Caption = 'Encrypted:'
+                ParentFont = False
+                Font.Color = clGrayText
+                TabOrder = 1
+              end
+              object lblVInfo_EncryptedVersion_Label: TUniLabel
+                Left = 16
+                Top = 13
+                Width = 93
+                Height = 13
+                Hint = ''
+                Caption = 'Encryption Version:'
+                ParentFont = False
+                Font.Color = clGrayText
+                TabOrder = 2
+              end
+              object lblVInfo_EncryptedDate_Label: TUniLabel
+                Left = 16
+                Top = 26
+                Width = 79
+                Height = 13
+                Hint = ''
+                Caption = 'Date Encrypted:'
+                ParentFont = False
+                Font.Color = clGrayText
+                TabOrder = 3
+              end
+              object lblVInfo_EncryptedBy_Label: TUniLabel
+                Left = 16
+                Top = 39
+                Width = 68
+                Height = 13
+                Hint = ''
+                Caption = 'Encrypted By:'
+                ParentFont = False
+                Font.Color = clGrayText
+                TabOrder = 4
+              end
+              object lblVInfo_Encrypted: TUniLabel
+                Left = 113
+                Top = 0
+                Width = 13
+                Height = 13
+                Hint = ''
+                Caption = 'No'
+                ParentFont = False
+                Font.Color = clGrayText
+                TabOrder = 5
+              end
+              object lblVInfo_EncryptedVersion: TUniLabel
+                Left = 113
+                Top = 13
+                Width = 12
+                Height = 13
+                Hint = ''
+                Caption = '...'
+                ParentFont = False
+                Font.Color = clGrayText
+                TabOrder = 6
+              end
+              object lblVInfo_EncryptedDate: TUniLabel
+                Left = 113
+                Top = 26
+                Width = 15
+                Height = 13
+                Hint = ''
+                Caption = ' ...'
+                ParentFont = False
+                Font.Color = clGrayText
+                TabOrder = 7
+              end
+              object lblVInfo_EncryptedBy: TUniLabel
+                Left = 113
+                Top = 39
+                Width = 12
+                Height = 13
+                Hint = ''
+                Caption = '...'
+                ParentFont = False
+                Font.Color = clGrayText
+                TabOrder = 8
+              end
+            end
+          end
+        end
+        object PnlSideBar: TUniPanel
+          Tag = 1999
+          Left = 0
+          Top = 0
+          Width = 185
+          Height = 342
+          Hint = ''
+          Align = alLeft
+          Anchors = [akLeft, akTop, akBottom]
+          TabOrder = 1
+          Caption = ''
+          Color = clNavy
+          object imgWelcome: TUniImage
+            Left = 52
+            Top = 33
+            Width = 72
+            Height = 72
+            Hint = ''
+            AutoSize = True
+            Picture.Data = {
+              0954506E67496D61676589504E470D0A1A0A0000000D49484452000000480000
+              0048080600000055EDB347000000097048597300000B1300000B1301009A9C18
+              00000A4D6943435050686F746F73686F70204943432070726F66696C65000078
+              DA9D53775893F7163EDFF7650F5642D8F0B1976C81002223AC08C81059A21092
+              006184101240C585880A561415119C4855C482D50A489D88E2A028B867418A88
+              5A8B555C38EE1FDCA7B57D7AEFEDEDFBD7FBBCE79CE7FCCE79CF0F8011122691
+              E6A26A003952853C3AD81F8F4F48C4C9BD80021548E0042010E6CBC26705C500
+              00F00379787E74B03FFC01AF6F00020070D52E2412C7E1FF83BA502657002091
+              00E02212E70B01905200C82E54C81400C81800B053B3640A009400006C797C42
+              2200AA0D00ECF4493E0500D8A993DC1700D8A21CA908008D0100992847240240
+              BB00605581522C02C0C200A0AC40222E04C0AE018059B632470280BD0500768E
+              58900F4060008099422CCC0020380200431E13CD03204C03A030D2BFE0A95F70
+              85B8480100C0CB95CD974BD23314B895D01A77F2F0E0E221E2C26CB142611729
+              106609E4229C979B231348E7034CCE0C00001AF9D1C1FE383F90E7E6E4E1E666
+              E76CEFF4C5A2FE6BF06F223E21F1DFFEBC8C020400104ECFEFDA5FE5E5D60370
+              C701B075BF6BA95B00DA560068DFF95D33DB09A05A0AD07AF98B7938FC401E9E
+              A150C83C1D1C0A0B0BED2562A1BD30E38B3EFF33E16FE08B7EF6FC401EFEDB7A
+              F000719A4099ADC0A383FD71616E76AE528EE7CB0442316EF7E723FEC7857FFD
+              8E29D1E234B15C2C158AF15889B850224DC779B952914421C995E212E97F32F1
+              1F96FD0993770D00AC864FC04EB607B5CB6CC07EEE01028B0E58D27600407EF3
+              2D8C1A0B91001067343279F7000093BFF98F402B0100CD97A4E30000BCE8185C
+              A894174CC608000044A0812AB041070CC114ACC00E9CC11DBCC0170261064440
+              0C24C03C104206E4801C0AA11896411954C03AD804B5B0031AA0119AE110B4C1
+              31380DE7E0125C81EB70170660189EC218BC86090441C8081361213A8811628E
+              D822CE0817998E04226148349280A420E988145122C5C872A402A9426A915D48
+              23F22D7214398D5C40FA90DBC820328AFC8ABC47319481B25103D4027540B9A8
+              1F1A8AC6A073D174340F5D8096A26BD11AB41E3D80B6A2A7D14BE87574007D8A
+              8E6380D1310E668CD9615C8C87456089581A26C71663E55835568F35631D5837
+              76151BC09E61EF0824028B8013EC085E8410C26C82909047584C5843A825EC23
+              B412BA085709838431C2272293A84FB4257A12F9C478623AB1905846AC26EE21
+              1E219E255E270E135F9348240EC992E44E0A21259032490B496B48DB482DA453
+              A43ED210699C4C26EB906DC9DEE408B280AC209791B7900F904F92FBC9C3E4B7
+              143AC588E24C09A22452A494124A35653FE504A59F324299A0AA51CDA99ED408
+              AA883A9F5A496DA076502F5387A91334759A25CD9B1643CBA42DA3D5D09A6967
+              69F7682FE974BA09DD831E4597D097D26BE807E9E7E983F4770C0D860D83C748
+              6228196B197B19A718B7192F994CA605D39799C85430D7321B9967980F986F55
+              582AF62A7C1591CA12953A9556957E95E7AA545573553FD579AA0B54AB550FAB
+              5E567DA64655B350E3A909D416ABD5A91D55BBA936AECE5277528F50CF515FA3
+              BE5FFD82FA630DB2868546A08648A35463B7C6198D2116C63265F15842D67256
+              03EB2C6B984D625BB2F9EC4C7605FB1B762F7B4C534373AA66AC6691669DE671
+              CD010EC6B1E0F039D99C4ACE21CE0DCE7B2D032D3F2DB1D66AAD66AD7EAD37DA
+              7ADABEDA62ED72ED16EDEBDAEF75709D409D2C9DF53A6D3AF77509BA36BA51BA
+              85BADB75CFEA3ED363EB79E909F5CAF50EE9DDD147F56DF4A3F517EAEFD6EFD1
+              1F373034083690196C313863F0CC9063E86B9869B8D1F084E1A811CB68BA91C4
+              68A3D149A327B826EE8767E33578173E66AC6F1C62AC34DE65DC6B3C61626932
+              DBA4C4A4C5E4BE29CD946B9A66BAD1B4D374CCCCC82CDCACD8ACC9EC8E39D59C
+              6B9E61BED9BCDBFC8D85A5459CC54A8B368BC796DA967CCB05964D96F7AC9856
+              3E567956F556D7AC49D65CEB2CEB6DD6576C501B579B0C9B3A9BCBB6A8AD9BAD
+              C4769B6DDF14E2148F29D229F5536EDA31ECFCEC0AEC9AEC06ED39F661F625F6
+              6DF6CF1DCC1C121DD63B743B7C727475CC766C70BCEBA4E134C3A9C4A9C3E957
+              671B67A1739DF33517A64B90CB1297769717536DA78AA76E9F7ACB95E51AEEBA
+              D2B5D3F5A39BBB9BDCADD96DD4DDCC3DC57DABFB4D2E9B1BC95DC33DEF41F4F0
+              F758E271CCE39DA79BA7C2F390E72F5E765E595EFBBD1E4FB39C269ED6306DC8
+              DBC45BE0BDCB7B603A3E3D65FACEE9033EC63E029F7A9F87BEA6BE22DF3DBE23
+              7ED67E997E07FC9EFB3BFACBFD8FF8BFE179F216F14E056001C101E501BD811A
+              81B3036B031F049904A50735058D05BB062F0C3E15420C090D591F72936FC017
+              F21BF96333DC672C9AD115CA089D155A1BFA30CC264C1ED6118E86CF08DF107E
+              6FA6F94CE9CCB60888E0476C88B81F69199917F97D14292A32AA2EEA51B45374
+              7174F72CD6ACE459FB67BD8EF18FA98CB93BDB6AB6727667AC6A6C526C63EC9B
+              B880B8AAB8817887F845F1971274132409ED89E4C4D8C43D89E37302E76C9A33
+              9CE49A54967463AEE5DCA2B917E6E9CECB9E773C593559907C3885981297B23F
+              E5832042502F184FE5A76E4D1D13F2849B854F45BEA28DA251B1B7B84A3C92E6
+              9D5695F638DD3B7D43FA68864F4675C633094F522B79911992B923F34D5644D6
+              DEACCFD971D92D39949C949CA3520D6996B42BD730B728B74F662B2B930DE479
+              E66DCA1B9387CAF7E423F973F3DB156C854CD1A3B452AE500E164C2FA82B785B
+              185B78B848BD485AD433DF66FEEAF9230B82167CBD90B050B8B0B3D8B87859F1
+              E022BF45BB16238B5317772E315D52BA647869F0D27DCB68CBB296FD50E25852
+              55F26A79DCF28E5283D2A5A5432B82573495A994C9CB6EAEF45AB96315619564
+              55EF6A97D55B567F2A17955FAC70ACA8AEF8B046B8E6E2574E5FD57CF5796DDA
+              DADE4AB7CAEDEB48EBA4EB6EACF759BFAF4ABD6A41D5D086F00DAD1BF18DE51B
+              5F6D4ADE74A17A6AF58ECDB4CDCACD03356135ED5BCCB6ACDBF2A136A3F67A9D
+              7F5DCB56FDADABB7BED926DAD6BFDD777BF30E831D153BDEEF94ECBCB52B7857
+              6BBD457DF56ED2EE82DD8F1A621BBABFE67EDDB847774FC59E8F7BA57B07F645
+              EFEB6A746F6CDCAFBFBFB2096D52368D1E483A70E59B806FDA9BED9A77B5705A
+              2A0EC241E5C127DFA67C7BE350E8A1CEC3DCC3CDDF997FB7F508EB48792BD23A
+              BF75AC2DA36DA03DA1BDEFE88CA39D1D5E1D47BEB7FF7EEF31E36375C7358F57
+              9EA09D283DF1F9E48293E3A764A79E9D4E3F3DD499DC79F74CFC996B5D515DBD
+              6743CF9E3F1774EE4CB75FF7C9F3DEE78F5DF0BC70F422F762DB25B74BAD3DAE
+              3D477E70FDE148AF5B6FEB65F7CBED573CAE74F44DEB3BD1EFD37FFA6AC0D573
+              D7F8D72E5D9F79BDEFC6EC1BB76E26DD1CB825BAF5F876F6ED17770AEE4CDC5D
+              7A8F78AFFCBEDAFDEA07FA0FEA7FB4FEB165C06DE0F860C060CFC3590FEF0E09
+              879EFE94FFD387E1D247CC47D52346238D8F9D1F1F1B0D1ABDF264CE93E1A7B2
+              A713CFCA7E56FF79EB73ABE7DFFDE2FB4BCF58FCD8F00BF98BCFBFAE79A9F372
+              EFABA9AF3AC723C71FBCCE793DF1A6FCADCEDB7DEFB8EFBADFC7BD1F9928FC40
+              FE50F3D1FA63C7A7D04FF73EE77CFEFC2FF784F3FB25D29F330000000467414D
+              410000B18E7CFB5193000011964944415478DAED9B095054779EC7BFAF4F4E9B
+              43EE53E430208228A54E8C474C99F5DA52CB4D469D9819758D318A3A6A66DD6C
+              E2CC66349E31591D5363A2AB934C74D74D656B35718C8A77798BF14205155004
+              85A61B9ABB9BEEFDFDFEF89806BBE906CD3856F1ABFAD77BAFDFD1FDFFBCDFFD
+              07C966B3A14B9C8BD405A87DE902E442BA00B9902E402EA40B900BE902E442BA
+              00B9902E402EA40B900BE902E442BA00B9902E402EA40B900BE902E442BA00B9
+              902E402EA40B900B1180162F5E3C86F637D1887ED63FE8EF44F269BCB576EDDA
+              6C69D1A2454A3AD0070707EB525353A156AB7F926FEC88A65AADD66746C662B1
+              E0DAB56B78F0E04131018A94162C58A0A3CF8D2FBFFC323C3C3C9EE8E14F7362
+              EE007517BAB3EB244972786C369B919D9D8DF5EBD74BD2FCF9F305A051A346FD
+              6413E9C87D4F32E9A6A626949696A2B2B2127575752E5F9842A180A7A727743A
+              1D424343A1542A5B201D3A74086BD6AC91A4ACACAC56809EF4AD74E41A571370
+              74BFB367D6D6D6223F3F1F1A8D06212121F0F6F616FBF6F7B5D598C6C646711F
+              4365AD898B8B838F8F8FB8EEF0E1C358B76E9D24CD9D3BF7310D6A6F62EE9A91
+              2B389DD52047DFCF9A73E5CA15F8FBFB232A3212E125C508D63F8077B509262F
+              6F94750F41497814D91010DFFD06A2FC8BE1EF6B84A14187BB15D1B8559A80A2
+              A27B301A8D484949117E98017DF2C92792F4CE3BEF084023478EECF00FEE2CC8
+              8EC271A549858585A8A9A94172AF5EE873ED4778D754A140178487DD74A8F0EA
+              061B69046B136B8C4AD984105D0562C34B9014530295C68A8755DD71E4FC50E4
+              E6DE8497971762636371ECD831C427F492A4B7DF7EBB15206713EB0CA88E6891
+              A3EF75C7C4F8F8E2C58B888989415AB51136F23D792191E899D21BF13D7B2228
+              28085A6D7364664DABAEAE4571F17D141416E0E1833C64A65E474AD25D5CCCED
+              8D93E72251505080BE7DFBE2C48913484C4A96A4D9B3670B4023468C78EC0738
+              9B604720760452DB6BDD81C6C7A74F9F46FFFEFDE1AB2F87674A1F0CFED92032
+              373FD2AA3AE1B08D04A5A1BE111AAD062A950A1AB5026A951255C64A5CBF7903
+              5AC505BC98710DDFEE1F8D0B172E2033331367CE9C4152AF14499A356B960034
+              6CD830873F829D17AB5B7B3F5E3EE768B2BC1D3E7CB8D8E7D0E968B2BC7576AF
+              BCE589F14B74048D27D337A31F12137B61D8D0C14253F26E15A0BACE02054526
+              6B9305FC24E1A229722924A588601A8D022AC98ADCABB950DBCEA0BC32869E75
+              5E003A7FFE3C5E484E95A49933670A402FBDF49243409C38B1C3726562CE3481
+              F765F81C3ADB9E6BEF3EFB6B64408EE4F6ED02A4A6A593166520B87B106EE417
+              42A9D5A2E261294E9D3C016FF22B5A3A6E6C34C360D0A3776A1AA2637B40EDE1
+              453E4945B6578FBC1B37515EFE1017739A01B1D92624BD2049D3A74F1780060F
+              1EFCD80F6661C7C6809CA9777BAA2F4B5B408E34A4BD2D8B33407C4DA3D98A31
+              E3C6A0A4B49CCC88264D51E8E2B953B018F548CEBB8A88B252844EAC86F7682B
+              6E1586E1D8850C941BB4C8C81C806EBA40BA5E037343354E1E3F8A6B572E212D
+              2D4D44C5A417C8C4DE7CF34D0168E0C0810E27CA26C6137305C1D9C458384B67
+              3970E040BBD73BD32E59835E79E51507808014D28821435FC2D5EBF9645E12AE
+              5FB908E45EC2804BE7A06D6C00DB9729D00B11FF5E8B205D35CC8D6AFCDFF181
+              28A94AA1DC2701416191E241F9B99771FAD4094445455244CB25274D1AF4C61B
+              6F0840ECE45C69852B71C7A97736943BFBCC6A5360C2C489F0A31CA8E05E290C
+              FA325C3E7512C3CE1D857FA511355A0F140785E06A520A24CA1B07A75E404258
+              093C15667C71F01F094E328D08E8FC02613296E3D0C11FE0EBED89EBD7AF3747
+              B1A953A70A40E9E9E92E35E469C0EAE8E7AEE0926E81FC28F4150654D53622F7
+              4A0EEEDF2DE43BDDF8950AE8FC03111A1E8EEE2161502B251CDABF9F9C78136E
+              DEBC89B89E89923479F26401283939B9D3303A03EA49CEB53A2FA93077DE3C14
+              DE2FA11CA71EA78E1E447A5A1F6464A48B1CA83DB975EB3676ECDC8508CAA142
+              42C3E1EBE38DEC1FFE029BD52CCA169128BEF6DA6B02502FCA42DB93B675CC4F
+              05ADED352E4B1B0501CACAC2BDFB65A83499703C7B1F162D9CDFD299E0902F3F
+              8787BD6FABAFAFC7863F7C8688E8184445C78A3A2CFB87BDE4B0EB2832DE46CF
+              8424499A34699200141F1FEF128CB3FDA701A8D35D01329339F3B2F0A0CC0063
+              65158E1EDC8B258B168AD24286610F4606CE153C57FC1F2E5F89B0C86824BE90
+              020F8D0AFBFFF21D2C04E8CE9D3B646209923471E24401A8478F1E4EE1F0D67E
+              DF19C02785D4B9E7489835670E1E9657928955E33069C092250B5B1A7F8EC0B0
+              56F1675CBF7DF4D16A044544222DBD3FE544C00F7B7653E4AE1325475C5CBC24
+              8D1F3F5E008A8A8A7A6CE2F2E0ACD319B0CE807A9A7D702B01FAD53FCF42B9DE
+              886A9AF0D103FBB064F1426162CEC0F09613606E75AC5EB30E81E4A0D3FB6552
+              562D61FFDEDDB0981B04A01E0C68DCB8710250444444CB8FBF7AF52AFAF4E9D3
+              0A923338323C67901CF5619E26A426AB845FFCF257D0535D5565ACC2E9E387F0
+              9B77170B13E30618F78564FFC383C1F0E07DD6B88F3FF90FF80705D37CFBD2F5
+              0A1C21C032A0D81E0468CC98310250585898B889FBB106834164BF6D01B585D3
+              9EE93D6D7106DAD264C3A4D7A7A0BCA2820AD32AFC78EE3496FFFE77ADC0C81A
+              C35B799F0703DA484EDA3720102954E42A14124E1E3D4C5F66113E2826364E92
+              468D1A25000507078BAC39272747DC3C74E8D05626E648931C81FA5B0B031A39
+              7A1CBD54230C157ADCCEBB8E15CB3F6C71D2320C596BEC8FABC9C436FFF17378
+              FAF822B1578AC8A62F5D3883BB4505A2C412263672E4C816403C490E7D5C870C
+              1830A0A5476B0F88C599593983E4EC737B3373758DB3F3668B1503A98EACD01B
+              A03754405F5A828F56FC5E942632087EF1F268686868D967D9B2751B549E9E88
+              EB114FE64AB5DAF5AB029068C17214A3FA4600E2A44AFE114C8F3B6B7C2C4372
+              E68FDA6E9D99C24FA941C929A928D3EB6124D7C0394C6AEFDE183DFA1F448FB9
+              3D6145D8B07113E811088F8822F3B3A0FC41098A0AEF08B0EBC7E648D2F0E1C3
+              5B3448D68EB6A6C5DBB666D65E4473A5159D157B4D480C37E19723AAB0767702
+              4223E3C9BC2A844F611FB364E445685516CE0E1FE54056F6E6622BA21A6D6D74
+              5CDF2861C3D9E60E41406077D4D7D55364ABC6823EDF223BDF0FC37BE825899C
+              712B40EDC191B76DC13C2D1FC4CFE009B206CBA6209B081FCBE6D63FC986C56F
+              04C02F340ECB3E3E86A29226E45C2E4290BF1A817E5AAC5F3A08C1FE5A513258
+              E97E9B95C23BFB206E9CC9838E8D550DF8DDD67CDC7D588FC2874D88E92E2122
+              508DA5AF05412BD5A3AED6B4521A3264C8631A246FDB82719417B517C59C41E3
+              B7C813E6210360283CDC09FF9B1744206ED8322855CDE5848D7B85E23EAB1856
+              B16F131AC4C736F91C278DFC396B14E41CC9FAE85E71C6EE39C0FD9CFF69945E
+              7CF1450188D792DA02926170C8FCFCF3CFC5E7ACC65CB3B0F07A122FB8D9EF73
+              0DB37CF972A1095408E3D5575F15E7EFDDBB87C8C848141515213ABAF94F00B8
+              5FCC091CCBBBEFBE8B93274F0ADFB76FDFBEC7CEDBDF97FD9E17D45A25229307
+              C23B20120A732D39A34A7878FA09580A0F1D55E41E68B2D4C15253469AD34083
+              B5C94C96D6C8B383A4D5110B33F958495CA7D478D3CB6A405D951135F4BD8607
+              4618CB4D95D2A041835AF2207BADB0D7165E31A07C093B76ECC0A64D9BB06AD5
+              2AF8FAFA620EA5F813264CC0DAB56BC5BD9C3B71538CA023313111EFBFFF3EA5
+              F21F61F3E6CDE23C47469EF4F6EDDBB173E74EECDDBB1773E7CE45B76EDD447A
+              C1B947BF7EFD3065CA146CDCB8B1D5F9152B5650859E81AFBFFE1AC5DBFA5094
+              52C03FBA273C7C75B098EE52E56980A7B7129EF4BB7C63FB42E39704855704C1
+              0A0494F44215A46D0AAA25149174EC252071BE63ADBE065B4305CC5579A82EBD
+              0C7DE14D188A4B28E9AC279F64AD94E8470B40E1E1E1ADCC42D620564FEEE77E
+              F5D557E2735E5CF3F3F313FB79797948484810FB376EDC405252122E5DBA046E
+              DF727760E1C285428BECCFDB6B0227A4BCD8C73275EA54D17CE792476EEEDB9F
+              B7FFAE83FFA2814A4380A20810E53096AA220264A4F242A2411A1F1E098D8717
+              15FA4A28D59E90D40444E52386CDA6220BE23A4D099BD980A6DA62BAFF2EEA4D
+              06982A1B60D4F3D2900DB535364A796C95526666668B0F629F20679BEC0FD837
+              C83E817D0537916478728D23E71BF6FB0CB467CF9E2DA6555555D5EABCFD3DF6
+              CFE297C4F05D7DD79EF94D9D0604A8C949ABDC07442A2D00C989D3F3201F8FCA
+              7D024014DD9A14EE03EADBB7AF00C41AF3BCC8A7636FDA01EA46132C6C0D2834
+              021A2F6FC780244F763DEE034A4B4B1380B8C4785EE40FE36FB7D1A06627ED16
+              20851781B1B90F2835355500E2DEC8B392A54B9762C68C192DC7F2F2D0ECD9B3
+              71F6EC59E1ACB96CE0D54EDE5E5815428094F08F21405E3E8F9B982B40DC85B5
+              2ADC03D4BB776F0188F39B6725AB57AFC6CA952BF1E5975F62DBB66D221DE06E
+              C2B265CB4414E3B0CFE19F019D3A750A3137670B4081310904C28B522032B186
+              4AF7015929523749EE014A4E4E16804C26D33303F4DE7BEFE1ADB7DE12FB5BB6
+              6C014754CACF446F6AFCF8F12281E414A182EA2D4E484BFE944E805404285E00
+              321320A91D4039B7FDF0CDDEBBD0D7A83079521F0C49F7A4B00CF70051BE2200
+              C9A1F859097FBFEC07ED7B391CE6030303515E5E2EC23DE7667B7F4DC15AAB46
+              009998C6C39392BC22A7808A0D81F8ED8A032828B3A2486F4339194AF67FCF44
+              46BCD63D40F4660420CE709F17F9EA4DFD2340A4411E1E8F030A0983C6DB5700
+              DA7DB809FFBBFB470187C743930D6F4F1B84550BFBB90788B253018833E4F664
+              DEBC7978FDF5D74509C1B278F162B1E55A894B0A2E0DF88FB0388B5EBF7EBDC8
+              8C5938E193EF61611FC2A6C2654A6703C38EE946A83D0850F423406C628D5576
+              804209503701E8E8792BBEDC799134A8195045AD0D1B7F3B1C53C6A6B807283E
+              3E5E00E248D19E646565E1830F3E10BE8021B0AFB097B2B232B192C9E6B175EB
+              56513BEDDAB54B9CE3BFD8DAB06183F033478E1C815EAFC7FCF9F3C5B28B7D77
+              D25DF9AF9955CD804883D494B55B2A8B9C023299FDB175CB61EC3965118006A5
+              AAF1E99A5908F072D30751492000F15B7526F2395ED0975760590378E18DFD03
+              17ABFC4752FC57205C0E30A069D3A689EBD8D1CACBDA0C918FD99F30208E9C9D
+              01B46B5635D49E5AD2A09E044823A298D4687208889DF49D321D662CF84E00DA
+              BE710A066786101CB328525D02A2BC4200E2B7DA9E384A03E43FB3959BE15C83
+              713DC7ED1086272FFBB615B953C06B579D01F4CDEC5A6808907F74BCF045AE00
+              5D29F445D6BFEE15803E5DF14F183B225234CC6CF57AD7806263635B9CB45C40
+              FEBDCBB773EA3B04E8D0050D3E5C972D002D9A370A737ED18B17ED61AD2B770D
+              28262646FCAF06BD6D1DFB8467F97F12EE0A6B50BB26161C028D8FAE05D09FBF
+              6FC0963F9F1580268CFF19D62E1DD0DCAFAE2D730D88F30DD2A249F4BD9FD1E8
+              FEAC27EF8E6CF9F9FDD6808C0590CCD52D80BC28D1D4FAF8B5005AFB4529BE3F
+              942F00A567F4C2379F8D125D556BED03F700B1904F88A40DB7F8B5CF1A802B39
+              F01BF51FED4DCC6CBC0385B9C629A07F5B7D1597F32A286904024242B0FFEB29
+              3C6358AB4B3B0488939534885E245C75CE9F7409E349EE577FBF48BDDDC7572B
+              05502DA652AB6036DC86A2A9D6212085CA0BDF7C770BF50D3461337DB1C60B33
+              678C6B0654431A5473CF292083C9D6680F48F508CEDF7AC21D7D7EB72FA6ABF7
+              2444A93303A2C8C43CB404E88E53408E8A55D19F664075E4834C454E019557DA
+              EE3C77FF92492F52DB375A91B164ACEA3FE3E3FC92BC0382C854EE4361ADEF30
+              200EF396AA0287802A0CB6CAEDC79B263F8F80589BB8EBAEFBF5ABAA9FF74F50
+              4E4B8C56A67B6A6CAA0E036A305004BCDD0A50D15D4B794E9E6DD79F8E5BD6E5
+              1459EF3E8F805A7669B05BE0351CEFC98354FD13C2147D22431529C909DD9283
+              827D038890E4EFEFA90B080EF481D297325B1A0A6F54D7A2A6425F63B09A4D4D
+              C505F9C505B74BAE15DEABBD78E686F9DC9E0B961BF4BC1A8886086CCF33A0C7
+              4ED1E0D49EA370F3BACE5F87FD4DF2D269D3A3C1AB15DC67318FCD50590950AB
+              87FE3FE08B16C9B85BD90A0000000049454E44AE426082}
+            Transparent = True
+          end
+        end
+      end
+      object TabEdit: TUniTabSheet
+        Hint = ''
+        ImageIndex = 1
+        Caption = 'TabEdit'
+        object PnlEditPasswords: TUniPanel
+          Left = 0
+          Top = 0
+          Width = 645
+          Height = 342
+          Hint = ''
+          Align = alClient
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          TabOrder = 0
+          Caption = ''
+          object Bevel1: TUniPanel
+            Left = 1
+            Top = 114
+            Width = 643
+            Height = 8
+            Hint = ''
+            Align = alTop
+            Anchors = [akLeft, akTop, akRight]
+            TabOrder = 2
+            Caption = ''
+          end
+          object PnlEditPasswordsEditCarrier: TUniPanel
+            Left = 1
+            Top = 122
+            Width = 643
+            Height = 91
+            Hint = ''
+            Align = alTop
+            Anchors = [akLeft, akTop, akRight]
+            TabOrder = 0
+            Caption = ''
+            object Splitter1: TUniSplitter
+              Left = 106
+              Top = 1
+              Width = 6
+              Height = 89
+              Hint = ''
+              Align = alLeft
+              ParentColor = False
+              Color = clBtnFace
+            end
+            object PnlEditPasswordsEditLeft01: TUniPanel
+              Left = 1
+              Top = 1
+              Width = 105
+              Height = 89
+              Hint = ''
+              Align = alLeft
+              Anchors = [akLeft, akTop, akBottom]
+              TabOrder = 0
+              Caption = ''
+              object lblPassKey1: TUniLabel
+                Left = 16
+                Top = 20
+                Width = 55
+                Height = 13
+                Hint = ''
+                Caption = 'Password 1'
+                TabOrder = 1
+              end
+              object lblPassKey2: TUniLabel
+                Left = 16
+                Top = 44
+                Width = 55
+                Height = 13
+                Hint = ''
+                Caption = 'Password 2'
+                TabOrder = 2
+              end
+              object lblPassKey3: TUniLabel
+                Left = 16
+                Top = 68
+                Width = 55
+                Height = 13
+                Hint = ''
+                Caption = 'Password 3'
+                TabOrder = 3
+              end
+            end
+            object PnlClient02: TUniPanel
+              Left = 112
+              Top = 1
+              Width = 530
+              Height = 89
+              Hint = ''
+              Align = alClient
+              Anchors = [akLeft, akTop, akRight, akBottom]
+              TabOrder = 1
+              Caption = ''
+              object PnlOldPassword: TUniPanel
+                Left = 1
+                Top = 1
+                Width = 150
+                Height = 87
+                Hint = ''
+                Visible = False
+                Align = alLeft
+                Anchors = [akLeft, akTop, akBottom]
+                TabOrder = 0
+                Caption = ''
+                object lblOldPassword: TUniLabel
+                  Left = 0
+                  Top = 0
+                  Width = 65
+                  Height = 13
+                  Hint = ''
+                  Caption = 'Old Password'
+                  TabOrder = 4
+                end
+                object edtOldPassKey1: TUniEdit
+                  Left = 0
+                  Top = 16
+                  Width = 145
+                  Height = 21
+                  Hint = ''
+                  MaxLength = 30
+                  Text = ''
+                  TabOrder = 0
+                  OnChange = DoEditChange
+                  OnKeyPress = DoEditKeyPress
+                end
+                object edtOldPassKey2: TUniEdit
+                  Left = 0
+                  Top = 40
+                  Width = 145
+                  Height = 21
+                  Hint = ''
+                  MaxLength = 30
+                  Text = ''
+                  TabOrder = 1
+                  OnChange = DoEditChange
+                  OnKeyPress = DoEditKeyPress
+                end
+                object edtOldPassKey3: TUniEdit
+                  Left = 0
+                  Top = 64
+                  Width = 145
+                  Height = 21
+                  Hint = ''
+                  MaxLength = 30
+                  Text = ''
+                  TabOrder = 2
+                  OnChange = DoEditChange
+                  OnKeyPress = DoEditKeyPress
+                end
+              end
+              object PnlNewPassword: TUniPanel
+                Left = 151
+                Top = 1
+                Width = 387
+                Height = 87
+                Hint = ''
+                Align = alLeft
+                Anchors = [akLeft, akTop, akBottom]
+                TabOrder = 1
+                Caption = ''
+                object imgPassKey1Ok: TUniImage
+                  Left = 149
+                  Top = 17
+                  Width = 16
+                  Height = 16
+                  Hint = 'Strong password'
+                  Visible = False
+                  ShowHint = True
+                  ParentShowHint = False
+                  Center = True
+                  AutoSize = True
+                  Picture.Data = {
+                    07544269746D617036030000424D360300000000000036000000280000001000
+                    000010000000010018000000000000030000C40E0000C40E0000000000000000
+                    0000FF00FFFF00FFFF00FFFF00FFFF00FFBFC7C1A4BDAA89B39389B393A4BDAA
+                    BFC7C1FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFB9C5BC6DA9
+                    7C469A5C4B9B60549F6957A16C529F674A9C5F6DA97CB9C5BCFF00FFFF00FFFF
+                    00FFFF00FFFF00FFABC0B04F9E64489D5E55A46965AD7872B38374B48572B383
+                    69AE7B56A46A519F64ACC0B1FF00FFFF00FFFF00FFBBC6BE4D9E6241A45655B3
+                    6857AB6B58A56B52A66664B5756DBD7D6DBD7D68BB7955AE69519F64BBC6BEFF
+                    00FFFF00FF6DA97C39A84F46BB5955B16867AD79F0F7F1BDDBC5489C5E63C273
+                    66C77667C67662C5724BB05E6FAA7EFF00FFB7C5BB3FA15632C1484EB66258A5
+                    6BEBF4EEFFFFFFFFFFFFA5CEAF52B06665D07665D07665D0764FCA6343A159B9
+                    C5BC95B89E3AAF543BC35553A268E2F0E6FFFFFFFFFFFFFFFFFFFFFFFF91C49E
+                    53B56966DA7B5DD8734CD4653FB15895B89E87B3933EBB5C43B25EBBDAC3FFFF
+                    FFFFFFFFA7CFB1D5E8DAFFFFFFFFFFFF86BE9450B96A58E1794EDF7042BD6087
+                    B39387B39350C47057D87B5CA76FE9F3ECB2D5BB52BC6F4FA064DCECE0FFFFFF
+                    FBFDFB7DB98C50BF6F5CEA854EC36F87B39397B9A05CC17880F4A364C9814D9F
+                    625BBE7771E39364CF8353A268E5F1E8FFFFFFF6FAF7489C5E77F19B53BD7197
+                    B9A0BDC6C0479B5D91F6B097F7B494F3B098F7B598F7B598F7B572CD8C58A56B
+                    E0EEE482BB906CC58591F6AF459A5BBFC7C1FF00FF74AC8279CC90ABF9C2ABF9
+                    C2ACF9C1ACF8C3ADF9C3ADF9C380D19755AA6B7ED094A9F9C07ACD9175AC83FF
+                    00FFFF00FFBFC7C1529F6591D8A5BDFBCFBDFACEBDFBCEBDFBCEBCFBCEBBFACD
+                    B9FACBB9F9CC90D7A354A167BFC7C1FF00FFFF00FFFF00FFB3C3B759A16B85C8
+                    97CAF9D8CFFBDCCEFBDCCEFBDBCDFBDBCEFBDB8FCFA0529F65B1C2B5FF00FFFF
+                    00FFFF00FFFF00FFFF00FFC7CAC881B08D51A2667CBE8E8FCA9F8FCB9F7EBF90
+                    54A46979AD86BFC7C1FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+                    FFC1C8C29CBAA48DB5978DB5979CBAA4C1C8C2FF00FFFF00FFFF00FFFF00FFFF
+                    00FF}
+                  Transparent = True
+                end
+                object imgPassKey1Error: TUniImage
+                  Left = 160
+                  Top = 17
+                  Width = 16
+                  Height = 16
+                  Hint = 
+                    'Strong passwords must be at least 7 characters long, and contain' +
+                    ' at least one character and one number.'
+                  Visible = False
+                  ShowHint = True
+                  ParentShowHint = False
+                  Center = True
+                  AutoSize = True
+                  Picture.Data = {
+                    07544269746D617036030000424D360300000000000036000000280000001000
+                    000010000000010018000000000000030000120B0000120B0000000000000000
+                    0000FF00FFFF00FFFF00FFFF00FFFF00FFA3A3C93737B20A0A930808932B2BAA
+                    A3A3C8FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFB4B4CC3232
+                    B1000085000586000990000C9100078600007D3131A8B3B3CAFF00FFFF00FFFF
+                    00FFFF00FFFF00FF9393CC080898020595151BD42025D78C8EB49697AC2C32C2
+                    1B25D80509920808899191C6FF00FFFF00FFFF00FFB2B2CE0B0B9F0E10A53B3B
+                    F52C2CFF8A8AD8F9F9F9F3F3F38686BC3A3AFF454AF71015A60A0A8AB1B1CAFF
+                    00FFFF00FF3131C30707995353F54A4AFF3434FF4344CDEFEFF5FAFAFB5A5BCC
+                    3F3FFF5454FF5B5EF9090E9A2E2EA9FF00FF9FA0D20101A03D3DD86767FF4F4F
+                    FF3D3DFF2A2BE54E4EB35454A73A3AE93B3BEB5858FF6B6BFF4047E20101899A
+                    9AC83D4CD90005A86B6BFA6363FF5454FF4A4AFF3636DBD8D8E0C7C7C74647C9
+                    5454FF5D5DFF6A6AFF6B6EFD0007A33838B81932D70910B76F6FFF6262FF5959
+                    FF5656FF4444C2FDFDFDE6E6E65C5CBE5A5AE16363FF6969FF6D6DFF0E13BA15
+                    15AD1636D80912B76363FF5F5FFF6060FF6363EE3E40B5FFFFFFF4F4F45E5FB5
+                    6565E16C6CFF6767FF6666FF1013BA1212AD2F56DE000EAA5757FB5E5EFF6A6A
+                    FF7373EE5555B9FFFFFFFDFDFD6A6BB47B7AED7777FF6969FF6060FD0205A52A
+                    2ABC819BDA001AB23535DC6060FF7575FF7F7EE85D5DB9FFFFFFFFFFFF7373B7
+                    8383E78181FF6E6DFF4040E70000987878CEFF00FF1A4DD70C13B35C5CF97D7D
+                    FF7777D36566C0FFFFFFFFFFFF7071BB8383DC8686FF6868FD1010B41818BAFF
+                    00FFFF00FF92ABD8032BC5171AC16969F78888E56667BCFFFFFFFFFFFF6969BC
+                    8383E56C6CFA1D1DC70207AD8F8FD3FF00FFFF00FFFF00FF6E97DE0229C90C12
+                    BC3C3CDC5A5BDA5E5FC76060C75555CE3F3FE21010BD0209B56A6ED9FF00FFFF
+                    00FFFF00FFFF00FFFF00FF8AA9DA124CDF001DC40210BB151AC5181DC70710BD
+                    0010BC1229D28590D8FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFCACB
+                    CD769EDE3973E5225AE41E55E43463E2738EDDC8C9CDFF00FFFF00FFFF00FFFF
+                    00FF}
+                  Transparent = True
+                end
+                object lblNewPassword: TUniLabel
+                  Left = 0
+                  Top = 0
+                  Width = 70
+                  Height = 13
+                  Hint = ''
+                  Caption = 'New Password'
+                  TabOrder = 9
+                end
+                object lblConfirm: TUniLabel
+                  Left = 169
+                  Top = 0
+                  Width = 110
+                  Height = 13
+                  Hint = ''
+                  Caption = 'Confirm New Password'
+                  TabOrder = 10
+                end
+                object imgPassKey2Ok: TUniImage
+                  Left = 148
+                  Top = 44
+                  Width = 16
+                  Height = 16
+                  Hint = 'Strong password'
+                  Visible = False
+                  ShowHint = True
+                  ParentShowHint = False
+                  Center = True
+                  AutoSize = True
+                  Picture.Data = {
+                    07544269746D617036030000424D360300000000000036000000280000001000
+                    000010000000010018000000000000030000C40E0000C40E0000000000000000
+                    0000FF00FFFF00FFFF00FFFF00FFFF00FFBFC7C1A4BDAA89B39389B393A4BDAA
+                    BFC7C1FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFB9C5BC6DA9
+                    7C469A5C4B9B60549F6957A16C529F674A9C5F6DA97CB9C5BCFF00FFFF00FFFF
+                    00FFFF00FFFF00FFABC0B04F9E64489D5E55A46965AD7872B38374B48572B383
+                    69AE7B56A46A519F64ACC0B1FF00FFFF00FFFF00FFBBC6BE4D9E6241A45655B3
+                    6857AB6B58A56B52A66664B5756DBD7D6DBD7D68BB7955AE69519F64BBC6BEFF
+                    00FFFF00FF6DA97C39A84F46BB5955B16867AD79F0F7F1BDDBC5489C5E63C273
+                    66C77667C67662C5724BB05E6FAA7EFF00FFB7C5BB3FA15632C1484EB66258A5
+                    6BEBF4EEFFFFFFFFFFFFA5CEAF52B06665D07665D07665D0764FCA6343A159B9
+                    C5BC95B89E3AAF543BC35553A268E2F0E6FFFFFFFFFFFFFFFFFFFFFFFF91C49E
+                    53B56966DA7B5DD8734CD4653FB15895B89E87B3933EBB5C43B25EBBDAC3FFFF
+                    FFFFFFFFA7CFB1D5E8DAFFFFFFFFFFFF86BE9450B96A58E1794EDF7042BD6087
+                    B39387B39350C47057D87B5CA76FE9F3ECB2D5BB52BC6F4FA064DCECE0FFFFFF
+                    FBFDFB7DB98C50BF6F5CEA854EC36F87B39397B9A05CC17880F4A364C9814D9F
+                    625BBE7771E39364CF8353A268E5F1E8FFFFFFF6FAF7489C5E77F19B53BD7197
+                    B9A0BDC6C0479B5D91F6B097F7B494F3B098F7B598F7B598F7B572CD8C58A56B
+                    E0EEE482BB906CC58591F6AF459A5BBFC7C1FF00FF74AC8279CC90ABF9C2ABF9
+                    C2ACF9C1ACF8C3ADF9C3ADF9C380D19755AA6B7ED094A9F9C07ACD9175AC83FF
+                    00FFFF00FFBFC7C1529F6591D8A5BDFBCFBDFACEBDFBCEBDFBCEBCFBCEBBFACD
+                    B9FACBB9F9CC90D7A354A167BFC7C1FF00FFFF00FFFF00FFB3C3B759A16B85C8
+                    97CAF9D8CFFBDCCEFBDCCEFBDBCDFBDBCEFBDB8FCFA0529F65B1C2B5FF00FFFF
+                    00FFFF00FFFF00FFFF00FFC7CAC881B08D51A2667CBE8E8FCA9F8FCB9F7EBF90
+                    54A46979AD86BFC7C1FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+                    FFC1C8C29CBAA48DB5978DB5979CBAA4C1C8C2FF00FFFF00FFFF00FFFF00FFFF
+                    00FF}
+                  Transparent = True
+                end
+                object imgPassKey3Ok: TUniImage
+                  Left = 158
+                  Top = 65
+                  Width = 16
+                  Height = 16
+                  Hint = 'Strong password'
+                  Visible = False
+                  ShowHint = True
+                  ParentShowHint = False
+                  Center = True
+                  AutoSize = True
+                  Picture.Data = {
+                    07544269746D617036030000424D360300000000000036000000280000001000
+                    000010000000010018000000000000030000C40E0000C40E0000000000000000
+                    0000FF00FFFF00FFFF00FFFF00FFFF00FFBFC7C1A4BDAA89B39389B393A4BDAA
+                    BFC7C1FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFB9C5BC6DA9
+                    7C469A5C4B9B60549F6957A16C529F674A9C5F6DA97CB9C5BCFF00FFFF00FFFF
+                    00FFFF00FFFF00FFABC0B04F9E64489D5E55A46965AD7872B38374B48572B383
+                    69AE7B56A46A519F64ACC0B1FF00FFFF00FFFF00FFBBC6BE4D9E6241A45655B3
+                    6857AB6B58A56B52A66664B5756DBD7D6DBD7D68BB7955AE69519F64BBC6BEFF
+                    00FFFF00FF6DA97C39A84F46BB5955B16867AD79F0F7F1BDDBC5489C5E63C273
+                    66C77667C67662C5724BB05E6FAA7EFF00FFB7C5BB3FA15632C1484EB66258A5
+                    6BEBF4EEFFFFFFFFFFFFA5CEAF52B06665D07665D07665D0764FCA6343A159B9
+                    C5BC95B89E3AAF543BC35553A268E2F0E6FFFFFFFFFFFFFFFFFFFFFFFF91C49E
+                    53B56966DA7B5DD8734CD4653FB15895B89E87B3933EBB5C43B25EBBDAC3FFFF
+                    FFFFFFFFA7CFB1D5E8DAFFFFFFFFFFFF86BE9450B96A58E1794EDF7042BD6087
+                    B39387B39350C47057D87B5CA76FE9F3ECB2D5BB52BC6F4FA064DCECE0FFFFFF
+                    FBFDFB7DB98C50BF6F5CEA854EC36F87B39397B9A05CC17880F4A364C9814D9F
+                    625BBE7771E39364CF8353A268E5F1E8FFFFFFF6FAF7489C5E77F19B53BD7197
+                    B9A0BDC6C0479B5D91F6B097F7B494F3B098F7B598F7B598F7B572CD8C58A56B
+                    E0EEE482BB906CC58591F6AF459A5BBFC7C1FF00FF74AC8279CC90ABF9C2ABF9
+                    C2ACF9C1ACF8C3ADF9C3ADF9C380D19755AA6B7ED094A9F9C07ACD9175AC83FF
+                    00FFFF00FFBFC7C1529F6591D8A5BDFBCFBDFACEBDFBCEBDFBCEBCFBCEBBFACD
+                    B9FACBB9F9CC90D7A354A167BFC7C1FF00FFFF00FFFF00FFB3C3B759A16B85C8
+                    97CAF9D8CFFBDCCEFBDCCEFBDBCDFBDBCEFBDB8FCFA0529F65B1C2B5FF00FFFF
+                    00FFFF00FFFF00FFFF00FFC7CAC881B08D51A2667CBE8E8FCA9F8FCB9F7EBF90
+                    54A46979AD86BFC7C1FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+                    FFC1C8C29CBAA48DB5978DB5979CBAA4C1C8C2FF00FFFF00FFFF00FFFF00FFFF
+                    00FF}
+                  Transparent = True
+                end
+                object imgPassKey2Error: TUniImage
+                  Left = 158
+                  Top = 45
+                  Width = 16
+                  Height = 16
+                  Hint = 
+                    'Strong passwords must be at least 7 characters long, and contain' +
+                    ' at least one character and one number.'
+                  Visible = False
+                  ShowHint = True
+                  ParentShowHint = False
+                  Center = True
+                  AutoSize = True
+                  Picture.Data = {
+                    07544269746D617036030000424D360300000000000036000000280000001000
+                    000010000000010018000000000000030000120B0000120B0000000000000000
+                    0000FF00FFFF00FFFF00FFFF00FFFF00FFA3A3C93737B20A0A930808932B2BAA
+                    A3A3C8FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFB4B4CC3232
+                    B1000085000586000990000C9100078600007D3131A8B3B3CAFF00FFFF00FFFF
+                    00FFFF00FFFF00FF9393CC080898020595151BD42025D78C8EB49697AC2C32C2
+                    1B25D80509920808899191C6FF00FFFF00FFFF00FFB2B2CE0B0B9F0E10A53B3B
+                    F52C2CFF8A8AD8F9F9F9F3F3F38686BC3A3AFF454AF71015A60A0A8AB1B1CAFF
+                    00FFFF00FF3131C30707995353F54A4AFF3434FF4344CDEFEFF5FAFAFB5A5BCC
+                    3F3FFF5454FF5B5EF9090E9A2E2EA9FF00FF9FA0D20101A03D3DD86767FF4F4F
+                    FF3D3DFF2A2BE54E4EB35454A73A3AE93B3BEB5858FF6B6BFF4047E20101899A
+                    9AC83D4CD90005A86B6BFA6363FF5454FF4A4AFF3636DBD8D8E0C7C7C74647C9
+                    5454FF5D5DFF6A6AFF6B6EFD0007A33838B81932D70910B76F6FFF6262FF5959
+                    FF5656FF4444C2FDFDFDE6E6E65C5CBE5A5AE16363FF6969FF6D6DFF0E13BA15
+                    15AD1636D80912B76363FF5F5FFF6060FF6363EE3E40B5FFFFFFF4F4F45E5FB5
+                    6565E16C6CFF6767FF6666FF1013BA1212AD2F56DE000EAA5757FB5E5EFF6A6A
+                    FF7373EE5555B9FFFFFFFDFDFD6A6BB47B7AED7777FF6969FF6060FD0205A52A
+                    2ABC819BDA001AB23535DC6060FF7575FF7F7EE85D5DB9FFFFFFFFFFFF7373B7
+                    8383E78181FF6E6DFF4040E70000987878CEFF00FF1A4DD70C13B35C5CF97D7D
+                    FF7777D36566C0FFFFFFFFFFFF7071BB8383DC8686FF6868FD1010B41818BAFF
+                    00FFFF00FF92ABD8032BC5171AC16969F78888E56667BCFFFFFFFFFFFF6969BC
+                    8383E56C6CFA1D1DC70207AD8F8FD3FF00FFFF00FFFF00FF6E97DE0229C90C12
+                    BC3C3CDC5A5BDA5E5FC76060C75555CE3F3FE21010BD0209B56A6ED9FF00FFFF
+                    00FFFF00FFFF00FFFF00FF8AA9DA124CDF001DC40210BB151AC5181DC70710BD
+                    0010BC1229D28590D8FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFCACB
+                    CD769EDE3973E5225AE41E55E43463E2738EDDC8C9CDFF00FFFF00FFFF00FFFF
+                    00FF}
+                  Transparent = True
+                end
+                object imgPassKey3Error: TUniImage
+                  Left = 148
+                  Top = 65
+                  Width = 16
+                  Height = 16
+                  Hint = 
+                    'Strong passwords must be at least 7 characters long, and contain' +
+                    ' at least one character and one number.'
+                  Visible = False
+                  ShowHint = True
+                  ParentShowHint = False
+                  Center = True
+                  AutoSize = True
+                  Picture.Data = {
+                    07544269746D617036030000424D360300000000000036000000280000001000
+                    000010000000010018000000000000030000120B0000120B0000000000000000
+                    0000FF00FFFF00FFFF00FFFF00FFFF00FFA3A3C93737B20A0A930808932B2BAA
+                    A3A3C8FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFB4B4CC3232
+                    B1000085000586000990000C9100078600007D3131A8B3B3CAFF00FFFF00FFFF
+                    00FFFF00FFFF00FF9393CC080898020595151BD42025D78C8EB49697AC2C32C2
+                    1B25D80509920808899191C6FF00FFFF00FFFF00FFB2B2CE0B0B9F0E10A53B3B
+                    F52C2CFF8A8AD8F9F9F9F3F3F38686BC3A3AFF454AF71015A60A0A8AB1B1CAFF
+                    00FFFF00FF3131C30707995353F54A4AFF3434FF4344CDEFEFF5FAFAFB5A5BCC
+                    3F3FFF5454FF5B5EF9090E9A2E2EA9FF00FF9FA0D20101A03D3DD86767FF4F4F
+                    FF3D3DFF2A2BE54E4EB35454A73A3AE93B3BEB5858FF6B6BFF4047E20101899A
+                    9AC83D4CD90005A86B6BFA6363FF5454FF4A4AFF3636DBD8D8E0C7C7C74647C9
+                    5454FF5D5DFF6A6AFF6B6EFD0007A33838B81932D70910B76F6FFF6262FF5959
+                    FF5656FF4444C2FDFDFDE6E6E65C5CBE5A5AE16363FF6969FF6D6DFF0E13BA15
+                    15AD1636D80912B76363FF5F5FFF6060FF6363EE3E40B5FFFFFFF4F4F45E5FB5
+                    6565E16C6CFF6767FF6666FF1013BA1212AD2F56DE000EAA5757FB5E5EFF6A6A
+                    FF7373EE5555B9FFFFFFFDFDFD6A6BB47B7AED7777FF6969FF6060FD0205A52A
+                    2ABC819BDA001AB23535DC6060FF7575FF7F7EE85D5DB9FFFFFFFFFFFF7373B7
+                    8383E78181FF6E6DFF4040E70000987878CEFF00FF1A4DD70C13B35C5CF97D7D
+                    FF7777D36566C0FFFFFFFFFFFF7071BB8383DC8686FF6868FD1010B41818BAFF
+                    00FFFF00FF92ABD8032BC5171AC16969F78888E56667BCFFFFFFFFFFFF6969BC
+                    8383E56C6CFA1D1DC70207AD8F8FD3FF00FFFF00FFFF00FF6E97DE0229C90C12
+                    BC3C3CDC5A5BDA5E5FC76060C75555CE3F3FE21010BD0209B56A6ED9FF00FFFF
+                    00FFFF00FFFF00FFFF00FF8AA9DA124CDF001DC40210BB151AC5181DC70710BD
+                    0010BC1229D28590D8FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFCACB
+                    CD769EDE3973E5225AE41E55E43463E2738EDDC8C9CDFF00FFFF00FFFF00FFFF
+                    00FF}
+                  Transparent = True
+                end
+                object imgPassKey1MatchOk: TUniImage
+                  Left = 319
+                  Top = 18
+                  Width = 16
+                  Height = 16
+                  Hint = 'Confirmed match'
+                  Visible = False
+                  ShowHint = True
+                  ParentShowHint = False
+                  Center = True
+                  AutoSize = True
+                  Picture.Data = {
+                    07544269746D617036030000424D360300000000000036000000280000001000
+                    000010000000010018000000000000030000C40E0000C40E0000000000000000
+                    0000FF00FFFF00FFFF00FFFF00FFFF00FFBFC7C1A4BDAA89B39389B393A4BDAA
+                    BFC7C1FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFB9C5BC6DA9
+                    7C469A5C4B9B60549F6957A16C529F674A9C5F6DA97CB9C5BCFF00FFFF00FFFF
+                    00FFFF00FFFF00FFABC0B04F9E64489D5E55A46965AD7872B38374B48572B383
+                    69AE7B56A46A519F64ACC0B1FF00FFFF00FFFF00FFBBC6BE4D9E6241A45655B3
+                    6857AB6B58A56B52A66664B5756DBD7D6DBD7D68BB7955AE69519F64BBC6BEFF
+                    00FFFF00FF6DA97C39A84F46BB5955B16867AD79F0F7F1BDDBC5489C5E63C273
+                    66C77667C67662C5724BB05E6FAA7EFF00FFB7C5BB3FA15632C1484EB66258A5
+                    6BEBF4EEFFFFFFFFFFFFA5CEAF52B06665D07665D07665D0764FCA6343A159B9
+                    C5BC95B89E3AAF543BC35553A268E2F0E6FFFFFFFFFFFFFFFFFFFFFFFF91C49E
+                    53B56966DA7B5DD8734CD4653FB15895B89E87B3933EBB5C43B25EBBDAC3FFFF
+                    FFFFFFFFA7CFB1D5E8DAFFFFFFFFFFFF86BE9450B96A58E1794EDF7042BD6087
+                    B39387B39350C47057D87B5CA76FE9F3ECB2D5BB52BC6F4FA064DCECE0FFFFFF
+                    FBFDFB7DB98C50BF6F5CEA854EC36F87B39397B9A05CC17880F4A364C9814D9F
+                    625BBE7771E39364CF8353A268E5F1E8FFFFFFF6FAF7489C5E77F19B53BD7197
+                    B9A0BDC6C0479B5D91F6B097F7B494F3B098F7B598F7B598F7B572CD8C58A56B
+                    E0EEE482BB906CC58591F6AF459A5BBFC7C1FF00FF74AC8279CC90ABF9C2ABF9
+                    C2ACF9C1ACF8C3ADF9C3ADF9C380D19755AA6B7ED094A9F9C07ACD9175AC83FF
+                    00FFFF00FFBFC7C1529F6591D8A5BDFBCFBDFACEBDFBCEBDFBCEBCFBCEBBFACD
+                    B9FACBB9F9CC90D7A354A167BFC7C1FF00FFFF00FFFF00FFB3C3B759A16B85C8
+                    97CAF9D8CFFBDCCEFBDCCEFBDBCDFBDBCEFBDB8FCFA0529F65B1C2B5FF00FFFF
+                    00FFFF00FFFF00FFFF00FFC7CAC881B08D51A2667CBE8E8FCA9F8FCB9F7EBF90
+                    54A46979AD86BFC7C1FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+                    FFC1C8C29CBAA48DB5978DB5979CBAA4C1C8C2FF00FFFF00FFFF00FFFF00FFFF
+                    00FF}
+                  Transparent = True
+                end
+                object imgPassKey1MatchError: TUniImage
+                  Left = 332
+                  Top = 22
+                  Width = 16
+                  Height = 16
+                  Hint = 'Passwords do not match'
+                  Visible = False
+                  ShowHint = True
+                  ParentShowHint = False
+                  Center = True
+                  AutoSize = True
+                  Picture.Data = {
+                    07544269746D617036030000424D360300000000000036000000280000001000
+                    000010000000010018000000000000030000120B0000120B0000000000000000
+                    0000FF00FFFF00FFFF00FFFF00FFFF00FFA3A3C93737B20A0A930808932B2BAA
+                    A3A3C8FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFB4B4CC3232
+                    B1000085000586000990000C9100078600007D3131A8B3B3CAFF00FFFF00FFFF
+                    00FFFF00FFFF00FF9393CC080898020595151BD42025D78C8EB49697AC2C32C2
+                    1B25D80509920808899191C6FF00FFFF00FFFF00FFB2B2CE0B0B9F0E10A53B3B
+                    F52C2CFF8A8AD8F9F9F9F3F3F38686BC3A3AFF454AF71015A60A0A8AB1B1CAFF
+                    00FFFF00FF3131C30707995353F54A4AFF3434FF4344CDEFEFF5FAFAFB5A5BCC
+                    3F3FFF5454FF5B5EF9090E9A2E2EA9FF00FF9FA0D20101A03D3DD86767FF4F4F
+                    FF3D3DFF2A2BE54E4EB35454A73A3AE93B3BEB5858FF6B6BFF4047E20101899A
+                    9AC83D4CD90005A86B6BFA6363FF5454FF4A4AFF3636DBD8D8E0C7C7C74647C9
+                    5454FF5D5DFF6A6AFF6B6EFD0007A33838B81932D70910B76F6FFF6262FF5959
+                    FF5656FF4444C2FDFDFDE6E6E65C5CBE5A5AE16363FF6969FF6D6DFF0E13BA15
+                    15AD1636D80912B76363FF5F5FFF6060FF6363EE3E40B5FFFFFFF4F4F45E5FB5
+                    6565E16C6CFF6767FF6666FF1013BA1212AD2F56DE000EAA5757FB5E5EFF6A6A
+                    FF7373EE5555B9FFFFFFFDFDFD6A6BB47B7AED7777FF6969FF6060FD0205A52A
+                    2ABC819BDA001AB23535DC6060FF7575FF7F7EE85D5DB9FFFFFFFFFFFF7373B7
+                    8383E78181FF6E6DFF4040E70000987878CEFF00FF1A4DD70C13B35C5CF97D7D
+                    FF7777D36566C0FFFFFFFFFFFF7071BB8383DC8686FF6868FD1010B41818BAFF
+                    00FFFF00FF92ABD8032BC5171AC16969F78888E56667BCFFFFFFFFFFFF6969BC
+                    8383E56C6CFA1D1DC70207AD8F8FD3FF00FFFF00FFFF00FF6E97DE0229C90C12
+                    BC3C3CDC5A5BDA5E5FC76060C75555CE3F3FE21010BD0209B56A6ED9FF00FFFF
+                    00FFFF00FFFF00FFFF00FF8AA9DA124CDF001DC40210BB151AC5181DC70710BD
+                    0010BC1229D28590D8FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFCACB
+                    CD769EDE3973E5225AE41E55E43463E2738EDDC8C9CDFF00FFFF00FFFF00FFFF
+                    00FF}
+                  Transparent = True
+                end
+                object imgPassKey2MatchOk: TUniImage
+                  Left = 319
+                  Top = 40
+                  Width = 16
+                  Height = 16
+                  Hint = 'Confirmed match'
+                  Visible = False
+                  ShowHint = True
+                  ParentShowHint = False
+                  Center = True
+                  AutoSize = True
+                  Picture.Data = {
+                    07544269746D617036030000424D360300000000000036000000280000001000
+                    000010000000010018000000000000030000C40E0000C40E0000000000000000
+                    0000FF00FFFF00FFFF00FFFF00FFFF00FFBFC7C1A4BDAA89B39389B393A4BDAA
+                    BFC7C1FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFB9C5BC6DA9
+                    7C469A5C4B9B60549F6957A16C529F674A9C5F6DA97CB9C5BCFF00FFFF00FFFF
+                    00FFFF00FFFF00FFABC0B04F9E64489D5E55A46965AD7872B38374B48572B383
+                    69AE7B56A46A519F64ACC0B1FF00FFFF00FFFF00FFBBC6BE4D9E6241A45655B3
+                    6857AB6B58A56B52A66664B5756DBD7D6DBD7D68BB7955AE69519F64BBC6BEFF
+                    00FFFF00FF6DA97C39A84F46BB5955B16867AD79F0F7F1BDDBC5489C5E63C273
+                    66C77667C67662C5724BB05E6FAA7EFF00FFB7C5BB3FA15632C1484EB66258A5
+                    6BEBF4EEFFFFFFFFFFFFA5CEAF52B06665D07665D07665D0764FCA6343A159B9
+                    C5BC95B89E3AAF543BC35553A268E2F0E6FFFFFFFFFFFFFFFFFFFFFFFF91C49E
+                    53B56966DA7B5DD8734CD4653FB15895B89E87B3933EBB5C43B25EBBDAC3FFFF
+                    FFFFFFFFA7CFB1D5E8DAFFFFFFFFFFFF86BE9450B96A58E1794EDF7042BD6087
+                    B39387B39350C47057D87B5CA76FE9F3ECB2D5BB52BC6F4FA064DCECE0FFFFFF
+                    FBFDFB7DB98C50BF6F5CEA854EC36F87B39397B9A05CC17880F4A364C9814D9F
+                    625BBE7771E39364CF8353A268E5F1E8FFFFFFF6FAF7489C5E77F19B53BD7197
+                    B9A0BDC6C0479B5D91F6B097F7B494F3B098F7B598F7B598F7B572CD8C58A56B
+                    E0EEE482BB906CC58591F6AF459A5BBFC7C1FF00FF74AC8279CC90ABF9C2ABF9
+                    C2ACF9C1ACF8C3ADF9C3ADF9C380D19755AA6B7ED094A9F9C07ACD9175AC83FF
+                    00FFFF00FFBFC7C1529F6591D8A5BDFBCFBDFACEBDFBCEBDFBCEBCFBCEBBFACD
+                    B9FACBB9F9CC90D7A354A167BFC7C1FF00FFFF00FFFF00FFB3C3B759A16B85C8
+                    97CAF9D8CFFBDCCEFBDCCEFBDBCDFBDBCEFBDB8FCFA0529F65B1C2B5FF00FFFF
+                    00FFFF00FFFF00FFFF00FFC7CAC881B08D51A2667CBE8E8FCA9F8FCB9F7EBF90
+                    54A46979AD86BFC7C1FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+                    FFC1C8C29CBAA48DB5978DB5979CBAA4C1C8C2FF00FFFF00FFFF00FFFF00FFFF
+                    00FF}
+                  Transparent = True
+                end
+                object imgPassKey2MatchError: TUniImage
+                  Left = 332
+                  Top = 44
+                  Width = 16
+                  Height = 16
+                  Hint = 'Passwords do not match'
+                  Visible = False
+                  ShowHint = True
+                  ParentShowHint = False
+                  Center = True
+                  AutoSize = True
+                  Picture.Data = {
+                    07544269746D617036030000424D360300000000000036000000280000001000
+                    000010000000010018000000000000030000120B0000120B0000000000000000
+                    0000FF00FFFF00FFFF00FFFF00FFFF00FFA3A3C93737B20A0A930808932B2BAA
+                    A3A3C8FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFB4B4CC3232
+                    B1000085000586000990000C9100078600007D3131A8B3B3CAFF00FFFF00FFFF
+                    00FFFF00FFFF00FF9393CC080898020595151BD42025D78C8EB49697AC2C32C2
+                    1B25D80509920808899191C6FF00FFFF00FFFF00FFB2B2CE0B0B9F0E10A53B3B
+                    F52C2CFF8A8AD8F9F9F9F3F3F38686BC3A3AFF454AF71015A60A0A8AB1B1CAFF
+                    00FFFF00FF3131C30707995353F54A4AFF3434FF4344CDEFEFF5FAFAFB5A5BCC
+                    3F3FFF5454FF5B5EF9090E9A2E2EA9FF00FF9FA0D20101A03D3DD86767FF4F4F
+                    FF3D3DFF2A2BE54E4EB35454A73A3AE93B3BEB5858FF6B6BFF4047E20101899A
+                    9AC83D4CD90005A86B6BFA6363FF5454FF4A4AFF3636DBD8D8E0C7C7C74647C9
+                    5454FF5D5DFF6A6AFF6B6EFD0007A33838B81932D70910B76F6FFF6262FF5959
+                    FF5656FF4444C2FDFDFDE6E6E65C5CBE5A5AE16363FF6969FF6D6DFF0E13BA15
+                    15AD1636D80912B76363FF5F5FFF6060FF6363EE3E40B5FFFFFFF4F4F45E5FB5
+                    6565E16C6CFF6767FF6666FF1013BA1212AD2F56DE000EAA5757FB5E5EFF6A6A
+                    FF7373EE5555B9FFFFFFFDFDFD6A6BB47B7AED7777FF6969FF6060FD0205A52A
+                    2ABC819BDA001AB23535DC6060FF7575FF7F7EE85D5DB9FFFFFFFFFFFF7373B7
+                    8383E78181FF6E6DFF4040E70000987878CEFF00FF1A4DD70C13B35C5CF97D7D
+                    FF7777D36566C0FFFFFFFFFFFF7071BB8383DC8686FF6868FD1010B41818BAFF
+                    00FFFF00FF92ABD8032BC5171AC16969F78888E56667BCFFFFFFFFFFFF6969BC
+                    8383E56C6CFA1D1DC70207AD8F8FD3FF00FFFF00FFFF00FF6E97DE0229C90C12
+                    BC3C3CDC5A5BDA5E5FC76060C75555CE3F3FE21010BD0209B56A6ED9FF00FFFF
+                    00FFFF00FFFF00FFFF00FF8AA9DA124CDF001DC40210BB151AC5181DC70710BD
+                    0010BC1229D28590D8FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFCACB
+                    CD769EDE3973E5225AE41E55E43463E2738EDDC8C9CDFF00FFFF00FFFF00FFFF
+                    00FF}
+                  Transparent = True
+                end
+                object imgPassKey3MatchOk: TUniImage
+                  Left = 319
+                  Top = 62
+                  Width = 16
+                  Height = 16
+                  Hint = 'Confirmed match'
+                  Visible = False
+                  ShowHint = True
+                  ParentShowHint = False
+                  Center = True
+                  AutoSize = True
+                  Picture.Data = {
+                    07544269746D617036030000424D360300000000000036000000280000001000
+                    000010000000010018000000000000030000C40E0000C40E0000000000000000
+                    0000FF00FFFF00FFFF00FFFF00FFFF00FFBFC7C1A4BDAA89B39389B393A4BDAA
+                    BFC7C1FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFB9C5BC6DA9
+                    7C469A5C4B9B60549F6957A16C529F674A9C5F6DA97CB9C5BCFF00FFFF00FFFF
+                    00FFFF00FFFF00FFABC0B04F9E64489D5E55A46965AD7872B38374B48572B383
+                    69AE7B56A46A519F64ACC0B1FF00FFFF00FFFF00FFBBC6BE4D9E6241A45655B3
+                    6857AB6B58A56B52A66664B5756DBD7D6DBD7D68BB7955AE69519F64BBC6BEFF
+                    00FFFF00FF6DA97C39A84F46BB5955B16867AD79F0F7F1BDDBC5489C5E63C273
+                    66C77667C67662C5724BB05E6FAA7EFF00FFB7C5BB3FA15632C1484EB66258A5
+                    6BEBF4EEFFFFFFFFFFFFA5CEAF52B06665D07665D07665D0764FCA6343A159B9
+                    C5BC95B89E3AAF543BC35553A268E2F0E6FFFFFFFFFFFFFFFFFFFFFFFF91C49E
+                    53B56966DA7B5DD8734CD4653FB15895B89E87B3933EBB5C43B25EBBDAC3FFFF
+                    FFFFFFFFA7CFB1D5E8DAFFFFFFFFFFFF86BE9450B96A58E1794EDF7042BD6087
+                    B39387B39350C47057D87B5CA76FE9F3ECB2D5BB52BC6F4FA064DCECE0FFFFFF
+                    FBFDFB7DB98C50BF6F5CEA854EC36F87B39397B9A05CC17880F4A364C9814D9F
+                    625BBE7771E39364CF8353A268E5F1E8FFFFFFF6FAF7489C5E77F19B53BD7197
+                    B9A0BDC6C0479B5D91F6B097F7B494F3B098F7B598F7B598F7B572CD8C58A56B
+                    E0EEE482BB906CC58591F6AF459A5BBFC7C1FF00FF74AC8279CC90ABF9C2ABF9
+                    C2ACF9C1ACF8C3ADF9C3ADF9C380D19755AA6B7ED094A9F9C07ACD9175AC83FF
+                    00FFFF00FFBFC7C1529F6591D8A5BDFBCFBDFACEBDFBCEBDFBCEBCFBCEBBFACD
+                    B9FACBB9F9CC90D7A354A167BFC7C1FF00FFFF00FFFF00FFB3C3B759A16B85C8
+                    97CAF9D8CFFBDCCEFBDCCEFBDBCDFBDBCEFBDB8FCFA0529F65B1C2B5FF00FFFF
+                    00FFFF00FFFF00FFFF00FFC7CAC881B08D51A2667CBE8E8FCA9F8FCB9F7EBF90
+                    54A46979AD86BFC7C1FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+                    FFC1C8C29CBAA48DB5978DB5979CBAA4C1C8C2FF00FFFF00FFFF00FFFF00FFFF
+                    00FF}
+                  Transparent = True
+                end
+                object imgPassKey3MatchError: TUniImage
+                  Left = 332
+                  Top = 66
+                  Width = 16
+                  Height = 16
+                  Hint = 'Passwords do not match'
+                  Visible = False
+                  ShowHint = True
+                  ParentShowHint = False
+                  Center = True
+                  AutoSize = True
+                  Picture.Data = {
+                    07544269746D617036030000424D360300000000000036000000280000001000
+                    000010000000010018000000000000030000120B0000120B0000000000000000
+                    0000FF00FFFF00FFFF00FFFF00FFFF00FFA3A3C93737B20A0A930808932B2BAA
+                    A3A3C8FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFB4B4CC3232
+                    B1000085000586000990000C9100078600007D3131A8B3B3CAFF00FFFF00FFFF
+                    00FFFF00FFFF00FF9393CC080898020595151BD42025D78C8EB49697AC2C32C2
+                    1B25D80509920808899191C6FF00FFFF00FFFF00FFB2B2CE0B0B9F0E10A53B3B
+                    F52C2CFF8A8AD8F9F9F9F3F3F38686BC3A3AFF454AF71015A60A0A8AB1B1CAFF
+                    00FFFF00FF3131C30707995353F54A4AFF3434FF4344CDEFEFF5FAFAFB5A5BCC
+                    3F3FFF5454FF5B5EF9090E9A2E2EA9FF00FF9FA0D20101A03D3DD86767FF4F4F
+                    FF3D3DFF2A2BE54E4EB35454A73A3AE93B3BEB5858FF6B6BFF4047E20101899A
+                    9AC83D4CD90005A86B6BFA6363FF5454FF4A4AFF3636DBD8D8E0C7C7C74647C9
+                    5454FF5D5DFF6A6AFF6B6EFD0007A33838B81932D70910B76F6FFF6262FF5959
+                    FF5656FF4444C2FDFDFDE6E6E65C5CBE5A5AE16363FF6969FF6D6DFF0E13BA15
+                    15AD1636D80912B76363FF5F5FFF6060FF6363EE3E40B5FFFFFFF4F4F45E5FB5
+                    6565E16C6CFF6767FF6666FF1013BA1212AD2F56DE000EAA5757FB5E5EFF6A6A
+                    FF7373EE5555B9FFFFFFFDFDFD6A6BB47B7AED7777FF6969FF6060FD0205A52A
+                    2ABC819BDA001AB23535DC6060FF7575FF7F7EE85D5DB9FFFFFFFFFFFF7373B7
+                    8383E78181FF6E6DFF4040E70000987878CEFF00FF1A4DD70C13B35C5CF97D7D
+                    FF7777D36566C0FFFFFFFFFFFF7071BB8383DC8686FF6868FD1010B41818BAFF
+                    00FFFF00FF92ABD8032BC5171AC16969F78888E56667BCFFFFFFFFFFFF6969BC
+                    8383E56C6CFA1D1DC70207AD8F8FD3FF00FFFF00FFFF00FF6E97DE0229C90C12
+                    BC3C3CDC5A5BDA5E5FC76060C75555CE3F3FE21010BD0209B56A6ED9FF00FFFF
+                    00FFFF00FFFF00FFFF00FF8AA9DA124CDF001DC40210BB151AC5181DC70710BD
+                    0010BC1229D28590D8FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFCACB
+                    CD769EDE3973E5225AE41E55E43463E2738EDDC8C9CDFF00FFFF00FFFF00FFFF
+                    00FF}
+                  Transparent = True
+                end
+                object edtPassKey1: TUniEdit
+                  Left = 0
+                  Top = 16
+                  Width = 145
+                  Height = 21
+                  Hint = ''
+                  MaxLength = 30
+                  Text = ''
+                  TabOrder = 0
+                  OnChange = DoEditChange
+                  OnKeyPress = DoEditKeyPress
+                end
+                object edtPassKey2: TUniEdit
+                  Left = 0
+                  Top = 40
+                  Width = 145
+                  Height = 21
+                  Hint = ''
+                  MaxLength = 30
+                  Text = ''
+                  TabOrder = 2
+                  OnChange = DoEditChange
+                  OnKeyPress = DoEditKeyPress
+                end
+                object edtPassKey3: TUniEdit
+                  Left = 0
+                  Top = 64
+                  Width = 145
+                  Height = 21
+                  Hint = ''
+                  MaxLength = 30
+                  Text = ''
+                  TabOrder = 4
+                  OnChange = DoEditChange
+                  OnKeyPress = DoEditKeyPress
+                end
+                object edtPassKeyConfirm1: TUniEdit
+                  Left = 168
+                  Top = 16
+                  Width = 145
+                  Height = 21
+                  Hint = ''
+                  PasswordChar = '*'
+                  MaxLength = 30
+                  Text = ''
+                  TabOrder = 1
+                  OnChange = DoEditChange
+                  OnKeyPress = DoEditKeyPress
+                end
+                object edtPassKeyConfirm2: TUniEdit
+                  Left = 168
+                  Top = 40
+                  Width = 145
+                  Height = 21
+                  Hint = ''
+                  PasswordChar = '*'
+                  MaxLength = 30
+                  Text = ''
+                  TabOrder = 3
+                  OnChange = DoEditChange
+                  OnKeyPress = DoEditKeyPress
+                end
+                object edtPassKeyConfirm3: TUniEdit
+                  Left = 168
+                  Top = 64
+                  Width = 145
+                  Height = 21
+                  Hint = ''
+                  PasswordChar = '*'
+                  MaxLength = 30
+                  Text = ''
+                  TabOrder = 5
+                  OnChange = DoEditChange
+                  OnKeyPress = DoEditKeyPress
+                end
+              end
+            end
+          end
+          object cpEdit: TIQWebCaptionPanel
+            Left = 1
+            Top = 1
+            Width = 643
+            Height = 113
+            Hint = ''
+            Align = alTop
+            Anchors = [akLeft, akTop, akRight]
+            TabOrder = 3
+            Caption = 'Add or Change Encryption Keys'
+            ParentColor = True
+            Text = 
+              'Enter the passwords that will be used for encryption.  Be sure t' +
+              'o record the passwords in a secure location because you will nee' +
+              'd them if you wish to change them or remove encryption at a late' +
+              'r date.'#13#13'Note:  Passwords are case-sensitive.  They must be from' +
+              ' 7 to 30  characters long, and contain both characters and numbe' +
+              'rs.'
+            PictureLayout = plImageRight
+            LayoutStyle = lsWizard
+            DesignSize = (
+              643
+              113)
+          end
+        end
+      end
+      object TabRemove: TUniTabSheet
+        Hint = ''
+        ImageIndex = 2
+        Caption = 'TabRemove'
+        object PnlRemove: TUniPanel
+          Left = 0
+          Top = 0
+          Width = 645
+          Height = 342
+          Hint = ''
+          Align = alClient
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          TabOrder = 0
+          Caption = ''
+          object Bevel4: TUniPanel
+            Left = 1
+            Top = 94
+            Width = 643
+            Height = 8
+            Hint = ''
+            Align = alTop
+            Anchors = [akLeft, akTop, akRight]
+            TabOrder = 2
+            Caption = ''
+          end
+          object PnlRemoveEditCarrier: TUniPanel
+            Left = 1
+            Top = 102
+            Width = 643
+            Height = 239
+            Hint = ''
+            Align = alClient
+            Anchors = [akLeft, akTop, akRight, akBottom]
+            TabOrder = 0
+            Caption = ''
+            object Splitter2: TUniSplitter
+              Left = 106
+              Top = 1
+              Width = 6
+              Height = 237
+              Hint = ''
+              Align = alLeft
+              ParentColor = False
+              Color = clBtnFace
+            end
+            object PnlRemoveEditLeft01: TUniPanel
+              Left = 1
+              Top = 1
+              Width = 105
+              Height = 237
+              Hint = ''
+              Align = alLeft
+              Anchors = [akLeft, akTop, akBottom]
+              TabOrder = 0
+              Caption = ''
+              object lblPassKeyRemove1: TUniLabel
+                Left = 16
+                Top = 3
+                Width = 55
+                Height = 13
+                Hint = ''
+                Caption = 'Password 1'
+                TabOrder = 1
+              end
+              object lblPassKeyRemove2: TUniLabel
+                Left = 16
+                Top = 27
+                Width = 55
+                Height = 13
+                Hint = ''
+                Caption = 'Password 2'
+                TabOrder = 2
+              end
+              object lblPassKeyRemove3: TUniLabel
+                Left = 16
+                Top = 51
+                Width = 55
+                Height = 13
+                Hint = ''
+                Caption = 'Password 3'
+                TabOrder = 3
+              end
+            end
+            object PnlRemoveEditClient01: TUniPanel
+              Left = 112
+              Top = 1
+              Width = 530
+              Height = 237
+              Hint = ''
+              Align = alClient
+              Anchors = [akLeft, akTop, akRight, akBottom]
+              TabOrder = 1
+              Caption = ''
+              object edtPassKeyRemove1: TUniEdit
+                Left = 0
+                Top = 0
+                Width = 145
+                Height = 21
+                Hint = ''
+                MaxLength = 30
+                Text = ''
+                TabOrder = 0
+                OnChange = DoEditChange
+                OnKeyPress = DoEditKeyPress
+              end
+              object edtPassKeyRemove2: TUniEdit
+                Left = 0
+                Top = 24
+                Width = 145
+                Height = 21
+                Hint = ''
+                MaxLength = 30
+                Text = ''
+                TabOrder = 1
+                OnChange = DoEditChange
+                OnKeyPress = DoEditKeyPress
+              end
+              object edtPassKeyRemove3: TUniEdit
+                Left = 0
+                Top = 48
+                Width = 145
+                Height = 21
+                Hint = ''
+                MaxLength = 30
+                Text = ''
+                TabOrder = 2
+                OnChange = DoEditChange
+                OnKeyPress = DoEditKeyPress
+              end
+            end
+          end
+          object cpRemove: TIQWebCaptionPanel
+            Left = 1
+            Top = 1
+            Width = 643
+            Height = 93
+            Hint = ''
+            Align = alTop
+            Anchors = [akLeft, akTop, akRight]
+            TabOrder = 3
+            Caption = 'Remove Encryption'
+            ParentColor = True
+            Text = 
+              'Removing encryption will expose sensitive credit card data.   En' +
+              'cryption is required to be compliant with the PCI Credit Card Se' +
+              'curity Standard.  You must supply all three passwords before enc' +
+              'ryption can be removed.  After you have entered the valid encryp' +
+              'tion passwords, click the Finish button.  Please note:  password' +
+              's are case-sensitive.'
+            PictureLayout = plImageRight
+            LayoutStyle = lsWizard
+            DesignSize = (
+              643
+              93)
+          end
+        end
+      end
+      object TabCryptoperiod: TUniTabSheet
+        Hint = ''
+        ImageIndex = 4
+        Caption = 'TabCryptoperiod'
+        object PnlCryptoperiod: TUniPanel
+          Left = 0
+          Top = 0
+          Width = 645
+          Height = 342
+          Hint = ''
+          Align = alClient
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          TabOrder = 0
+          Caption = ''
+          object PnlCryptoperiodEditCarrier: TUniPanel
+            Left = 1
+            Top = 87
+            Width = 643
+            Height = 254
+            Hint = ''
+            Align = alClient
+            Anchors = [akLeft, akTop, akRight, akBottom]
+            TabOrder = 0
+            Caption = ''
+            object Splitter3: TUniSplitter
+              Left = 138
+              Top = 1
+              Width = 6
+              Height = 252
+              Hint = ''
+              Align = alLeft
+              ParentColor = False
+              Color = clBtnFace
+            end
+            object PnlCryptoperiodEditLeft01: TUniPanel
+              Left = 1
+              Top = 1
+              Width = 137
+              Height = 252
+              Hint = ''
+              Align = alLeft
+              Anchors = [akLeft, akTop, akBottom]
+              TabOrder = 0
+              Caption = ''
+              object Label8: TUniLabel
+                Left = 32
+                Top = 9
+                Width = 45
+                Height = 13
+                Hint = ''
+                Caption = 'Reminder'
+                TabOrder = 1
+              end
+              object lblReminderDate: TUniLabel
+                Left = 32
+                Top = 35
+                Width = 71
+                Height = 13
+                Hint = ''
+                Caption = 'Reminder Date'
+                TabOrder = 2
+              end
+            end
+            object PnlCryptoperiodEditClient01: TUniPanel
+              Left = 144
+              Top = 1
+              Width = 498
+              Height = 252
+              Hint = ''
+              Align = alClient
+              Anchors = [akLeft, akTop, akRight, akBottom]
+              TabOrder = 1
+              Caption = ''
+              object lblDays: TUniLabel
+                Left = 80
+                Top = 9
+                Width = 31
+                Height = 13
+                Hint = ''
+                Caption = '(days)'
+                TabOrder = 2
+              end
+              object edtReminderDate: TUniEdit
+                Left = 0
+                Top = 32
+                Width = 153
+                Height = 21
+                Hint = ''
+                Text = 'edtReminderDate'
+                TabOrder = 0
+                Color = clBtnFace
+                ReadOnly = True
+              end
+              object edtCryptoperiodDays: TUniSpinEdit
+                Left = 0
+                Top = 4
+                Width = 75
+                Height = 22
+                Hint = ''
+                MaxValue = 999999
+                OnChange = edtCryptoperiodDaysChange
+                TabOrder = 3
+              end
+            end
+          end
+          object cpCryptoperiod: TIQWebCaptionPanel
+            Left = 1
+            Top = 1
+            Width = 643
+            Height = 86
+            Hint = ''
+            Align = alTop
+            Anchors = [akLeft, akTop, akRight]
+            TabOrder = 2
+            Caption = 'Set the Next Reminder'
+            ParentColor = True
+            Text = 
+              'On this page, indicate the duration (in days) to be prompted whe' +
+              'n to change your encryption keys.  In order to be compliant with' +
+              ' PCI-DSS requirement 3.6.4, you must change your encryption keys' +
+              ' periodically, such as every 90 days.  It is recommended you cha' +
+              'nge your encryption keys at least annually.'
+            PictureLayout = plImageRight
+            LayoutStyle = lsWizard
+            DesignSize = (
+              643
+              86)
+          end
+        end
+      end
+      object TabFinish: TUniTabSheet
+        Hint = ''
+        ImageIndex = 3
+        Caption = 'TabFinish'
+        object PnlFinish: TUniPanel
+          Left = 0
+          Top = 0
+          Width = 645
+          Height = 342
+          Hint = ''
+          Align = alClient
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          TabOrder = 0
+          Caption = ''
+          object cpDone: TIQWebCaptionPanel
+            Left = 1
+            Top = 1
+            Width = 643
+            Height = 65
+            Hint = ''
+            Align = alTop
+            Anchors = [akLeft, akTop, akRight]
+            TabOrder = 1
+            Caption = 'Done!'
+            ParentColor = True
+            Text = 
+              'That'#39's all the wizard needs to begin processing.  Please check t' +
+              'o ensure that all users are out of areas where credit card data ' +
+              'might be modified.  And then click the Finish button to begin.'
+            PictureLayout = plImageRight
+            LayoutStyle = lsWizard
+            DesignSize = (
+              643
+              65)
+          end
+        end
+      end
+    end
+  end
+  inherited MainMenu1: TUniMainMenu
+    Left = 384
+    Top = 16
+  end
+  object PPasswordEdit: TUniPopupMenu
+    Left = 436
+    Top = 16
+    object Paste1: TUniMenuItem
+      Caption = 'Paste'
+      ShortCut = 16470
+      OnClick = Paste1Click
+    end
+    object N1: TUniMenuItem
+      Caption = '-'
+    end
+    object Clear1: TUniMenuItem
+      Caption = 'Clear'
+      OnClick = Clear1Click
+    end
+  end
+end

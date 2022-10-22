@@ -1,0 +1,55 @@
+inherited HyperPick: THyperPick
+  Left = 76
+  Top = 166
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited ScrollBox1: TUniScrollBox
+    ScrollHeight = 115
+    inherited PnlTopControls: TUniPanel
+      inherited PnlSearch: TUniPanel
+        inherited pnlSearchClientBottom: TUniPanel
+          inherited FlowPanel1: TUniScrollBox
+            ScrollHeight = 21
+            ScrollWidth = 300
+          end
+        end
+      end
+    end
+    object dbGrid: TUniDBGrid [2]
+      Left = 0
+      Top = 55
+      Width = 682
+      Height = 185
+      Hint = 'Right Click to Change Sort Criteria'
+      TitleFont.Color = clBlack
+      DataSource = SrcQuery
+      ReadOnly = True
+      LoadMask.Message = 'Loading data...'
+      OnDblClick = dbGridDblClick
+      OnKeyDown = dbGridKeyDown
+      OnKeyPress = dbGridKeyPress
+      Align = alClient
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      TabOrder = 1
+      OnTitleClick = dbGridTitleClick
+      OnDrawColumnCell = dbGridDrawColumnCell
+    end
+  end
+  inherited AvailableSortBy: TUniPopupMenu
+    object ExportData1: TUniMenuItem
+      Caption = 'Export Data'
+      object XMLFormat1: TUniMenuItem
+        Caption = 'XML Format'
+        OnClick = XMLFormat1Click
+      end
+      object ExcelFormat1: TUniMenuItem
+        Caption = 'Excel Format'
+        OnClick = ExcelFormat1Click
+      end
+    end
+    object Count1: TUniMenuItem
+      Caption = 'Count'
+      OnClick = Count1Click
+    end
+  end
+end

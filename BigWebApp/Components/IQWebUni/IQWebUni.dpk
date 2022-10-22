@@ -1,0 +1,58 @@
+package IQWebUni;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcl,
+  vclimg,
+  dbrtl,
+  soaprtl,
+  vcldb,
+  uIndy23,
+  uniTools23,
+  uniGUI23Core,
+  uniGUI23,
+  designide,
+  uniGUI23Chart,
+  FireDACCommonDriver,
+  FireDACCommon,
+  FireDACOracleDriver,
+  vclFireDAC,
+  FireDAC,
+  IQUniEditors;
+
+contains
+  IQWebReg in 'IQWebReg.pas',
+  IQWebHPick in 'IQWebHPick.pas',
+  PickListDlg in 'PickListDlg.pas' {PickListForm: TUniForm},
+  IQWebUserDefinedForm in 'IQWebUserDefinedForm.pas' {UniUserDefinedForm: TUniFrame},
+  UserDefinedFormDesigner in 'UserDefinedFormDesigner.pas' {UDFDesignerForm: TUniForm},
+  UserDefinedFormEditor in 'UserDefinedFormEditor.pas' {ufUDFEditor: TUniForm};
+
+end.

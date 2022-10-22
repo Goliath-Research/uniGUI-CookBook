@@ -1,0 +1,272 @@
+unit IQMS.Common.QC_PkDoc;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  IQMS.Common.QC_PkBase,
+  Data.DB,
+//  Vcl.Wwdatsrc,
+  IQMS.WebVcl.UserDefinedLabel,
+  Vcl.Buttons,
+  IQMS.Common.JumpConstants,
+  FireDAC.Comp.DataSet,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Stan.Async,
+  FireDAC.DApt,
+  FireDAC.Comp.Client,
+  IQMS.WebVcl.Search,
+  uniGUITypes,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniButton,
+  uniBitBtn,
+  uniGUIApplication,
+  uniSpeedButton,
+  uniPanel,
+  uniDBNavigator, uniLabel, IQUniGrid, uniGUIFrame;
+
+type
+  TFrmQC_PkDoc = class(TFrmQC_PkBase)
+    wwQuery1ID: TBCDField;
+    wwQuery1DESCRIP: TStringField;
+    wwQuery1FILENAME: TStringField;
+    wwQuery1STATUS: TStringField;
+    wwQuery1REVISION: TStringField;
+    wwQuery1IS_EXPIRED: TStringField;
+    wwQuery1CUSER1: TStringField;
+    wwQuery1CUSER2: TStringField;
+    wwQuery1CUSER3: TStringField;
+    pnlTop: TUniPanel;
+    NavMain: TUniDBNavigator;
+    Panel10: TUniPanel;
+    Bevel3: TUniPanel;
+    sbtnHideExpired: TUniSpeedButton;
+    wwQuery1DATE_CREATED: TDateTimeField;
+    wwQuery1DATE_LAST_MODIFIED: TDateTimeField;
+    sbtnAddDocument: TUniSpeedButton;
+    wwQuery1DOCNO: TStringField;
+    procedure wwQuery1BeforeOpen(DataSet: TDataSet);
+    procedure IQSearch1UserBtn1OnClick(Sender: TObject);
+    procedure GetParentName(Sender: TObject; var AOwnerName: String);
+    procedure FakeUpdateRecord(ASender: TDataSet;
+      ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
+    procedure AbortOnInsert(DataSet: TDataSet);
+//    procedure CheckRefresh(Sender: TObject; Button: TNavigateBtn);
+    procedure sbtnHideExpiredClick(Sender: TObject);
+    procedure sbtnAddDocumentClick(Sender: TObject);
+  private
+    { Private declarations }
+    FMasterTableName: string;
+    FSource_ID: Real;
+    FDoc_Library_ID: Real;
+    FHideExpired: Boolean;
+    procedure UpdateUserLabelColumnTitle(const AFieldName, ATitleText: string);
+    procedure IQAfterShowMessage( var Msg: TMessage ); message iq_AfterShowMessage;
+  public
+    { Public declarations }
+    constructor Create( ADoc_Library_ID: Real; AMasterTableName: string; ASource_ID: Real  );
+    procedure AddSelectedToList(AList: TStringList);
+  end;
+
+function DoPkList_Doc( ADoc_Library_ID: Real; AMasterTableName: string; ASource_ID: Real; var AExternal_Doc_ID: Real): Boolean;
+function DoPkList_DocEx( ADoc_Library_ID: Real; AMasterTableName: string; ASource_ID: Real; AExternal_Doc_List: TStringList; AUseMultiSelect: Boolean ): Boolean;
+
+var
+  FrmQC_PkDoc: TFrmQC_PkDoc;
+
+implementation
+
+{$R *.DFM}
+
+uses
+  IQMS.Common.COMExe,
+  IQMS.Common.DataLib,
+  IQMS.Common.Dialogs,
+  IQMS.Common.Numbers,
+  IQMS.Common.QC_Const,
+  IQMS.WebVcl.ResourceStrings;
+
+function DoPkList_Doc( ADoc_Library_ID: Real; AMasterTableName: string; ASource_ID: Real; var AExternal_Doc_ID: Real): Boolean;
+begin
+  AExternal_Doc_ID:= 0;
+  with TFrmQC_PkDoc.Create( ADoc_Library_ID, AMasterTableName, ASource_ID ) do
+  begin
+    Result:= ShowModal = mrOK;
+    if Result then
+       AExternal_Doc_ID:= wwQuery1.FieldByName('id').asFloat;
+  end;
+end;
+
+function DoPkList_DocEx( ADoc_Library_ID: Real; AMasterTableName: string; ASource_ID: Real; AExternal_Doc_List: TStringList; AUseMultiSelect: Boolean ): Boolean;
+begin
+  with TFrmQC_PkDoc.Create( ADoc_Library_ID, AMasterTableName, ASource_ID ) do
+  begin
+    if AUseMultiSelect then
+       IQSearch1.DBGrid.Options:= IQSearch1.DBGrid.Options + [ dgMultiSelect ]
+    else
+       IQSearch1.DBGrid.Options:= IQSearch1.DBGrid.Options - [ dgMultiSelect ];
+
+    Result:= ShowModal = mrOK;
+
+    if Result then
+       AddSelectedToList( AExternal_Doc_List );
+  end;
+end;
+
+constructor TFrmQC_PkDoc.Create( ADoc_Library_ID: Real; AMasterTableName: string; ASource_ID: Real  );
+var
+  ALibType: string;
+begin
+  FDoc_Library_ID:= ADoc_Library_ID;
+  FMasterTableName:= AMasterTableName;
+  FSource_ID:= ASource_ID;
+
+  inherited Create(uniGUIApplication.UniApplication);
+
+  Caption:= Format('Select document from ''%s'' library', [ SelectValueByID('descrip','doc_library', FDoc_Library_ID )]);
+
+  ALibType:= UpperCase(SelectValueByID('type','doc_library', FDoc_Library_ID ));
+  sbtnAddDocument.Visible:= ( ALibType = 'NO RESTRICTION' )
+                            or
+                            (( ALibType = 'REPOSITORY') and (SelectValueByID('is_repository_unrestricted','doc_library', FDoc_Library_ID) = 'Y'));
+
+  PostMessage( Handle, iq_AfterShowMessage, 0, 0);   {Update user defined columns and open query}
+end;
+
+procedure TFrmQC_PkDoc.wwQuery1BeforeOpen(DataSet: TDataSet);
+begin
+  inherited;    {nothing}
+
+  AssignQueryParamValue(DataSet, 'id', FDoc_Library_ID);
+  AssignQueryParamValue(DataSet, 'hide_expired', IIf( FHideExpired, 1, 0));
+end;
+
+procedure TFrmQC_PkDoc.IQSearch1UserBtn1OnClick(Sender: TObject);
+var
+  AExternal_Doc_ID: Real;
+begin
+  inherited;  {n}
+
+  if not IQConfirmYN( IQMS.WebVcl.ResourceStrings.cTXT0000365 {'This option scans document and appends the scanned image to the library. Are you sure you want to continue?'}) then
+     EXIT;
+
+  // prepare the id up front
+  AExternal_Doc_ID:= GetNextID('external_doc');
+
+  // scan and append the doc
+  Com_Exec( 'IQQC', [ QC_DOC_INSERT_NEW_SCAN_IMAGE, FSource_ID, FMasterTableName, FDoc_Library_ID, AExternal_Doc_ID, 'N' ]); {IQMS.Common.COMExe.pas}
+
+  // if was appended - refresh and locate it
+  Reopen(wwQuery1);
+  if wwQuery1.Locate('id', AExternal_Doc_ID, []) then
+     btnOK.Click;
+end;
+
+procedure TFrmQC_PkDoc.GetParentName(Sender: TObject; var AOwnerName: String);
+begin
+  inherited;
+  AOwnerName:= 'FrmQCDocMaint';  // point back to where we've set it up
+end;
+
+procedure TFrmQC_PkDoc.UpdateUserLabelColumnTitle(const AFieldName, ATitleText: string);
+var
+i:integer;
+begin
+  for i := 0 to IQSearch1.DBGrid.Columns.Count-1 do
+   begin
+     if IQSearch1.DBGrid.Columns.Items[i].FieldName=AFieldName then
+      begin
+        IQSearch1.DBGrid.Columns.Items[i].Title.Caption:=ATitleText;
+        Break;
+      end;
+   end;
+end;
+
+procedure TFrmQC_PkDoc.FakeUpdateRecord(ASender: TDataSet;
+  ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
+begin
+  inherited;
+  AAction := eaApplied;
+end;
+
+procedure TFrmQC_PkDoc.AbortOnInsert(DataSet: TDataSet);
+begin
+  inherited;
+  ABORT;
+end;
+
+procedure TFrmQC_PkDoc.sbtnHideExpiredClick(Sender: TObject);
+begin
+  inherited;
+  FHideExpired:= not FHideExpired;
+  NavMain.datasource.dataset.refresh;
+end;
+
+procedure TFrmQC_PkDoc.IQAfterShowMessage(var Msg: TMessage);
+begin
+  {User defined columns}
+//  UpdateUserLabelColumnTitle( 'CUSER1', IQUserDefLabelOnGrid1.Caption );
+//  UpdateUserLabelColumnTitle( 'CUSER2', IQUserDefLabelOnGrid2.Caption );
+//  UpdateUserLabelColumnTitle( 'CUSER3', IQUserDefLabelOnGrid3.Caption );
+end;
+
+procedure TFrmQC_PkDoc.AddSelectedToList( AList: TStringList );
+var
+  I: Integer;
+begin
+  AList.Clear;
+
+  with IQSearch1 do
+  begin
+     if IQSearch1.DBGrid.DataSource.DataSet.Eof and IQSearch1.DBGrid.DataSource.DataSet.Bof then
+        EXIT;
+
+     if DBGrid.SelectedRows.Count > 0 then
+        for I:= 0 to DBGrid.SelectedRows.Count - 1 do
+        begin
+          IQSearch1.DBGrid.DataSource.DataSet.GotoBookmark( DBGrid.SelectedRows.Items[ I ]);
+          AList.Add( wwQuery1ID.asString );
+        end
+     else
+        AList.Add( wwQuery1ID.asString );
+  end;
+end;
+
+procedure TFrmQC_PkDoc.sbtnAddDocumentClick(Sender: TObject);
+var
+  AExternal_Doc_ID: Real;
+begin
+  inherited;  {n}
+
+  // This option allows to append a new document to the %s library and select the document in one step. Are you sure you want to continue?
+  if not IQConfirmYN( Format( IQMS.WebVcl.ResourceStrings.cTXT0000383, [ SelectValueByID('descrip','doc_library', FDoc_Library_ID ) ])) then
+     EXIT;
+
+  // prepare the id up front
+  AExternal_Doc_ID:= GetNextID('external_doc');
+
+  // scan and append the doc
+  Com_Exec( 'IQQC', [ QC_DOC_INSERT_NEW_DOC_PROMPT, FDoc_Library_ID, AExternal_Doc_ID ]); {IQMS.Common.COMExe.pas}
+
+  // if was appended - refresh and locate it
+  Reopen(wwQuery1);
+  if wwQuery1.Locate('id', AExternal_Doc_ID, []) then
+     btnOK.Click;
+end;
+
+end.
+
+

@@ -1,0 +1,100 @@
+unit Tlmakewo;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Buttons,
+  FireDAC.Comp.Client,
+  db_dm,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniLabel,
+  uniPanel,
+  uniGroupBox,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniCheckBox,
+  uniButton,
+  uniBitBtn;
+
+type
+  TFrmToolingWOOptions = class(TUniForm)
+    Panel2: TUniPanel;
+    Panel3: TUniPanel;
+    Panel1: TUniPanel;
+    GroupBox1: TUniGroupBox;
+    btnOK: TUniBitBtn;
+    btnCancel: TUniBitBtn;
+    chkPM: TUniCheckBox;
+    chkSO: TUniCheckBox;
+    Label1: TUniLabel;
+    procedure btnOKClick(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
+    procedure UniFormCreate(Sender: TObject);
+  private
+    { Private declarations }
+    FString : TStrings;
+
+  public
+    { Public declarations }
+
+    property OptionStrings : TStrings read FString;
+  end;
+
+function  GetToolingWOOptions : TStrings;
+{
+Return Values;
+   0: Cancel;
+   1: Delete;
+   2: Close;
+}
+var
+  FrmToolingWOOptions: TFrmToolingWOOptions;
+
+implementation
+
+{$R *.DFM}
+
+function GetToolingWOOptions(var AStrings: TStrings) : boolean;
+begin
+  with TFrmToolingWOOptions.Create( Owner ) do
+  try
+    ShowModal;
+    AStrings.Assign( FString );  {get the user's choice}
+  finally
+    Free;
+  end;
+end;
+
+constructor TFrmToolingWOOptions.Create( Owner: TComponent );
+begin
+end;
+
+procedure TFrmToolingWOOptions.btnOKClick(Sender: TObject);
+begin
+  if chkPM.Checked then
+    FString.Add( 'PM ' ); {Link to PM}
+  if chkSO.Checked then
+    FString.Add( 'OE ' ); {Generate a Sales Order}
+  if FString.Count = 0 then
+    FString.Add( 'WO' ); {Initial string value}
+end;
+
+procedure TFrmToolingWOOptions.btnCancelClick(Sender: TObject);
+begin
+  FString.Add('ZZ ');
+end;
+
+procedure TFrmToolingWOOptions.UniFormCreate(Sender: TObject);
+begin
+  FString := TStringList.Create;
+end;
+
+end.

@@ -1,0 +1,45 @@
+unit WC_9224;
+
+interface
+
+implementation
+
+uses
+  TestReg,
+  SysUtils,
+  uniGUIDialogs,
+  uniGUIApplication,
+  Data.DB,
+  WC_9224_DM,
+  IQMS.Common.SetPlant;
+
+procedure Test1;
+var
+  dm : TDataModuleWC_9224;
+  ADataSet: TDataSet;
+  AEplantField: TField;
+begin
+  dm := TDataModuleWC_9224.Create(UniGUIApplication.UniApplication);
+  try
+    with dm do
+    begin
+      mt1.Append;
+        mt1ID.Value         := 1;
+        mt1Name.Value       := 'Name';
+        mt1EPLANT_ID.Value  := 4;
+      mt1.Post;
+
+      //mt1.SaveToFile('mt1.xml');
+      if DoChangePlantID(mt1, mt1EPLANT_NAME) then
+        ShowMessage(mt1EPLANT_ID.AsString + ' - ' + mt1EPLANT_NAME.Value);
+    end;
+  finally
+    dm.Free;
+  end;
+end;
+
+initialization
+
+  TTestRepo.RegisterTest('WC-9224', 'iqshare', 'SetPlant', 'DoChangePlantID', Test1);
+
+end.

@@ -1,0 +1,81 @@
+object FrmSetupDoNotShowAgain: TFrmSetupDoNotShowAgain
+  Left = 218
+  Top = 220
+  HelpContext = 1098479
+  ClientHeight = 201
+  ClientWidth = 367
+  Caption = 'Setup Dialogs "Do not show again"'
+  OldCreateOrder = False
+  OnClose = FormClose
+  OnActivate = FormActivate
+  MonitoredKeys.Keys = <>
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TUniPanel
+    Left = 0
+    Top = 160
+    Width = 367
+    Height = 41
+    Hint = ''
+    Align = alBottom
+    Anchors = [akLeft, akRight, akBottom]
+    TabOrder = 0
+    Caption = ''
+    ExplicitTop = 154
+    ExplicitWidth = 372
+    object Panel2: TUniPanel
+      Left = 156
+      Top = 1
+      Width = 210
+      Height = 39
+      Hint = ''
+      Align = alRight
+      Anchors = [akTop, akRight, akBottom]
+      TabOrder = 0
+      Caption = ''
+      ExplicitLeft = 161
+      object btnOK: TUniButton
+        Left = 2
+        Top = 8
+        Width = 97
+        Height = 25
+        Hint = ''
+        Caption = 'OK'
+        TabOrder = 1
+        OnClick = btnOKClick
+      end
+      object btnCancel: TUniButton
+        Left = 106
+        Top = 8
+        Width = 97
+        Height = 25
+        Hint = ''
+        Caption = 'Cancel'
+        ModalResult = 2
+        TabOrder = 2
+      end
+    end
+  end
+  object IQWebHeaderCheckListBox1: TIQWebHeaderCheckListBox
+    Left = 0
+    Top = 0
+    Width = 367
+    Height = 160
+    Hint = ''
+    Align = alClient
+    Flat = False
+    IntegralHeight = False
+    ItemHeight = 16
+    ItemIndex = -1
+    Sorted = False
+    Sections = <>
+    DelimChar = ' '
+    LBStyle = hlbStandard
+    ExplicitLeft = 176
+    ExplicitTop = 48
+    ExplicitWidth = 150
+    ExplicitHeight = 100
+  end
+end

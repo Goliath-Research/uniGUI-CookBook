@@ -1,0 +1,143 @@
+unit PastDuPo;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.Classes,
+  Vcl.Forms,
+  Vcl.DBGrids,
+  Data.DB,
+  IQMS.WebVcl.Jump,
+  Vcl.Menus,
+  FireDAC.Comp.Client,
+  FireDAC.Comp.DataSet,
+  FireDAC.Phys,
+  MainModule,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Stan.Async,
+  FireDAC.DApt,
+  Vcl.Controls,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniPanel,
+  uniBasicGrid,
+  uniDBGrid,
+  uniSplitter,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniDBNavigator,
+  uniMainMenu,
+  uniLabel;
+
+type
+  TFrmPastDuePOs = class(TUniForm)
+    DataSource1: TDataSource;
+    Query1: TFDQuery;
+    DBGrid1: TUniDBGrid;
+    Panel1: TUniPanel;
+    DBNavigator1: TUniDBNavigator;
+    Query1PONO: TStringField;
+    Query1VENDORNO: TStringField;
+    Query1PO_ID: TBCDField;
+    Query1DETAIL_ID: TBCDField;
+    Query1TOTAL_QTY_ORD: TBCDField;
+    Query1QTY_RECEIVED: TBCDField;
+    popPO: TUniPopupMenu;
+    JumptoInventory1: TUniMenuItem;
+    Splitter1: TUniSplitter;
+    SrcPOReleases: TDataSource;
+    QryPOReleases: TFDQuery;
+    QryPOReleasesID: TBCDField;
+    QryPOReleasesSEQ: TBCDField;
+    QryPOReleasesQUAN: TBCDField;
+    QryPOReleasesREQUEST_DATE: TDateTimeField;
+    QryPOReleasesPROMISE_DATE: TDateTimeField;
+    PnlDetail: TUniPanel;
+    PnlDetailCaption: TUniPanel;
+    Label4: TUniLabel;
+    PnlDetailGrid: TUniPanel;
+    DBGrid2: TUniDBGrid;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure JumptoInventory1Click(Sender: TObject);
+    procedure UniFormCreate(Sender: TObject);
+  private
+    { Private declarations }
+    procedure SetArinvt_ID(const Value: Real);
+    procedure SetDate(const Value: TDateTime);
+
+  public
+    { Public declarations }
+    property Arinvt_ID: Real write SetArinvt_ID;
+    property Date: TDateTime write SetDate;
+  end;
+
+procedure DoShowPastDuePOs( AArinvt_ID: Real;  ADate: TDateTime );
+
+implementation
+
+{$R *.DFM}
+
+uses
+  IQMS.Common.RegFrm,
+  IQMS.Common.Cursor,
+  IQMS.Common.DataLib,
+  capacity_rscstr;
+
+procedure DoShowPastDuePOs(AArinvt_ID: Real;  ADate: TDateTime );
+var
+  LTFrmPastDuePOs : TFrmPastDuePOs;
+begin
+  LTFrmPastDuePOs := TFrmPastDuePOs.Create(UniGUIApplication.UniApplication);
+  LTFrmPastDuePOs.Arinvt_ID := AArinvt_ID;
+  LTFrmPastDuePOs.Date := ADate;
+  LTFrmPastDuePOs.Show;
+end;
+
+procedure TFrmPastDuePOs.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  IQRegFormWrite( self, [self, DBGrid1, DBGrid2]);
+end;
+
+procedure TFrmPastDuePOs.JumptoInventory1Click(Sender: TObject);
+begin
+  IQJumpPO.Execute;
+end;
+
+procedure TFrmPastDuePOs.SetArinvt_ID(const Value: Real);
+begin
+  with Query1 do
+  begin
+    Close;
+    ParamByName('arinvt_id').Value:= Value;
+      IQSetTablesActiveEx(TRUE, self, capacity_rscstr.cTXT0000004 {'Accessing database.  Please wait.'});
+  Caption:= 'Past Due POs for ' + SelectValueFmtAsString('select RTrim(itemno)||'',''||RTrim(descrip) from arinvt where id = %f', [ Value ]);
+  end;
+end;
+
+procedure TFrmPastDuePOs.SetDate(const Value: TDateTime);
+begin
+    with Query1 do
+  begin
+    Close;
+    ParamByName('ADate').asDateTime := Value;
+  end;
+end;
+
+procedure TFrmPastDuePOs.UniFormCreate(Sender: TObject);
+begin
+  IQRegFormRead( self, [self, DBGrid1, DBGrid2]);
+  DBGrid1.Cursor:= crJump;
+end;
+
+
+end.

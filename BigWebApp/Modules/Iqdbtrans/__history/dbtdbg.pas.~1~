@@ -1,0 +1,254 @@
+unit dbtdbg;
+
+{******************************************************************************}
+{                                                                              }
+{  *** Debug Data ***                                                          }
+{                                                                              }
+{   This form unit displays data for a list of data sets, along with SQL.      }
+{   The wrapper is contained in unit, IQDBTRANS.                               }
+{                                                                              }
+{******************************************************************************}
+
+
+interface
+
+uses
+  wwrcdpnl,
+  dbtdbgfm,
+  //iqusrmsg,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniPageControl,
+  uniPanel,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication, uniMainMenu, System.Classes, Vcl.Controls, Vcl.Forms,
+  Data.DB, Vcl.Menus,System.SysUtils,generics.collections;
+
+type
+
+  TDataSets = Array of TDataSet;   //Better Arraylist
+  TListDataSet = TList<TDataSet>;
+
+  TFrmDBTransDebug = class(TUniForm)
+    MainMenu1: TUniMainMenu;
+    File1: TUniMenuItem;
+    Options1: TUniMenuItem;
+    Close1: TUniMenuItem;
+    StayOnTop1: TUniMenuItem;
+    SrcQuery: TDataSource;
+    Bevel1: TUniPanel;
+    PnlDisplay: TUniPanel;
+    pcMain: TUniPageControl;
+    procedure Options1Click(Sender: TObject);
+    procedure StayOnTop1Click(Sender: TObject);
+    procedure Close1Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure pcMainMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure pcMainDragDrop(Sender, Source: TObject; X, Y: Integer);
+    procedure pcMainDragOver(Sender, Source: TObject; X, Y: Integer;
+      State: TDragState; var Accept: Boolean);
+    procedure UniFormDestroy(Sender: TObject);
+    procedure UniFormCreate(Sender: TObject);
+  private
+    { Private declarations }
+    FFindText: String;
+    FObjects: TList;
+    FShowQuerySQL: Boolean;
+    FDataSets:TList<TDataSet>;
+    //procedure IQAfterShowMessage( var Msg: TMessage ); message iq_AfterShowMessage;
+    procedure AddDataSet(const ADataSet: TDataSet);
+    procedure CheckFreeListObject;
+    procedure CheckListObjectCreated;
+    procedure OpenDataSets;
+    function getDataSets: TList<TDataSet>;
+    procedure setDataSets(const Value: TList<TDataSet>);
+  public
+    { Public declarations }
+  //  constructor Create(AOwner: TComponent; const ADataSets: array of TDataSet);
+  //  destructor Destroy; override;
+  published
+    { Published declarations }
+    property ShowQuerySQL: Boolean read FShowQuerySQL write FShowQuerySQL default True;
+
+    class procedure DoShowModal(const ADataSets:TList<TDataSet>);
+
+    property DataSets:TListDataSet read getDataSets write setDataSets;
+
+  end;
+
+var
+  FrmDBTransDebug: TFrmDBTransDebug;
+
+implementation
+
+{$R *.DFM}
+
+
+//uses
+ // iqerrdlg,
+ // iqregfrm,
+
+class procedure TFrmDBTransDebug.DoShowModal(const ADataSets:TList<TDataSet>);
+var
+  frm : TFrmDBTransDebug;
+begin
+  frm := TFrmDBTransDebug.Create(uniGUIApplication.UniApplication);
+  frm.DataSets := ADataSets;
+  frm.ShowModal;
+end;
+
+procedure TFrmDBTransDebug.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+function TFrmDBTransDebug.getDataSets: TList<TDataSet>;
+begin
+    Result:=FDataSets;
+end;
+
+//procedure TFrmDBTransDebug.IQAfterShowMessage(var Msg: TMessage);
+//begin
+//  Application.ProcessMessages;
+//  OpenDataSets;
+//end;
+
+procedure TFrmDBTransDebug.Options1Click(Sender: TObject);
+begin
+  StayOnTop1.Checked := ( FormStyle = fsStayOnTop );
+end;
+
+procedure TFrmDBTransDebug.StayOnTop1Click(Sender: TObject);
+begin
+  if StayOnTop1.Checked = FALSE then
+     FormStyle := fsStayOnTop
+  else FormStyle := fsNormal;
+end;
+
+procedure TFrmDBTransDebug.UniFormCreate(Sender: TObject);
+var
+   i: Integer;
+   dataSet:TDataSet;
+begin
+  FObjects := NIL;
+//  inherited Create( AOwner );
+  FShowQuerySQL := True;
+  for dataSet in FDataSets do
+     AddDataSet(dataSet);
+//  //PostMessage( Handle, iq_AfterShowMessage, 0, 0 );
+end;
+
+procedure TFrmDBTransDebug.UniFormDestroy(Sender: TObject);
+begin
+  CheckFreeListObject;
+end;
+
+procedure TFrmDBTransDebug.Close1Click(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TFrmDBTransDebug.AddDataSet(const ADataSet: TDataSet);
+var
+   tab: TUniTabSheet;
+   frm: TFrmDebugFrame;
+   AShowSQL: Boolean;
+begin
+  CheckListObjectCreated;
+  tab := TUniTabSheet.Create(Self);
+  //tab.Parent := pcMain;
+  tab.PageControl := pcMain;
+  tab.Caption := ADataSet.Name;
+  AShowSQL := FShowQuerySQL;
+
+  frm := TFrmDebugFrame.Create(Self);
+  frm.Name := Format('frmDebugDataSet_%d',[FObjects.Count + 1]);
+  FObjects.Add(frm);
+
+  with frm do
+   begin
+     Parent := tab;
+     Align := alClient;
+     DataSet := ADataSet;
+     ShowQuerySQL := AShowSQL;
+   end;
+end;
+
+procedure TFrmDBTransDebug.OpenDataSets;
+var
+   i: Integer;
+begin
+ try
+    if (Self = NIL) or not Self.Showing then Exit;
+
+    CheckListObjectCreated;
+
+    for i := 0 to FObjects.Count - 1 do
+        TFrmDebugFrame(FObjects.Items[i]).OpenDataSet;
+
+ except
+ end;
+end;
+
+procedure TFrmDBTransDebug.CheckListObjectCreated;
+begin
+ if (Self = NIL) then Exit;
+
+ if not Assigned(FObjects) then
+    FObjects := TList.Create;
+end;
+
+procedure TFrmDBTransDebug.CheckFreeListObject;
+begin
+  if Assigned(FObjects) then FreeAndNil(FObjects);
+end;
+
+procedure TFrmDBTransDebug.pcMainMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  if (Sender is TUniPageControl) then
+     with (Sender as TUniPageControl) do
+       BeginDrag(False);
+end;
+
+procedure TFrmDBTransDebug.setDataSets(const Value: TList<TDataSet>);
+begin
+  if (Value<>nil) then
+     FDataSets:=Value;
+end;
+
+procedure TFrmDBTransDebug.pcMainDragDrop(Sender, Source: TObject; X,
+  Y: Integer);
+const
+  TCM_GETITEMRECT = $130A;
+var
+  i: Integer;
+  //r: TRect;
+begin
+  if (Sender is TUniPageControl) then
+  with (Sender as TUniPageControl) do
+  begin
+    for i := 0 to PageCount - 1 do
+    begin
+//      Perform(TCM_GETITEMRECT, i, lParam(@r));
+//      if PtInRect(r, Point(X, Y)) then
+//      begin
+//        if i <> ActivePage.PageIndex then
+//          ActivePage.PageIndex := i;
+//        Exit;
+//      end;
+    end;
+  end;
+end;
+
+procedure TFrmDBTransDebug.pcMainDragOver(Sender, Source: TObject; X,
+  Y: Integer; State: TDragState; var Accept: Boolean);
+begin
+  Accept := Sender is TUniPageControl;
+end;
+
+end.

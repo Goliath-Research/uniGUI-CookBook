@@ -1,0 +1,68 @@
+unit IQMS.DatabaseConnections.FireDAC;
+
+interface
+
+uses
+  Classes,
+  Data.DB,
+  FireDAC.Stan.Param,
+  FireDAC.Comp.Client,
+  FireDAC.Comp.DataSet,
+  IQMS.Common.Params,
+  IQMS.DatabaseConnections;
+
+type
+
+  TIQDatabaseConnections = class(TInterfacedObject, IIQDatabaseConnections)
+  private
+    FRtBoxConnection  : TFDConnection;
+    FIqmsConnection   : TFDConnection;
+
+    function  GetRtBoxConnection  : TCustomConnection;
+    function  GetIqmsConnection   : TCustomConnection;
+
+  public
+    constructor Create(aPath : string);
+    destructor  Destroy; override;
+
+    property RtBoxConnection  : TFDConnection read FRtBoxConnection;
+    property IqmsConnection   : TFDConnection read FIqmsConnection;
+  end;
+
+implementation
+
+uses
+  Spring.Services;
+
+{ TIQDatabaseConnections }
+
+constructor TIQDatabaseConnections.Create(aPath : string);
+var
+  IqmsParams : TIQMS_Params;
+begin
+  inherited Create;
+
+  IqmsParams       := ServiceLocator.GetService<TIQMS_Params>;;
+  FRtBoxConnection := IqmsParams.RTBoxConnection;
+  FIqmsConnection  := IqmsParams.IQMSConnection;
+end;
+
+destructor TIQDatabaseConnections.Destroy;
+begin
+  FIqmsConnection.Free;
+  FRtBoxConnection.Free;
+
+  inherited;
+end;
+
+function TIQDatabaseConnections.GetIqmsConnection: TCustomConnection;
+begin
+  Result := FRtBoxConnection;
+end;
+
+function TIQDatabaseConnections.GetRtBoxConnection: TCustomConnection;
+begin
+  Result := FIqmsConnection;
+end;
+
+end.

@@ -1,0 +1,607 @@
+object AR_DM: TAR_DM
+  OldCreateOrder = True
+  Height = 306
+  Width = 537
+  object TblBillTo: TFDTable
+    Tag = 1
+    IndexFieldNames = 'ARCUSTO_ID'
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.UpdateTableName = 'BILL_TO'
+    TableName = 'BILL_TO'
+    Left = 224
+    Top = 8
+    object TblBillToID: TBCDField
+      FieldName = 'ID'
+      Size = 0
+    end
+    object TblBillToARCUSTO_ID: TBCDField
+      FieldName = 'ARCUSTO_ID'
+      Size = 0
+    end
+    object TblBillToATTN: TStringField
+      DisplayLabel = 'Company'
+      FieldName = 'ATTN'
+      Size = 60
+    end
+    object TblBillToADDR1: TStringField
+      FieldName = 'ADDR1'
+      Size = 60
+    end
+    object TblBillToADDR2: TStringField
+      FieldName = 'ADDR2'
+      Size = 60
+    end
+    object TblBillToADDR3: TStringField
+      FieldName = 'ADDR3'
+      Size = 60
+    end
+    object TblBillToCITY: TStringField
+      FieldName = 'CITY'
+      Size = 30
+    end
+    object TblBillToSTATE: TStringField
+      FieldName = 'STATE'
+    end
+    object TblBillToCOUNTRY: TStringField
+      FieldName = 'COUNTRY'
+      Size = 30
+    end
+    object TblBillToZIP: TStringField
+      FieldName = 'ZIP'
+      Size = 10
+    end
+    object TblBillToPHONE_NUMBER: TStringField
+      FieldName = 'PHONE_NUMBER'
+      Size = 25
+    end
+    object TblBillToEXT: TStringField
+      FieldName = 'EXT'
+      Size = 5
+    end
+    object TblBillToFAX: TStringField
+      FieldName = 'FAX'
+      Size = 25
+    end
+    object TblBillToPRIME_CONTACT: TStringField
+      FieldName = 'PRIME_CONTACT'
+      Size = 30
+    end
+  end
+  object TblTerms: TFDTable
+    BeforePost = TblTermsBeforePost
+    OnCalcFields = TblTermsCalcFields
+    Filtered = True
+    OnFilterRecord = TblTermsFilterRecord
+    IndexFieldNames = 'ID'
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.UpdateTableName = 'TERMS'
+    UpdateOptions.KeyFields = 'ID'
+    TableName = 'TERMS'
+    Left = 152
+    Top = 112
+    object TblTermsDESCRIPTION: TStringField
+      DisplayLabel = 'Terms'
+      DisplayWidth = 30
+      FieldName = 'DESCRIPTION'
+      Size = 60
+    end
+    object TblTermsEND_OF_MONTH: TStringField
+      DisplayLabel = 'End of Month'
+      DisplayWidth = 1
+      FieldName = 'END_OF_MONTH'
+      FixedChar = True
+      Size = 1
+    end
+    object TblTermsDAY_OF_MONTH: TBCDField
+      DisplayLabel = 'Day of Month'
+      DisplayWidth = 10
+      FieldName = 'DAY_OF_MONTH'
+      Size = 0
+    end
+    object TblTermsID: TBCDField
+      FieldName = 'ID'
+      Visible = False
+      Size = 0
+    end
+    object TblTermsDAYS: TBCDField
+      FieldName = 'DAYS'
+      Visible = False
+      Size = 0
+    end
+    object TblTermsDISCOUNT: TBCDField
+      FieldName = 'DISCOUNT'
+      Visible = False
+      Size = 3
+    end
+    object TblTermsDISCOUNT_DAYS: TBCDField
+      FieldName = 'DISCOUNT_DAYS'
+      Visible = False
+      Size = 0
+    end
+    object TblTermsBASED_ON: TStringField
+      FieldName = 'BASED_ON'
+      Visible = False
+      Size = 1
+    end
+    object TblTermsNVLBasedON: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'NVLBasedON'
+      Visible = False
+      Calculated = True
+    end
+    object TblTermsPK_HIDE: TStringField
+      DisplayWidth = 1
+      FieldName = 'PK_HIDE'
+      Size = 1
+    end
+    object TblTermsCASH_IN_ADVANCE: TStringField
+      DisplayWidth = 1
+      FieldName = 'CASH_IN_ADVANCE'
+      Size = 1
+    end
+  end
+  object TblGlAcct: TFDTable
+    Filtered = True
+    IndexFieldNames = 'ID'
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.UpdateTableName = 'GLACCT'
+    TableName = 'GLACCT'
+    Left = 336
+    Top = 8
+    object TblGlAcctID: TBCDField
+      FieldName = 'ID'
+      Required = True
+      Size = 0
+    end
+    object TblGlAcctACCT: TStringField
+      FieldName = 'ACCT'
+      Required = True
+      Size = 50
+    end
+    object TblGlAcctDESCRIP: TStringField
+      FieldName = 'DESCRIP'
+      Size = 50
+    end
+    object TblGlAcctGL_SUBACCT_TYPE_ID: TBCDField
+      FieldName = 'GL_SUBACCT_TYPE_ID'
+      Size = 0
+    end
+    object TblGlAcctEPLANT_ID: TBCDField
+      FieldName = 'EPLANT_ID'
+      Size = 0
+    end
+  end
+  object SrcTerms: TDataSource
+    DataSet = TblTerms
+    Left = 256
+    Top = 8
+  end
+  object SrcGlAcct: TDataSource
+    DataSet = TblGlAcct
+    Left = 320
+    Top = 8
+  end
+  object TblGLPeriods: TFDTable
+    IndexFieldNames = 'GLYEAR_ID'
+    MasterFields = 'ID'
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.UpdateTableName = 'GLPERIODS'
+    TableName = 'GLPERIODS'
+    Left = 16
+    Top = 8
+    object TblGLPeriodsID: TBCDField
+      FieldName = 'ID'
+      Required = True
+      Size = 0
+    end
+    object TblGLPeriodsGLYEAR_ID: TBCDField
+      FieldName = 'GLYEAR_ID'
+      Required = True
+      Size = 0
+    end
+    object TblGLPeriodsPERIOD: TBCDField
+      FieldName = 'PERIOD'
+      Required = True
+      Size = 0
+    end
+    object TblGLPeriodsSTART_DATE: TDateTimeField
+      FieldName = 'START_DATE'
+      Required = True
+    end
+    object TblGLPeriodsEND_DATE: TDateTimeField
+      FieldName = 'END_DATE'
+      Required = True
+    end
+    object TblGLPeriodsSTATUS: TStringField
+      FieldName = 'STATUS'
+      Size = 2
+    end
+  end
+  object TblSalesPeople: TFDTable
+    IndexFieldNames = 'ID'
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.UpdateTableName = 'SALESPEOPLE'
+    TableName = 'SALESPEOPLE'
+    Left = 424
+    Top = 56
+  end
+  object TblOrders: TFDTable
+    IndexFieldNames = 'ID'
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.UpdateTableName = 'ORDERS'
+    TableName = 'ORDERS'
+    Left = 416
+    Top = 8
+    object TblOrdersID: TBCDField
+      FieldName = 'ID'
+      Required = True
+      Size = 0
+    end
+    object TblOrdersPONO: TStringField
+      FieldName = 'PONO'
+      Size = 35
+    end
+    object TblOrdersARCUSTO_ID: TBCDField
+      FieldName = 'ARCUSTO_ID'
+      Required = True
+      Size = 0
+    end
+    object TblOrdersORD_DATE: TDateTimeField
+      FieldName = 'ORD_DATE'
+    end
+    object TblOrdersORD_BY: TStringField
+      FieldName = 'ORD_BY'
+      Size = 30
+    end
+    object TblOrdersDATE_TAKEN: TDateTimeField
+      FieldName = 'DATE_TAKEN'
+    end
+    object TblOrdersBILL_TO_ID: TBCDField
+      FieldName = 'BILL_TO_ID'
+      Size = 0
+    end
+    object TblOrdersSHIP_TO_ID: TBCDField
+      FieldName = 'SHIP_TO_ID'
+      Size = 0
+    end
+    object TblOrdersCUSER1: TStringField
+      FieldName = 'CUSER1'
+      Size = 60
+    end
+    object TblOrdersCUSER2: TStringField
+      FieldName = 'CUSER2'
+      Size = 60
+    end
+    object TblOrdersCUSER3: TStringField
+      FieldName = 'CUSER3'
+      Size = 60
+    end
+    object TblOrdersCUSER5: TStringField
+      FieldName = 'CUSER5'
+      Size = 60
+    end
+    object TblOrdersCUSER6: TStringField
+      FieldName = 'CUSER6'
+      Size = 60
+    end
+    object TblOrdersTIMESTAMP: TDateTimeField
+      FieldName = 'TIMESTAMP'
+    end
+    object TblOrdersFOB: TStringField
+      FieldName = 'FOB'
+      Size = 60
+    end
+    object TblOrdersCHANGEUSER_ID: TStringField
+      FieldName = 'CHANGEUSER_ID'
+      Size = 10
+    end
+    object TblOrdersTERMS_ID: TBCDField
+      FieldName = 'TERMS_ID'
+      Size = 0
+    end
+    object TblOrdersUSERID: TStringField
+      FieldName = 'USERID'
+      Size = 35
+    end
+    object TblOrdersORDERNO: TStringField
+      FieldName = 'ORDERNO'
+      Size = 15
+    end
+  end
+  object TblArInvt: TFDQuery
+    IndexFieldNames = 'ID'
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    UpdateOptions.UpdateTableName = 'ARINVT'
+    SQL.Strings = (
+      'SELECT * FROM arinvt')
+    Left = 96
+    Top = 8
+  end
+  object SrcQryBillTo: TDataSource
+    DataSet = QryBillTo
+    Left = 160
+    Top = 56
+  end
+  object QryBillTo: TFDQuery
+    Tag = 1
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'Select * from Bill_To'
+      'where arcusto_id = :nId')
+    Left = 176
+    Top = 56
+    ParamData = <
+      item
+        Name = 'nId'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object QryBillToID: TBCDField
+      FieldName = 'ID'
+      Size = 0
+    end
+    object QryBillToARCUSTO_ID: TBCDField
+      FieldName = 'ARCUSTO_ID'
+      Size = 0
+    end
+    object QryBillToATTN: TStringField
+      FieldName = 'ATTN'
+      Size = 60
+    end
+    object QryBillToADDR1: TStringField
+      FieldName = 'ADDR1'
+      Size = 60
+    end
+    object QryBillToADDR2: TStringField
+      FieldName = 'ADDR2'
+      Size = 60
+    end
+    object QryBillToADDR3: TStringField
+      FieldName = 'ADDR3'
+      Size = 60
+    end
+    object QryBillToCITY: TStringField
+      FieldName = 'CITY'
+      Size = 30
+    end
+    object QryBillToSTATE: TStringField
+      FieldName = 'STATE'
+    end
+    object QryBillToCOUNTRY: TStringField
+      FieldName = 'COUNTRY'
+      Size = 30
+    end
+    object QryBillToZIP: TStringField
+      FieldName = 'ZIP'
+      Size = 10
+    end
+    object QryBillToPHONE_NUMBER: TStringField
+      FieldName = 'PHONE_NUMBER'
+      Size = 25
+    end
+    object QryBillToEXT: TStringField
+      FieldName = 'EXT'
+      Size = 5
+    end
+    object QryBillToFAX: TStringField
+      FieldName = 'FAX'
+      Size = 25
+    end
+    object QryBillToPRIME_CONTACT: TStringField
+      FieldName = 'PRIME_CONTACT'
+      Size = 30
+    end
+  end
+  object SrcFreight: TDataSource
+    DataSet = TblFreight
+    Left = 16
+    Top = 56
+  end
+  object TblFreight: TFDTable
+    IndexFieldNames = 'ID'
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.UpdateTableName = 'FREIGHT'
+    TableName = 'FREIGHT'
+    Left = 32
+    Top = 56
+    object TblFreightID: TBCDField
+      FieldName = 'ID'
+      Required = True
+      Size = 0
+    end
+    object TblFreightDESCRIP: TStringField
+      FieldName = 'DESCRIP'
+      Size = 60
+    end
+    object TblFreightGLACCT_ID_FREIGHT: TBCDField
+      FieldName = 'GLACCT_ID_FREIGHT'
+      Size = 0
+    end
+    object TblFreightSCAC_IATA_CODE: TStringField
+      FieldName = 'SCAC_IATA_CODE'
+      Size = 17
+    end
+    object TblFreightCODE_QUALIFIER: TStringField
+      FieldName = 'CODE_QUALIFIER'
+      Size = 6
+    end
+    object TblFreightTRANSPORT_CODE: TStringField
+      FieldName = 'TRANSPORT_CODE'
+      Size = 6
+    end
+  end
+  object TblArCusto: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    UpdateOptions.UpdateTableName = 'ARCUSTO'
+    SQL.Strings = (
+      'SELECT * FROM v_arcusto')
+    Left = 168
+    Top = 8
+  end
+  object ViewTaxCodes: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    UpdateOptions.UpdateTableName = 'V_TAX_CODES'
+    SQL.Strings = (
+      'SELECT id,'
+      '       tax_code,'
+      '       tax_code_desc,'
+      '       tax_rate'
+      '  FROM v_tax_codes')
+    Left = 256
+    Top = 56
+    object ViewTaxCodesID: TBCDField
+      FieldName = 'ID'
+      Required = True
+      Precision = 15
+      Size = 0
+    end
+    object ViewTaxCodesTAX_CODE: TStringField
+      FieldName = 'TAX_CODE'
+      Origin = 'TAX_CODE'
+      Required = True
+    end
+    object ViewTaxCodesTAX_CODE_DESC: TStringField
+      FieldName = 'TAX_CODE_DESC'
+      Origin = 'TAX_CODE_DESC'
+      Size = 50
+    end
+    object ViewTaxCodesTAX_RATE: TFMTBCDField
+      FieldName = 'TAX_RATE'
+      Origin = 'TAX_RATE'
+      Precision = 38
+      Size = 38
+    end
+  end
+  object TblTaxCodes: TFDTable
+    IndexFieldNames = 'ID'
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.UpdateTableName = 'TAX_CODES'
+    TableName = 'TAX_CODES'
+    Left = 328
+    Top = 56
+    object TblTaxCodesID: TBCDField
+      FieldName = 'ID'
+      Required = True
+      Size = 0
+    end
+    object TblTaxCodesTAX_CODE: TStringField
+      FieldName = 'TAX_CODE'
+      Required = True
+    end
+    object TblTaxCodesTAX_CODE_DESC: TStringField
+      FieldName = 'TAX_CODE_DESC'
+      Size = 50
+    end
+    object TblTaxCodesTOT_TAX_RATE: TFMTBCDField
+      FieldName = 'TOT_TAX_RATE'
+      Size = 6
+    end
+  end
+  object ViewArTaxCodes: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    UpdateOptions.UpdateTableName = 'V_ARINVOICE_DETAIL_TAXES'
+    SQL.Strings = (
+      'SELECT tax_rate,'
+      '       arinvoice_detail_id'
+      '  FROM v_arinvoice_detail_taxes')
+    Left = 256
+    Top = 104
+  end
+  object PkPM: TIQWebHpick
+    Connection = UniMainModule.FDConnection1
+    SQL.Strings = (
+      'select'
+      '    pmwo_dtl.id as id,'
+      '    pmwo.id as work_order_no,'
+      '    pmwo.wo_date as wo_date,'
+      '    pmeqmt.eqno as eqno,'
+      '           '
+      '    pmtasks.taskno as taskno,'
+      '    pmtasks.descrip as task_descrip'
+      'from'
+      '    pmeqmt,'
+      '    pmjob,'
+      '    pmtasks,'
+      '    pmwo_dtl,'
+      '    pmwo'
+      'where'
+      '    pmjob.pmeqmt_id = pmeqmt.id'
+      '    and pmtasks.id = pmjob.pmtasks_id '
+      '    and pmwo_dtl.pmjob_id = pmjob.id '
+      '    and pmwo_dtl.pmwo_id = pmwo.id')
+    Title = 'Select from Pick List'
+    Touchscreen = False
+    ForceShowWaitForPrompt = False
+    Left = 24
+    Top = 112
+    object PkPMID: TBCDField
+      FieldName = 'ID'
+      Origin = 'PMWO_DTL.ID'
+      Visible = False
+      Size = 0
+    end
+    object PkPMWORK_ORDER_NO: TBCDField
+      DisplayLabel = 'WO #'
+      FieldName = 'WORK_ORDER_NO'
+      Origin = 'PMWO.ID'
+      Size = 0
+    end
+    object PkPMWO_DATE: TDateTimeField
+      DisplayLabel = 'WO Date'
+      FieldName = 'WO_DATE'
+      Origin = 'PMWO.WO_DATE'
+    end
+    object PkPMEQNO: TStringField
+      DisplayLabel = 'Equip. #'
+      FieldName = 'EQNO'
+      Origin = 'PMEQMT.EQNO'
+      Size = 25
+    end
+    object PkPMTASKNO: TStringField
+      DisplayLabel = 'Task #'
+      FieldName = 'TASKNO'
+      Origin = 'PMTASKS.TASKNO'
+      Size = 50
+    end
+    object PkPMTASK_DESCRIP: TStringField
+      DisplayLabel = 'Description'
+      FieldName = 'TASK_DESCRIP'
+      Origin = 'PMTASKS.DESCRIP'
+      Size = 50
+    end
+  end
+  object ViewArTaxCodesVoid: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    UpdateOptions.UpdateTableName = 'V_ARINVOICE_DETAIL_V_TAXES'
+    SQL.Strings = (
+      'SELECT tax_rate,'
+      '       arinvoice_detail_void_id'
+      '  FROM v_arinvoice_detail_v_taxes')
+    Left = 352
+    Top = 104
+  end
+end

@@ -1,0 +1,205 @@
+unit QC_WF_Calendar;
+
+interface
+
+uses
+  Windows,
+  Messages,
+  SysUtils,
+  Variants,
+  Classes,
+  Graphics,
+  Controls,
+  Forms,
+  Dialogs,
+  Menus,
+  IQMS.WebVcl.About,
+  DBCtrls,
+  Grids,
+  Wwdbigrd,
+  Wwdbgrid,
+  ExtCtrls,
+  IQMS.WebVcl.SecurityRegister,
+  DB,
+  Wwdatsrc,
+  wwmonthcalendar,
+  Buttons,
+  IQMS.WebVcl.Search,
+  FireDAC.Comp.Client,
+  FireDAC.Comp.DataSet,
+  FireDAC.Phys,
+  MainModule,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniButton,
+  uniBitBtn,
+  uniSpeedButton,
+  uniPanel,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniDBNavigator, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, uniMainMenu, IQUniGrid, uniGUIFrame;
+
+type
+  TFrmQCWorkflowCalendar = class(TUniForm)
+    MainMenu1: TUniMainMenu;
+    File1: TUniMenuItem;
+    Exit1: TUniMenuItem;
+    Options1: TUniMenuItem;
+    DeleteObsolete1: TUniMenuItem;
+    Help1: TUniMenuItem;
+    About1: TUniMenuItem;
+    IQAbout1: TIQWebAbout;
+    Panel1: TUniPanel;
+    NavMain: TUniDBNavigator;
+    SrcWFCalendar: TDataSource;
+    QryWFCalendar: TFDQuery;
+    QryWFCalendarID: TBCDField;
+    QryWFCalendarSTART_TIME: TDateTimeField;
+    QryWFCalendarEND_TIME: TDateTimeField;
+    Panel2: TUniPanel;
+    Panel4: TUniPanel;
+    UpdateSQLWFCalendar: TFDUpdateSQL;
+    sbtnAssignWeekendsOff: TUniSpeedButton;
+    IQSearch1: TIQUniGridControl;
+    Contents1: TUniMenuItem;
+    SR: TIQWebSecurityRegister;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Exit1Click(Sender: TObject);
+    procedure About1Click(Sender: TObject);
+    procedure AssignIDBeforePost(DataSet: TDataSet);
+    procedure ApplyUpdates(DataSet: TDataSet);
+    procedure CheckRefresh(Sender: TObject; Button: TNavigateBtn);
+    procedure QryWFCalendarNewRecord(DataSet: TDataSet);
+    procedure sbtnAssignWeekendsOffClick(Sender: TObject);
+    procedure DeleteObsolete1Click(Sender: TObject);
+    procedure Contents1Click(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure UniFormShow(Sender: TObject);
+  private
+    { Private declarations }
+    procedure DeleteObsolete;
+  public
+    { Public declarations }
+    class procedure DoShow;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  IQMS.Common.RegFrm,
+  IQMS.Common.DataLib,
+  PanelMsg,
+  IQMS.Common.InquireNumber,
+  IQMS.Common.Dialogs,
+  IQMS.Common.HelpHook;
+
+{ TFrmQCWorkflowCalendar }
+
+class procedure TFrmQCWorkflowCalendar.DoShow;
+begin
+  TFrmQCWorkflowCalendar.Create(uniGUIApplication.UniApplication).Show;
+end;
+
+procedure TFrmQCWorkflowCalendar.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  IQRegFormWrite(self, [ self ]);
+end;
+
+procedure TFrmQCWorkflowCalendar.Exit1Click(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TFrmQCWorkflowCalendar.About1Click(Sender: TObject);
+begin
+  IQAbout1.Execute;
+end;
+
+procedure TFrmQCWorkflowCalendar.AssignIDBeforePost(DataSet: TDataSet);
+begin
+  IQAssignIDBeforePost( DataSet, 'WF_CALENDAR' );
+end;
+
+procedure TFrmQCWorkflowCalendar.ApplyUpdates(DataSet: TDataSet);
+begin
+  IQApplyUpdateToTable(DataSet);
+end;
+
+procedure TFrmQCWorkflowCalendar.CheckRefresh(Sender: TObject;  Button: TNavigateBtn);
+begin
+  IQCheckRefresh(Sender, Button);
+end;
+
+procedure TFrmQCWorkflowCalendar.QryWFCalendarNewRecord(DataSet: TDataSet);
+begin
+  DataSet.FieldByName('START_TIME').asDateTime:= Date;
+  DataSet.FieldByName('END_TIME').asDateTime  := Date + 1;
+end;
+
+procedure TFrmQCWorkflowCalendar.DeleteObsolete1Click(Sender: TObject);
+begin
+  if IQWarningYN('Are you sure you want to delete obsolete scheduled days-off from the previous year(s)?') then
+     DeleteObsolete;
+end;
+
+procedure TFrmQCWorkflowCalendar.DeleteObsolete;
+var
+  hMsg: TPanelMEsg;
+begin
+  hMsg:= hPleaseWait('');
+  try
+    ExecuteCommand('begin                                                            ' +
+           '  for v in (select rowid as row_id                               ' +
+           '              from wf_calendar                                   ' +
+           '             where end_time < to_date(trunc(sysdate, ''YEAR''))) ' +
+           '  loop                                                           ' +
+           '    delete from wf_calendar where rowid = v.row_id;              ' +
+           '    COMMIT;                                                      ' +
+           '  end loop;                                                      ' +
+           'end;                                                             ' );
+  finally
+    hMsg.Free;
+  end;
+  RefreshDataSetByID( QryWFCalendar );
+end;
+
+procedure TFrmQCWorkflowCalendar.sbtnAssignWeekendsOffClick(
+  Sender: TObject);
+var
+  AYear: Real;
+begin
+  AYear:= SelectValueAsFloat('select IQCalendar.YearOf(sysdate) from dual');
+  if not IQInputFloat('Assign weekends off', 'Enter calendar year', AYear ) or (AYear <= 0) then  // IQInquireNumber.pas
+     EXIT;
+
+  ExecuteCommandFmt('begin qc_misc.add_weekends_to_calendar( %d ); end;', [ Trunc( AYear )]);
+
+  RefreshDataSetByID( QryWFCalendar );
+end;
+
+procedure TFrmQCWorkflowCalendar.UniFormShow(Sender: TObject);
+begin
+  IQSetTablesActive(TRUE, self);
+  IQRegFormRead(self, [ self ]);
+end;
+
+procedure TFrmQCWorkflowCalendar.Contents1Click(Sender: TObject);
+begin
+  if Assigned( IQHelp ) then
+     IQHelp.HelpContext( self.HelpContext );
+end;
+
+procedure TFrmQCWorkflowCalendar.FormActivate(Sender: TObject);
+begin
+  if Assigned( IQHelp ) then
+     IQHelp.AssignHTMLFile( iqchmQuality{CHM}, iqhtmQuality{HTM} );  {IQMS.Common.HelpHook.pas}
+end;
+
+end.

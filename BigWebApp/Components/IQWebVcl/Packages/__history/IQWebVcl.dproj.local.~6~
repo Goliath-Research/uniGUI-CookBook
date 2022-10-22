@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2016/09/10 08:33:56.998.444,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Packages\Unit1.pas</Transaction>
+    <Transaction>2016/09/10 08:35:06.998.248,C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.Common.DataServices.pas=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Packages\Unit1.pas</Transaction>
+    <Transaction>2016/09/10 08:40:20.999.942,=C:\p4\delphi\iqwin\web\Interfaces\IQWeb.Server.DataServices.pas</Transaction>
+    <Transaction>2016/09/12 07:06:18.999.692,C:\p4\delphi\iqwin\web\Interfaces\IQWeb.Server.DataServices.pas=</Transaction>
+    <Transaction>2016/09/12 07:06:18.999.763,=IQUniEditors.dcp</Transaction>
+    <Transaction>2016/09/12 07:59:55.000.311,=C:\p4\delphi\iqwin\web\Interfaces\IQWeb.Session.ConnectionServices.pas</Transaction>
+    <Transaction>2016/09/26 07:19:32.000.202,C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.Common.AddressFormat.pas=</Transaction>
+    <Transaction>2016/09/26 07:22:53.999.419,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.Common.DataLib.pas</Transaction>
+    <Transaction>2016/09/26 07:23:52.999.349,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.Time.pas</Transaction>
+    <Transaction>2016/09/26 07:27:30.999.836,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.Strings.pas</Transaction>
+    <Transaction>2016/09/26 07:28:38.998.631,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.Common.Dates.pas</Transaction>
+    <Transaction>2016/09/26 07:29:18.000.276,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.DocumentsExternal.pas</Transaction>
+    <Transaction>2016/09/26 07:34:11.999.427,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.DocumentUtils.pas</Transaction>
+    <Transaction>2016/09/26 07:35:15.000.380,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.ResourceStrings.pas</Transaction>
+    <Transaction>2016/09/26 07:36:25.000.315,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.DocumentsCoordinator.pas</Transaction>
+    <Transaction>2016/09/26 07:37:05.000.157,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.HPick.pas</Transaction>
+    <Transaction>2016/09/26 07:37:35.999.667,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.DBExpress.pas</Transaction>
+    <Transaction>2016/09/26 07:38:05.999.079,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.FieldMap.pas</Transaction>
+    <Transaction>2016/09/26 07:38:45.999.976,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.QueryNavigator.pas</Transaction>
+    <Transaction>2016/09/26 07:39:58.000.658,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.Common.Controls.pas</Transaction>
+    <Transaction>2016/09/26 07:40:24.000.536,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.SecurityRegister.pas</Transaction>
+    <Transaction>2016/09/26 07:40:55.998.604,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.UDRecView.pas</Transaction>
+    <Transaction>2016/09/26 07:41:19.998.466,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.Search.pas</Transaction>
+    <Transaction>2016/09/26 07:41:53.999.715,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.HyperlinkCombo.pas</Transaction>
+    <Transaction>2016/09/26 07:42:26.998.133,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.Web.MicrosoftWord.pas</Transaction>
+    <Transaction>2016/09/26 07:42:52.000.999,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.Web.MicrosoftApplication.pas</Transaction>
+    <Transaction>2016/09/26 07:43:23.998.267,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.Web.MicrosoftWord.Interop.pas</Transaction>
+    <Transaction>2016/09/26 07:43:49.999.660,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.Web.MicrosoftApplication.Interop.pas</Transaction>
+    <Transaction>2016/09/26 07:44:37.000.344,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.Web.MicrosoftApplication.Types.pas</Transaction>
+    <Transaction>2016/09/26 07:45:39.000.309,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.PictureGallery.pas</Transaction>
+    <Transaction>2016/09/26 07:46:06.999.757,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.EmailCorrespondence.pas</Transaction>
+    <Transaction>2016/09/26 07:46:36.000.732,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.LargeGrid.pas</Transaction>
+    <Transaction>2016/09/26 07:47:05.000.704,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.Documents.pas</Transaction>
+    <Transaction>2016/09/26 07:47:27.999.320,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.Blob.pas</Transaction>
+    <Transaction>2016/09/26 07:48:29.999.649,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.Common.Sequence.pas</Transaction>
+    <Transaction>2016/09/26 07:49:01.999.943,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.Web.MicrosoftExcel.Utils.pas</Transaction>
+    <Transaction>2016/09/26 07:49:33.999.271,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.Web.MicrosoftExcel.Interop.pas</Transaction>
+    <Transaction>2016/09/26 07:49:33.999.327,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.Web.MicrosoftExcel.pas</Transaction>
+    <Transaction>2016/09/26 07:50:03.000.122,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.Common.Numbers.pas</Transaction>
+    <Transaction>2016/09/26 07:57:49.998.886,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.Common.Miscellaneous.pas</Transaction>
+    <Transaction>2016/09/26 07:58:34.000.856,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.SecurityManager.pas</Transaction>
+    <Transaction>2016/09/26 07:59:03.000.194,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.Common.Applications.pas</Transaction>
+    <Transaction>2016/09/26 07:59:33.999.323,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.Common.Regfrm.pas</Transaction>
+    <Transaction>2016/09/26 08:00:03.998.239,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.About.pas</Transaction>
+    <Transaction>2016/09/26 08:00:43.000.646,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.BuildVersion.pas</Transaction>
+    <Transaction>2016/09/26 08:01:34.999.117,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.Aboutf.pas</Transaction>
+    <Transaction>2016/09/26 08:02:49.000.031,=C:\p4\delphi\iqwin\web\Components\IQWebVcl\Source\IQMS.WebVcl.HotLabel.pas</Transaction>
+  </Transactions>
+</BorlandProject>

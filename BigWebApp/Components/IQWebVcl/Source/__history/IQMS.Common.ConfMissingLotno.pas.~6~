@@ -1,0 +1,49 @@
+unit IQMS.Common.ConfMissingLotno;
+
+interface
+
+uses
+  Vcl.Forms,
+  IQMS.Common.ConfBas,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniPanel,
+  uniButton, IQMS.WebVcl.SecurityRegister, uniCheckBox, uniLabel,
+  System.Classes, Vcl.Controls;
+
+type
+  TFrmConfirmMissingLotNo = class(TIQDialogCheckBox)
+    Panel3: TUniPanel;
+    btnYes: TUniButton;
+    btnAbort: TUniButton;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+  function DoShowModalConfirmMissingLotNo(AStr, AKey : string; AShowCheckBox : boolean = false) : boolean;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  uniGUIApplication;
+
+{ TIQDialogCheckBox1 }
+
+function DoShowModalIQLMChkBoxQty(AStr, AKey : string; AShowCheckBox : boolean = false) : boolean;
+var
+  frm : TFrmIQLMChkBoxQty;
+begin
+  frm := TFrmIQLMChkBoxQty.Create(uniGUIApplication.UniApplication);
+
+  frm.MsgText       := AStr;
+  frm.Key           := AKey;
+  frm.ShowCheckBox  := AShowCheckBox;
+
+  Result := frm.ShowModal = mrOk;
+end;
+
+end.

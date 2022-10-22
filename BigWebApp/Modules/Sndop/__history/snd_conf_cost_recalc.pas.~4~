@@ -1,0 +1,37 @@
+unit snd_conf_cost_recalc;
+
+interface
+
+uses
+  Winapi.Windows,
+  Vcl.Forms,
+  IQMS.Common.ConfBas,
+  FireDAC.Comp.Client,
+  FireDAC.Phys,
+  MainModule,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniPanel,
+  uniButton,
+  IQMS.WebVcl.SecurityRegister,
+  uniCheckBox,
+  uniLabel,
+  System.Classes,
+  Vcl.Controls;
+
+type
+  TFrmSndOpConfirmCostRecalc = class(TIQDialogCheckBox)
+    Panel3: TUniPanel;
+    btnYes: TUniButton;
+    btnAbort: TUniButton;
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+{ TFrmSndOpConfirmCostRecalc }
+
+end.

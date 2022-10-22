@@ -1,0 +1,191 @@
+object FrmAPReplicate: TFrmAPReplicate
+  Left = 493
+  Top = 147
+  BorderStyle = bsDialog
+  Caption = 'Replicate AP Invoice'
+  ClientHeight = 262
+  ClientWidth = 324
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Style = []
+  OldCreateOrder = True
+  OnClose = FormClose
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TUniPanel
+    Left = 0
+    Top = 222
+    Width = 324
+    Height = 40
+    Align = alBottom
+    TabOrder = 0
+    object Panel2: TUniPanel
+      Left = 117
+      Top = 0
+      Width = 207
+      Height = 40
+      Align = alRight
+      TabOrder = 0
+      object btnOk: TUniButton
+        Left = 0
+        Top = 8
+        Width = 97
+        Height = 25
+        Caption = '&OK'
+        ModalResult = 1
+      end
+      object btnCancel: TUniButton
+        Left = 104
+        Top = 8
+        Width = 97
+        Height = 25
+        Caption = '&Cancel'
+        ModalResult = 2
+      end
+    end
+  end
+  object GroupBox1: TUniGroupBox
+    Left = 0
+    Top = 41
+    Width = 324
+    Height = 181
+    Align = alClient
+    Caption = ' Select Option Below '
+    TabOrder = 1
+    object Label2: TUniLabel
+      Left = 109
+      Top = 60
+      Width = 48
+      Height = 13
+      Caption = 'Start Date'
+    end
+    object Label3: TUniLabel
+      Left = 109
+      Top = 84
+      Width = 65
+      Height = 13
+      Caption = 'Days In Cycle'
+    end
+    object Label4: TUniLabel
+      Left = 109
+      Top = 117
+      Width = 48
+      Height = 13
+      Caption = 'Start Date'
+    end
+    object Label5: TUniLabel
+      Left = 109
+      Top = 148
+      Width = 48
+      Height = 13
+      Caption = 'Start Date'
+    end
+    object seDay: TUniSpinEdit
+      Left = 195
+      Top = 23
+      Width = 121
+      Height = 22
+      MaxValue = 31
+      MinValue = 1
+      TabOrder = 4
+      Value = 1
+    end
+    object RbDom: TUniRadioButton
+      Left = 10
+      Top = 26
+      Width = 113
+      Height = 17
+      Caption = 'Day of the month'
+      Checked = True
+      TabOrder = 0
+      TabStop = True
+      OnClick = RbDomClick
+    end
+    object RbEveryNth: TUniRadioButton
+      Left = 10
+      Top = 58
+      Width = 92
+      Height = 17
+      Caption = 'Every Nth Day'
+      TabOrder = 1
+      OnClick = RbEveryNthClick
+    end
+    object dbEveryNth: TUniDBDateTimePicker
+      Left = 195
+      Top = 55
+      Width = 121
+      Height = 21
+      TabOrder = 5
+    end
+    object RbByWeeky: TUniRadioButton
+      Left = 10
+      Top = 115
+      Width = 70
+      Height = 17
+      Caption = 'Bi-Weekly'
+      TabOrder = 2
+      OnClick = RbByWeekyClick
+    end
+    object dbBiWeekly: TUniDBDateTimePicker
+      Left = 195
+      Top = 112
+      Width = 121
+      Height = 21
+      TabOrder = 7
+    end
+    object RbQuaterly: TUniRadioButton
+      Left = 10
+      Top = 146
+      Width = 70
+      Height = 17
+      Caption = 'Quarterly'
+      TabOrder = 3
+      OnClick = RbQuaterlyClick
+    end
+    object sbDaysInCycle: TUniSpinEdit
+      Left = 195
+      Top = 80
+      Width = 121
+      Height = 22
+      MaxValue = 31
+      MinValue = 1
+      TabOrder = 6
+      Value = 1
+      OnExit = sbDaysInCycleExit
+    end
+    object dbQuaterly: TUniDBDateTimePicker
+      Left = 195
+      Top = 143
+      Width = 121
+      Height = 21
+      TabOrder = 8
+    end
+  end
+  object Panel3: TUniPanel
+    Left = 0
+    Top = 0
+    Width = 324
+    Height = 41
+    Align = alTop
+    TabOrder = 2
+    object Label1: TUniLabel
+      Left = 8
+      Top = 16
+      Width = 134
+      Height = 13
+      Caption = 'Number of times to replicate:'
+    end
+    object seRepl: TUniSpinEdit
+      Left = 195
+      Top = 11
+      Width = 121
+      Height = 22
+      MaxValue = 500
+      MinValue = 1
+      TabOrder = 0
+      Value = 1
+    end
+  end
+end

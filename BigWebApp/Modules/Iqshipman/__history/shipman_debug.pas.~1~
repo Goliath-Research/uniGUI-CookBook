@@ -1,0 +1,239 @@
+unit shipman_debug;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.Buttons,
+  Vcl.Menus,
+  FireDAC.Comp.Client,
+  FireDAC.Comp.DataSet,
+  FireDAC.Phys,
+  MainModule,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniSplitter,
+  uniLabel,
+  uniPageControl,
+  uniMemo,
+  uniPanel,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniMainMenu,
+  uniCheckBox,
+  uniButton,
+  uniBitBtn, UniImage, Vcl.Graphics, Vcl.Controls,Vcl.StdCtrls;
+
+type
+  TFrmShipManDebug = class(TUniForm)
+    PnlError: TUniPanel;
+    Panel2: TUniPanel;
+    Panel3: TUniPanel;
+    Panel4: TUniPanel;
+    pcMain: TUniPageControl;
+    TabXMLRequest: TUniTabSheet;
+    TabXMLResponse: TUniTabSheet;
+    Panel5: TUniPanel;
+    chkWordWrap_Request: TUniCheckBox;
+    memRequest: TUniMemo;
+    Panel6: TUniPanel;
+    chkWordWrap_Response: TUniCheckBox;
+    memResponse: TUniMemo;
+    btnOK: TUniBitBtn;
+    PnlLeft: TUniPanel;
+    Panel7: TUniPanel;
+    Image1: TUniImage;
+    memError: TUniMemo;
+    Bevel1: TUniPanel;
+    lblError: TUniLabel;
+    SaveDialog: TSaveDialog;
+    Splitter1: TUniSplitter;
+    btnCopy1: TUniButton;
+    btnSelect1: TUniButton;
+    btnSave1: TUniButton;
+    btnWordwrap1: TUniButton;
+    btnCopy2: TUniButton;
+    btnSave2: TUniButton;
+    btnSelect2: TUniButton;
+    btnWordWrap2: TUniButton;
+    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure chkWordWrap_RequestClick(Sender: TObject);
+    procedure chkWordWrap_ResponseClick(Sender: TObject);
+    procedure btnSelect2Click(Sender: TObject);
+    procedure btnSelect1Click(Sender: TObject);
+    procedure btnSave1Click(Sender: TObject);
+    procedure btnSave2Click(Sender: TObject);
+    procedure btnWordwrap1Click(Sender: TObject);
+    procedure btnWordWrap2Click(Sender: TObject);
+  private
+    procedure SetWordWrap(AMemo: TUniMemo; AWordWrap: Boolean);
+    procedure SetControls;
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+  procedure ShowIQShipManDebug(AError, AXMLRequest, AXMLResponse: String);
+  procedure ShowXML(AXMLRequest, AXMLResponse: String);
+
+implementation
+
+{$R *.dfm}
+
+uses
+  IQMS.Common.ResourceStrings;
+//  iqmesg,
+//  iqmisc,
+//  iqstring;
+
+procedure ShowIQShipManDebug(AError, AXMLRequest, AXMLResponse: String);
+var
+  aFrmShipManDebug : TFrmShipManDebug;
+begin
+  aFrmShipManDebug := UniMainModule.GetFormInstance(TFrmShipManDebug) as TFrmShipManDebug;
+  with aFrmShipManDebug do
+  begin
+     memError.Text    := AError;
+//     memRequest.Text  := iqstring.StrTran(AXMLRequest, #10, #13#10);
+//     memResponse.Text := iqstring.StrTran(AXMLResponse, #10, #13#10);
+
+     ShowModal;
+  end;
+end;
+
+procedure ShowXML(AXMLRequest, AXMLResponse: String);
+var
+  aFrmShipManDebug : TFrmShipManDebug;
+begin
+  aFrmShipManDebug := UniMainModule.GetFormInstance(TFrmShipManDebug) as TFrmShipManDebug;
+  with aFrmShipManDebug do
+  begin
+     PnlError.Visible := FALSE;
+     Splitter1.Visible := FALSE;
+//     memRequest.Text  := iqstring.StrTran(AXMLRequest, #10, #13#10);
+//     memResponse.Text := iqstring.StrTran(AXMLResponse, #10, #13#10);
+     ShowModal;
+  end;
+end;
+
+procedure TFrmShipManDebug.FormCreate(Sender: TObject);
+begin
+  pcMain.ActivePageIndex := 0;
+  memError.Clear;
+  memRequest.Clear;
+  memResponse.Clear;
+
+  btnCopy1.ClientEvents.ExtEvents.Values['click']:='function click(sender, e, eOpts) '+
+      ' { '+
+      ' var textarea = document.getElementById("'+memRequest.JSName+'_id-inputEl"); '+
+      ' textarea.select(); '+
+      ' try { '+
+      ' var successful = document.execCommand(''copy''); '+
+      ' if(successful) console.log(''Copied!''); '+
+      ' else console.log(''Unable to copy!''); '+
+      ' } catch (err) { '+
+      ' console.log(''Unsupported Browser!''); '+
+      ' } '+
+      ' }';
+  btnCopy2.ClientEvents.ExtEvents.Values['click']:='function click(sender, e, eOpts) '+
+      ' { '+
+      ' var textarea = document.getElementById("'+memResponse.JSName+'_id-inputEl"); '+
+      ' textarea.select(); '+
+      ' try { '+
+      ' var successful = document.execCommand(''copy''); '+
+      ' if(successful) console.log(''Copied!''); '+
+      ' else console.log(''Unable to copy!''); '+
+      ' } catch (err) { '+
+      ' console.log(''Unsupported Browser!''); '+
+      ' } '+
+      ' }';
+end;
+
+procedure TFrmShipManDebug.FormShow(Sender: TObject);
+begin
+//  Beep;
+end;
+
+procedure TFrmShipManDebug.btnSave1Click(Sender: TObject);
+begin
+ with SaveDialog do
+  if Execute then
+     begin
+       memRequest.Lines.SaveToFile( FileName );
+
+//       if ( FileExists( FileName ) ) and
+//          ( IQConfirmYN( IQMS.Common.ResourceStrings.cTXT0000049 { 'Do you want to open the new file now?' } ) = TRUE ) then
+//          ExecuteProgram( FileName, SW_SHOWDEFAULT, '' ); // iqmisc.pas
+     end;
+end;
+
+procedure TFrmShipManDebug.btnSave2Click(Sender: TObject);
+begin
+ with SaveDialog do
+  if Execute then
+     begin
+       memResponse.Lines.SaveToFile( FileName );
+
+//       if ( FileExists( FileName ) ) and
+//          ( IQConfirmYN( IQMS.Common.ResourceStrings.cTXT0000049 { 'Do you want to open the new file now?' } ) = TRUE ) then
+//          ExecuteProgram( FileName, SW_SHOWDEFAULT, '' ); // iqmisc.pas
+     end;
+end;
+
+procedure TFrmShipManDebug.btnSelect1Click(Sender: TObject);
+begin
+  UniSession.AddJS(' var textarea = document.getElementById("'+memRequest.JSName+'_id-inputEl"); '+
+                   ' textarea.select(); ');
+end;
+
+procedure TFrmShipManDebug.btnSelect2Click(Sender: TObject);
+begin
+  UniSession.AddJS(' var textarea = document.getElementById("'+memResponse.JSName+'_id-inputEl"); '+
+                   ' textarea.select(); ');
+end;
+
+procedure TFrmShipManDebug.btnWordwrap1Click(Sender: TObject);
+begin
+  SetWordWrap(memRequest,not memRequest.WordWrap);
+  SetControls;
+end;
+
+procedure TFrmShipManDebug.btnWordWrap2Click(Sender: TObject);
+begin
+  SetWordWrap(memResponse,not memResponse.WordWrap);
+  SetControls;
+end;
+
+procedure TFrmShipManDebug.chkWordWrap_RequestClick(Sender: TObject);
+begin
+  SetWordWrap(memRequest,chkWordWrap_Request.Checked);
+end;
+
+procedure TFrmShipManDebug.chkWordWrap_ResponseClick(Sender: TObject);
+begin
+  SetWordWrap(memResponse,chkWordWrap_Response.Checked);
+end;
+
+procedure TFrmShipManDebug.SetWordWrap(AMemo: TUniMemo; AWordWrap: Boolean);
+begin
+  AMemo.WordWrap := AWordWrap;
+  if AMemo.WordWrap then
+     AMemo.ScrollBars := Vcl.StdCtrls.ssVertical
+  else
+     AMemo.ScrollBars := Vcl.StdCtrls.ssBoth;
+end;
+
+procedure TFrmShipManDebug.SetControls;
+begin
+  chkWordWrap_Request.Checked  := memRequest.WordWrap;
+  chkWordWrap_Response.Checked := memResponse.WordWrap;
+end;
+
+end.

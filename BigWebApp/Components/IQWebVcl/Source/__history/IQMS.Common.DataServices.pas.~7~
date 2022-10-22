@@ -1,0 +1,28 @@
+unit IQMS.Common.DataServices;
+
+interface
+
+uses
+  Data.DB,
+  IQWeb.Server.DataServices,
+  IQWeb.Session.ConnectionServices;
+
+  function GetDataServices : IIQDataServices;
+  function GetSessionConnection : TCustomConnection;
+
+implementation
+
+uses
+  Spring.Services;
+
+function GetDataServices : IIQDataServices;
+begin
+  Result := ServiceLocator.GetService<IIQDataServices>('FireDAC-Oracle');
+end;
+
+function GetSessionConnection : TCustomConnection;
+begin
+
+end;
+
+end.

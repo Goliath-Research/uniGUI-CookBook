@@ -1,0 +1,36 @@
+unit WC_7966;
+
+interface
+
+implementation
+
+uses
+  TestReg,
+  SysUtils,
+  uniGUIDialogs,
+  APRepl;
+
+procedure Test1;
+var
+  ATimes: Integer;
+  ADay: Integer;
+  ARepType: string;
+  AStartDate: TDateTime;
+begin
+  if GetAPReplicate(ATimes, ADay, ARepType, AStartDate) then
+    ShowMessage(
+      Format(
+        'Times=%d, Day=%d, RepType=%s, StartDate=%s',
+        [
+          ATimes,
+          ADay,
+          ARepType,
+          FormatDateTime('MM/DD/YY', AStartDate)
+        ]));
+end;
+
+initialization
+
+  TTestRepo.RegisterTest('WC-5153', 'Prod', 'ProdProp', Test1);
+
+end.

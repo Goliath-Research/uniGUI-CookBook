@@ -1,0 +1,141 @@
+unit SalesAna;
+
+interface
+
+uses
+  Winapi.Windows,
+  Vcl.Forms,
+  TeEngine,
+  Series,
+  TeeProcs,
+  Chart,
+  Vcl.Menus,
+  Vcl.DBGrids,
+  Spin,
+  Vcl.Buttons,
+  VclTee.TeeGDIPlus,
+  Data.DB,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniSplitter,
+  UniChart,
+  uniPanel,
+  uniLabel,
+  uniPageControl,
+  uniMemo,
+  uniBasicGrid,
+  uniDBGrid,
+  uniGroupBox,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniEdit,
+//uniTabSheet,  Not Found
+  uniMultiItem,
+  uniComboBox,
+  uniButton,
+  uniBitBtn, uniMainMenu, Vcl.ComCtrls, System.Classes, Vcl.Controls;
+
+type
+  TFrmSalesAnalysis = class(TUniForm)
+    MainMenu1: TUniMainMenu;
+    Options1: TUniMenuItem;
+    Reports1: TUniMenuItem;
+    Help1: TUniMenuItem;
+    Print1: TUniMenuItem;
+    PrintSetup1: TUniMenuItem;
+    GroupBox1: TUniGroupBox;
+    PageControl1: TUniPageControl;
+    Splitter1: TUniSplitter;
+    TabSheet1: TUniTabSheet;
+    DBGrid1: TUniDBGrid;
+    Label1: TUniLabel;
+    Label2: TUniLabel;
+    Label3: TUniLabel;
+    Label6: TUniLabel;
+    Chart1: TUniChart;
+    ComboBox1: TUniComboBox;
+    ComboBox2: TUniComboBox;
+    Edit1: TUniEdit;
+    Label5: TUniLabel;
+    Edit3: TUniEdit;
+    Label4: TUniLabel;
+    ComboBox3: TUniComboBox;
+    ComboBox4: TUniComboBox;
+    BitBtn1: TUniBitBtn;
+    PnlItem: TUniPanel;
+    Save1: TUniMenuItem;
+    Delete1: TUniMenuItem;
+    N1: TUniMenuItem;
+    Exit1: TUniMenuItem;
+    New1: TUniMenuItem;
+    Open1: TUniMenuItem;
+    SaveAs1: TUniMenuItem;
+    Contents1: TUniMenuItem;
+    N2: TUniMenuItem;
+    About1: TUniMenuItem;
+    TabSheet2: TUniTabSheet;
+    Memo1: TUniMemo;
+    BitBtn2: TUniBitBtn;
+    procedure FormCreate(Sender: TObject);
+    procedure ComboBox1Change(Sender: TObject);
+    procedure ComboBox2Change(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+function FrmSalesAnalysis: TFrmSalesAnalysis;
+
+implementation
+
+{$R *.DFM}
+
+uses MainModule;
+
+function FrmSalesAnalysis: TFrmSalesAnalysis;
+begin
+  Result := TFrmSalesAnalysis(UniMainModule.GetFormInstance(TFrmSalesAnalysis));
+end;
+
+
+procedure TFrmSalesAnalysis.FormCreate(Sender: TObject);
+begin
+ {  With Series1 do
+Begin
+    Add(  40, 'Pencil' , clRed ) ;
+    Add(  60, 'Paper',  clBlue ) ;
+    Add(  30, 'Ribbon', clGreen ) ;
+    Add(  200,  '123-0',clSilver);
+    Add(  10, 'AA-OO-',        clTeal);
+    Add(  20, '124-00',    clGreen);
+    Add(  15,  '1234-',clGreen);
+    Add(  20,  '343-A',clGreen);
+
+end;
+}
+   ComboBox1.Text := ComboBox1.Items[0];
+   ComboBox2.Text := ComboBox2.Items[0];
+   ComboBox3.Text := ComboBox3.Items[0];
+   ComboBox4.Text := ComboBox4.Items[0];
+   Label1.Caption := 'By ' + ComboBox1.Text;
+end;
+
+
+procedure TFrmSalesAnalysis.ComboBox1Change(Sender: TObject);
+begin
+   Label1.Caption := 'By ' + ComboBox1.Items[ComboBox1.ItemIndex];
+   DBGrid1.Columns[0].Title.Caption := ComboBox1.Items[ComboBox1.ItemIndex];
+end;
+
+procedure TFrmSalesAnalysis.ComboBox2Change(Sender: TObject);
+begin
+   if ComboBox2.ItemIndex = 1 then
+      Combobox4.Enabled := False
+   else
+      ComboBox4.Enabled := True;
+end;
+
+end.

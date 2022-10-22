@@ -1,0 +1,79 @@
+unit CrWarning;
+
+interface
+
+uses
+  System.Classes,
+  Vcl.Forms,
+  Vcl.Graphics,
+  Vcl.Controls,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniMemo,
+  uniPanel,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniButton, uniImage;
+
+type
+  TFrmCRWarning = class(TUniForm)
+    Panel1: TUniPanel;
+    Panel2: TUniPanel;
+    Button1: TUniButton;
+    Panel3: TUniPanel;
+    Image1: TUniImage;
+    Panel4: TUniPanel;
+    Memo1: TUniMemo;
+    Panel5: TUniPanel;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure UniFormCreate(Sender: TObject);
+  private
+    { Private declarations }
+    procedure SetAstr(Astr:string);
+  public
+    property Str:String write SetAstr;
+    { Public declarations }
+  end;
+
+procedure DoCrWarning(AStr:String);
+
+implementation
+
+uses
+  MainModule;
+//  IqRegFrm,
+//  IqCtrl;
+
+{$R *.dfm}
+
+procedure DoCrWarning(AStr:String);
+var
+  FrmCRWarning: TFrmCRWarning;
+begin
+  FrmCRWarning := TFrmCRWarning.Create(uniGUIApplication.UniApplication);
+   with FrmCRWarning do
+    begin
+      Str:=Astr;
+      ShowModal;
+    end;
+end;
+
+procedure TFrmCRWarning.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+//  IQRegFormWrite( self, [ self ]);
+end;
+
+procedure TFrmCRWarning.SetAstr(Astr: string);
+begin
+  Memo1.Text := AStr;
+  Memo1.Readonly := true;
+end;
+
+procedure TFrmCRWarning.UniFormCreate(Sender: TObject);
+begin
+//  IQRegFormRead( self, [ self ]);
+end;
+
+end.

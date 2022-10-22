@@ -1,0 +1,459 @@
+unit qc_apqp_templateDataModule;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  ComCtrls, ExtCtrls, Buttons, DBCtrls, Grids, StdCtrls, Mask, Db, Menus,
+  MainModule, FireDAC.Comp.Client, FireDAC.Comp.DataSet, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.Stan.Def, FireDAC.Stan.Pool,
+  FireDAC.Stan.Async, FireDAC.Stan.Param, FireDAC.Phys, FireDAC.Phys.Intf,
+  FireDAC.DatS, FireDAC.DApt, FireDAC.DApt.Intf, FireDAC.UI.Intf,
+  System.Actions, Vcl.ActnList,
+  IQCore.Interfaces,
+  IQMS.WebComponents.DataControllerList,
+  System.ImageList, Vcl.ImgList, IQMS.Data.Lib, uniGUIBaseClasses,
+  uniGUIClasses, uniImageList;
+
+type
+  TQCApqpTemplate_DM = class(TDataModule, IIQDataModuleFrameEventHandler)
+    SrcApqpType: TDataSource;
+    TblApqpType: TFDTable;
+    TblApqpTypeID: TBCDField;
+    TblApqpTypeNAME: TStringField;
+    TblApqpTypeDESCRIP: TStringField;
+    MainMenu1: TMainMenu;
+    File1: TMenuItem;
+    Exit1: TMenuItem;
+    Help1: TMenuItem;
+    About1: TMenuItem;
+    SrcApqpTypeElem: TDataSource;
+    QryApqpTypeElem: TFDQuery;
+    UpdateSQLApqpTypeElem: TFDUpdateSQL;
+    QryApqpTypeElemID: TBCDField;
+    QryApqpTypeElemSEQ: TBCDField;
+    QryApqpTypeElemDESCRIP: TStringField;
+    QryApqpTypeElemRESPONSE_TITLE: TStringField;
+    SrcRespList: TDataSource;
+    QryRespList: TFDQuery;
+    UpdateSQLRespList: TFDUpdateSQL;
+    QryRespListID: TBCDField;
+    QryRespListCODE: TStringField;
+    QryRespListTEXT: TStringField;
+    SrcRespCheckList: TDataSource;
+    QryRespCheckList: TFDQuery;
+    QryRespCheckListID: TBCDField;
+    QryRespCheckListSEQ: TBCDField;
+    QryRespCheckListCHECK_TEXT: TStringField;
+    QryRespCheckListCRITICAL: TStringField;
+    UpdateSQLRespCheckList: TFDUpdateSQL;
+    QryApqpTypeElemAPQP_TYPE_ID: TBCDField;
+    QryRespListAPQP_TYPE_ELEMENT_ID: TBCDField;
+    QryRespCheckListAPQP_TYPE_ELEMENT_ID: TBCDField;
+    N1: TMenuItem;
+    CloneTemplate1: TMenuItem;
+    QryTeamMembers: TFDQuery;
+    QryTeamMembersID: TBCDField;
+    QryTeamMembersSOURCE: TStringField;
+    QryTeamMembersSOURCE_ID: TBCDField;
+    QryTeamMembersTEAM_MEMBER_ID: TBCDField;
+    QryTeamMembersSEQ: TBCDField;
+    QryTeamMembersNAME: TStringField;
+    QryTeamMembersTITLE: TStringField;
+    QryTeamMembersEMAIL: TStringField;
+    QryTeamMembersTYPE: TStringField;
+    QryTeamMembersTEXT: TStringField;
+    QryApqpTypeElemSource: TStringField;
+    QryApqpTypeElemSource_ID: TFloatField;
+    UpdateSQLTeamMembers: TFDUpdateSQL;
+    QryApqpTypeElemDURATION: TBCDField;
+    TblApqpTypeSEQ_WORKFLOW: TStringField;
+    QryApqpTypeElemSEQ_WORKFLOW: TStringField;
+    QryRespCheckListNOTES: TStringField;
+    TblApqpTypePK_HIDE: TStringField;
+    PopupMenu1: TPopupMenu;
+    CopyTeamMembers1: TMenuItem;
+    PasteTeamMembers1: TMenuItem;
+    QryTeamMembersDELEGATE_TEAM_MEMBER_ID: TBCDField;
+    QryTeamMembersDELEGATE_THRESHOLD: TBCDField;
+    QryTeamMembersDelegate_Name: TStringField;
+    QryTeamMembersDelegate_Email: TStringField;
+    TblApqpTypeEXCLUDE_WEEKENDS: TStringField;
+    Contents1: TMenuItem;
+    TblApqpTypeEPLANT_ID: TBCDField;
+    TblApqpTypeEplantDisp: TStringField;
+    CopyElement1: TMenuItem;
+    PasteElement1: TMenuItem;
+    N2: TMenuItem;
+    SrcTeamMembers: TDataSource;
+    IQDataControllerLinkList1: TIQDataControllerLinkList;
+    MnuActionList: TActionList;
+    actmnuFileCloneTemplate: TAction;
+    actMnuFileExit: TAction;
+    actMnuHelpContents: TAction;
+    actMnuHelpAbout: TAction;
+    TlbActionList: TActionList;
+    actToolbarSearch: TAction;
+    actClone: TAction;
+    PkTeamMembers: TFDQuery;
+    PkTeamMembersID: TBCDField;
+    PkTeamMembersName: TStringField;
+    PkTeamMembersTitle: TStringField;
+    PkTeamMembersEMail: TStringField;
+    PKEplant: TFDQuery;
+    PKEplantID: TBCDField;
+    PKEplantNAME: TStringField;
+    TblApqpTypeEPlant: TStringField;
+    tlbImageListAdapter: TUniImageListAdapter;
+    tlbUniImageList: TUniImageList;
+    procedure TblApqpTypeBeforePost(DataSet: TDataSet);
+    procedure Exit1Click(Sender: TObject);
+    procedure About1Click(Sender: TObject);
+    procedure QryApqpTypeElemNewRecord(DataSet: TDataSet);
+    procedure ApplyUpdateToTable(DataSet: TDataSet);
+    procedure CheckRefresh(Sender: TObject; Button: TNavigateBtn);
+    procedure PostParentsBeforeEdit(DataSet: TDataSet);
+    procedure sbtnSearchClick(Sender: TObject);
+    procedure QryRespListNewRecord(DataSet: TDataSet);
+    procedure QryRespCheckListNewRecord(DataSet: TDataSet);
+    procedure sbtnCloneClick(Sender: TObject);
+    procedure QryTeamMembersNewRecord(DataSet: TDataSet);
+    procedure QryApqpTypeElemCalcFields(DataSet: TDataSet);
+    procedure ChangeSequence(Sender: TObject);
+    procedure PkTemplateIQModify(Sender: TObject; var Action: TModalResult;
+      var ResultValue: Variant);
+    procedure FormShow(Sender: TObject);
+    procedure PasteTeamMembers1Click(Sender: TObject);
+    procedure CopyTeamMembers1Click(Sender: TObject);
+    procedure Contents1Click(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure NavMembersBeforeAction(Sender: TObject; Button: TNavigateBtn);
+    procedure TblApqpTypeCalcFields(DataSet: TDataSet);
+    procedure CopyElement1Click(Sender: TObject);
+    procedure PasteElement1Click(Sender: TObject);
+    procedure PopupMenu1Popup(Sender: TObject);
+  private
+    { Private declarations }
+    FCopyFromElement_ID: Real;
+    FCopyPasteElement_ID: Real;
+//  procedure IQNotify( var Msg: TMessage ); message iq_Notify;
+  public
+    { Public declarations }
+
+    procedure DoOnFrameCreate(Sender: TObject);
+    procedure DoOnFrameDestroy(Sender: TObject);
+  end;
+
+  function QCApqpTemplate_DM: TQCApqpTemplate_DM;
+
+implementation
+
+{$R *.DFM}
+
+uses
+  UniGUIVars, uniGUIMainModule, IQUniEditor, IQModuleFormDesigner;
+
+function QCApqpTemplate_DM: TQCApqpTemplate_DM;
+begin
+  Result := UniMainModule.GetModuleInstance(TQCApqpTemplate_DM) as TQCApqpTemplate_DM;
+end;
+
+procedure TQCApqpTemplate_DM.DoOnFrameCreate(Sender: TObject);
+begin
+  IQSetTablesActive(True, Self);
+ // IQRegFormRead( self, [self, pnlHeader, pnlElem, wwGridElements, wwGridLookup, wwGridChkList, wwGridMembers ]);
+ // pgctrlHeader.ActivePageIndex:= 0;
+ // PageControl1.ActivePageIndex:= 0;
+ // TAttachedDocumentsCoordinator.Create( self ).RegisterDocuments( TabDocs,  [ IQExtDoc1 ]);  // IQAttachedDocumentsCoordinator.pas
+
+ { try
+    sbtnSearchClick(NIL);
+  except
+    PostMessage( Handle, wm_Command, Exit1.Command, 0 );
+  end;   }
+end;
+
+procedure TQCApqpTemplate_DM.DoOnFrameDestroy(Sender: TObject);
+begin
+ // IQRegFormWrite( self, [self, pnlHeader, pnlElem, wwGridElements, wwGridLookup, wwGridChkList, wwGridMembers]);
+  IQSetTablesActive(False, Self);
+end;
+
+{ TQCApqpTemplate_DM }
+
+procedure TQCApqpTemplate_DM.TblApqpTypeBeforePost(DataSet: TDataSet);
+begin
+  IQAssignIDBeforePost( DataSet );
+end;
+
+procedure TQCApqpTemplate_DM.Exit1Click(Sender: TObject);
+begin
+//  Close;
+end;
+
+procedure TQCApqpTemplate_DM.About1Click(Sender: TObject);
+begin
+ // IQAbout1.Execute;
+end;
+
+procedure TQCApqpTemplate_DM.QryApqpTypeElemNewRecord(DataSet: TDataSet);
+begin
+ if TblapqpTypeID.asFloat <= 0 then
+   raise Exception.Create('Undefined APQP type');
+
+  with DataSet do
+  begin
+    FieldByName('id').asFloat         := GetNextID('apqp_type_element');
+    FieldByName('seq').asFloat        := SelectValue(Format('select max(seq) from apqp_type_element where apqp_type_id = %f', [ TblApqpTypeID.asFloat ])) +1;
+    FieldByName('apqp_type_id').asFloat:= TblApqpTypeID.asFloat;
+  end;
+end;
+
+procedure TQCApqpTemplate_DM.ApplyUpdateToTable(DataSet: TDataSet);
+begin
+  try
+    FDManager.FindConnection('IQFD').ApplyUpdates([ TFDQuery(DataSet) ]);
+  except
+    on E: Exception do
+    begin
+      TFDQuery(DataSet).CancelUpdates;
+    //  IQError( E.Message );
+      ABORT;
+    end;
+  end;
+end;
+
+procedure TQCApqpTemplate_DM.CheckRefresh(Sender: TObject;
+  Button: TNavigateBtn);
+begin
+{  if Button = nbRefresh then with TDBNavigator(Sender) do
+  begin
+    if Assigned(DataSource) and Assigned(DataSource.DataSet) then
+       RefreshDataSetByID( DataSource.DataSet );
+    ABORT;
+  end;     }
+end;
+
+procedure TQCApqpTemplate_DM.PostParentsBeforeEdit(DataSet: TDataSet);
+begin
+  with DataSet do
+    if Assigned(DataSource) then
+      if Assigned(DataSource.DataSet) and (DataSource.DataSet.State in [ dsedit, dsInsert ]) then
+         DataSource.DataSet.Post;
+end;
+
+procedure TQCApqpTemplate_DM.sbtnSearchClick(Sender: TObject);
+begin
+//  with PkTemplate do
+//    if Execute then
+//       TblApqpType.Locate( 'ID', GetValue('id'), [])
+//    else
+//       ABORT;
+end;
+
+procedure TQCApqpTemplate_DM.QryRespListNewRecord(DataSet: TDataSet);
+begin
+  if QryapqpTypeElemID.asFloat <= 0 then
+    raise Exception.Create('Undefined APQP element type');
+
+  with DataSet do
+  begin
+    FieldByName('id').asFloat                   := GetNextID('apqp_response_list');
+    FieldByName('apqp_type_element_id').asFloat := QryApqpTypeElemID.asFloat;
+  end;
+end;
+
+procedure TQCApqpTemplate_DM.QryRespCheckListNewRecord(DataSet: TDataSet);
+begin
+  if QryapqpTypeElemID.asFloat <= 0 then
+    raise Exception.Create('Undefined APQP element type');
+
+  with DataSet do
+  begin
+    FieldByName('id').asFloat                  := GetNextID('apqp_response_checklist');
+    FieldByName('seq').asFloat                 := SelectValue(Format('select max(seq) from apqp_response_checklist where apqp_type_element_id = %f', [ QryApqpTypeElemID.asFloat ])) + 1;
+    FieldByName('apqp_type_element_id').asFloat:= QryApqpTypeElemID.asFloat;
+  end;
+end;
+
+procedure TQCApqpTemplate_DM.sbtnCloneClick(Sender: TObject);
+var
+  ANewTemplate_ID : Real;
+begin
+//  if CloneTemplate( ANewTemplate_ID     ,            {New ID          }  {QC_Share.pas}
+ //                   TblApqpTypeID.asFloat,           {Old ID          }
+//                    'APQP_TYPE'          ,           {AHeadTabName    }
+//                    'APQP_TYPE_ELEMENT'  ,           {AElemTabName    }
+//                    'APQP_RESPONSE_LIST' ,           {ARespTabName    }
+//                    'APQP_RESPONSE_CHECKLIST' ) then {AChkListTabName }
+//  begin
+//    Reopen( TblApqpType );
+ //   TblApqpType.Locate('ID', ANewTemplate_ID, []);
+  //end;
+end;
+
+
+
+procedure TQCApqpTemplate_DM.QryApqpTypeElemCalcFields(DataSet: TDataSet);
+begin
+  with DataSet do
+  begin
+//    FieldByName('Source').asString  := QC_Const.QC_SOURCE_APQP_TYPE_ELEMENT;
+    FieldByName('Source_ID').asFloat := FieldByName('id').asFloat;
+  end;
+end;
+
+//procedure TFrmQCApqpTemplate.wwDBComboDlgTeamMemberCustomDlg(Sender: TObject);
+//var
+//  A: Variant;
+//begin
+//  with PkTeamMembers do
+//    if Execute then
+//    begin
+//      A:= SelectValueArrayFmt( 'select id, name, email, title from team_member where id = %f', [ DtoF(GetValue('ID')) ]);
+//      IQAssert( VarArrayDimCount( A ) > 0, 'Invalid Team Member ID');  {s/n happen}
+
+ {     QryTeamMembers.Edit;
+
+      if Sender = wwDBComboDlgDelegate then
+         begin
+           QryTeamMembersDELEGATE_TEAM_MEMBER_ID.asFloat:= A[ 0 ];
+         end
+      else
+         begin
+           QryTeamMembersTEAM_MEMBER_ID.asFloat:= A[ 0 ];
+           QryTeamMembersNAME.asString         := A[ 1 ];
+           QryTeamMembersEMAIL.asString        := A[ 2 ];
+           QryTeamMembersTITLE.asString        := A[ 3 ];
+         end
+    end;     }
+//end;
+
+procedure TQCApqpTemplate_DM.QryTeamMembersNewRecord(DataSet: TDataSet);
+begin
+  with DataSet do
+  begin
+    FieldByName('id').asFloat       := GetNextID( 'team_member_template' );
+    FieldByName('seq').asFloat      := 1 + Double(SelectValue(Format('select max(seq) from team_member_template where source = ''%s'' and source_id = %f',
+                                                    [ QryApqpTypeElemSource.asString, QryApqpTypeElemSource_ID.asFloat ])));
+    FieldByName('Source').asString  := QryApqpTypeElemSource.asString;
+    FieldByName('Source_ID').asFloat:= QryApqpTypeElemSource_ID.asFloat;
+  end;
+end;
+
+procedure TQCApqpTemplate_DM.ChangeSequence(Sender: TObject);
+begin
+//  ChangeElementSequence( IIf( Sender = sbtnUp, -1, 1),    {qc_share.pas}
+ //                        QryApqpTypeElemID.asFloat,
+  //                       TblApqpTypeID.asFloat,
+   //                      'APQP_TYPE_ELEMENT',
+    //                     'APQP_TYPE' );
+ // RefreshDataSetByID( QryApqpTypeElem );
+end;
+
+
+//procedure TFrmQCApqpTemplate.IQNotify(var Msg: TMessage);
+//begin
+//  case Msg.WParam of
+//     0:  if SR.Insert[ 'NavMain' ] then
+//            NavMain.BtnClick( nbInsert );
+ //    1:  wwDBComboDlgTeamMember.DropDown;
+//  end;
+//end;
+
+procedure TQCApqpTemplate_DM.NavMembersBeforeAction(Sender: TObject; Button: TNavigateBtn);
+begin
+//  if Button = nbInsert then
+//     PostMessage( Handle, iq_Notify, 1, 0 )   { TeamMember picklist }
+//  else if Button = nbRefresh then
+ //    CheckRefresh(Sender, Button);
+end;
+
+procedure TQCApqpTemplate_DM.PkTemplateIQModify(Sender: TObject;
+  var Action: TModalResult; var ResultValue: Variant);
+begin
+  Action:= mrOK;
+  ResultValue:= 0;
+ // PostMessage( Handle, iq_Notify, 0, 0 );   { "NewWorkflow" }
+end;
+
+//procedure TFrmQCApqpTemplate.wwGridMembersCalcCellColors(Sender: TObject;
+//  Field: TField; State: TGridDrawState; Highlight: Boolean; AFont: TFont;
+//  ABrush: TBrush);
+//begin
+ // if CompareText( QryTeamMembersTYPE.asString, 'Review') = 0 then
+ //    AFont.Style:= AFont.Style + [fsItalic];
+//end;
+
+procedure TQCApqpTemplate_DM.FormShow(Sender: TObject);
+begin
+// CheckVistaAdjustSize([ dbeDescrip ]);
+end;
+
+
+procedure TQCApqpTemplate_DM.PasteTeamMembers1Click(Sender: TObject);
+begin
+  //CloneTemplateResponsible( QC_Const.QC_SOURCE_APQP_TYPE_ELEMENT,
+   //                         FCopyFromElement_ID,
+    //                        QryApqpTypeElemID.asFloat );
+ // Reopen(QryTeamMembers);
+end;
+
+
+procedure TQCApqpTemplate_DM.Contents1Click(Sender: TObject);
+begin
+//   IQHelp.HelpContext( self.HelpContext );
+end;
+
+procedure TQCApqpTemplate_DM.FormActivate(Sender: TObject);
+begin
+//   IQHelp.AssignHTMLFile( iqchmQuality{CHM}, iqhtmQuality{HTM} );  {IQHelpHk.pas}
+end;
+
+procedure TQCApqpTemplate_DM.TblApqpTypeCalcFields(DataSet: TDataSet);
+begin
+//  DataSet.FieldByName('EPlantDisp').asString:= qc_share.GetEPlantDisplayName( DataSet );
+end;
+
+//procedure TFrmQCApqpTemplate.wwDBComboDlgEplantCustomDlg(Sender: TObject);
+//begin
+//  IQPickAndReplace( TblApqpTypeEPLANT_ID, PkEplant, 'id' );
+//end;
+
+//procedure TFrmQCApqpTemplate.wwDBComboDlgEplantKeyDown(Sender: TObject;
+ // var Key: Word; Shift: TShiftState);
+//begin
+//  IQCtrl.CheckClearWWDBComboDlg( Sender, Key, TblApqpTypeEPLANT_ID );
+//end;
+
+
+procedure TQCApqpTemplate_DM.CopyTeamMembers1Click(Sender: TObject);
+begin
+  FCopyFromElement_ID:= QryApqpTypeElemID.asFloat;
+end;
+
+// ----------------------
+procedure TQCApqpTemplate_DM.PopupMenu1Popup(Sender: TObject);
+begin
+ // PasteElement1.Enabled:= SR.Enabled['PasteElement1'] and (FCopyPasteElement_ID > 0);
+end;
+
+procedure TQCApqpTemplate_DM.CopyElement1Click(Sender: TObject);
+begin
+  FCopyPasteElement_ID:= QryApqpTypeElemID.asFloat;
+end;
+
+
+
+procedure TQCApqpTemplate_DM.PasteElement1Click(Sender: TObject);
+begin
+ // qc_share.CloneTemplateElement( 'APQP_TYPE',           // AHeaderTableName: string;
+ //                                'APQP_TYPE_ELEMENT',   // AElementTableName : string;
+ //                                'APQP_TYPE_ID',        // FK_ParentColumnName: string;
+ //                                TblApqpTypeID.asFloat, // ATrgHeader_ID: Real;
+ //                                FCopyPasteElement_ID,  // ASrcElement_ID: Real;
+ //                                QryApqpTypeElem );     // AElementDataSet
+end;
+
+end.
+

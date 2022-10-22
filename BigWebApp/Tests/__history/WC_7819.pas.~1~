@@ -1,0 +1,22 @@
+unit WC_7819;
+
+interface
+
+implementation
+
+uses
+  TestReg,
+  SysUtils,
+  uniGUIDialogs,
+  POConf;
+
+procedure Test1;
+begin
+  TFrm_POReceivedReleasesConfirm.Create('test','').Show;
+end;
+
+initialization
+
+  TTestRepo.RegisterTest('WC-7819', 'Po', 'POConf', 'Create', Test1);
+
+end.

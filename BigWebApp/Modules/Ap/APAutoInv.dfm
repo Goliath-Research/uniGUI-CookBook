@@ -1,0 +1,1034 @@
+object FrmAPAutoInv: TFrmAPAutoInv
+  Left = 224
+  Top = 184
+  HelpContext = 6667
+  ClientHeight = 326
+  ClientWidth = 474
+  Caption = 'AP Auto Invoice'
+  OnShow = FormShow
+  OldCreateOrder = False
+  OnClose = FormClose
+  Menu = MainMenu1
+  MonitoredKeys.Keys = <>
+  OnCreate = UniFormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TUniPanel
+    Left = 0
+    Top = 0
+    Width = 474
+    Height = 29
+    Hint = ''
+    Align = alTop
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 0
+    Caption = ''
+    object Panel4: TUniPanel
+      Tag = 1999
+      Left = 323
+      Top = 1
+      Width = 151
+      Height = 27
+      Hint = ''
+      Align = alRight
+      Anchors = [akTop, akRight, akBottom]
+      TabOrder = 0
+      Caption = ''
+      object BtnRefresh: TUniButton
+        Left = 5
+        Top = 3
+        Width = 140
+        Height = 25
+        Hint = ''
+        Caption = 'Refresh Query'
+        TabOrder = 1
+        OnClick = BtnRefreshClick
+      end
+    end
+    object Panel5: TUniPanel
+      Tag = 1999
+      Left = 1
+      Top = 1
+      Width = 323
+      Height = 27
+      Hint = ''
+      Align = alClient
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      TabOrder = 1
+      Caption = ''
+      object lblEndDate: TUniLabel
+        Left = 8
+        Top = 8
+        Width = 115
+        Height = 13
+        Hint = ''
+        Caption = 'Ending date for receipts'
+        TabOrder = 2
+      end
+      object wwDate: TUniDBDateTimePicker
+        Left = 128
+        Top = 4
+        Width = 121
+        Height = 21
+        Hint = ''
+        DateTime = 42630.000000000000000000
+        DateFormat = 'dd/MM/yyyy'
+        TimeFormat = 'HH:mm:ss'
+        TabOrder = 0
+      end
+    end
+  end
+  object Panel2: TUniPanel
+    Left = 0
+    Top = 285
+    Width = 474
+    Height = 41
+    Hint = ''
+    Align = alBottom
+    Anchors = [akLeft, akRight, akBottom]
+    TabOrder = 1
+    Caption = ''
+    object Panel3: TUniPanel
+      Left = 204
+      Top = 1
+      Width = 270
+      Height = 39
+      Hint = ''
+      Align = alRight
+      Anchors = [akTop, akRight, akBottom]
+      TabOrder = 0
+      Caption = ''
+      object BtnCreateInv: TUniButton
+        Left = 8
+        Top = 8
+        Width = 153
+        Height = 25
+        Hint = ''
+        Caption = 'Create Invoices'
+        TabOrder = 1
+        OnClick = BtnCreateInvClick
+      end
+      object BtnClose: TUniButton
+        Left = 167
+        Top = 8
+        Width = 97
+        Height = 25
+        Hint = ''
+        Caption = 'Close'
+        TabOrder = 2
+        OnClick = Exit1Click
+      end
+    end
+  end
+  object IQSearch1: TIQUniGridControl
+    Left = 0
+    Top = 29
+    Width = 474
+    Height = 256
+    Layout = 'border'
+    ParentAlignmentControl = False
+    AlignmentControl = uniAlignmentClient
+    Align = alClient
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    TabOrder = 2
+    IQComponents.Grid.Left = 0
+    IQComponents.Grid.Top = 29
+    IQComponents.Grid.Width = 257
+    IQComponents.Grid.Height = 170
+    IQComponents.Grid.Hint = ''
+    IQComponents.Grid.DataSource = SrcVendors
+    IQComponents.Grid.LoadMask.Message = 'Loading data...'
+    IQComponents.Grid.Align = alClient
+    IQComponents.Grid.Anchors = [akLeft, akTop, akRight, akBottom]
+    IQComponents.Grid.TabOrder = 0
+    IQComponents.Navigator.Left = 410
+    IQComponents.Navigator.Top = 0
+    IQComponents.Navigator.Width = 241
+    IQComponents.Navigator.Height = 25
+    IQComponents.Navigator.Hint = ''
+    IQComponents.Navigator.ShowHint = True
+    IQComponents.Navigator.DataSource = SrcVendors
+    IQComponents.Navigator.LayoutConfig.Region = 'east'
+    IQComponents.Navigator.TabOrder = 3
+    IQComponents.HiddenPanel.Left = 257
+    IQComponents.HiddenPanel.Top = 29
+    IQComponents.HiddenPanel.Width = 209
+    IQComponents.HiddenPanel.Height = 170
+    IQComponents.HiddenPanel.Hint = ''
+    IQComponents.HiddenPanel.Visible = True
+    IQComponents.HiddenPanel.Align = alRight
+    IQComponents.HiddenPanel.Anchors = [akTop, akRight, akBottom]
+    IQComponents.FormTab.Hint = ''
+    IQComponents.FormTab.ImageIndex = 1
+    IQComponents.FormTab.Caption = 'Form'
+    IQComponents.FormTab.Layout = 'border'
+    IQComponents.FormTab.ExplicitLeft = 0
+    IQComponents.FormTab.ExplicitTop = 0
+    IQComponents.FormTab.ExplicitWidth = 256
+    IQComponents.FormTab.ExplicitHeight = 128
+    DataSource = SrcVendors
+    Columns = <
+      item
+        FieldName = 'VENDORNO'
+        Title.Caption = 'Vendor#'
+        Width = 70
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'COMPANY'
+        Title.Caption = 'Company'
+        Width = 210
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'ATTN'
+        Title.Caption = 'Attn.'
+        Width = 210
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'ADDR1'
+        Title.Caption = 'Address1'
+        Width = 210
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'ADDR2'
+        Title.Caption = 'Address2'
+        Width = 210
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'ADDR3'
+        Title.Caption = 'Address3'
+        Width = 210
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'CITY'
+        Title.Caption = 'City'
+        Width = 210
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'STATE'
+        Title.Caption = 'State'
+        Width = 140
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'COUNTRY'
+        Title.Caption = 'Country'
+        Width = 210
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'ZIP'
+        Title.Caption = 'Zip'
+        Width = 70
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'REMIT_TO_ATTN'
+        Title.Caption = 'Remit to Attn'
+        Width = 210
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'REMIT_TO_ADDR1'
+        Title.Caption = 'Remit to Address1'
+        Width = 210
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'REMIT_TO_ADDR2'
+        Title.Caption = 'Remit to Address2'
+        Width = 210
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'REMIT_TO_ADDR3'
+        Title.Caption = 'Remit to Address3'
+        Width = 210
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'REMIT_TO_CITY'
+        Title.Caption = 'Remit to City'
+        Width = 210
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'REMIT_TO_STATE'
+        Title.Caption = 'Remit to State'
+        Width = 140
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'REMIT_TO_ZIP'
+        Title.Caption = 'Remit to ZIP'
+        Width = 70
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'REMIT_TO_COUNTRY'
+        Title.Caption = 'Remit to Country'
+        Width = 210
+        CheckBoxField.FieldValues = 'true;false'
+      end>
+    Marker = 0
+  end
+  object MainMenu1: TUniMainMenu
+    Left = 224
+    Top = 32
+    object File1: TUniMenuItem
+      Caption = '&File'
+      object CreateInvoices1: TUniMenuItem
+        Caption = 'Create Invoices'
+        OnClick = BtnCreateInvClick
+      end
+      object N1: TUniMenuItem
+        Caption = '-'
+      end
+      object OneInvoicePerPO1: TUniMenuItem
+        Caption = '&One Invoice Per PO'
+        OnClick = OneInvoicePerPO1Click
+      end
+      object N2: TUniMenuItem
+        Caption = '-'
+      end
+      object Exit1: TUniMenuItem
+        Caption = '&Exit'
+        OnClick = Exit1Click
+      end
+    end
+    object Help1: TUniMenuItem
+      Caption = '&Help'
+      object About1: TUniMenuItem
+        Caption = '&About'
+        OnClick = About1Click
+      end
+      object Contents1: TUniMenuItem
+        Caption = '&Contents'
+        OnClick = Contents1Click
+      end
+    end
+  end
+  object SrcVendors: TDataSource
+    DataSet = QryVendors
+    Left = 136
+    Top = 105
+  end
+  object QryVendors: TFDQuery
+    Filtered = True
+    OnFilterRecord = QryVendorsFilterRecord
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select distinct'
+      '       p.vendor_id,'
+      '       v.vendorno,'
+      '       v.company,'
+      '       v.attn,'
+      '       v.addr1,'
+      '       v.addr2,'
+      '       v.addr3,'
+      '       v.city,'
+      '       v.state,'
+      '       v.country,'
+      '       v.zip,'
+      '       NVL(t.id, 0) as remit_to_id,'
+      '       t.attn    as remit_to_attn,'
+      '       t.addr1   as remit_to_addr1,'
+      '       t.addr2   as remit_to_addr2,'
+      '       t.addr3   as remit_to_addr3,'
+      '       t.city    as remit_to_city,'
+      '       t.state   as remit_to_state,'
+      '       t.zip     as remit_to_zip,'
+      '       t.country as remit_to_country'
+      '  from po p,'
+      '       po_detail d,'
+      '       po_receipts r,'
+      '       vendor v,'
+      '       remit_to t'
+      ' where p.vendor_id = v.id'
+      '   and t.vendor_id = v.id'
+      '   and d.po_id = p.id'
+      '   and r.po_detail_id = d.id'
+      '   and misc.eplant_filter(p.eplant_id) = 1'
+      '')
+    Left = 176
+    Top = 168
+    object QryVendorsVENDORNO: TStringField
+      DisplayLabel = 'Vendor#'
+      DisplayWidth = 10
+      FieldName = 'VENDORNO'
+      Origin = 'V.VENDORNO'
+      FixedChar = True
+      Size = 10
+    end
+    object QryVendorsCOMPANY: TStringField
+      DisplayLabel = 'Company'
+      DisplayWidth = 30
+      FieldName = 'COMPANY'
+      Origin = 'V.COMPANY'
+      FixedChar = True
+      Size = 60
+    end
+    object QryVendorsATTN: TStringField
+      DisplayLabel = 'Attn.'
+      DisplayWidth = 30
+      FieldName = 'ATTN'
+      Origin = 'V.ATTN'
+      FixedChar = True
+      Size = 30
+    end
+    object QryVendorsADDR1: TStringField
+      DisplayLabel = 'Address1'
+      DisplayWidth = 30
+      FieldName = 'ADDR1'
+      Origin = 'V.ADDR1'
+      FixedChar = True
+      Size = 60
+    end
+    object QryVendorsADDR2: TStringField
+      DisplayLabel = 'Address2'
+      DisplayWidth = 30
+      FieldName = 'ADDR2'
+      Origin = 'V.ADDR2'
+      FixedChar = True
+      Size = 60
+    end
+    object QryVendorsADDR3: TStringField
+      DisplayLabel = 'Address3'
+      DisplayWidth = 30
+      FieldName = 'ADDR3'
+      Origin = 'V.ADDR3'
+      FixedChar = True
+      Size = 60
+    end
+    object QryVendorsCITY: TStringField
+      DisplayLabel = 'City'
+      DisplayWidth = 30
+      FieldName = 'CITY'
+      Origin = 'V.CITY'
+      FixedChar = True
+      Size = 30
+    end
+    object QryVendorsSTATE: TStringField
+      DisplayLabel = 'State'
+      DisplayWidth = 20
+      FieldName = 'STATE'
+      Origin = 'V.STATE'
+    end
+    object QryVendorsCOUNTRY: TStringField
+      DisplayLabel = 'Country'
+      DisplayWidth = 30
+      FieldName = 'COUNTRY'
+      Origin = 'V.COUNTRY'
+      FixedChar = True
+      Size = 30
+    end
+    object QryVendorsZIP: TStringField
+      DisplayLabel = 'Zip'
+      DisplayWidth = 10
+      FieldName = 'ZIP'
+      Origin = 'V.ZIP'
+      FixedChar = True
+      Size = 10
+    end
+    object QryVendorsREMIT_TO_ATTN: TStringField
+      DisplayLabel = 'Remit to Attn'
+      DisplayWidth = 30
+      FieldName = 'REMIT_TO_ATTN'
+      Origin = 'T.REMIT_TO_ATTN'
+      FixedChar = True
+      Size = 60
+    end
+    object QryVendorsREMIT_TO_ADDR1: TStringField
+      DisplayLabel = 'Remit to Address1'
+      DisplayWidth = 30
+      FieldName = 'REMIT_TO_ADDR1'
+      Origin = 'T.REMIT_TO.ADDR1'
+      Size = 60
+    end
+    object QryVendorsREMIT_TO_ADDR2: TStringField
+      DisplayLabel = 'Remit to Address2'
+      DisplayWidth = 30
+      FieldName = 'REMIT_TO_ADDR2'
+      Origin = 'T.REMIT_TO.ADDR2'
+      Size = 60
+    end
+    object QryVendorsREMIT_TO_ADDR3: TStringField
+      DisplayLabel = 'Remit to Address3'
+      DisplayWidth = 30
+      FieldName = 'REMIT_TO_ADDR3'
+      Origin = 'T.REMIT_TO.ADDR3'
+      Size = 60
+    end
+    object QryVendorsREMIT_TO_CITY: TStringField
+      DisplayLabel = 'Remit to City'
+      DisplayWidth = 30
+      FieldName = 'REMIT_TO_CITY'
+      Origin = 'T.REMIT_TO.CITY'
+      FixedChar = True
+      Size = 30
+    end
+    object QryVendorsREMIT_TO_STATE: TStringField
+      DisplayLabel = 'Remit to State'
+      DisplayWidth = 20
+      FieldName = 'REMIT_TO_STATE'
+      Origin = 'T.REMIT_TO.STATE'
+    end
+    object QryVendorsREMIT_TO_ZIP: TStringField
+      DisplayLabel = 'Remit to ZIP'
+      DisplayWidth = 10
+      FieldName = 'REMIT_TO_ZIP'
+      Origin = 'T.REMIT_TO.ZIP'
+      FixedChar = True
+      Size = 10
+    end
+    object QryVendorsREMIT_TO_COUNTRY: TStringField
+      DisplayLabel = 'Remit to Country'
+      DisplayWidth = 30
+      FieldName = 'REMIT_TO_COUNTRY'
+      Origin = 'T.REMIT_TO.COUNTRY'
+      FixedChar = True
+      Size = 30
+    end
+    object QryVendorsVENDOR_ID: TBCDField
+      DisplayWidth = 10
+      FieldName = 'VENDOR_ID'
+      Origin = 'P.VENDOR_ID'
+      Visible = False
+      Size = 0
+    end
+    object QryVendorsREMIT_TO_ID: TFMTBCDField
+      FieldName = 'REMIT_TO_ID'
+      Visible = False
+      Size = 38
+    end
+  end
+  object IQAbout1: TIQWebAbout
+    ModuleName = 'Auto Invoice'
+    Version = 'DEV.176554'
+    ChangeListNumber = '$Change: 191276 $'
+    BuildVersion = '176554'
+    Left = 192
+    Top = 125
+  end
+  object SR: TIQWebSecurityRegister
+    SecurityItems.Strings = (
+      'CreateInvoices1'
+      'BtnCreateInv'
+      'OneInvoicePerPO1')
+    SecurityCode = 'FRMAPAUTOINV'
+    Left = 224
+    Top = 125
+  end
+  object QryPODtls: TFDQuery
+    Tag = 1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select v1.id,'
+      '       v1.po_detail_id,'
+      '       v1.total_qty_ord,'
+      '       v1.qty_received,'
+      '       v1.qty_rejected,'
+      '       v1.qty_invoiced,'
+      '       v1.unit_price,'
+      '       UOM.IQConvert( v1.po_detail_uom,'
+      '                      v1.uom,'
+      '                      v1.unit_price,'
+      '                      v1.arinvt_id,'
+      '                      '#39'Y'#39' ) as adj_unit_price,'
+      '       v1.uom,'
+      '       v1.acct,'
+      '       v1.item_descrip,'
+      '       v1.item_number,'
+      '       v1.arinvt_id,'
+      '       v1.rev,'
+      '       v1.class,'
+      '       v1.std_price,'
+      
+        '       decode(NVL(v21.std_cost, 0), 0, v11.std_cost, NVL(v21.std' +
+        '_cost, 0)) as std_cost,'
+      '       v1.glacct_id_inv,'
+      '       v1.glacct_id_ppv,'
+      '       v1.glacct_id_holding,'
+      '       v1.remit_to_id,'
+      '       v1.rcomp,'
+      '       v1.cost_object_id,'
+      '       v1.cost_object_source,'
+      '       v1.dont_post_ppv,'
+      '       v1.po_detail_uom,'
+      '       v1.tax_code_id,'
+      '       v1.taxable,'
+      '       v1.ref_code_id,'
+      '       v1.eplant_id,'
+      '       v1.freight_id,'
+      '       UOM.IQConvert( v1.po_detail_uom,'
+      '                      v1.uom,'
+      
+        '                      decode(NVL(v21.std_cost, 0), 0, v11.std_co' +
+        'st, NVL(v21.std_cost, 0)),'
+      '                      v1.arinvt_id,'
+      '                      '#39'Y'#39' ) as adj_std_cost'
+      '  from'
+      '       v_po_detail_qk v1,'
+      ''
+      '       (select sum(a.std_cost) as std_cost,'
+      '                a.arinvt_id'
+      '           from (select a.arinvt_id,'
+      '                        a.elements_id,'
+      
+        '                        NVL(a.std_cost,0) - NVL(r.std_cost,0) as' +
+        ' std_cost'
+      '                   from arinvt_elements a,'
+      '                        arinvt_rollup r'
+      '                  where a.arinvt_id = r.arinvt_id(+)'
+      '                        and a.elements_id = r.elements_id(+)'
+      
+        '                        and Abs(NVL(a.std_cost,0) - NVL(r.std_co' +
+        'st,0)) > 0.000001) a,'
+      '                  elements e'
+      '           where a.elements_id = e.id'
+      '             and e.ELEM_TYPE = '#39'OUTSOURCE'#39
+      '           group by a.arinvt_id) v21,'
+      ''
+      '       (select a.arinvt_id,'
+      
+        '               sum(NVL(a.std_cost,0) - NVL(r.std_cost,0)) as std' +
+        '_cost'
+      '                   from arinvt_elements a,'
+      '                        arinvt_rollup r'
+      '                  where a.arinvt_id = r.arinvt_id(+)'
+      '                        and a.elements_id = r.elements_id(+)'
+      
+        '                        and Abs(NVL(a.std_cost,0) - NVL(r.std_co' +
+        'st,0)) > 0.000001'
+      '                  group by a.arinvt_id ) v11'
+      ''
+      '--       (select a.arinvt_id, a.std_cost from arinvt_elements a,'
+      '--               elements e'
+      '--         where elements_id = e.id'
+      '--           and ELEM_TYPE = '#39'OUTSOURCE'#39') v2'
+      ''
+      ' where po_detail_id = :po_detail_id'
+      '   and v1.arinvt_id = v21.arinvt_id(+)'
+      '   and v1.arinvt_id = v11.arinvt_id(+)'
+      ''
+      ''
+      ''
+      ' '
+      ' '
+      ' '
+      ' '
+      ' '
+      ' '
+      ' ')
+    Left = 260
+    Top = 126
+    ParamData = <
+      item
+        Name = 'po_detail_id'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object FloatField1: TBCDField
+      FieldName = 'ID'
+      Size = 0
+    end
+    object FloatField2: TBCDField
+      FieldName = 'PO_DETAIL_ID'
+      Size = 0
+    end
+    object FloatField3: TBCDField
+      FieldName = 'TOTAL_QTY_ORD'
+    end
+    object FloatField4: TFMTBCDField
+      FieldName = 'QTY_RECEIVED'
+      Size = 38
+    end
+    object FloatField5: TFMTBCDField
+      FieldName = 'QTY_INVOICED'
+      Size = 38
+    end
+    object FloatField6: TFMTBCDField
+      FieldName = 'UNIT_PRICE'
+      DisplayFormat = '0.000000'
+      Size = 6
+    end
+    object StringField2: TStringField
+      FieldName = 'ACCT'
+      Size = 50
+    end
+    object StringField3: TStringField
+      FieldName = 'ITEM_DESCRIP'
+      Size = 100
+    end
+    object StringField4: TStringField
+      FieldName = 'ITEM_NUMBER'
+      Size = 50
+    end
+    object StringField5: TStringField
+      FieldName = 'REV'
+      Size = 15
+    end
+    object StringField6: TStringField
+      FieldName = 'CLASS'
+      Size = 2
+    end
+    object FloatField7: TFMTBCDField
+      FieldName = 'STD_PRICE'
+      Size = 6
+    end
+    object FloatField8: TFMTBCDField
+      FieldName = 'STD_COST'
+      Size = 38
+    end
+    object FloatField9: TFMTBCDField
+      FieldName = 'GLACCT_ID_INV'
+      Size = 38
+    end
+    object FloatField10: TBCDField
+      FieldName = 'ARINVT_ID'
+      Size = 0
+    end
+    object FloatField11: TFMTBCDField
+      FieldName = 'GLACCT_ID_PPV'
+      Size = 38
+    end
+    object FloatField12: TBCDField
+      FieldName = 'GLACCT_ID_HOLDING'
+      Size = 0
+    end
+    object FloatField13: TBCDField
+      FieldName = 'REMIT_TO_ID'
+      Size = 0
+    end
+    object StringField7: TStringField
+      FieldName = 'RCOMP'
+      Size = 60
+    end
+    object QryPODtlsCOST_OBJECT_ID: TBCDField
+      FieldName = 'COST_OBJECT_ID'
+      Origin = 'V_PO_DETAIL.COST_OBJECT_ID'
+      Size = 0
+    end
+    object QryPODtlsCOST_OBJECT_SOURCE: TStringField
+      FieldName = 'COST_OBJECT_SOURCE'
+      Origin = 'V_PO_DETAIL.COST_OBJECT_SOURCE'
+      Size = 50
+    end
+    object QryPODtlsUOM: TStringField
+      FieldName = 'UOM'
+      Size = 10
+    end
+    object QryPODtlsDONT_POST_PPV: TStringField
+      FieldName = 'DONT_POST_PPV'
+      Size = 1
+    end
+    object QryPODtlsQTY_REJECTED: TFMTBCDField
+      FieldName = 'QTY_REJECTED'
+      Size = 38
+    end
+    object QryPODtlsPO_DETAIL_UOM: TStringField
+      FieldName = 'PO_DETAIL_UOM'
+      Size = 10
+    end
+    object QryPODtlsADJ_STD_COST: TFMTBCDField
+      FieldName = 'ADJ_STD_COST'
+      Size = 38
+    end
+    object QryPODtlsADJ_UNIT_PRICE: TFMTBCDField
+      FieldName = 'ADJ_UNIT_PRICE'
+      Size = 38
+    end
+    object QryPODtlsTAX_CODE_ID: TFMTBCDField
+      FieldName = 'TAX_CODE_ID'
+      Size = 38
+    end
+    object QryPODtlsTAXABLE: TStringField
+      FieldName = 'TAXABLE'
+      Size = 1
+    end
+    object QryPODtlsREF_CODE_ID: TBCDField
+      FieldName = 'REF_CODE_ID'
+      Size = 0
+    end
+    object QryPODtlsEPLANT_ID: TBCDField
+      FieldName = 'EPLANT_ID'
+      Size = 0
+    end
+    object QryPODtlsFREIGHT_ID: TBCDField
+      FieldName = 'FREIGHT_ID'
+      Size = 0
+    end
+  end
+  object QryRec: TFDQuery
+    Tag = 1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select p.id,'
+      '       p.po_detail_id,'
+      '       p.receiptno,'
+      '       p.qty_received,'
+      '       p.date_received,'
+      '       p.posted,'
+      '       p.ecode,'
+      '       p.eid,'
+      '       p.edate_time,'
+      '       p.ecopy,'
+      '       p.comment1,'
+      '       p.eplant_id,'
+      '       r.qty_rejected,'
+      '       p.qty_invoiced,'
+      
+        '       NVL(p.qty_received, 0) - NVL(r.qty_rejected, 0) - NVL(p.q' +
+        'ty_invoiced, 0) as qty_to_invoice,'
+      '       p.comment1'
+      '  from po_receipts p,'
+      
+        '       (select NVL(sum(NVL(qty_rejected, 0)), 0) as qty_rejected' +
+        ','
+      '               po_receipts_id'
+      '          from po_rejects'
+      '         group by po_receipts_id) r'
+      ' where p.id = :PO_RECEIPTS_ID'
+      '   and p.po_detail_id = :PO_DETAIL_ID'
+      '   and r.po_receipts_id(+) = p.id'
+      ''
+      ''
+      ' '
+      ' '
+      ' '
+      ' '
+      ' '
+      ' '
+      ' '
+      ' ')
+    Left = 296
+    Top = 126
+    ParamData = <
+      item
+        Name = 'PO_RECEIPTS_ID'
+        DataType = ftBCD
+        ParamType = ptInput
+      end
+      item
+        Name = 'PO_DETAIL_ID'
+        ParamType = ptInput
+      end>
+    object QryRecRECEIPTNO: TStringField
+      DisplayLabel = 'Receipt#'
+      DisplayWidth = 25
+      FieldName = 'RECEIPTNO'
+      Origin = 'P.RECEIPTNO'
+      Size = 50
+    end
+    object QryRecQTY_RECEIVED: TBCDField
+      DisplayLabel = 'Qty Received'
+      DisplayWidth = 10
+      FieldName = 'QTY_RECEIVED'
+      Origin = 'P.QTY_RECEIVED'
+    end
+    object QryRecDATE_RECEIVED: TDateTimeField
+      DisplayLabel = 'Date Received'
+      DisplayWidth = 18
+      FieldName = 'DATE_RECEIVED'
+      Origin = 'P.DATE_RECEIVED'
+    end
+    object QryRecQTY_REJECTED: TFMTBCDField
+      DisplayLabel = 'Qty Rejected'
+      DisplayWidth = 10
+      FieldName = 'QTY_REJECTED'
+      Origin = 'R.QTY_REJECTED'
+      Size = 38
+    end
+    object QryRecQTY_INVOICED: TBCDField
+      DisplayLabel = 'Qty Invoiced'
+      DisplayWidth = 10
+      FieldName = 'QTY_INVOICED'
+      Origin = 'P.QTY_INVOICED'
+    end
+    object QryRecQTY_TO_INVOICE: TFMTBCDField
+      DisplayLabel = 'Qty to Invoice'
+      DisplayWidth = 10
+      FieldName = 'QTY_TO_INVOICE'
+      Origin = 
+        'NVL(p.qty_received, 0) - NVL(r.qty_rejected, 0) - NVL(p.qty_invo' +
+        'iced, 0)'
+      Size = 38
+    end
+    object QryRecID: TBCDField
+      DisplayWidth = 10
+      FieldName = 'ID'
+      Origin = 'P.ID'
+      Visible = False
+      Size = 0
+    end
+    object QryRecPO_DETAIL_ID: TBCDField
+      DisplayWidth = 10
+      FieldName = 'PO_DETAIL_ID'
+      Origin = 'P.PO_DETAIL_ID'
+      Visible = False
+      Size = 0
+    end
+    object QryRecPOSTED: TStringField
+      DisplayWidth = 1
+      FieldName = 'POSTED'
+      Origin = 'P.POSTED'
+      Visible = False
+      Size = 1
+    end
+    object QryRecECODE: TStringField
+      DisplayWidth = 10
+      FieldName = 'ECODE'
+      Origin = 'P.ECODE'
+      Visible = False
+      Size = 10
+    end
+    object QryRecEID: TBCDField
+      DisplayWidth = 10
+      FieldName = 'EID'
+      Origin = 'P.EID'
+      Visible = False
+      Size = 0
+    end
+    object QryRecEDATE_TIME: TDateTimeField
+      DisplayWidth = 18
+      FieldName = 'EDATE_TIME'
+      Origin = 'P.EDATE_TIME'
+      Visible = False
+    end
+    object QryRecCOMMENT1: TStringField
+      DisplayLabel = 'Comment'
+      DisplayWidth = 50
+      FieldName = 'COMMENT1'
+      Origin = 'P.COMMENT1'
+      Size = 250
+    end
+    object QryRecECOPY: TStringField
+      DisplayWidth = 1
+      FieldName = 'ECOPY'
+      Origin = 'P.ECOPY'
+      Visible = False
+      Size = 1
+    end
+    object QryRecEPLANT_ID: TBCDField
+      DisplayWidth = 10
+      FieldName = 'EPLANT_ID'
+      Origin = 'P.EPLANT_ID'
+      Visible = False
+      Size = 0
+    end
+  end
+  object QryPO_Recv_vs_AP: TFDQuery
+    Tag = 1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select d.id po_detail_id,'
+      '       -- d.po_id,'
+      '       -- d.arinvt_id,'
+      '       -- d.misc_item,'
+      '       -- NVL(d.total_qty_ord, 0) as total_qty_ord,'
+      '       -- NVL(b.qty_received, 0) as qty_received,'
+      '       -- NVL(b.qty_rejected, 0) as qty_rejected,'
+      
+        '       NVL(b.qty_received, 0) - NVL(b.qty_rejected, 0) as net_re' +
+        'ceived,'
+      '       -- NVL(a.qty_invoiced, 0) as qty_invoiced,'
+      
+        '       NVL(b.qty_received, 0) - NVL(b.qty_rejected, 0) - NVL(a.q' +
+        'ty_invoiced, 0) as uninvoiced'
+      
+        '       -- NVL(arprep.invoice_qty, 0) + NVL(arcred.invoice_qty, 0' +
+        ') as total_credited,'
+      '       -- NVL(arprep.invoice_qty, 0) as prepost_credited,'
+      '       -- NVL(arcred.invoice_qty, 0) as posted_credited'
+      '  from po_detail d,'
+      ''
+      
+        '       (select NVL(Sum(NVL(qty_invoiced, 0)), 0) as qty_invoiced' +
+        ','
+      '               po_detail_id'
+      
+        '          from (select qty_invoiced, po_detail_id from apinvoice' +
+        '_detail'
+      '                 where po_detail_id = :po_detail_id'
+      '                union all'
+      
+        '                select qty_invoiced, po_detail_id from apprepost' +
+        '_detail'
+      '                 where po_detail_id = :po_detail_id )'
+      '          group by po_detail_id) a,'
+      ''
+      
+        '         (select NVL(sum(NVL(qty_received, 0)), 0) as qty_receiv' +
+        'ed,'
+      
+        '                 NVL(sum(NVL(qty_rejected, 0)), 0) as qty_reject' +
+        'ed,'
+      '                 po_detail_id'
+      '            from po_receipts,'
+      
+        '                 (select NVL(sum(NVL(qty_rejected, 0)), 0) as qt' +
+        'y_rejected,'
+      '                         po_receipts_id'
+      '                    from po_rejects'
+      '                   group by po_receipts_id ) b'
+      '            where id = b.po_receipts_id(+)'
+      '              and po_receipts.po_detail_id = :po_detail_id'
+      '            group by po_detail_id) b,'
+      ''
+      '       (select sum(invoice_qty) as invoice_qty,'
+      '               po_detail_id'
+      '          from arprepost_detail'
+      '         where po_detail_id = :po_detail_id'
+      '         group by po_detail_id) arprep,'
+      ''
+      '       (select sum(invoice_qty) as invoice_qty,'
+      '               po_detail_id'
+      '          from ARINVOICE_CREDITED'
+      '         where po_detail_id = :po_detail_id'
+      '         group by po_detail_id ) arcred'
+      '  where d.id = :po_detail_id'
+      '    and d.id = a.po_detail_id(+)'
+      '    and d.id = b.po_detail_id(+)'
+      '    and d.id = arprep.po_detail_id(+)'
+      '    and d.id = arcred.po_detail_id(+)'
+      ' ')
+    Left = 328
+    Top = 126
+    ParamData = <
+      item
+        Name = 'po_detail_id'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object QryPO_Recv_vs_APPO_DETAIL_ID: TBCDField
+      FieldName = 'PO_DETAIL_ID'
+      Size = 0
+    end
+    object QryPO_Recv_vs_APNET_RECEIVED: TFMTBCDField
+      FieldName = 'NET_RECEIVED'
+      Size = 38
+    end
+    object QryPO_Recv_vs_APUNINVOICED: TFMTBCDField
+      FieldName = 'UNINVOICED'
+      Size = 38
+    end
+  end
+end

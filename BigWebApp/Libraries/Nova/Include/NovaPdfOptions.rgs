@@ -1,0 +1,27 @@
+HKCR
+{
+	novapi80.NovaPdfOptions80.8 = s 'NovaPdfOptions80 Class'
+	{
+		CLSID = s '{74DA3985-C44B-4CFB-885B-FA0F19DFD36D}'
+	}
+	novapi80.NovaPdfOptions80 = s 'NovaPdfOptions80 Class'
+	{
+		CLSID = s '{74DA3985-C44B-4CFB-885B-FA0F19DFD36D}'
+		CurVer = s 'novapi80.NovaPdfOptions80.8'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {74DA3985-C44B-4CFB-885B-FA0F19DFD36D} = s 'NovaPdfOptions80 Class'
+		{
+			ProgID = s 'novapi80.NovaPdfOptions80.8'
+			VersionIndependentProgID = s 'novapi80.NovaPdfOptions80'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{9B7C4847-8D28-43CC-ADD2-A6495EB93175}'
+		}
+	}
+}

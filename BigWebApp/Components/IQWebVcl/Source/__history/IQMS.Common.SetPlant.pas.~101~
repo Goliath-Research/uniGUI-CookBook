@@ -1,0 +1,209 @@
+unit IQMS.Common.SetPlant;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Controls,
+  Vcl.Forms,
+  Data.DB,
+  FireDAC.Comp.Client,
+  FireDAC.Comp.DataSet,
+  FireDAC.Phys,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniRadioButton,
+  uniPanel,
+  uniMultiItem,
+  uniListBox,
+  uniDBLookupComboBox,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniButton, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, uniComboBox, uniDBComboBox, uniRadioGroup;
+
+type
+  TFrmChangePlantID = class(TUniForm)
+    Bevel1: TUniPanel;
+    btnCancel: TUniButton;
+    qryEPlants: TFDQuery;
+    qryEPlantsPLANT_NAME: TStringField;
+    qryEPlantsECODE: TStringField;
+    qryEPlantsCOMPANY_NAME: TStringField;
+    qryEPlantsPLANT_ID: TBCDField;
+    wwcombPlant: TUniDBLookupComboBox;
+    btnOK: TUniButton;
+    dsEPlants: TDataSource;
+    dsTarget: TDataSource;
+    rgrp: TUniRadioGroup;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnOKClick(Sender: TObject);
+    procedure UniFormCreate(Sender: TObject);
+    procedure UniFormShow(Sender: TObject);
+    procedure rgrpClick(Sender: TObject);
+  private
+    { Private declarations }
+    FDataSet     : TDataSet;
+    FEplantField : TField;
+
+    function GetEplant_ID: TField;
+    function GetEPlant_Name: string;
+    procedure SetDataSet(const Value: TDataSet);
+    procedure SetEplantField(const Value: TField);
+  public
+    { Public declarations }
+
+    property EPlant_ID    : TField    read GetEplant_ID;
+    property EPlant_Name  : string    read GetEPlant_Name;
+    property DataSet      : TDataSet                        write SetDataSet;
+    property EplantField  : TField                          write SetEplantField;
+  end;
+
+function DoChangePlantID  (ADataSet : TDataSet; AEplantField : TField = nil ) : boolean;
+function DoChangePlantIDEx(ADataSet : TDataSet; AEplantField : TField = nil ) : Boolean;
+
+implementation
+
+{$R *.DFM}
+
+uses
+  IQMS.DBTrans.dbtfields,
+  IQMS.Common.Controls,
+  IQMS.Common.DataLib,
+  IQMS.Common.RegFrm,
+  IQMS.Common.ResStrings;
+
+{ Add QryEPlant
+  Add to TblStandard:
+     Fields:
+       EPLANT_ID
+       EPlantName - lookup field
+     BeforOpen:
+       AssignEPlantFilter that calls IQAssignEPlantFilter
+     Filtered = TRUE
+  On the form:
+     Drop EplantName w/speed button the calls DoChangePlantID( self, DM.TblStandard );
+  PickLists:
+     Add Column EPlant ID.
+     BeforOpen:
+        Point to IQAssignEPlantFilter
+     Filtered = TRUE
+
+
+ Set EPlant View: (Ex: Mat_Req)
+ ------------------
+   Form:
+      Drop on form TSoftEPlant
+      Drop speed button "Set EPlant View" and assign:
+         if SoftEPlant1.ChangeEPlantView then
+            RefreshDataSets;
+   Table:
+     Filtered:  TRUE
+     BeforOpen: SoftEPlant1.AssignEPlantFilter( DataSet );
+}
+
+function DoChangePlantID(ADataSet : TDataSet; AEplantField : TField) : boolean;
+var
+   LFrmChangePlantID : TFrmChangePlantID;
+begin
+  Result := false;
+  if not Assigned(ADataSet) then
+    Exit;
+
+  LFrmChangePlantID := TFrmChangePlantID.Create(uniGUIApplication.UniApplication);
+
+  with LFrmChangePlantID do
+  begin
+    DataSet     := ADataSet;
+    EplantField := AEplantField;
+
+    Result  := ShowModal = mrOK;
+  end;
+end;
+
+function DoChangePlantIDEx( ADataSet:TDataSet; AEplantField:TField = nil ): Boolean;
+begin
+  Result := DoChangePlantID( ADataSet, AEplantField);
+end;
+
+{ TFrmChangePlantID }
+
+procedure TFrmChangePlantID.UniFormCreate(Sender: TObject);
+begin
+  IQRegFormRead(self, [self]);
+  qryEPlants.Open;
+end;
+
+procedure TFrmChangePlantID.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  qryEPlants.Close;
+  IQRegFormWrite(self, [self]);
+end;
+
+function TFrmChangePlantID.GetEPlant_ID: TField;
+begin
+  Result := FDataSet.FindField('EPLANT_ID');
+end;
+
+function TFrmChangePlantID.GetEPlant_Name: string;
+begin
+  Result := SelectValueFmtAsString('select name from eplant where id = %f', [ EPlant_ID.asFloat ]);
+end;
+
+procedure TFrmChangePlantID.rgrpClick(Sender: TObject);
+begin
+  wwcombPlant.Enabled := rgrp.ItemIndex = 1;
+end;
+
+procedure TFrmChangePlantID.SetDataSet(const Value : TDataSet);
+begin
+  FDataSet := Value;
+  if not Assigned(EPlant_ID) then
+    raise Exception.CreateFmt('Field EPLANT_ID not found in dataset %s', [Value.Name]);
+
+  dsTarget.DataSet := FDataSet;
+end;
+
+procedure TFrmChangePlantID.SetEplantField(const Value: TField);
+begin
+  FEplantField := Value;
+end;
+
+procedure TFrmChangePlantID.UniFormShow(Sender: TObject);
+begin
+  rgrp.ItemIndex := ord(EPlant_ID.asFloat <> 0);
+
+  wwcombPlant.Enabled := rgrp.ItemIndex = 1;
+
+  Caption := Format( IQMS.Common.ResStrings.cTXT0000243 {'Assign EPlant [%s]'}, [ FDataSet.Name ]);
+end;
+
+procedure TFrmChangePlantID.btnOKClick(Sender: TObject);
+var
+  AState : TDataSetState;
+begin
+  AState := FDataSet.State;
+  if not (AState in [dsEdit, dsInsert]) then
+    FDataSet.Edit;
+
+  if rgrp.ItemIndex = 0 then
+      {NOTE: 0 is invalid FK value HOWEVER out trigger is supposed to intercept it and make eplant_id = NULL }
+     EPlant_ID.Clear;
+//  else
+//     EPlant_ID.asFloat := qryEPlantsPLANT_ID.asFloat;
+
+  if Assigned(FEplantField) and IsStringFieldType(FEplantField) then
+    if EPlant_ID.asFloat > 0 then
+      FEplantField.asString := SelectValueByID('''['' || ID || '']  '' || name', 'eplant', EPlant_ID.asFloat)
+    else
+      FEplantField.asString := '';
+end;
+
+end.
+

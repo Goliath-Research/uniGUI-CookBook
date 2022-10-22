@@ -1,0 +1,118 @@
+object FrmProjectedHoursShift: TFrmProjectedHoursShift
+  Left = 200
+  Top = 108
+  Caption = 'Projected Shift Hours'
+  ClientHeight = 229
+  ClientWidth = 373
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Style = []
+  FormStyle = fsStayOnTop
+  OldCreateOrder = True
+  OnClose = FormClose
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TUniPanel
+    Left = 0
+    Top = 0
+    Width = 373
+    Height = 27
+    Align = alTop
+    TabOrder = 0
+    object DBNavigator1: TUniDBNavigator
+      Left = 272
+      Top = 1
+      Width = 100
+      Height = 25
+      DataSource = DataSource1
+      VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+      Align = alRight
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 0
+    end
+  end
+  object DBGrid1: TUniDBGrid
+    Left = 0
+    Top = 27
+    Width = 373
+    Height = 202
+    Align = alClient
+    Color = clBtnFace
+    DataSource = DataSource1
+    TabOrder = 1
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'SHIFT'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'SHIFT_HRS'
+        Title.Caption = 'Production Hours'
+        Width = 114
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'SETUPHRS'
+        Title.Caption = 'Setup Hours'
+        Width = 87
+        Visible = True
+      end>
+  end
+  object DataSource1: TDataSource
+    DataSet = Query1
+    Left = 128
+    Top = 104
+  end
+  object Query1: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select shift,'
+      '       shift_hrs,'
+      '       setuphrs'
+      '  from day_labor '
+      ' where day_hrs_id = :day_hrs_id'
+      ' order by shift')
+    Left = 128
+    Top = 128
+    ParamData = <
+      item
+        Name = 'day_hrs_id'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object Query1SHIFT: TBCDField
+      DisplayLabel = 'Shift'
+      FieldName = 'SHIFT'
+      Origin = 'DAY_LABOR.SHIFT'
+      Size = 0
+    end
+    object Query1SHIFT_HRS: TFMTBCDField
+      DisplayLabel = 'Prod Hrs'
+      FieldName = 'SHIFT_HRS'
+      Origin = 'DAY_LABOR.SHIFT_HRS'
+      DisplayFormat = '########0.00'
+      Size = 6
+    end
+    object Query1SETUPHRS: TFMTBCDField
+      DisplayLabel = 'Setup Hrs'
+      FieldName = 'SETUPHRS'
+      Origin = 'DAY_LABOR.SETUPHRS'
+      DisplayFormat = '########0.00'
+      Size = 6
+    end
+  end
+end

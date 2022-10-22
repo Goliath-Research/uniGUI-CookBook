@@ -1,0 +1,648 @@
+unit IQMS.Common.Params;
+
+interface
+
+uses
+  FireDAC.Comp.Client;
+
+type
+
+  TIQMS_Params = class(TInterfacedObject)
+  private
+    FIqmsDatabase   : string;
+    FIqmsConnection : TFDConnection;
+
+    function  GetIqmsProgramFilesDir      : string;
+    function  GetIqmsCurrentUserDir       : string;
+    function  GetProgramFilesDir          : string;
+    function  GetProgramFilesCommonDir    : string;
+    function  GetProgramDataDir           : string;
+    function  GetUserProfileDir           : string;
+    function  GetIqmsUserTempDir          : string;
+
+    function  GetTempPath                 : string;
+
+    function  GetWebIQDatabase            : string;
+    function  GetWebIQServerPort          : integer;
+    function  GetOracleConnectionString   : string;
+    function  GetIqmsDatabase             : string;
+    procedure SetIqmsDatabase             (aValue : string);
+    function  GetRTBoxPassword            : string;
+    function  GetRTBoxConnection          : TFDConnection;
+    function  GetIQMSPassword             : string;
+    function  GetIQMSConnection           : TFDConnection;
+    function  GetIQMSCurrentUser          : string;
+    procedure SetIQMSCurrentUser          (aValue : string);
+  public
+
+    constructor Create;
+    destructor  Destroy; override;
+
+    // In a web server, the connection is already available from IQWeb.INI
+    property WebIQDatabase              : string        read GetWebIQDatabase;    // IQORA
+    property WebIQServerPort            : integer       read GetWebIQServerPort;  // 8077
+    property OracleConnectionString     : string        read GetOracleConnectionString;
+
+    // After receiving the connection from WebIQ.INI or by selecting it in a Login form (desktop), it
+    // must be assigned to IqmsDatabase
+    property IqmsDatabase               : string        read GetIqmsDatabase  write SetIqmsDatabase;  // IQORA
+
+    // After knowing the connection (name), we need the password for RTBox
+    property RTBoxPassword              : string        read GetRTBoxPassword;    // IQMS
+
+    // Once the RTBox password is available, we can return a connection to the database
+    property RTBoxConnection            : TFDConnection read GetRTBoxConnection;
+
+    // After having an active connection to the database (RTBox / Password), we can read and decrypt the
+    // password for user IQMS (IQMS_Log)
+    property IQMSPassword               : string        read GetIQMSPassword;     // IQMS
+
+    property IQMSConnection             : TFDConnection read GetIQMSConnection;
+
+    property IQMSCurrentUser            : string        read GetIQMSCurrentUser   write SetIQMSCurrentUser;
+
+    property ProgramFilesDir            : string        read GetProgramFilesDir;  // Default Iqms.EXE location
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ///  Locations to use everywhere in Iqms                                      //
+    property IqmsProgramFilesDir        : string    read GetIqmsProgramFilesDir;  // Iqms.EXE location (R/O)
+    property IqmsProgramFilesCommonDir  : string    read GetProgramFilesCommonDir;// Iqms Common Files
+    property IqmsProgramDataDir         : string    read GetProgramDataDir;       // IqmsLU location
+    property IqmsUserProfileDir         : string    read GetUserProfileDir;       // My Documents
+    property IqmsCurrentUserDir         : string    read GetIqmsCurrentUserDir;   // My Documents\IQMS\Iqms
+    property IqmsUserTempDir            : string    read GetIqmsUserTempDir;      // Local User Temp
+    ////////////////////////////////////////////////////////////////////////////////
+
+    property TempPath                   : string    read GetTempPath;
+  end;
+
+implementation
+
+uses
+  Registry,
+  IniFiles,
+  SysUtils,
+  StrUtils,
+  Variants,
+  Windows,
+  Dialogs,
+  ActiveX,
+  Classes,
+  IQMS.Common.Encrypt,
+  IQMS.Common.StringUtils;
+
+type
+
+  KNOWNFOLDERID = TGUID;
+
+  TDataType = (dtBool, dtInteger, dtFloat, dtString, dtDate);
+
+  TIniFileValue = record
+    fIniFile  : string;
+    fSection  : string;
+    fIdent    : string;
+    fDataType : TDataType;
+  end;
+
+  TRegistryValue = record
+    fRootKey  : Cardinal;
+    fKey      : string;
+    fName     : string;
+    fDataType : TDataType;
+  end;
+
+const
+
+  IniFileValues : array[1..3] of TIniFileValue =
+  (
+    // 1 - IqmsDatabase
+    (
+      fIniFile  : 'WebIQ.INI';
+      fSection  : 'Oracle';
+      fIdent    : 'Database';
+      fDataType : dtString
+    ),
+    // 2 - Server Port
+    (
+      fIniFile  : 'WebIQ.INI';
+      fSection  : 'Server';
+      fIdent    : 'Port';
+      fDataType : dtInteger
+    ),
+    // 3 - Oracle Connection String
+    (
+      fIniFile  : 'WebIQ.INI';
+      fSection  : 'Oracle';
+      fIdent    : 'ConnectionString';
+      fDataType : dtString
+    )
+  );
+
+  RegistryValues : array[1..2] of TRegistryValue =
+  (
+    // 1 - RTBoxPassword
+    (
+      fRootKey  : HKEY_LOCAL_MACHINE;
+      fKey      : 'SOFTWARE\IQMS\Shared\%s';
+      fName     : 'ServiceUser';
+      fDataType : dtString
+    ),
+    // 2 - Current User
+    (
+      fRootKey  : HKEY_CURRENT_USER;
+      fKey      : 'SOFTWARE\IQMS\IQWin32\Login';
+      fName     : 'Current User';
+      fDataType : dtString
+    )
+  );
+
+  FOLDERID_ProgramFilesX86        : KNOWNFOLDERID = '{7C5A40EF-A0FB-4BFC-874A-C0F2E0B9FA8E}';
+  FOLDERID_ProgramFilesCommonX86  : KNOWNFOLDERID = '{DE974D24-D9C6-4D3E-BF91-F4455120B917}';
+  FOLDERID_ProgramData            : KNOWNFOLDERID = '{62AB5D82-FDC1-4DC3-A9DD-070D1D495D97}';
+  FOLDERID_Profile                : KNOWNFOLDERID = '{5E6C858F-0E22-4760-9AFE-EA3317B67173}';
+  FOLDERID_LocalAppData           : KNOWNFOLDERID = '{F1B32785-6FBA-4FCF-9D55-7B8E7F157091}';
+  FOLDERID_RoamingAppData         : KNOWNFOLDERID = '{3EB685DB-65F9-4CF6-A03A-E3EF65729F3D}';
+
+var
+  _IniFiles_ : array[1..4] of string;
+  _IniLevel_ : Integer;
+  _PrgDrive_ : WideString;
+
+  SHGetKnownFolderPath : function(const rfid: KNOWNFOLDERID; dwFlags: DWORD; hToken: THandle; var ppszPath: PWideChar ): HResult; stdcall;
+
+procedure InitVistaFunctions;
+var
+  hShell32: THandle;
+begin
+  hShell32 := GetModuleHandle('SHELL32');
+  @SHGetKnownFolderPath := Windows.GetProcAddress(hShell32, 'SHGetKnownFolderPath');
+end;
+
+function GetUserName : string;
+const
+  cnMaxUserNameLen = 254;
+var
+  sUserName     : string;
+  dwUserNameLen : DWord;
+begin
+  dwUserNameLen := cnMaxUserNameLen - 1;
+  SetLength( sUserName, cnMaxUserNameLen );
+  Win32Check(Windows.GetUserName( PChar(sUserName), dwUserNameLen ));
+  sUserName := PChar( sUserName );
+  
+  result := sUserName;
+end;
+
+{ Global / Shared Functions }
+
+function GetKnownFolderPath(const rfid: KNOWNFOLDERID): string;
+var
+  Path: PWideChar;
+begin
+  Result := '';
+
+  if (@SHGetKnownFolderPath <> nil) and (SHGetKnownFolderPath(rfid, 0, 0, Path) = S_OK) then
+  begin
+    Result := Path;
+    CoTaskMemFree(Path);
+  end;
+end;
+
+function TIQMS_Params.GetProgramFilesDir : string;
+begin
+  result := GetKnownFolderPath(FOLDERID_ProgramFilesX86);
+  if result = '' then
+    result := GetEnvironmentVariable('ProgramFiles');
+end;
+
+function TIQMS_Params.GetProgramFilesCommonDir : string;
+begin
+  result := GetKnownFolderPath(FOLDERID_ProgramFilesCommonX86);
+  if result = '' then
+    result := GetEnvironmentVariable('ProgramFiles') + '\Common Files';
+  result := result + '\IQMS\Field Technology';
+end;
+
+function TIQMS_Params.GetProgramDataDir : string;
+begin
+   result := GetKnownFolderPath(FOLDERID_ProgramData);
+  if result = '' then
+    result := GetEnvironmentVariable('ALLUSERSPROFILE');// + '\Application Data';
+  result := result + '\IQMS\Iqms';
+end;
+
+function TIQMS_Params.GetUserProfileDir : string;
+begin
+  result := GetKnownFolderPath(FOLDERID_Profile);
+  if result = '' then
+    result := GetEnvironmentVariable('USERPROFILE') + '\My Documents'
+  else
+    result := result + '\Documents';
+end;
+
+function TIQMS_Params.GetIqmsUserTempDir : string;
+begin
+  result := GetKnownFolderPath(FOLDERID_LocalAppData);
+  if result = '' then
+    result := GetEnvironmentVariable('USERPROFILE') + '\Temp'
+  else
+    result := result + '\Temp';
+end;
+
+function RegistryKeyExists
+(
+  aRootKey    : Cardinal;
+  aKey        : string;
+  aName       : string
+) : boolean;
+var
+  Reg   : TRegistry;
+begin
+    Reg := TRegistry.Create(KEY_READ OR KEY_WOW64_64KEY);
+    try
+    Reg.RootKey := aRootKey;
+
+    result := Reg.OpenKey(aKey + '\' + aName, false);
+
+    if result then
+      Reg.CloseKey;
+  finally
+    Reg.Free;
+  end;
+end;
+
+function GetRegistryValue
+(
+  aRootKey    : Cardinal;
+  aKey        : string;
+  aName       : string;
+  aDataType   : TDataType;
+  aDefault    : Variant
+) : Variant;
+var
+  Reg   : TRegistry;
+begin
+  Reg := TRegistry.Create;
+  try
+    Reg.Access  := KEY_READ;
+    Reg.RootKey := aRootKey;
+    if Reg.OpenKey(aKey, false) then
+    begin
+      if Reg.ValueExists(aName) then
+      case aDataType of
+        dtBool    : result := Reg.ReadBool       (aName);
+        dtInteger : result := Reg.ReadInteger    (aName);
+        dtFloat   : result := Reg.ReadFloat      (aName);
+        dtString  : result := Trim(Reg.ReadString(aName));
+        dtDate    : result := Reg.ReadDate       (aName);
+      end
+      else
+        result := aDefault;
+
+      Reg.CloseKey;
+    end;
+  finally
+    Reg.Free;
+  end;
+end;
+
+procedure SetRegistryValue
+(
+  aRootKey    : Cardinal;
+  aKey        : string;
+  aName       : string;
+  aDataType   : TDataType;
+  aValue   : Variant
+);
+var
+  Reg   : TRegistry;
+begin
+  Reg := TRegistry.Create;
+  try
+    Reg.Access  := KEY_WRITE;
+    Reg.RootKey := aRootKey;
+    if Reg.OpenKey(aKey, true) then
+    begin
+      if Reg.ValueExists(aValue) then
+      case aDataType of
+        dtBool    : Reg.WriteBool    (aName, aValue);
+        dtInteger : Reg.WriteInteger (aName, aValue);
+        dtFloat   : Reg.WriteFloat   (aName, aValue);
+        dtString  : Reg.WriteString  (aName, aValue);
+        dtDate    : Reg.WriteDate    (aName, aValue);
+      end;
+
+      Reg.CloseKey;
+    end;
+  finally
+    Reg.Free;
+  end;
+end;
+
+function GetIniFileValue
+(
+  aIniFile  : string;
+  aSection  : string;
+  aIdent    : string;
+  aDataType : TDataType;
+  aDefault  : Variant
+) : Variant;
+var
+  Ini : TIniFile;
+begin
+  Ini := TIniFile.Create(aIniFile);
+  try
+    case aDataType of
+      dtBool    : result := Ini.ReadBool    (aSection, aIdent, aDefault);
+      dtInteger : result := Ini.ReadInteger (aSection, aIdent, aDefault);
+      dtFloat   : result := Ini.ReadFloat   (aSection, aIdent, aDefault);
+      dtString  : result := Ini.ReadString  (aSection, aIdent, aDefault);
+      dtDate    : result := Ini.ReadDate    (aSection, aIdent, aDefault);
+    end;
+  finally
+    Ini.Free;
+  end;
+end;
+
+procedure SetIniFileValue
+(
+  aIniFile  : string;
+  aSection  : string;
+  aIdent    : string;
+  aDataType : TDataType;
+  aValue    : Variant
+);
+var
+  Ini : TIniFile;
+begin
+  Ini := TIniFile.Create(aIniFile);
+  try
+    case aDataType of
+      dtBool    : Ini.WriteBool    (aSection, aIdent, aValue);
+      dtInteger : Ini.WriteInteger (aSection, aIdent, aValue);
+      dtFloat   : Ini.WriteFloat   (aSection, aIdent, aValue);
+      dtString  : Ini.WriteString  (aSection, aIdent, aValue);
+      dtDate    : Ini.WriteDate    (aSection, aIdent, aValue);
+    end;
+  finally
+    Ini.Free;
+  end;
+end;
+
+//
+// Iqms.INI in Program Files used to have all parameters for Iqms.
+// The new design provides 3 levels of configuration:
+// 1) The original Iqms.INI in Program Files defines read / only parameters as conceived by the developers
+// 2) The new Iqms.INI in ProgramData defines writable parameters for all users of the PC
+// 3) The new Iqms.INI in My Documents defines parameters specific to each user
+// But we don't want to create 3 different Iqms.INI (possible contradicting each other) for each release...
+// Our solution is to deploy a default global Iqms.INI in Program Files and look for defaults following
+// the hierarchy.
+// Of course, the INI file is fixed and we only need to know the level in the hierarchy (1 to 3)
+//
+function GetIniFileValueWithInheritance
+(
+  aLevel    : integer;
+  aSection  : string;
+  aIdent    : string;
+  aDataType : TDataType;
+  aDefault  : Variant
+) : Variant;
+var
+  Ini : TIniFile;
+  lvl : integer;
+begin
+
+  for lvl := aLevel downto 1 do
+  begin
+    Ini := TIniFile.Create(_IniFiles_[lvl]);
+    try
+      if Ini.ValueExists(aSection, aIdent) then
+      begin
+        case aDataType of
+          dtBool    : result := Ini.ReadBool    (aSection, aIdent, aDefault);
+          dtInteger : result := Ini.ReadInteger (aSection, aIdent, aDefault);
+          dtFloat   : result := Ini.ReadFloat   (aSection, aIdent, aDefault);
+          dtString  : result := Ini.ReadString  (aSection, aIdent, aDefault);
+          dtDate    : result := Ini.ReadDate    (aSection, aIdent, aDefault);
+        end;
+
+        Exit;
+      end;
+    finally
+      Ini.Free;
+    end;
+  end;
+
+  result := aDefault;
+end;
+
+procedure SetIniFileValueByLevel
+(
+  aLevel    : integer;
+  aSection  : string;
+  aIdent    : string;
+  aDataType : TDataType;
+  aValue    : Variant
+);
+var
+  Ini : TIniFile;
+begin
+  Ini := TIniFile.Create(_IniFiles_[aLevel]);
+  try
+    case aDataType of
+      dtBool    : Ini.WriteBool    (aSection, aIdent, aValue);
+      dtInteger : Ini.WriteInteger (aSection, aIdent, aValue);
+      dtFloat   : Ini.WriteFloat   (aSection, aIdent, aValue);
+      dtString  : Ini.WriteString  (aSection, aIdent, aValue);
+      dtDate    : Ini.WriteDate    (aSection, aIdent, aValue);
+    end;
+  finally
+    Ini.Free;
+  end;
+end;
+
+{ TIQMS_Params }
+
+function TIQMS_Params.GetIqmsProgramFilesDir: string;
+begin
+  with RegistryValues[1] do
+    result := GetRegistryValue(fRootKey, fKey, fName, fDataType, ProgramFilesDir);
+end;
+
+function TIQMS_Params.GetIqmsCurrentUserDir: string;
+begin
+  result := IqmsUserProfileDir + '\IQMS\Iqms';
+
+  if not DirectoryExists(result) then
+    ForceDirectories(result);
+end;
+
+function TIQMS_Params.GetTempPath : string;
+var
+  lng: DWORD;
+  thePath: string;
+begin
+  SetLength(thePath, MAX_PATH);
+  lng := Windows.GetTempPath(MAX_PATH, PChar(thePath));
+  SetLength(thePath, lng);
+  result := thePath;
+end;
+
+constructor TIQMS_Params.Create;
+var
+  ModulePathName : string;
+  ModuleFileName : string;
+begin
+  inherited Create;
+
+  ModulePathName := GetModuleName(HInstance);
+  ModulePathName := ChangeFileExt(ModulePathName, '.INI');
+
+  ModuleFileName := ExtractFileName(ModulePathName);
+
+  InitVistaFunctions;
+
+  _IniFiles_[1] := ModulePathName;
+
+  _IniFiles_[2] := IqmsProgramDataDir + '\' + ModuleFileName;
+  _IniFiles_[3] := IqmsCurrentUserDir + '\' + ModuleFileName;
+  _IniFiles_[4] := GetCurrentDir      + '\' + ModuleFileName;
+
+  if (_IniFiles_[1] = _IniFiles_[4]) then
+     _IniFiles_[4] := '';
+
+  _IniLevel_ := 3;
+  _PrgDrive_ := 'C:\';
+end;
+
+function TIQMS_Params.GetWebIQDatabase: string;
+begin
+  with IniFileValues[1] do
+    result := GetIniFileValueWithInheritance(1, fSection, fIdent, fDataType, 'IQORA');
+end;
+
+function TIQMS_Params.GetWebIQServerPort: integer;
+begin
+  with IniFileValues[2] do
+    result := GetIniFileValueWithInheritance(1, fSection, fIdent, fDataType, 8077);
+end;
+
+function TIQMS_Params.GetOracleConnectionString: string;
+begin
+  with IniFileValues[3] do
+    result := GetIniFileValueWithInheritance(1, fSection, fIdent, fDataType, '');
+end;
+
+function TIQMS_Params.GetIqmsDatabase: string;
+begin
+  Result := FIqmsDatabase;
+end;
+
+procedure TIQMS_Params.SetIqmsDatabase(aValue: string);
+begin
+  FIqmsDatabase := aValue;
+end;
+
+function TIQMS_Params.GetRTBoxPassword: string;
+var
+  EncryptedPassword : string;
+begin
+  // Note:
+  //   According to Alex, just a couple of customers ever used this feature.
+  //   I assume that the reason for that is the storage medium, the Windows
+  //   Registry in ONE PC...
+  //   Another reason is that it looks overkill to encrypt the password which
+  //   will provide access to other encrypted password.
+  //   If using this feature on WebIQ, it makes a little more sense because
+  //   this encryption will work for all users.
+  // It is interesting that this password is encrypted using AES while the
+  // real password giving access to the whole database (for user IQMS) is
+  // protected by a simple XOR.
+
+  with RegistryValues[1] do
+    EncryptedPassword := GetRegistryValue(fRootKey, Format(fKey, [IqmsDatabase]), fName, fDataType, '');
+
+  if EncryptedPassword = '' then
+    Result := 'iqms'
+  else
+    Result := AESCSharpCompatibleDecrypt(EncryptedPassword);
+end;
+
+function TIQMS_Params.GetRTBoxConnection: TFDConnection;
+begin
+  Result := TFDConnection.Create(nil);
+
+  Result.Params.DriverID := 'Ora';
+  Result.Params.UserName := 'RTBox';
+  Result.Params.Password := RTBoxPassword;
+  Result.Params.Database := IqmsDatabase;
+
+  Result.Connected := true;
+end;
+
+function TIQMS_Params.GetIQMSPassword: string;
+var
+  RtBoxConn : TFDConnection;
+begin
+  RtBoxConn := RTBoxConnection;
+  try
+    // Get the "slightly" encrypted password
+    Result := RtBoxConn.ExecSQLScalar('select iqms_log from iqms.iqorder2');
+    // Decrypt and return the password
+    Result := CharXOR( Result );
+  finally
+    RtBoxConn.Free;
+  end;
+end;
+
+destructor TIQMS_Params.Destroy;
+begin
+
+  inherited;
+end;
+
+function TIQMS_Params.GetIQMSConnection: TFDConnection;
+var
+  Params : TStrings;
+begin
+  if FIqmsConnection = nil then
+  begin
+    FIqmsDatabase := WebIQDatabase;
+
+    Params := TStringList.Create;
+    try
+    Params.Add('User_Name=IQMS');
+    Params.Add('Password=' + IQMSPassword);
+    Params.Add('Database=' + IqmsDatabase);
+
+    if FDManager.IsConnectionDef('IQFD') then
+      FDManager.ModifyConnectionDef('IQFD', Params)
+    else
+      FDManager.AddConnectionDef('IQFD', 'Ora', Params);
+    finally
+      Params.Free;
+    end;
+
+    FIqmsConnection := TFDConnection.Create(nil);
+    FIqmsConnection.ConnectionDefName := 'IQFD';
+
+    FIqmsConnection.Connected := true;
+  end;
+
+  Result := FIqmsConnection;
+end;
+
+function TIQMS_Params.GetIQMSCurrentUser: string;
+begin
+  with RegistryValues[2] do
+    Result := GetRegistryValue(fRootKey, fKey, fName, fDataType, '');
+end;
+
+procedure TIQMS_Params.SetIQMSCurrentUser(aValue: string);
+begin
+  with RegistryValues[2] do
+    SetRegistryValue(fRootKey, fKey, fName, fDataType, aValue);
+end;
+
+end.

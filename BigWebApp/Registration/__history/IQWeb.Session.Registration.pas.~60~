@@ -1,0 +1,37 @@
+unit IQWeb.Session.Registration;
+
+interface
+
+procedure RegSessionWeb;
+
+implementation
+
+uses
+  Spring.Services,
+  ServerModule,
+  MainModule,
+  IQWeb.Server.Resources,
+  IQWeb.Server.Registration,
+  IQWeb.Session.FrameworkServices,
+  IQWeb.Session.RegServices;
+
+procedure RegisterModules;
+var
+  FormDef : TFormDef;
+begin
+  for FormDef in uniServerModule.ServerRegistration.FormDefs do
+    
+end;
+
+procedure RegSessionWeb;
+begin
+  UniMainModule.UserIQRegVar := ServiceLocator.GetService<IIQSessionRegistration>;
+  UniMainModule.UserIQModel  := ServiceLocator.GetService<IIQFrameworkServices>;
+
+  RegisterModules;
+
+  UniMainModule.UserContainer.Build;
+
+end;
+
+end.

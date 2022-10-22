@@ -1,0 +1,66 @@
+object FrmCRMAddTime: TFrmCRMAddTime
+  Left = 373
+  Top = 257
+  ClientHeight = 110
+  ClientWidth = 255
+  Caption = 'Add Time'
+  BorderStyle = bsDialog
+  OldCreateOrder = False
+  OnClose = FormClose
+  MonitoredKeys.Keys = <>
+  OnCreate = UniFormCreate
+  DesignSize = (
+    255
+    110)
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TUniLabel
+    Left = 8
+    Top = 8
+    Width = 186
+    Height = 13
+    Hint = ''
+    Caption = 'Enter how much time you want to add:'
+    TabOrder = 2
+  end
+  object Label2: TUniLabel
+    Left = 104
+    Top = 31
+    Width = 37
+    Height = 13
+    Hint = ''
+    Caption = 'Minutes'
+    TabOrder = 3
+  end
+  object btnOK: TUniBitBtn
+    Left = 48
+    Top = 80
+    Width = 97
+    Height = 25
+    Hint = ''
+    Caption = '&OK'
+    Anchors = [akRight, akBottom]
+    TabOrder = 0
+    OnClick = btnOKClick
+  end
+  object btnCancel: TUniBitBtn
+    Left = 152
+    Top = 80
+    Width = 97
+    Height = 25
+    Hint = ''
+    Caption = '&Cancel'
+    ModalResult = 2
+    Anchors = [akRight, akBottom]
+    TabOrder = 1
+  end
+  object edtMinutes: TUniSpinEdit
+    Left = 24
+    Top = 27
+    Width = 74
+    Height = 22
+    Hint = ''
+    MaxValue = 3000
+    TabOrder = 4
+  end
+end

@@ -1,0 +1,114 @@
+package IQWebCommon;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$RUNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  firedac,
+  vcldb,
+  vclactnband,
+  vclx,
+  vclimg,
+  DbxCommonDriver,
+  soaprtl,
+  vclFireDAC,
+  dsnap,
+  dbexpress,
+  DBXOracleDriver,
+  FireDACOracleDriver,
+  adortl,
+  uniGUI25,
+  uniGUI25Core,
+  uniTools25,
+  uIndy25,
+  uniGUI25Chart,
+  RESTComponents,
+//  ipstudiowin,
+  IQUniEditors,
+  vcl,
+  FireDACODBCDriver,
+  FireDACADSDriver,
+  DropMasterVcl;
+
+contains
+  RT_WD_TLB in '..\Source\RT_WD_TLB.pas',
+  IQMS.Common.Exceptions in '..\Source\IQMS.Common.Exceptions.pas',
+  IQMS.Common.StringUtils in '..\Source\IQMS.Common.StringUtils.pas',
+  IQMS.Common.NLS in '..\Source\IQMS.Common.NLS.pas',
+  IQMS.Common.ResStrings in '..\Source\IQMS.Common.ResStrings.pas',
+  IQMS.Common.Registry in '..\Source\IQMS.Common.Registry.pas',
+  IQMS.Common.SysInfo in '..\Source\IQMS.Common.SysInfo.pas',
+  IQMS.Common.JumpConstants in '..\Source\IQMS.Common.JumpConstants.pas',
+  IQMS.Common.DataConst in '..\Source\IQMS.Common.DataConst.pas',
+  IQMS.Common.Tee in '..\Source\IQMS.Common.Tee.pas',
+  IQMS.Common.BaseAutoModeDevice in '..\Source\IQMS.Common.BaseAutoModeDevice.pas',
+  IQMS.Common.BrowsDir in '..\Source\IQMS.Common.BrowsDir.pas',
+  IQMS.Common.DBT in '..\Source\IQMS.Common.DBT.pas',
+  IQMS.Common.DBToRec in '..\Source\IQMS.Common.DBToRec.pas',
+  IQMS.Common.WinConvTypes in '..\Source\IQMS.Common.WinConvTypes.pas',
+  IQMS.Common.ModuleLoader in '..\Source\IQMS.Common.ModuleLoader.pas',
+  IQMS.Common.MruList in '..\Source\IQMS.Common.MruList.pas',
+  IQMS.Common.EventAlertShared in '..\Source\IQMS.Common.EventAlertShared.pas',
+  IQMS.Common.ValidateAccessInterface in '..\Source\IQMS.Common.ValidateAccessInterface.pas',
+  IQMS.Common.UserFieldsXMLTypes in '..\Source\IQMS.Common.UserFieldsXMLTypes.pas',
+  IQMS.Common.GuidUtils in '..\Source\IQMS.Common.GuidUtils.pas',
+  IQMS.Common.OneInst in '..\Source\IQMS.Common.OneInst.pas',
+  IQMS.Common.PrintUtils in '..\Source\IQMS.Common.PrintUtils.pas',
+  IQMS.Common.UCRPE32 in '..\Source\IQMS.Common.UCRPE32.pas',
+  IQMS.Common.Locks in '..\Source\IQMS.Common.Locks.pas',
+  IQMS.Common.FileUtils in '..\Source\IQMS.Common.FileUtils.pas',
+  IQMS.Common.TaskBarProgress in '..\Source\IQMS.Common.TaskBarProgress.pas',
+  IQMS.Common.Cursor in '..\Source\IQMS.Common.Cursor.pas',
+  IQMS.Common.Console in '..\Source\IQMS.Common.Console.pas',
+  IQMS.Common.HID in '..\Source\IQMS.Common.HID.pas',
+  IQMS.Common.HidControl in '..\Source\IQMS.Common.HidControl.pas',
+  IQMS.Common.HIDSetupApi in '..\Source\IQMS.Common.HIDSetupApi.pas',
+  IQMS.Common.HIDUsage in '..\Source\IQMS.Common.HIDUsage.pas',
+  IQMS.Common.Boolean in '..\Source\IQMS.Common.Boolean.pas',
+  IQMS.Common.SHFileOp in '..\Source\IQMS.Common.SHFileOp.pas',
+  IQMS.Common.WebBrowserUtils in '..\Source\IQMS.Common.WebBrowserUtils.pas',
+  IQMS.Common.Stack in '..\Source\IQMS.Common.Stack.pas',
+  IQMS.Common.RegServer in '..\Source\IQMS.Common.RegServer.pas',
+  IQMS.Common.RegSet in '..\Source\IQMS.Common.RegSet.pas',
+  IQMS.Common.Progress in '..\Source\IQMS.Common.Progress.pas',
+  IQMS.Common.PrintRaw in '..\Source\IQMS.Common.PrintRaw.pas',
+  IQMS.Common.PlantLayoutServer in '..\Source\IQMS.Common.PlantLayoutServer.pas',
+  IQMS.Common.CustomPrintClasses in '..\Source\IQMS.Common.CustomPrintClasses.pas',
+  IQMS.Common.CustomPrintInterface in '..\Source\IQMS.Common.CustomPrintInterface.pas',
+  IQMS.Common.HTMLConverter in '..\Source\IQMS.Common.HTMLConverter.pas',
+  IQMS.Common.RichEditHelper in '..\Source\IQMS.Common.RichEditHelper.pas',
+  IQMS.Common.archivedel_prompt in '..\Source\IQMS.Common.archivedel_prompt.pas' {FrmArchiveDeletePrompt: TUniForm},
+  IQMS.Common.Dialogs in '..\Source\IQMS.Common.Dialogs.pas',
+  IQMS.Common.DataServices in '..\Source\IQMS.Common.DataServices.pas',
+  IQMS.Common.Directory in '..\Source\IQMS.Common.Directory.pas',
+  IQMS.Common.GraphChart in '..\Source\IQMS.Common.GraphChart.pas' {IQGraphChart: TUniForm},
+  IQMS.Common.ChartConfig in '..\Source\IQMS.Common.ChartConfig.pas' {FConfig: TUniForm},
+  IQMS.Common.Numbers in '..\Source\IQMS.Common.Numbers.pas';
+
+end.

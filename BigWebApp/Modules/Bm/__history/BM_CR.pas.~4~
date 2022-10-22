@@ -1,0 +1,155 @@
+unit BM_CR;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.Classes,
+  Vcl.Forms,
+  Vcl.DBGrids,
+  Data.DB,
+  Vcl.Menus,
+  Vcl.Buttons,
+  FireDAC.Comp.Client,
+  MainModule,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Stan.Async,
+  FireDAC.DApt,
+  FireDAC.Comp.DataSet,
+  Vcl.Controls,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniSplitter,
+  uniButton,
+  uniBitBtn,
+  uniSpeedButton,
+  uniPanel,
+  uniPageControl,
+  uniMainMenu,
+  uniLabel,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniDBNavigator,
+  uniBasicGrid,
+  uniDBGrid,
+  uniEdit,
+  uniDBEdit;
+
+type
+  TFrmShowCashRec = class(TUniForm)
+    Panel1: TUniPanel;
+    SBToggle: TUniSpeedButton;
+    SBSearch: TUniSpeedButton;
+    NavHeader: TUniDBNavigator;
+    MainMenu1: TUniMainMenu;
+    File1: TUniMenuItem;
+    Search1: TUniMenuItem;
+    N2: TUniMenuItem;
+    Exit1: TUniMenuItem;
+    Help1: TUniMenuItem;
+    About1: TUniMenuItem;
+    SrcQryDetail: TDataSource;
+    QryDetail: TFDQuery;
+    QryCashRecDetailCASHREC_ID: TBCDField;
+    QryCashRecDetailARCUSTO_ID: TBCDField;
+    QryCashRecDetailARINVOICE_ID: TBCDField;
+    QryCashRecDetailAMOUNT_APPLIED: TBCDField;
+    QryCashRecDetailDISCOUNT_APPLIED: TBCDField;
+    QryCashRecDetailGLACCT_ID_DISC: TBCDField;
+    QryCashRecDetailCustomer: TStringField;
+    QryCashRecDetailCustNo: TStringField;
+    QryCashRecDetailInvoice_No: TStringField;
+    QryCashRecDetailInvAcctId: TFloatField;
+    QryCashRecDetailInvAcct: TStringField;
+    QryCashRecDetailDiscAcct: TStringField;
+    SrcQryHeader: TDataSource;
+    QryHeader: TFDQuery;
+    QryCashRecID: TBCDField;
+    QryCashRecREF_NO: TStringField;
+    QryCashRecREF_DATE: TDateTimeField;
+    QryCashRecDEPOSIT_DATE: TDateTimeField;
+    QryCashRecBANKINFO_DTL_ID: TBCDField;
+    QryCashRecGLACCT_ID_CASH: TBCDField;
+    QryCashRecGLBATCHID_ID: TBCDField;
+    QryHeaderARCUSTO_ID: TBCDField;
+    QryHeaderREF_TYPE: TStringField;
+    QryHeaderREF_AMOUNT: TBCDField;
+    QryHeaderARCUSTO_COMPANY: TStringField;
+    QryHeaderGLACCT_ACCT: TStringField;
+    QryHeaderARCUSTO_CUSTNO: TStringField;
+    Panel2: TUniPanel;
+    NavDetail: TUniDBNavigator;
+    Panel4: TUniPanel;
+    BtnClose: TUniButton;
+    Panel3: TUniPanel;
+    Splitter1: TUniSplitter;
+    GridDetail: TUniDBGrid;
+    PageControl1: TUniPageControl;
+    TabGrid: TUniTabSheet;
+    GridHeader: TUniDBGrid;
+    TabForm: TUniTabSheet;
+    Label1: TUniLabel;
+    Label2: TUniLabel;
+    Label3: TUniLabel;
+    Label4: TUniLabel;
+    Label5: TUniLabel;
+    Label6: TUniLabel;
+    Label7: TUniLabel;
+    Label8: TUniLabel;
+    DBEditRefNo: TUniDBEdit;
+    DBEditRefDate: TUniDBEdit;
+    DBEditDepositDate: TUniDBEdit;
+    DBEditRefAmount: TUniDBEdit;
+    DBEditCashAcct: TUniDBEdit;
+    DBEditCustomer: TUniDBEdit;
+    DBEditCustNo: TUniDBEdit;
+    DBEdit1: TUniDBEdit;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure UniFormCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+procedure DoShowCashRec;
+
+implementation
+
+{$R *.DFM}
+
+uses
+//  BM_Main,
+//  BM_DM,
+  IQMS.Common.RegFrm;
+
+procedure DoShowCashRec;
+var
+  FrmShowCashRec :TFrmShowCashRec;
+begin
+  FrmShowCashRec := TFrmShowCashRec.Create(uniGUIApplication.UniApplication);
+//  TFrmBM(AOwner.Owner).DM.Name:= 'BM_DM';
+//  TFrmBM(AOwner.Owner).DM.Name:= '';
+  FrmShowCashRec.Show;
+end;
+
+procedure TFrmShowCashRec.UniFormCreate(Sender: TObject);
+begin
+//  IQRegFormWrite( self, [ self, GridDetail ]);
+end;
+
+procedure TFrmShowCashRec.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+//  IQRegFormWrite( self, [ self, GridDetail ]);
+end;
+
+end.

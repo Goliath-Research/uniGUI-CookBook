@@ -1,0 +1,72 @@
+unit CapShare;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Forms,
+  MainModule,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIClasses,
+  uniGUIForm,
+  uniGUIApplication;
+
+procedure CheckMatReqRecalc( AForm:TUniForm );
+//procedure ResetMatReqRecalcFlag;
+
+function GetCapacityWhiteboardThreshold( AKind: string ): Real;
+
+
+implementation
+
+uses
+  IQMS.Common.DataLib,
+  IQMS.Common.Dialogs;
+
+procedure CheckMatReqRecalc( AForm:TUniForm );
+begin
+  {Obsolete. Nov-04-99}
+
+  {Note: DayHrs.pas will also post message iq_RefreshDataSets to the AForm to refresh datasets}
+  //with TFDQuery.Create(AForm) do
+  //try
+  //  ConnectionName:= 'IQFD';
+  //  SQL.Add('select recalc_matreq, last_recalc_matreq from params');
+  //  Open;
+  //  if ( FieldByName('recalc_matreq').asString = 'Y' ) or ( Abs( FieldByName('last_recalc_matreq').asDateTime - Now ) >= 1 ) then
+  //     IQWarning('Please run Update Schedule to recalculate Capacity, Material Requirements and Projected Parts');
+  //     //if IQWarningYN('Capacity, Material Requirements and Projected Parts need to be recalculated.'#13#13'Recalculate Now?') then
+  //     //   DoDayHrs( AForm, FALSE );
+  //finally
+  //  Free;
+  //end;
+end;
+
+
+function GetCapacityWhiteboardThreshold( AKind: string ): Real;  // AKind: AVAILABLE, BOOKED
+var
+  AField: string;
+begin
+  if AKind = 'AVAILABLE' then          AField:= 'CAPACITY_AVAIL_THRESHOLD'
+  else if AKind = 'BOOKED' then        AField:= 'CAPACITY_BOOKED_THRESHOLD'
+  else if AKind = 'PM_AVAILABLE' then  AField:= 'PM_CAPACITY_AVAIL_THRESHOLD'
+  else if AKind = 'PM_BOOKED' then     AField:= 'PM_CAPACITY_BOOKED_THRESHOLD'
+  else raise Exception.CreateFmt('Unknown parameter %s in call to GetCapacityWhiteboardThreshold.', [ AKind ]);
+
+  Result:= SelectValueFmtAsFloat('select %s from params', [ AField ]);
+
+  if Result <> 0 then
+     EXIT;
+
+  // assign defaults
+  if AKind = 'AVAILABLE' then         Result:= 89.99
+  else if AKind = 'BOOKED' then       Result:= 100
+  else if AKind = 'PM_AVAILABLE' then Result:= 89.99
+  else if AKind = 'PM_BOOKED' then    Result:= 100
+end;
+
+
+end.

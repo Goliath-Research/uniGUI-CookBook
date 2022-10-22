@@ -1,0 +1,68 @@
+inherited FrmSndOpConfirmCostRecalc: TFrmSndOpConfirmCostRecalc
+  ClientHeight = 160
+  ClientWidth = 522
+  ExplicitWidth = 538
+  ExplicitHeight = 199
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TUniPanel
+    Width = 522
+    Height = 122
+    ExplicitWidth = 522
+    ExplicitHeight = 122
+    inherited lblConfBasMsgText: TUniLabel
+      Width = 37
+      Caption = 'Confirm'
+      ExplicitWidth = 37
+    end
+  end
+  inherited Panel2: TUniPanel
+    Top = 122
+    Width = 522
+    ExplicitTop = 122
+    ExplicitWidth = 522
+    inherited Bevel1: TUniPanel
+      Width = 520
+      ExplicitWidth = 520
+    end
+    object Panel3: TUniPanel
+      Left = 296
+      Top = 6
+      Width = 225
+      Height = 31
+      Hint = ''
+      Align = alRight
+      Anchors = [akTop, akRight, akBottom]
+      TabOrder = 1
+      Caption = ''
+      object btnYes: TUniButton
+        Tag = 1
+        Left = 7
+        Top = 3
+        Width = 97
+        Height = 25
+        Hint = ''
+        Caption = '&Yes'
+        ModalResult = 1
+        TabOrder = 1
+      end
+      object btnAbort: TUniButton
+        Left = 117
+        Top = 3
+        Width = 97
+        Height = 25
+        Hint = ''
+        Caption = 'No'
+        ModalResult = 2
+        TabOrder = 2
+      end
+    end
+  end
+  inherited SR: TIQWebSecurityRegister
+    ForceAccessItems.Strings = (
+      'FrmSndOpConfirmCostRecalc')
+    SecurityCode = 'FRMSNDOPCONFIRMCOSTRECALC'
+    Left = 181
+    Top = 115
+  end
+end

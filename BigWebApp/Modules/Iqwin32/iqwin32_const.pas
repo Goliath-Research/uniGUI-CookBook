@@ -1,0 +1,16 @@
+unit iqwin32_const;
+
+interface
+
+const
+   JOBSHOP_CREATE_NEW_HEADER = 1;
+   PLM_CREATE_NEW_HEADER = 2;
+   BOM_CREATE_NEW_HEADER = 3;
+   SALES_ORDER_CREATE_NEW = 4;
+   SALES_ORDER_CHECK_BEFORE_DELETE = 5;
+   BOM_CONVERT_TO_QUOTE = 6;
+   REPDEF_PROXY = 7;
+
+implementation
+
+end.

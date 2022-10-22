@@ -1,0 +1,62 @@
+unit scanid_endprompt;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Buttons,
+//db_dm,            Not found
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniPanel,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniButton,
+  uniBitBtn, uniRadioGroup;
+
+type
+  TFrmEndPrompt = class(TUniForm)
+    Panel1: TUniPanel;
+    Panel2: TUniPanel;
+    rgOptions: TUniRadioGroup;
+    Panel3: TUniPanel;
+    btnOk: TUniBitBtn;
+    btnCancel: TUniBitBtn;
+  private
+    function GetOption: integer;
+    { Private declarations }
+  public
+    { Public declarations }
+
+    property Option : integer read GetOption;
+  end;
+
+  function DoEndPrompt(var AOption: Integer {based on gbOptions} ): Boolean; // FALSE = Cancel
+
+implementation
+
+{$R *.DFM}
+
+function DoEndPrompt(var AOption: Integer {based on gbOptions} ): Boolean; // FALSE = Cancel
+var
+  frm : TFrmEndPrompt;
+begin
+  frm := TFrmEndPrompt.Create(uniGUIApplication.UniApplication);
+  Result  := frm.ShowModal = mrOk;
+  AOption := frm.rgOptions.ItemIndex;
+end;
+
+{ TFrmEndPrompt }
+
+function TFrmEndPrompt.GetOption: integer;
+begin
+  Result := rgOptions.ItemIndex;
+end;
+
+end.

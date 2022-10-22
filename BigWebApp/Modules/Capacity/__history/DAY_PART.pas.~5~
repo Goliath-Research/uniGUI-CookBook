@@ -1,0 +1,110 @@
+unit Day_Part;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Forms,
+  Data.DB,
+  Vcl.DBGrids,
+  FireDAC.Comp.Client,
+  FireDAC.Comp.DataSet,
+  FireDAC.Phys,
+  MainModule,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Stan.Async,
+  FireDAC.DApt,
+  Vcl.Controls,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniPanel,
+  uniBasicGrid,
+  uniDBGrid,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniDBNavigator;
+
+type
+  TFrmShowDayParts = class(TUniForm)
+    Panel1: TUniPanel;
+    DBNavigator1: TUniDBNavigator;
+    GridDayPart: TUniDBGrid;
+    SrcQryDayPart: TDataSource;
+    QryDayPart: TFDQuery;
+    QryDayPartITEMNO: TStringField;
+    QryDayPartDESCRIP: TStringField;
+    QryDayPartCLASS: TStringField;
+    QryDayPartREV: TStringField;
+    QryDayPartMFGNO: TStringField;
+    QryDayPartQTY: TFMTBCDField;
+    QryDayPartWORKORDER_ID: TBCDField;
+    QryDayPartPROD_DATE: TDateTimeField;
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+    procedure SetAId(AId:Real);
+  public
+    { Public declarations }
+    property  Id:Real write SetAId;
+  end;
+
+procedure DoShowDayParts(AOwner:TComponent; AId:Real);
+
+
+implementation
+uses
+  IQMS.Data.Lib,
+  IQMS.Common.RegFrm;
+
+{$R *.DFM}
+
+procedure DoShowDayParts(AId:Real);
+var
+  FrmShowDayParts: TFrmShowDayParts;
+begin
+  FrmShowDayParts:=TFrmShowDayParts.Create(uniGUIApplication.UniApplication);
+  with FrmShowDayParts do
+  begin
+    Id:=aId;
+    ShowModal;
+  end;
+end;
+
+procedure TFrmShowDayParts.FormCreate(Sender: TObject);
+begin
+  IQRegFormRead(self, [self, GridDayPart]);
+end;
+
+procedure TFrmShowDayParts.SetAId(AId: Real);
+begin
+  IQSetTablesActive( TRUE, self );
+  with QryDayPart do
+  begin
+    Close;
+    ParamByName('nId').Value:= AId;
+    Open;
+    self.Caption := Format('Projected parts for WO#%d for %s',
+                           [Trunc(FieldByName('WORKORDER_ID').asFloat),
+                            FormatDateTime('dd/mmm/yy', FieldByName('PROD_DATE').asDateTime)]);
+  end;
+end;
+
+procedure TFrmShowDayParts.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  IQRegFormWrite(self, [self, GridDayPart]);
+end;
+
+end.
+

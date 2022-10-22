@@ -1,0 +1,20 @@
+unit tl_msg_const;
+
+interface
+
+const
+  UM_SETCONTROLS = 1;
+  UM_NEW = 2;
+  UM_UPDATE_FLOWCHART = 3;
+  UM_UPDATE_DURATION_EDIT = 4;
+  UM_BEFORE_SCROLL = 5;
+  UM_AFTER_SCROLL = 6;
+  UM_SET_PAGE = 7;
+  UM_UPDATE_ACTIVITY_SUMMARY = 8;
+  UM_UPDATE_NAVMAIN_ID = 9;
+  UM_SETCAPTION = 10;
+  UM_SETCONTROL_TASK_PERCENT_COMPLETE = 11;  
+
+implementation
+
+end.

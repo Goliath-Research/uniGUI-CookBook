@@ -1,0 +1,159 @@
+unit ShipViaMaintenance_DM;
+
+interface
+
+uses
+  SysUtils, Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error,
+  FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool,
+  FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.Oracle, Data.DB,
+  FireDAC.Comp.Client, FireDAC.Comp.UI, FireDAC.Stan.Param,
+  FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet,
+  FireDAC.Phys.OracleDef, FireDAC.ConsoleUI.Wait, MainModule;
+
+type
+  TSVM_DM = class(TDataModule)
+    dsFreight: TDataSource;
+    QryFreight: TFDQuery;
+    QryFreightID: TBCDField;
+    QryFreightDESCRIP: TStringField;
+    QryFreightGLACCT_ID_FREIGHT: TBCDField;
+    QryFreightSCAC_IATA_CODE: TStringField;
+    QryFreightCODE_QUALIFIER: TStringField;
+    QryFreightTRANSPORT_CODE: TStringField;
+    QryFreightEQUIP_OWNERS_CODE: TStringField;
+    QryFreightGLACCT_ID_FREIGHT_AP: TBCDField;
+    QryFreightCARRIER_PHONE: TStringField;
+    QryFreightTRANSIT_ON_WEEKEND: TStringField;
+    QryFreightSERVICE_CODE: TStringField;
+    QryFreightLOAD_TIME: TBCDField;
+    QryFreightEPLANT_ID: TBCDField;
+    QryFreightCOMMENT1: TStringField;
+    QryFreightPK_HIDE: TStringField;
+    QryFreightVENDOR_ID: TBCDField;
+    QryFreightSUBJECT_TO_FREIGHT_REV: TStringField;
+    QryFreightFREIGHT_CARRIER_LINK_ID: TBCDField;
+    QryFreightFREIGHT_CARRIER_ID: TBCDField;
+    QryFreightFREIGHT_CARRIER_TYPE: TBCDField;
+    QryFreightWEB_SERVICE_PROVIDER: TStringField;
+    QryFreightFREIGHT_SERVICE_CARRIER: TStringField;
+    QryFreightGL_ACCT_FREIGHT: TStringField;
+    QryFreightGL_ACCT_AP: TStringField;
+    QryFreightEPLANT_NAME: TStringField;
+    QryGLACCT: TFDQuery;
+    dsGLACCT: TDataSource;
+    QryGLACCTID: TBCDField;
+    QryGLACCTACCT: TStringField;
+    QryGLACCTDESCRIP: TStringField;
+    QryGLACCTTYPE: TStringField;
+    QryGLACCTGL_SUBACCT_TYPE_ID: TBCDField;
+    QryGLACCTMAJORTYPE: TStringField;
+    QryGLACCTECODE: TStringField;
+    QryGLACCTEID: TBCDField;
+    QryGLACCTEDATE_TIME: TDateTimeField;
+    QryGLACCTECOPY: TStringField;
+    QryGLACCTOLD_SPOT_RATE: TFMTBCDField;
+    QryGLACCTNEW_SPOT_RATE: TFMTBCDField;
+    QryGLACCTFX_ACCT_ID: TBCDField;
+    QryGLACCTFX_OFFSET_ACCT_ID: TBCDField;
+    QryGLACCTEEXCLUDE: TStringField;
+    QryGLACCTEPLANT_ID: TBCDField;
+    QryGLACCTPK_HIDE: TStringField;
+    QryGLACCTPOSTED_IN_FRX: TStringField;
+    QryGLACCTFX_GAIN_ACCT_ID: TBCDField;
+    QryGLACCTGL_HIDE: TStringField;
+    QryGLACCTAP_HIDE: TStringField;
+    QryGLACCTAR_HIDE: TStringField;
+    QryGLACCTCORVU_ACCT_TYPE: TStringField;
+    QryGLACCTCOST_SOURCE_RQD: TStringField;
+    QryGLACCTGROUP_CODE_COUNTRY: TStringField;
+    QryGLACCTGROUP_CODE: TStringField;
+    dsEPLANT: TDataSource;
+    QryEPLANT: TFDQuery;
+    QryVendor: TFDQuery;
+    QryVendorID: TBCDField;
+    QryVendorVENDORNO: TStringField;
+    QryVendorCOMPANY: TStringField;
+    QryVendorADDR1: TStringField;
+    QryVendorADDR2: TStringField;
+    QryVendorCITY: TStringField;
+    QryVendorSTATE: TStringField;
+    QryVendorZIP: TStringField;
+    QryVendorCURRENCY_ID: TBCDField;
+    QryVendorPK_HIDE: TStringField;
+    dsVendor: TDataSource;
+    QryFreightVendor: TStringField;
+    QryWebServiceCarrier: TFDQuery;
+    dsWebServiceCarrier: TDataSource;
+    QryWebServiceCarrierFREIGHT_CARRIER_ID: TBCDField;
+    QryWebServiceCarrierFREIGHT_CARRIER_TYPE: TFMTBCDField;
+    QryWebServiceCarrierV_FREIGHT_SERVICE_CARRIER_ID: TFMTBCDField;
+    QryWebServiceCarrierWEB_SERVICE_PROVIDER: TStringField;
+    QryWebServiceCarrierFREIGHT_SERVICE_CARRIER: TStringField;
+    QryEPLANTID: TBCDField;
+    QryEPLANTNAME: TStringField;
+    QryEPLANTADDRESS1: TStringField;
+    QryEPLANTADDRESS2: TStringField;
+    QryEPLANTCITY: TStringField;
+    QryEPLANTSTATE: TStringField;
+    QryEPLANTZIP: TStringField;
+    QryEPLANTCOUNTRY: TStringField;
+    QryEPLANTPHONE: TStringField;
+    QryEPLANTFAX: TStringField;
+    QryEPLANTEMAIL: TStringField;
+    QryEPLANTCOMPANY: TStringField;
+    procedure QryFreightNewRecord(DataSet: TDataSet);
+  private
+    { Private declarations }
+
+    procedure SetActive(Value : boolean);
+  public
+    { Public declarations }
+
+    procedure Initialize;
+    procedure Finalize;
+  end;
+
+function SVM_DM: TSVM_DM;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  UniGUIVars, uniGUIMainModule;
+
+function SVM_DM: TSVM_DM;
+begin
+  Result := UniMainModule.GetModuleInstance(TSVM_DM) as TSVM_DM;
+end;
+
+{ TSVM_DM }
+
+procedure TSVM_DM.Initialize;
+begin
+ SetActive(true);
+end;
+
+procedure TSVM_DM.Finalize;
+begin
+  SetActive(false);
+end;
+
+procedure TSVM_DM.SetActive(Value: boolean);
+begin
+  QryEPLANT.Active            := Value;
+  QryGLACCT.Active            := Value;
+  QryVendor.Active            := Value;
+  QryWebServiceCarrier.Active := Value;
+  QryFreight.Active           := Value;
+end;
+
+procedure TSVM_DM.QryFreightNewRecord(DataSet: TDataSet);
+begin
+  QryFreightID.Value := QryFreight.Connection.ExecSQLScalar('SELECT S_FREIGHT.NextVal FROM dual');
+end;
+
+initialization
+  RegisterModuleClass(TSVM_DM);
+
+end.

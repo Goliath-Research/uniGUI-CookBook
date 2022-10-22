@@ -1,0 +1,50 @@
+unit TrackingLauncher;
+
+interface
+
+uses
+  Winapi.Windows,
+  Vcl.Forms,
+  MainModule,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniButton,
+  System.Classes,
+  Vcl.Controls,
+  uniGUIBaseClasses;
+
+type
+  TFormTrackingLauncher = class(TUniForm)
+    Button1: TUniButton;
+    Button2: TUniButton;
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+
+implementation
+
+uses
+  SerTrack,
+  LotTrack;
+
+{$R *.DFM}
+
+procedure TFormTrackingLauncher.Button1Click(Sender: TObject);
+begin
+  DoSerialTracking(self);  {in SerTrack.pas}
+end;
+
+procedure TFormTrackingLauncher.Button2Click(Sender: TObject);
+begin
+  DoLotTracking(self); {in LotTrack.pas}
+end;
+
+end.

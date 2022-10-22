@@ -1,0 +1,89 @@
+object FrmCRMList: TFrmCRMList
+  Left = 421
+  Top = 276
+  ClientHeight = 278
+  ClientWidth = 578
+  Caption = 'List'
+  OnShow = FormShow
+  OldCreateOrder = False
+  OnClose = FormClose
+  MonitoredKeys.Keys = <>
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Bevel1: TUniPanel
+    Left = 0
+    Top = 0
+    Width = 578
+    Height = 3
+    Hint = ''
+    Align = alTop
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 1
+    Caption = ''
+    ExplicitTop = 27
+    ExplicitWidth = 354
+  end
+  object Panel2: TUniPanel
+    Left = 0
+    Top = 3
+    Width = 578
+    Height = 275
+    Hint = ''
+    Align = alClient
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    TabOrder = 0
+    Caption = ''
+    ExplicitTop = 30
+    ExplicitWidth = 354
+    ExplicitHeight = 185
+    object Grid: TIQUniGridControl
+      Left = 1
+      Top = 1
+      Width = 576
+      Height = 273
+      Layout = 'border'
+      ParentAlignmentControl = False
+      AlignmentControl = uniAlignmentClient
+      Align = alClient
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      TabOrder = 0
+      IQComponents.Grid.Left = 0
+      IQComponents.Grid.Top = 29
+      IQComponents.Grid.Width = 359
+      IQComponents.Grid.Height = 187
+      IQComponents.Grid.Hint = ''
+      IQComponents.Grid.LoadMask.Message = 'Loading data...'
+      IQComponents.Grid.Align = alClient
+      IQComponents.Grid.Anchors = [akLeft, akTop, akRight, akBottom]
+      IQComponents.Grid.TabOrder = 0
+      IQComponents.Navigator.Left = 410
+      IQComponents.Navigator.Top = 0
+      IQComponents.Navigator.Width = 241
+      IQComponents.Navigator.Height = 25
+      IQComponents.Navigator.Hint = ''
+      IQComponents.Navigator.ShowHint = True
+      IQComponents.Navigator.LayoutConfig.Region = 'east'
+      IQComponents.Navigator.TabOrder = 3
+      IQComponents.HiddenPanel.Left = 359
+      IQComponents.HiddenPanel.Top = 29
+      IQComponents.HiddenPanel.Width = 209
+      IQComponents.HiddenPanel.Height = 187
+      IQComponents.HiddenPanel.Hint = ''
+      IQComponents.HiddenPanel.Visible = True
+      IQComponents.HiddenPanel.Align = alRight
+      IQComponents.HiddenPanel.Anchors = [akTop, akRight, akBottom]
+      IQComponents.HiddenPanel.ExplicitLeft = 135
+      IQComponents.HiddenPanel.ExplicitHeight = 97
+      IQComponents.FormTab.Hint = ''
+      IQComponents.FormTab.ImageIndex = 1
+      IQComponents.FormTab.Caption = 'Form'
+      IQComponents.FormTab.Layout = 'border'
+      IQComponents.FormTab.ExplicitWidth = 344
+      IQComponents.FormTab.ExplicitHeight = 126
+      ExplicitWidth = 352
+      ExplicitHeight = 183
+      Marker = 0
+    end
+  end
+end

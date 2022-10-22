@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Database Database="main" Name="SalesModel" EntityContextName="SalesContext" xmlns:ed="http://devart.com/schemas/EntityDeveloper/1.0" ed:Guid="24bf6e3a-187c-41cf-b0c7-7753f292a1c5" xmlns="http://schemas.devart.com/entitydac/mapping">
+  <Table Name="&quot;main&quot;.Customers" Member="Customers">
+    <Type Name="Customer" ed:Guid="723ee1af-cc48-4d8e-921a-d5efad868e63">
+      <Column Name="ID" Member="Id" Type="Int64" AutoSync="OnInsert" IsReadOnly="true" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="0c9a7a21-1009-4b94-8435-5c2f6b509eb2" />
+      <Column Name="Name" Type="String" CanBeNull="false" UpdateCheck="Never" MaxLength="64" ed:ValidateMaxLength="64" ed:ValidateRequired="true" ed:Guid="68ed60b1-5c7a-4ade-99f8-838659ec942c" />
+      <Association Name="Customer_Order" ed:AssociationGuid="d9eeddb5-7780-4b1e-8a90-71d47624f7ad" Member="Orders" ed:Guid="accd77ae-710e-42bb-889f-4739f033dbb1" ThisKey="Id" OtherKey="Customerid" Type="Order" />
+    </Type>
+  </Table>
+  <Table Name="&quot;main&quot;.Products" Member="Products">
+    <Type Name="Product" ed:Guid="71f03f4b-af82-4844-9f60-34b222d16b07">
+      <Column Name="ID" Member="Id" Type="Int64" AutoSync="OnInsert" IsReadOnly="true" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="88daf467-f48a-44e9-afa8-2d421c3f0fcd" />
+      <Column Name="Description" Type="String" CanBeNull="false" UpdateCheck="Never" MaxLength="64" ed:ValidateMaxLength="64" ed:ValidateRequired="true" ed:Guid="0eaa80d8-304e-46cf-bf35-225541eed5f0" />
+      <Column Name="Price" Type="Object" CanBeNull="true" UpdateCheck="Never" DefaultValue="0" ed:ValidateRequired="false" ed:Guid="aa86f5e4-c7ea-46ae-b68a-75e4d2d389ab" />
+      <Association Name="Product_Item" ed:AssociationGuid="ed3bef89-39bc-4612-8e46-63a81e544506" Member="Items" ed:Guid="7655f31b-6ad6-469a-badb-878dacd126de" ThisKey="Id" OtherKey="Productid" Type="Item" />
+    </Type>
+  </Table>
+  <Table Name="&quot;main&quot;.Items" Member="Items">
+    <Type Name="Item" ed:Guid="3e5aa7ee-bcb3-4b03-a3c0-833e7cd2111a">
+      <Column Name="OrderID" Member="Orderid" Type="Int64" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="48c44703-6d5c-4ea6-9e87-186b39d40a2c" />
+      <Column Name="ProductID" Member="Productid" Type="Int64" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="134e12a0-7d01-4ef9-96fe-c5ded8c5cda8" />
+      <Column Name="Quantity" Type="Integer" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="48463070-3ba5-4753-a362-d2dbb33ef95f" />
+      <Association Name="Product_Item" ed:AssociationGuid="ed3bef89-39bc-4612-8e46-63a81e544506" Member="Product" ed:Guid="e8d017af-3496-40e9-8c50-ea550d625ea2" ThisKey="Productid" OtherKey="Id" Type="Product" DeleteRule="Cascade" Cascade="true" DeleteOnNull="true" IsForeignKey="true" />
+      <Association Name="Order_Item" ed:AssociationGuid="90547748-3029-4d3e-9c08-702a807fee89" Member="Order" ed:Guid="d5830da7-c917-48d6-88bb-9a6d2a9ee6b2" ThisKey="Orderid" OtherKey="Id" Type="Order" DeleteRule="Cascade" Cascade="true" DeleteOnNull="true" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="&quot;main&quot;.Users" Member="Users">
+    <Type Name="User" ed:Guid="825145cf-e048-4ad9-8323-1cf8d4ea4cfe">
+      <Column Name="Username" Type="String" IsPrimaryKey="true" CanBeNull="false" MaxLength="16" ed:ValidateMaxLength="16" ed:ValidateRequired="true" ed:Guid="c3b8a71e-3589-4b11-993b-e336193623e9" />
+      <Column Name="Password" Type="String" CanBeNull="false" UpdateCheck="Never" MaxLength="32" ed:ValidateMaxLength="32" ed:ValidateRequired="true" ed:Guid="40624bb9-0747-4ad9-a533-3ff97d9db190" />
+      <Column Name="Admin" Type="Boolean" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="f4ada277-cd11-476e-b5b5-7d21dc3ccbcf" />
+    </Type>
+  </Table>
+  <Table Name="&quot;main&quot;.Orders" Member="Orders">
+    <Type Name="Order" ed:Guid="cc9262db-9577-45d8-9614-faebbe828dfa">
+      <Column Name="ID" Member="Id" Type="Int64" AutoSync="OnInsert" IsReadOnly="true" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="f087a525-a049-4a24-a5cf-97303785c1f8" />
+      <Column Name="CustomerID" Member="Customerid" Type="Int64" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="c99c34fb-0ff8-497a-bf26-d7b45c45c3e9" />
+      <Column Name="Posted" Type="DateTime" CanBeNull="false" UpdateCheck="Never" DefaultValue="DATETIME ('now')" ed:ValidateRequired="true" ed:Guid="738626cc-78b2-4fdb-9e5a-a02fe5ac08df" />
+      <Column Name="Paid" Type="DateTime" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="bd522826-d07c-408d-bb0f-daa98402ea92" />
+      <Association Name="Order_Item" ed:AssociationGuid="90547748-3029-4d3e-9c08-702a807fee89" Member="Items" ed:Guid="425959d2-1624-48f4-9f9a-4363dce4e863" ThisKey="Id" OtherKey="Orderid" Type="Item" />
+      <Association Name="Customer_Order" ed:AssociationGuid="d9eeddb5-7780-4b1e-8a90-71d47624f7ad" Member="Customer" ed:Guid="e344c03d-eadf-4be3-b656-07e37c425afd" ThisKey="Customerid" OtherKey="Id" Type="Customer" DeleteRule="Cascade" Cascade="true" DeleteOnNull="true" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="&quot;main&quot;.viewSales" Member="Viewsales">
+    <Type Name="Viewsale" ed:Guid="6e1133a1-55c6-4233-81aa-e19f8a21419b">
+      <Column Name="CustomerID" Member="Customerid" Type="Int64" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="8223d9a4-0514-459b-b4a6-5ae100395dfd" />
+      <Column Name="Customer" Type="String" CanBeNull="true" UpdateCheck="Never" MaxLength="64" ed:ValidateMaxLength="64" ed:ValidateRequired="false" ed:Guid="49216ddf-e0dd-4c38-88f9-423388579e1d" />
+      <Column Name="OrderID" Member="Orderid" Type="Int64" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="0d439ebd-ec53-4e7a-b49a-e6eaf8bb1fe7" />
+      <Column Name="Posted" Type="DateTime" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="f55d13f8-b155-4ea8-9651-d8a11fe1205d" />
+      <Column Name="ProductID" Member="Productid" Type="Int64" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="65721c2e-3e92-408b-98f3-c2971104e6b5" />
+      <Column Name="Product" Type="String" CanBeNull="true" UpdateCheck="Never" MaxLength="64" ed:ValidateMaxLength="64" ed:ValidateRequired="false" ed:Guid="403346cc-31b8-4a0f-8358-fac9ef91b94f" />
+      <Column Name="Quantity" Type="Integer" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="9fbc907b-12d7-4ffa-91cd-205ff9b81a5d" />
+      <Column Name="Price" Type="Object" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="a73daa90-80e1-450b-abb0-32070694e7da" />
+      <Column Name="Total" Type="Object" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="9a8bf489-15e7-426d-928e-4b61cfc38d7d" />
+    </Type>
+  </Table>
+</Database>

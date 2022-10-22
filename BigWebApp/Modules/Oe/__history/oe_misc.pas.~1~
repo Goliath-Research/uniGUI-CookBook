@@ -1,0 +1,145 @@
+unit oe_misc;
+
+interface
+
+uses
+  Classes,
+  SysUtils;
+
+type
+  TPostingState = ( psNone, psInsert, psEdit, psDelete );
+
+  TChangingDropShipCargo = record
+    Ord_Detail_ID: Real;
+    Arinvt_ID    : Real;
+    Division_ID  : Real;
+    OldIsDropShip: string;
+    NewIsDropShip: string;
+    Comment1     : string;
+    PostingState : TPostingState;
+    Drop_Ship_PO_ID: Real;
+    Total_Qty_Ord: Real;
+    UnitPriceChangeAccepted: Boolean;
+    constructor Create( ADrop_Ship_PO_ID: Real );
+  end;
+
+  TOEQuickShipLocsCargo = record
+    Orders_id : Real;
+    Arinvt_id : Real;
+    Oe_UOM    : string;
+    Uom_Factor: Real;
+    Ord_Detail_ID: Real;
+  end;
+
+procedure ConfirmRecalcOEMustShipDate;
+function get_address_hint( AID: Real; ATable_Name: string ): string;
+function format_phantom_child_display( S: string ): string;
+
+implementation
+
+uses
+  IQMS.Common.DataLib,
+  IQMS.Common.Dialogs,
+  PanelMsg,
+  Variants,
+  StrUtils;
+
+procedure ConfirmRecalcOEMustShipDate;
+var
+  h: TPanelMesg;
+begin
+  if not IQConfirmYN('This option recalculates Must Ship Date for every sales order release. Are you sure you wish to continue?') then
+     EXIT;
+
+  h:= hPleaseWait('Processing, please wait ...');
+  try
+    ExecuteCommand('begin oe_msd.do_update_all_orders; end;');
+  finally
+    if Assigned( h ) then h.Free;
+  end;
+end;
+
+function get_address_hint( AID: Real; ATable_Name: string ): string;
+var
+  A: Variant;
+
+  function _GetHintStr(ACompany,
+                       AAddress1,
+                       AAddress2,
+                       AAddress3,
+                       ACity,
+                       AState,
+                       AZip,
+                       ACountry,
+                       APhone,
+                       AExt: String): String;
+  var
+     S: String;
+  begin
+    if (Trim(ACompany) > '') then Result := ACompany;
+    if (Trim(AAddress1) > '') then Result := Result + #13 + AAddress1;
+    if (Trim(AAddress2) > '') then Result := Result + #13 + AAddress2;
+    if (Trim(AAddress3) > '') then Result := Result + #13 + AAddress3;
+    S := ConcatCityStateZip(ACity, AState, AZip);
+    if (Trim(S) > '') then Result := Result + #13 + S;
+    if (Trim(ACountry) > '') then Result := Result + #13 + ACountry;
+
+    if ReplaceStr(Trim(APhone), '-', '' ) > '' then
+    begin
+      Result := Result + #13 + APhone;
+      if ReplaceStr(Trim(AExt), '/', '' ) > '' then Result:= Result + '/' + AExt;
+    end;
+  end;
+
+begin
+  Result:= '';
+
+  if ATable_Name = 'ARCUSTO' then
+     A:= SelectValueArrayFmt( 'select company, addr1, addr2, addr3, city, state, zip, country, phone_number, ext from arcusto where id = %f', [ AID ])
+
+  else if ATable_Name = 'SHIP_TO' then
+     A:= SelectValueArrayFmt( 'select attn, addr1, addr2, addr3, city, state, zip, country, phone_number, ext from ship_to where id = %f', [ AID ])
+
+  else if ATable_Name = 'BILL_TO' then
+     A:= SelectValueArrayFmt( 'select attn, addr1, addr2, addr3, city, state, zip, country, phone_number, ext from bill_to where id = %f', [ AID ])
+
+  else if ATable_Name = 'CONTACT' then
+     A:= SelectValueArrayFmt( 'select ltrim(rtrim(first_name) || '' '') || last_name as attn, addr1, addr2, addr3, city, state, zip, country, phone_number, ext from contact where id = %f', [ AID ])
+
+  else
+     EXIT;
+
+  if VarArrayDimCount( A ) > 0 then
+     Result:= _GetHintStr(A[ 0 ],  // Company
+                          A[ 1 ],  // AAddress1
+                          A[ 2 ],  // AAddress2
+                          A[ 3 ],  // AAddress3
+                          A[ 4 ],  // ACity
+                          A[ 5 ],  // AState
+                          A[ 6 ],  // AZip
+                          A[ 7 ],  // ACountry
+                          A[ 8 ],  // phone
+                          A[ 9 ]); // ext
+end;
+
+function format_phantom_child_display( S: string ): string;
+begin
+  Result:= '     ' + S;
+end;
+
+{ TChangingDropShipCargo }
+
+constructor TChangingDropShipCargo.Create(ADrop_Ship_PO_ID: Real);
+begin
+  Ord_Detail_ID:= 0;
+  Arinvt_ID    := 0;
+  Division_ID  := 0;
+  OldIsDropShip:= '';
+  NewIsDropShip:= '';
+  Comment1     := '';
+  PostingState := psNone;
+  Drop_Ship_PO_ID:= ADrop_Ship_PO_ID;
+end;
+
+end.
+

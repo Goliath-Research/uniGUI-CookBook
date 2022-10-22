@@ -1,0 +1,655 @@
+unit Mat_Req;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.Menus,
+  Vcl.Buttons,
+  Vcl.DBGrids,
+  IQMS.WebVcl.About,
+  Data.DB,
+  IQMS.WebVCL.hpick,
+  IQMS.Common.JumpConstants,
+  IQMS.WebVCL.RepDef,
+  IQMS.WebVcl.Jump,
+  IQMS.WebVcl.SoftEPlant,
+  VclTee.TeeGDIPlus,
+  VCLTee.TeEngine,
+  VCLTee.Series,
+  VCLTee.TeeProcs,
+  VCLTee.Chart,
+  VCLTee.DBChart,
+  IQMS.WebVcl.SecurityRegister,
+  FireDAC.Comp.Client,
+  FireDAC.Comp.DataSet,
+  FireDAC.Phys,
+  MainModule,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Stan.Async,
+  FireDAC.DApt,
+  Vcl.Controls,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniSplitter,
+  uniLabel,
+  uniPageControl,
+  uniPanel,
+  uniBasicGrid,
+  uniDBGrid,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniMainMenu,
+  uniDBNavigator,
+  uniButton,
+  uniBitBtn,
+  uniSpeedButton, Vcl.ExtCtrls,
+  MainModule;
+
+type
+  TFrmMatReq = class(TUniForm)
+    Panel1: TUniPanel;
+    NavMain: TUniDBNavigator;
+    sbtnSearch: TUniSpeedButton;
+    MainMenu1: TUniMainMenu;
+    File1: TUniMenuItem;
+    Exit1: TUniMenuItem;
+    Help1: TUniMenuItem;
+    About1: TUniMenuItem;
+    IQAbout1: TIQWebAbout;
+    SrcWo: TDataSource;
+    QryWo: TFDQuery;
+    SrcOnOrd: TDataSource;
+    QryOnOrd: TFDQuery;
+    N2: TUniMenuItem;
+    Contents1: TUniMenuItem;
+    PkItems: TIQWebHPick;
+    PkItemsARINVT_ID: TBCDField;
+    PkItemsCLASS: TStringField;
+    PkItemsITEMNO: TStringField;
+    PkItemsDESCRIP: TStringField;
+    N3: TUniMenuItem;
+    Search1: TUniMenuItem;
+    QryWoARINVT_ID: TBCDField;
+    QryWoREQUIRED: TFMTBCDField;
+    QryWoWORKORDER_ID: TBCDField;
+    QryOnOrdID: TBCDField;
+    QryOnOrdREL_QUAN: TBCDField;
+    QryOnOrdREL_DATE: TDateTimeField;
+    QryOnOrdCUSTNO: TStringField;
+    QryOnOrdCOMPANY: TStringField;
+    QryOnOrdITEMNO: TStringField;
+    QryOnOrdDESCRIP: TStringField;
+    PkItemsREV: TStringField;
+    pcDetail: TUniPageControl;
+    shTabular: TUniTabSheet;
+    pnlWO: TUniPanel;
+    gridWO: TUniDBGrid;
+    Panel6: TUniPanel;
+    DBNavigator2: TUniDBNavigator;
+    Splitter2: TUniSplitter;
+    Panel3: TUniPanel;
+    gridAffected: TUniDBGrid;
+    pnlDetails: TUniPanel;
+    gridDetails: TUniDBGrid;
+    Splitter1: TUniSplitter;
+    shGraph: TUniTabSheet;
+    QryV_Day_Mat_Req_Dtl: TFDQuery;
+    QryV_Day_Mat_Req_DtlARINVT_ID: TBCDField;
+    QryV_Day_Mat_Req_DtlPROD_DATE: TDateTimeField;
+    QryV_Day_Mat_Req_DtlONHAND: TFMTBCDField;
+    QryV_Day_Mat_Req_DtlDAY_USAGE: TFMTBCDField;
+    QryUniqueItems: TFDQuery;
+    SrcUniqueItems: TDataSource;
+    QryUniqueItemsARINVT_ID: TBCDField;
+    QryUniqueItemsITEMNO: TStringField;
+    Panel2: TUniPanel;
+    DBChart1: TDBChart;
+    Series2: TLineSeries;
+    Series3: TLineSeries;
+    Series1: TLineSeries;
+    pnlItems: TUniPanel;
+    Splitter4: TUniSplitter;
+    gridItems: TUniDBGrid;
+    SrcV_Day_Mat_Req_Dtl: TDataSource;
+    QryV_Day_Mat_Req_DtlONORDER: TFMTBCDField;
+    QryV_Day_Mat_Req_DtlDay_Balance: TFloatField;
+    QryUniqueItemsCLASS: TStringField;
+    QryUniqueItemsDESCRIP: TStringField;
+    QryUniqueItemsProd_Date1: TDateField;
+    QryUniqueItemsProd_Date2: TDateField;
+    IQRepDef1: TIQWebRepDef;
+    PrinterSetupDialog1: TPrinterSetupDialog;
+    Reports1: TUniMenuItem;
+    Print1: TUniMenuItem;
+    PrinterSetup1: TUniMenuItem;
+    popOnOrder: TUniPopupMenu;
+    OnOrder1: TUniMenuItem;
+    popItem: TUniPopupMenu;
+    popWO: TUniPopupMenu;
+    popOE: TUniPopupMenu;
+    JumptoInventory1: TUniMenuItem;
+    JumptoWorkOrder1: TUniMenuItem;
+    JumptoSalesOrder1: TUniMenuItem;
+    IQJumpInv: TIQWebJump;
+    IQJumpWO: TIQWebJump;
+    IQJumpOE: TIQWebJump;
+    QryOnOrdORDERNO: TStringField;
+    QryOnOrdORDERS_ID: TBCDField;
+    QryUniqueItemsPastDue: TFloatField;
+    QryUniqueItemsProjectedOnHand: TFloatField;
+    procPOCumm: TFDStoredProc;
+    QryUniqueItemsOnHand: TFloatField;
+    PastDuePOs1: TUniMenuItem;
+    QryWoEQNO: TStringField;
+    Recalculate1: TUniMenuItem;
+    sbFilter2: TUniSpeedButton;
+    Options1: TUniMenuItem;
+    SelectFilter1: TUniMenuItem;
+    QryUniqueItemsEPLANT_ID: TBCDField;
+    PkItemsEPLANT_ID: TBCDField;
+    QryV_Day_Mat_Req_DtlEPLANT_ID: TBCDField;
+    sbtnEplantView: TUniSpeedButton;
+    SoftEPlant1: TIQWebSoftEPlant;
+    SetEPlantView1: TUniMenuItem;
+    QryUniqueItemsEPLANT_NAME: TStringField;
+    QryUniqueItemsDIVISION_ID: TFMTBCDField;
+    QryUniqueItemsDIVISION_NAME: TStringField;
+    QryV_Day_Mat_Req_DtlDIVISION_ID: TFMTBCDField;
+    QryWoDIVISION_ID: TFMTBCDField;
+    sbtnRecalc: TUniSpeedButton;
+    QryV_Day_Mat_Req_DtlORIGIN: TStringField;
+    DRPDemand1: TUniMenuItem;
+    shapePurple: TShape;
+    QryUniqueItemsOVERSIZE_SUM_CHECK: TFMTBCDField;
+    QryWoORIGIN: TStringField;
+    Shape6: TShape;
+    QryV_Day_Mat_Req_DtlHAS_FORECAST: TStringField;
+    QryUniqueItemsBUYER_CODE_ID: TBCDField;
+    QryUniqueItemsBUYER_CODE: TStringField;
+    QryWoCNTR_DESC: TStringField;
+    QryWoHARD_ALLOC_QTY: TFMTBCDField;
+    Panel5: TUniPanel;
+    Panel7: TUniPanel;
+    Label2: TUniLabel;
+    Panel4: TUniPanel;
+    DBNavigator1: TUniDBNavigator;
+    PkItemsDESCRIP2: TStringField;
+    QryUniqueItemsDESCRIP2: TStringField;
+    QryUniqueItemsREV: TStringField;
+    QryOnOrdDESCRIP2: TStringField;
+    QryOnOrdREV: TStringField;
+    JumpToInventoryLocationsTransactions1: TUniMenuItem;
+    QryWoCntr_Seq: TFloatField;
+    SR: TIQWebSecurityRegister;
+    QryUniqueItemsSAFETY_STOCK: TBCDField;
+    QryUniqueItemsSAFETY_STOCK2: TBCDField;
+    procedure About1Click(Sender: TObject);
+    procedure Exit1Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure sbtnSearchClick(Sender: TObject);
+    procedure PkItemsBeforeOpen(DataSet: TDataSet);
+    procedure SrcUniqueItemsDataChange(Sender: TObject; Field: TField);
+    procedure QryV_Day_Mat_Req_DtlCalcFields(DataSet: TDataSet);
+    procedure QryUniqueItemsCalcFields(DataSet: TDataSet);
+    procedure Print1Click(Sender: TObject);
+    procedure PrinterSetup1Click(Sender: TObject);
+    procedure OnOrder1Click(Sender: TObject);
+    procedure popOnOrderPopup(Sender: TObject);
+    procedure JumptoInventory1Click(Sender: TObject);
+    procedure JumptoWorkOrder1Click(Sender: TObject);
+    procedure JumptoSalesOrder1Click(Sender: TObject);
+    procedure gridItemsEnter(Sender: TObject);
+//    procedure gridItemsDrawColumnCell(Sender: TObject; const Rect: TRect;
+//      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure PastDuePOs1Click(Sender: TObject);
+    procedure Recalculate1Click(Sender: TObject);
+    procedure sbFilter2Click(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure Contents1Click(Sender: TObject);
+    procedure sbtnEplantViewClick(Sender: TObject);
+    procedure AssignEPlantFilter(DataSet: TDataSet);
+    procedure DRPDemand1Click(Sender: TObject);
+//    procedure gridWODrawColumnCell(Sender: TObject; const Rect: TRect;
+//      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+//    procedure gridDetailsDrawColumnCell(Sender: TObject; const Rect: TRect;
+//      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure JumpToInventoryLocationsTransactions1Click(Sender: TObject);
+    procedure QryWoCalcFields(DataSet: TDataSet);
+  private
+    { Private declarations }
+    FDateStart: TDateTime;
+    FDateEnd  : TDateTime;
+    FViewClass: string;
+    FViewDivision_ID: Real;
+    FHide_Forecast: Boolean;
+    FViewBuyer_Code_ID: Real;
+
+    function GetDateEnd:TDateTime;
+    procedure IQRefreshDataSets( var Msg: TMessage ); message iq_RefreshDataSets;
+    procedure IQAfterShowMessage( var Msg: TMessage ); message iq_AfterShowMessage;
+    procedure PrepareOpenQuery;
+//    procedure SetGridColor( AGrid: TUniDBGrid; State: TGridDrawState; ASelBrush, ASelFront, ADefBrush, ADefFront: TColor );
+    procedure LoadFilterFromRegistry;
+    procedure SaveFilterToRegistry;
+    procedure SetArinvt_ID(AArinvt_ID:Real);
+  public
+    { Public declarations }
+    property DateEnd: TDateTime read GetDateEnd write FDateEnd;
+    property Arinvt_ID :Real write SetArinvt_ID;
+  end;
+
+procedure DoRawMaterialRequired( AArinvt_ID: Real );
+
+
+implementation
+{$R *.DFM}
+
+uses
+  capacity_rscstr,
+  IQMS.Common.Controls,
+  IQMS.Common.DataLib,
+  DayHrs,
+  CapShare,
+  IQMS.Common.PanelMsg,
+  IQMS.Common.Cursor,
+  IQMS.Common.HelpHook,
+  IQMS.Common.Dialogs,
+  IQMS.Common.Numbers,
+  IQMS.Common.RegFrm,
+  AvDtlBas,
+//  AvDtlPo,
+  MReqFltr,
+  OrdersDRP,
+  PastDuPo,
+  IQMS.Common.SysShare;
+
+//const
+//  ViewClass : array[ 1..5 ] of string = ('ALL', 'FG', 'PL', 'IN', 'PK' );
+
+procedure DoRawMaterialRequired( AArinvt_ID: Real );
+var
+  FrmMatReq: TFrmMatReq;
+begin
+  FrmMatReq:=TFrmMatReq.Create(uniGUIApplication.UniApplication);
+  with FrmMatReq do
+   begin
+     Arinvt_ID:=AArinvt_ID;
+     Show;
+   end;
+end;
+
+procedure TFrmMatReq.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  IQRegFormWrite(self, [self, pnlItems, pnlWO, pnlDetails, gridDetails, gridItems, gridWO, gridAffected]);
+  SaveFilterToRegistry;
+  DBChart1.ClearChart;
+end;
+
+procedure TFrmMatReq.IQAfterShowMessage( var Msg: TMessage );
+begin
+  CheckMatReqRecalc(self);
+end;
+
+procedure TFrmMatReq.IQRefreshDataSets( var Msg: TMessage );
+begin
+  // 02/14/2008 (Byron) These 2 lines prevent a screen-repaint problem
+  Application.ProcessMessages;
+  Invalidate;
+
+  IQSetTablesActive( FALSE, self );
+  IQSetTablesActiveEx( TRUE, self, capacity_rscstr.cTXT0000001 {'Refreshing data.  Please wait.'} );
+end;
+
+procedure TFrmMatReq.About1Click(Sender: TObject);
+begin
+  IQAbout1.Execute;
+end;
+
+procedure TFrmMatReq.Exit1Click(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TFrmMatReq.sbtnSearchClick(Sender: TObject);
+begin
+  with PkItems do
+    if Execute then
+       if not QryUniqueItems.Locate('ARINVT_ID', GetValue('ARINVT_ID'), []) then
+          IQConfirm(Format('Selected item %s / %s is not among projected required materials',
+                           [ Trim(GetValue('itemno')), Trim(GetValue('Descrip')) ]));
+end;
+
+procedure TFrmMatReq.PkItemsBeforeOpen(DataSet: TDataSet);
+begin
+//   with DataSet as TFDQuery do
+//    ParamByName('AClass').asString:= FViewClass;
+  AssignQueryParamValue(DataSet, 'aclass', FViewClass);
+end;
+
+procedure TFrmMatReq.SrcUniqueItemsDataChange(Sender: TObject;
+  Field: TField);
+begin
+  DBChart1.RefreshData;
+end;
+
+procedure TFrmMatReq.QryV_Day_Mat_Req_DtlCalcFields(DataSet: TDataSet);
+begin
+  QryV_Day_Mat_Req_DtlDAY_Balance.AsFloat:=  QryV_Day_Mat_Req_DtlONHAND.asFloat  +
+                                             QryV_Day_Mat_Req_DtlONORDER.asFloat -
+                                             QryV_Day_Mat_Req_DtlDAY_USAGE.asFloat;
+end;
+
+procedure TFrmMatReq.QryWoCalcFields(DataSet: TDataSet);
+var
+  ASeq: Real;
+begin
+  ASeq:= 0;
+  if QryWoWORKORDER_ID.asFloat > 0 then
+     ASeq:= SelectValueFmtAsFloat('select min(cntr_seq) from cntr_sched where workorder_id = %f', [ QryWoWORKORDER_ID.asFloat ]);
+
+  if ASeq > 0 then
+     QryWoCntr_Seq.asFloat:= ASeq;
+end;
+
+function TFrmMatReq.GetDateEnd:TDateTime;
+begin
+  Result:= fIIf( FDateStart <= FDateEnd, FDateEnd, FDateStart + 3650 );  {if end is NULL then look 10 years ahead}
+end;
+
+procedure TFrmMatReq.PrepareOpenQuery;
+var
+  H: TPanelMesg;
+  S: string;
+begin
+  S:= IIf( FHide_Forecast, 'Excluding forecast', 'Including forecast' );
+
+  if FDateEnd < FDateStart then
+     Caption := Format('%s Daily Projected Material Requirements %s from %s', [ FViewClass, S, DateToStr( FDateStart ) ])
+  else
+     Caption := Format('%s Daily Projected Material Requirements %s from %s to %s', [ FViewClass, S, DateToStr( FDateStart ), DateToStr( FDateEnd ) ]);
+
+  if FViewDivision_ID > 0 then
+     Caption:= Format('%s Division = %s', [Caption,
+                                            SelectValueFmtAsString('select name from division where id = %f', [ FViewDivision_ID ])]);
+
+  if FViewBuyer_Code_ID > 0 then
+     Caption:= Format('%s Buyer Code = %s', [Caption,
+                                             SelectValueByID('buyer_code', 'buyer_code', FViewBuyer_Code_ID)]);
+
+  H:= hPleaseWait('');
+  try
+    IQSetTablesActive( FALSE, self );
+    with QryUniqueItems do
+    begin
+      ParamByName('cClass').asString := FViewClass;
+      ParamByName('prod_date1').asDateTime:= FDateStart;
+      ParamByName('prod_date2').asDateTime:= DateEnd;
+      if FViewDivision_ID > 0 then
+         ParamByName('v_division_id').Value:= FViewDivision_ID
+      else
+         ParamByName('v_division_id').Value:= -1;  {all divisions}
+
+      if FViewBuyer_Code_ID > 0 then
+         ParamByName('v_buyer_code_id').Value:= FViewBuyer_Code_ID
+      else
+         ParamByName('v_buyer_code_id').Value:= -1;  {all codes}
+
+    end;
+
+    //IQSetTablesActive( TRUE, self );
+    IQSetTablesActiveEx( TRUE, self, capacity_rscstr.cTXT0000004 {'Accessing database.  Please wait.'});
+  finally
+    H.Free;
+  end;
+end;
+
+procedure TFrmMatReq.QryUniqueItemsCalcFields(DataSet: TDataSet);
+begin
+  with DataSet do
+  begin
+    FieldByName('prod_date1').asDateTime:= FDateStart;
+    FieldByName('prod_date2').asDateTime:= DateEnd;
+  end;
+
+  with procPOCumm do
+  begin
+    Close;
+    ParamByName('v_arinvt_id').Value      := QryUniqueItemsARINVT_ID.asFloat;
+    ParamByName('v_promise_date').asDateTime:= FDateStart;
+    // if FViewDivision_ID > 0 then
+    if QryUniqueItemsDIVISION_ID.asFloat <> 0 then
+       ParamByName('v_division_id').Value:= QryUniqueItemsDIVISION_ID.asFloat
+    else
+       ParamByName('v_division_id').Clear;
+    ExecProc;
+    QryUniqueItemsPastDue.Value:= ParamByName('Result').asFloat;
+  end;
+
+  // QryUniqueItemsONHAND.asFloat:= SelectValueFmtAsFloat('select UOM.To_Native(onhand, unit) from arinvt where id = %f', [ QryUniqueItemsARINVT_ID.asFloat ]);
+  QryUniqueItemsONHAND.asFloat:= SelectValueFmtAsFloat('select IQCapacity.OnHand_Division_Ex( %f, %s, ''Y'' ) from dual',
+                                           [ QryUniqueItemsARINVT_ID.asFloat,
+                                             sIIf( QryUniqueItemsDIVISION_ID.asFloat <> 0, QryUniqueItemsDIVISION_ID.asString, 'NULL') ]);
+
+  with QryUniqueItemsProjectedOnHand do
+    asFloat:= QryUniqueItemsONHAND.asFloat + QryUniqueItemsPastDue.asFloat;
+
+  if QryUniqueItemsDIVISION_ID.asFloat > 0 then
+     QryUniqueItemsDIVISION_NAME.asString:= SelectValueByID('name', 'division', QryUniqueItemsDIVISION_ID.asFloat);
+end;
+
+procedure TFrmMatReq.Print1Click(Sender: TObject);
+begin
+  IQRepDef1.Execute
+end;
+
+procedure TFrmMatReq.PrinterSetup1Click(Sender: TObject);
+begin
+  PrinterSetupDialog1.Execute;
+end;
+
+procedure TFrmMatReq.OnOrder1Click(Sender: TObject);
+begin
+  with QryV_Day_Mat_Req_Dtl do
+    DoFGAvailDetail( TFrmFGAvailDetailPOs, self, FieldByName('ARINVT_ID').asFloat, Trunc(FieldByName('PROD_DATE').asDateTime) ); {AvDtlBas.pas}
+end;
+
+procedure TFrmMatReq.popOnOrderPopup(Sender: TObject);
+begin
+  OnOrder1.Enabled  := QryV_Day_Mat_Req_DtlONORDER.asFloat > 0;
+  DRPDemand1.Enabled:= Pos('DRP', QryV_Day_Mat_Req_DtlORIGIN.asString) > 0;
+end;
+
+procedure TFrmMatReq.JumptoInventory1Click(Sender: TObject);
+begin
+  IQJumpInv.Execute;
+end;
+
+procedure TFrmMatReq.JumpToInventoryLocationsTransactions1Click(
+  Sender: TObject);
+begin
+  JumpDirect( iq_JumpToInvTransLocs, QryUniqueItemsARINVT_ID.asInteger );
+end;
+
+procedure TFrmMatReq.JumptoWorkOrder1Click(Sender: TObject);
+begin
+  IQJumpWO.Execute;
+end;
+
+procedure TFrmMatReq.JumptoSalesOrder1Click(Sender: TObject);
+begin
+  IQJumpOE.Execute;
+end;
+
+procedure TFrmMatReq.gridItemsEnter(Sender: TObject);
+begin
+  NavMain.DataSource:= (Sender as TUniDBGrid).DataSource;
+end;
+
+
+procedure TFrmMatReq.SetArinvt_ID(AArinvt_ID: Real);
+begin
+  FViewDivision_ID:= 0;
+
+//  CenterForm(Self);
+  IQRegFormRead(self, [self, pnlItems, pnlWO, pnlDetails, gridDetails, gridItems, gridWO, gridAffected]);
+  gridDetails.Cursor := crJump;
+  gridItems.Cursor   := crJump;
+  gridWO.Cursor      := crJump;
+  gridAffected.Cursor:= crJump;
+  pcDetail.ActivePageIndex := 0;
+
+//  FHide_Forecast:= SelectValueAsString('select fr_hide from params') = 'Y';
+
+  if AArinvt_ID > 0 then
+     begin
+        FDateStart := Date;
+        // FDateEnd   := 0;
+        FDateEnd   := FDateStart + SelectValueAsFloat('select sched_scope from params') + 30;
+        FViewClass := SelectValueFmtAsString('select class from arinvt where id = %f', [ AArinvt_ID ]);
+        PrepareOpenQuery;
+        if not QryUniqueItems.Locate('ARINVT_ID', AArinvt_ID, []) then
+          IQConfirm( Format('Selected item %s is not among projected required materials', [ SelectValueByID( 'RTrim(itemno)', 'arinvt', AArinvt_ID )]));
+     end
+  else
+     begin
+        LoadFilterFromRegistry;
+        // FDateStart := Date;
+        // FDateEnd   := FDateStart + SelectValueAsFloat('select sched_scope from params') + 30;
+        // FViewClass := 'PL';
+        PrepareOpenQuery;
+     end;
+
+  with IQColumnByName( gridItems, 'DIVISION_NAME' ).Title do
+    Caption:= CheckReplaceDivisionCaption( Caption ); {Sys_share}
+
+  PostMessage( Handle, iq_AfterShowMessage, 0, 0 );
+end;
+//
+//procedure TFrmMatReq.SetGridColor( AGrid: TUniDBGrid; State: TGridDrawState; ASelBrush, ASelFront, ADefBrush, ADefFront: TColor );
+//begin
+//  with AGrid.Canvas do
+//  begin
+//    Brush.Color:= IIf( gdSelected in State, ASelBrush, ADefBrush );
+//    Font.Color := IIf( gdSelected in State, ASelFront, ADefFront );
+//  end
+//end;
+
+//procedure TFrmMatReq.gridItemsDrawColumnCell(Sender: TObject;
+//  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+//begin
+//  if QryUniqueItemsOVERSIZE_SUM_CHECK.asFloat > 0 then
+//     SetGridColor(  gridItems, State, clNavy, clWhite, clPurple, clWhite )  {selected brush/front, default brush/front}
+//
+//  else if (CompareText(Column.FieldName, 'PastDue') = 0) and (QryUniqueItemsPastDue.asFloat > 0) then
+//     SetGridColor(  gridItems, State, clBlue, clRed, clRed, clWhite );
+//
+//  gridItems.DefaultDrawColumnCell(Rect, DataCol, Column, State );
+//end;
+
+procedure TFrmMatReq.PastDuePOs1Click(Sender: TObject);
+begin
+  DoShowPastDuePOs( self, QryUniqueItemsARINVT_ID.asFloat, DateEnd ); {PastDuPo.pas}
+end;
+
+procedure TFrmMatReq.Recalculate1Click(Sender: TObject);
+begin
+  DoDayHrs( [ 'IDEAL_VS_EXISTING' ]);
+  // DoDayHrs( self, FALSE );
+end;
+
+procedure TFrmMatReq.sbFilter2Click(Sender: TObject);
+begin
+  if DoInvClassFilterMatReq( FViewClass, FDateStart, FDateEnd, FViewDivision_ID, FViewBuyer_Code_ID ) then   {MReqFltr.pas}
+    PrepareOpenQuery;
+end;
+
+procedure TFrmMatReq.FormActivate(Sender: TObject);
+begin
+     IQHelp.AssignHTMLFile( iqchmMFG{CHM}, iqhtmSCHED{HTM} );  {IQHelpHk.pas}
+end;
+
+procedure TFrmMatReq.Contents1Click(Sender: TObject);
+begin
+  // DoHelp( iqchmMFG, iqhtmSCHED, '1051907' );  {in IQHelpHk.pas}
+  IQHelp.HelpContext( 1051907 );
+end;
+
+procedure TFrmMatReq.sbtnEplantViewClick(Sender: TObject);
+begin
+  if SoftEPlant1.ChangeEPlantView then
+     PostMessage( Handle, iq_RefreshDataSets, 0, 0 );
+end;
+
+procedure TFrmMatReq.AssignEPlantFilter(DataSet: TDataSet);
+begin
+  SoftEPlant1.AssignEPlantFilter( DataSet );
+end;
+
+procedure TFrmMatReq.DRPDemand1Click(Sender: TObject);
+begin
+  TFrmSalesOrderDRP.CreateModaless( self, QryV_Day_Mat_Req_DtlARINVT_ID.asFloat, QryV_Day_Mat_Req_DtlPROD_DATE.asDateTime ); {OrdersDRP.pas}
+end;
+
+//procedure TFrmMatReq.gridWODrawColumnCell(Sender: TObject;
+//  const Rect: TRect; DataCol: Integer; Column: TColumn;
+//  State: TGridDrawState);
+//begin
+//  if QryWoORIGIN.AsString = 'FORECAST' then
+//     SetGridColor( Sender as TUniDBGrid, State, clNavy, clYellow, clWhite, clBlue );
+//  gridWO.DefaultDrawColumnCell(Rect, DataCol, Column, State );
+//end;
+//
+//procedure TFrmMatReq.gridDetailsDrawColumnCell(Sender: TObject;
+//  const Rect: TRect; DataCol: Integer; Column: TColumn;
+//  State: TGridDrawState);
+//begin
+//  if not FHide_Forecast and (QryV_Day_Mat_Req_DtlHAS_FORECAST.AsString = 'Y') then
+//     SetGridColor( Sender as TUniDBGrid, State, clNavy, clYellow, clWhite, clBlue );
+//  gridDetails.DefaultDrawColumnCell(Rect, DataCol, Column, State );
+//end;
+
+
+procedure TFrmMatReq.LoadFilterFromRegistry;
+begin
+  if not IQRegStringScalarRead( self, 'ViewClass', FViewClass ) or (FViewClass = '') then
+     FViewClass := 'PL';
+
+  if not IQRegDateTimeScalarRead( self, 'DateStart', FDateStart ) or (FDateStart = 0) then
+     FDateStart:= Date;
+
+  if not IQRegDateTimeScalarRead( self, 'DateEnd', FDateEnd ) or (FDateEnd = 0) then
+     FDateEnd:= FDateStart + SelectValueAsFloat('select sched_scope from params') + 30;
+
+  if not IQRegFloatScalarRead( self, 'ViewBuyer_Code_ID', FViewBuyer_Code_ID ) or (FViewBuyer_Code_ID = 0) then
+     FViewBuyer_Code_ID:= 0;
+
+  if not IQRegFloatScalarRead( self, 'ViewDivision_ID', FViewDivision_ID ) or (FViewDivision_ID = 0) then
+     FViewDivision_ID:= 0;
+end;
+
+
+procedure TFrmMatReq.SaveFilterToRegistry;
+begin
+  IQRegStringScalarWrite( self, 'ViewClass', FViewClass );
+  IQRegDateTimeScalarWrite( self, 'DateStart', FDateStart );
+  IQRegDateTimeScalarWrite( self, 'DateEnd', FDateEnd );
+  IQRegFloatScalarWrite( self, 'ViewBuyer_Code_ID', FViewBuyer_Code_ID );
+  IQRegFloatScalarWrite( self, 'ViewDivision_ID', FViewDivision_ID );
+end;
+
+end.

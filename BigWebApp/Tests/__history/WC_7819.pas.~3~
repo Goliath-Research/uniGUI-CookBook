@@ -1,0 +1,23 @@
+unit WC_7819;
+
+interface
+
+implementation
+
+uses
+  TestReg,
+  SysUtils,
+  StrUtils,
+  uniGUIDialogs,
+  POConf;
+
+procedure Test1;
+begin
+  DoShowModalPOReceivedReleasesConfirm('test','');
+end;
+
+initialization
+
+  TTestRepo.RegisterTest('WC-7819', 'Po', 'POConf', 'Create', Test1);
+
+end.

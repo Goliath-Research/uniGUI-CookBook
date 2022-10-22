@@ -1,0 +1,97 @@
+unit IQMS.WebVcl.BookmarkManager;
+
+interface
+
+uses
+  Classes, Generics.Collections, Spring.Collections, SysUtils, IQMS.Common.Regfrm,
+  IQMS.Common.JumpDispatcher;
+
+type
+  TIQWebBookmarkItem = class
+  private
+    FFormClassName: string;
+    FRecordId:      integer;
+    FCaption:       string;
+  public
+    constructor Create(BookmarkString: string); reintroduce; virtual;
+    property Caption:       string  read FCaption       write FCaption;
+    property FormClassName: string  read FFormClassName write FFormClassName;
+    property RecordId:      integer read FRecordId      write FRecordId;
+  end;
+
+  TIQWebBookmarkList = IList<TIQWebBookmarkItem>;
+
+  TIQWebBookmarkManager = class
+  private
+    FFavorites: TIQWebBookmarkList;
+    FHistory:  TIQWebBookmarkList;
+  public
+    constructor Create; reintroduce; virtual;
+    procedure LoadBookmarks;
+
+    procedure BookmarkClick(Sender: TObject);
+
+    property Favorites: TIQWebBookmarkList read FFavorites;
+    property History: TIQWebBookmarkList read FHistory;
+  end;
+
+implementation
+
+{ TIQWebBookmarkItem }
+
+constructor TIQWebBookmarkItem.Create(BookmarkString: string);
+var
+  Tokens: TStringList;
+begin
+  with TStringList.Create do
+  try
+    Delimiter       := #9;
+    StrictDelimiter := True;
+    DelimitedText   := BookmarkString;
+    Caption         := Format('%s %s', [Strings[2], Strings[3]]);
+    FormClassName   := Strings[0];
+    RecordId        := StrToInt(Strings[1]);
+  finally
+    Free;
+  end;
+end;
+
+{ TIQWebBookmarkManager }
+
+procedure TIQWebBookmarkManager.BookmarkClick(Sender: TObject);
+begin
+  with TIQWebBookmarkItem(TComponent(Sender).Tag) do
+    TIQWebJumpDispatcher.Jump(FormClassName, RecordId);
+end;
+
+constructor TIQWebBookmarkManager.Create;
+begin
+  inherited Create;
+
+  FFavorites := TCollections.CreateList<TIQWebBookmarkItem>(True);
+  FHistory   := TCollections.CreateList<TIQWebBookmarkItem>(True);
+end;
+
+procedure TIQWebBookmarkManager.LoadBookmarks;
+var
+  i: integer;
+  Strings: TStringList;
+begin
+  Strings := TStringList.Create;
+  try
+    // get the bookmark list from the registry thingy
+    IQRegMRURead(TWebIQBookmarkType.History, Strings);
+    for I := Strings.Count - 1 downto 0 do
+      FHistory.Add(TIQWebBookmarkItem.Create(Strings[i]));
+
+    Strings.Clear;
+
+    IQRegMRURead(TWebIQBookmarkType.Favorites, Strings);
+    for I := Strings.Count - 1 downto 0 do
+      FFavorites.Add(TIQWebBookmarkItem.Create(Strings[i]));
+  finally
+    Strings.Free;
+  end;
+end;
+
+end.

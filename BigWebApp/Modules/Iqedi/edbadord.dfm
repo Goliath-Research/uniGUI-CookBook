@@ -1,0 +1,86 @@
+object FrmBadEdiOrds: TFrmBadEdiOrds
+  Left = 175
+  Top = 108
+  ClientHeight = 231
+  ClientWidth = 406
+  Caption = 'Convert to Orders - Warnings'
+  OldCreateOrder = True
+  Menu = MainMenu1
+  MonitoredKeys.Keys = <>
+  PixelsPerInch = 96
+  TextHeight = 13
+  object ListBox1: TUniListBox
+    Left = 0
+    Top = 0
+    Width = 406
+    Height = 196
+    Hint = ''
+    Align = alClient
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    TabOrder = 0
+    ParentFont = False
+    Font.Charset = ANSI_CHARSET
+    Font.Name = 'Courier New'
+  end
+  object Panel1: TUniPanel
+    Left = 0
+    Top = 196
+    Width = 406
+    Height = 35
+    Hint = ''
+    Visible = False
+    Align = alBottom
+    Anchors = [akLeft, akRight, akBottom]
+    TabOrder = 1
+    Caption = ''
+    object Panel2: TUniPanel
+      Left = 239
+      Top = 1
+      Width = 167
+      Height = 33
+      Hint = ''
+      Align = alRight
+      Anchors = [akTop, akRight, akBottom]
+      TabOrder = 0
+      Caption = ''
+      object BtnOk: TUniButton
+        Left = 4
+        Top = 4
+        Width = 75
+        Height = 25
+        Hint = ''
+        Caption = 'Proceed'
+        ModalResult = 1
+        TabOrder = 1
+      end
+      object BtnCancel: TUniButton
+        Left = 85
+        Top = 4
+        Width = 75
+        Height = 25
+        Hint = ''
+        Caption = 'Cancel'
+        ModalResult = 2
+        TabOrder = 2
+      end
+    end
+  end
+  object MainMenu1: TUniMainMenu
+    Left = 48
+    Top = 8
+    object File1: TUniMenuItem
+      Caption = 'File'
+      object SavetoFile1: TUniMenuItem
+        Caption = 'Save to File'
+        OnClick = SavetoFile1Click
+      end
+      object N1: TUniMenuItem
+        Caption = '-'
+      end
+      object Exit1: TUniMenuItem
+        Caption = 'Exit'
+        OnClick = Exit1Click
+      end
+    end
+  end
+end

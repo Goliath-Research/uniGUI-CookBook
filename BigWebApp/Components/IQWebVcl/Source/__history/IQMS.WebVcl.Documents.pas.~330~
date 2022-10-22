@@ -1,0 +1,558 @@
+unit IQMS.WebVcl.Documents;
+
+interface
+
+uses
+  Windows, SysUtils, Variants, Classes, Graphics,
+  Controls, Forms, uniGUITypes, uniGUIAbstractClasses,
+  uniGUIClasses, uniGUIFrame, StdCtrls, ComCtrls, Grids,
+  DBCtrls, Menus, Buttons, ExtCtrls, Data.DB,
+  Data.DBXOracle, Data.FMTBcd,  Data.SqlExpr,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
+  FireDAC.Stan.Def,
+  FireDAC.Stan.Pool,
+  FireDAC.UI.Intf,UniGUIForm,UniDbEdit,UniEdit,
+  UniPanel,UniSplitter, UniLabel,UniSpeedButton, UniMainMenu, UniDBGrid,
+  IQMS.WebVcl.Blob,
+  IQMS.WebVcl.DocumentUtils,
+  IQMS.WebVcl.DocumentsCoordinator,
+  IQMS.WebVcl.ResourceStrings,
+  IQMS.WebVcl.DBExpress, uniDBNavigator, uniToolBar, uniMemo, uniDBMemo,
+  uniBasicGrid, uniGUIBaseClasses, uniImageList;
+
+type
+
+  { TIQWebDocs }
+
+  TIQWebDocs = class(TUniFrame)
+    Qry_IntDocs: TFDQuery;
+    tbLeft: TUniToolBar;
+    grd_IntDocs: TUniDBGrid;
+    memDoc: TUniDBHTMLMemo;
+    btnPrint: TUniToolButton;
+    UniSplitter1: TUniSplitter;
+    UniImageList1: TUniImageList;
+    UpdateSQL_IntDocs: TFDUpdateSQL;
+    ds_Qry_IntDocs: TDataSource;
+    Qry_IntDocsID: TBCDField;
+    Qry_IntDocsIQ_DOCS_ID: TBCDField;
+    Qry_IntDocsSEQ: TBCDField;
+    Qry_IntDocsPRINT_WITH: TStringField;
+    Qry_IntDocsDOC_CLASS: TStringField;
+    Qry_IntDocsDESCRIP: TStringField;
+    Qry_IntDocsDOC_BLOB: TBlobField;
+    Qry_IntDocsUSERID: TStringField;
+    Qry_IntDocsTIMESTAMP: TDateTimeField;
+    Qry_IntDocsSOURCE_ID: TBCDField;
+    Qry_IntDocsPrintWithToShow: TStringField;
+    pnlTop: TUniPanel;
+    tbRight: TUniToolBar;
+    btnAdd: TUniToolButton;
+    btnEdit: TUniToolButton;
+    btnDelete: TUniToolButton;
+    procedure BtnAddClick(Sender: TObject);
+    procedure BtnEditClick(Sender: TObject);
+    procedure BtnDelClick(Sender: TObject);
+    procedure BtnPrintClick(Sender: TObject);
+    procedure DoubleClick(Sender: TObject);
+    procedure DocsLinkDataChange(Sender: TObject; Field: TField);
+    procedure DoBeforePost(DataSet: TDataSet);
+    procedure DoBeforeInsert(DataSet: TDataSet);
+    procedure DoNewRecord(DataSet: TDataSet);
+    procedure DoCalcFields( DataSet: TDataSet );
+  private
+    const
+      DefaultDocClass = 'ST';
+      DocsTableName   = 'INTERNAL_DOCS_USED';
+      MasterKeyField  = 'ID';
+  private
+    { Private declarations }
+    FActive   : boolean;
+    FDocClass : string;
+    FSource   : string;
+
+    FOnNewRecord : TDataSetNotifyEvent;
+
+    FAttachedDocumentsCoordinator: TIQAttachedDocumentsCoordinator;
+
+    function GetActive:Boolean;
+    procedure SetActive(AValue:Boolean);
+    procedure SetTablesActive( AValue:Boolean );
+    function GetMasterSource:TDataSource;
+    procedure SetMasterSource(AValue:TDataSource);
+    function GetDocClass:string;
+    procedure SetDocClass( AValue:string );
+    function  GetSource : string;
+
+
+    procedure CheckParentAssigned;
+    procedure SetIsReadOnly(const Value: Boolean);
+    function GetIsReadOnly: Boolean;
+    function CheckConnected: Boolean;
+    function AssignQuery: Boolean;
+
+    /// <summary> Raises an exception if the IQ_DOCS_ID is already assigned
+    /// to this document record.
+    /// </summary>
+    procedure CheckDocumentAlreadyAssigned;
+    procedure SetSource(const Value: string);
+
+  protected
+    { Protected declarations }
+    procedure Loaded; override;
+    procedure Notification(AComponent: TComponent; Operation: TOperation); override;
+  public
+    { Public declarations }
+
+    constructor Create(AOwner : TComponent); override;
+    destructor Destroy; override;
+
+    /// <summary>Returns true if documents have been attached.</summary>
+    function HasDocuments: Boolean;
+    function MasterFieldValue: Int64;
+    function IQDocsFieldValue: Int64;
+
+    property DocsLink: TFDQuery       read Qry_IntDocs;
+
+    {surface these buttons to be able to access them from SecurityInspector}
+    property EditBtn :TUniToolButton read btnEdit;
+    property AddBtn  :TUniToolButton read btnAdd;
+    property DelBtn  :TUniToolButton read btnDelete;
+    property PrintBtn:TUniToolButton read btnPrint;
+
+    property AttachedDocumentsCoordinator: TIQAttachedDocumentsCoordinator read FAttachedDocumentsCoordinator write FAttachedDocumentsCoordinator;
+    property IsReadOnly: Boolean     read GetIsReadOnly    write SetIsReadOnly;
+
+  published
+    { Published declarations }
+
+    property Active       : boolean     read GetActive       write SetActive stored False;
+    property DocClass     : string      read GetDocClass     write SetDocClass;
+    property Source       : string      read GetSource       write SetSource;
+    property MasterSource : TDataSource read GetMasterSource write SetMasterSource;
+    property OnNewRecord  : TDataSetNotifyEvent read FOnNewRecord write FOnNewRecord;
+    property Align;
+    property Ctl3D;
+    property Enabled;
+    property Font;
+    property ParentColor;
+    property ParentCtl3D;
+    property ParentFont;
+    property ParentShowHint;
+    property PopupMenu;
+    property ShowHint;
+    property TabOrder;
+    property TabStop;
+    property Visible;
+
+    property OnEnter;
+    property OnExit;
+    property OnResize;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  IQMS.WebVcl.DocumentsDescript,
+  IQMS.Common.Dialogs,
+  IQMS.WebVcl.DocumentsDelete,
+  IQMS.Common.StringUtils,
+  IQMS.Common.RegFrm,
+  IQMS.Common.Miscellaneous,
+  IQMS.Common.BMP,
+  IQMS.Common.Controls,
+  IQMS.Common.DataLib,
+  IQMS.Common.DataConst,
+  Dialogs;
+
+constructor TIQWebDocs.Create( AOwner :TComponent );
+begin
+  inherited;
+
+  FActive   := false;
+  FDocClass := DefaultDocClass;
+end;
+
+destructor TIQWebDocs.Destroy;
+begin
+  if not (csDesigning in ComponentState) and Active then
+    IQRegFormWrite( Owner, [ grd_IntDocs ]);
+
+  inherited;
+end;
+
+procedure TIQWebDocs.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  try
+  inherited Notification(AComponent, Operation);
+
+  if (Operation = opRemove) and
+     (AComponent is TIQAttachedDocumentsCoordinator) and
+     (FAttachedDocumentsCoordinator = AComponent) then
+    FAttachedDocumentsCoordinator := NIL;
+  except
+    on E: Exception do
+      ShowMessage('Notification exception: ' + E.Message);
+  end;
+end;
+
+procedure TIQWebDocs.Loaded;
+begin
+  inherited Loaded;
+
+  Qry_IntDocs.Connection := FDManager.FindConnection(Qry_IntDocs.ConnectionName);
+  if CheckConnected then
+  try
+    try
+      if not (csDesigning in ComponentState) then
+        IQRegFormRead( Owner, [ grd_IntDocs ]);
+
+      SetTablesActive( Active );
+    finally
+      DocsLinkDataChange(NIL, NIL);
+    end;
+  except
+    if csDesigning in ComponentState then
+      Application.HandleException(Self)
+    else
+      raise;
+  end;
+end;
+
+function TIQWebDocs.GetActive:Boolean;
+begin
+  Result := FActive;
+end;
+
+procedure TIQWebDocs.SetActive(AValue : boolean);
+begin
+  if (csLoading in ComponentState) then
+    FActive := AValue
+  else
+    if AValue <> Qry_IntDocs.Active then
+      SetTablesActive( AValue );
+end;
+
+procedure TIQWebDocs.SetTablesActive(AValue : Boolean);
+begin
+  if CheckConnected and Assigned(MasterSource) and Assigned(MasterSource.DataSet) and (Source <> '') then
+    Qry_IntDocs.Active := AValue;
+end;
+
+function TIQWebDocs.GetMasterSource : TDataSource;
+begin
+  Result := Qry_IntDocs.MasterSource;
+end;
+
+procedure TIQWebDocs.SetMasterSource(AValue : TDataSource);
+begin
+  Qry_IntDocs.MasterSource := AValue;
+
+  SetTablesActive(Active);
+end;
+
+procedure TIQWebDocs.SetSource(const Value: string);
+begin
+  FSource := Value;
+
+  SetTablesActive(Active);
+end;
+
+function TIQWebDocs.HasDocuments : Boolean;
+begin
+  Result := not Qry_IntDocs.IsEmpty;
+end;
+
+function TIQWebDocs.GetDocClass: string;
+begin
+  Result := FDocClass;
+end;
+
+procedure TIQWebDocs.SetDocClass(AValue : string);
+begin
+  if UpperCase(AValue) <> FDocClass then
+  begin
+    if Length( AValue ) > 2 then
+      // IQMS.WebVcl.ResourceStrings.cTXT0000091 =
+      // 'Document Class Field cannot be greater than 2 characters long'
+      raise Exception.Create( IQMS.WebVcl.ResourceStrings.cTXT0000091);
+
+    FDocClass := UpperCase(AValue);
+
+    if FDocClass = '' then
+      // IQMS.WebVcl.ResourceStrings.cTXT0000092 =
+      // 'Document Class required.  Please assign a Document Class before
+      // adding documents.'
+      IQWarning( IQMS.WebVcl.ResourceStrings.cTXT0000092);
+  end;
+end;
+
+function TIQWebDocs.GetIsReadOnly : Boolean;
+begin
+  Result := Qry_IntDocs.UpdateOptions.ReadOnly;
+end;
+
+procedure TIQWebDocs.SetIsReadOnly(const Value: Boolean);
+var
+  AWasActive : Boolean;
+begin
+  if Qry_IntDocs.UpdateOptions.ReadOnly = Value then
+    Exit;
+
+  AWasActive := DocsLink.Active;
+  try
+    if Qry_IntDocs.Active then
+       Qry_IntDocs.Close;
+
+    Qry_IntDocs.UpdateOptions.ReadOnly := Value;
+  finally
+    if AWasActive then
+       Qry_IntDocs.Open;
+  end;
+
+  // Set button visibility based on read-only property
+
+  btnEdit.Visible   := not Value;
+  btnAdd.Visible    := not Value;
+  btnDelete.Visible := not Value;
+end;
+
+function TIQWebDocs.MasterFieldValue: Int64;
+begin
+  Result := MasterSource.DataSet.FieldByName(MasterKeyField).AsLargeInt
+end;
+
+function TIQWebDocs.IQDocsFieldValue: Int64;
+begin
+  Result := Qry_IntDocsIQ_DOCS_ID.AsLargeInt;
+end;
+
+procedure TIQWebDocs.DocsLinkDataChange(Sender: TObject; Field: TField);
+var
+  IsEnabled : boolean;
+begin
+  with Qry_IntDocs do
+  begin
+    IsEnabled       := ( State <> dsInactive ) and HasDocuments;
+    btnAdd.Enabled  := (State <> dsInactive) and not IsReadOnly;
+
+    btnEdit.Enabled   := IsEnabled and not IsReadOnly;
+    btnDelete.Enabled := btnEdit.Enabled;
+    btnPrint.Enabled  := IsEnabled;
+
+    if (State <> dsInactive) and Assigned(FAttachedDocumentsCoordinator) then
+      AttachedDocumentsCoordinator.UpdateDocumentsExistsIndicator( Self, HasDocuments);
+  end;
+end;
+
+procedure TIQWebDocs.DoubleClick(Sender: TObject);
+begin
+  if HasDocuments and EditBtn.Visible then
+    BtnEditClick(Sender);
+end;
+
+procedure TIQWebDocs.BtnAddClick(Sender: TObject);
+begin
+  // 08/03/2010 Removed call to CheckBrowseMode, which did not work
+  // for some queries.  The following is effective in all situations.
+  // Changed by Byron.
+  // Requested by Susan.
+  // E-Mail Subject:  RE: Gages/Devices - automatically save Calibration upon entry PRD - CRM # 448486
+  // E-Mail Date: 07/20/2010 1:04 PM
+  if Assigned(MasterSource) and
+     Assigned(MasterSource.DataSet) and
+     (MasterSource.DataSet.State in [dsEdit, dsInsert]) then
+     MasterSource.DataSet.Post;
+
+  CheckParentAssigned;
+
+  Qry_IntDocs.Append;
+  DoDocDescrip(DocClass, MasterSource.DataSet);
+end;
+
+procedure TIQWebDocs.BtnEditClick(Sender: TObject);
+begin
+//  if (MasterSource.DataSet.State in [dsEdit,dsInsert]) then
+//    MasterSource.DataSet.Post;
+  MasterSource.DataSet.CheckBrowseMode;
+
+  Qry_IntDocs.Edit;
+  DoDocDescrip(DocClass, MasterSource.DataSet);    // in DocDesc
+end;
+
+procedure TIQWebDocs.BtnDelClick(Sender: TObject);
+begin
+  DoDelDocument; // in DocDel
+end;
+
+procedure TIQWebDocs.BtnPrintClick(Sender: TObject);
+begin
+//  memDoc.
+end;
+
+function TIQWebDocs.CheckConnected: Boolean;
+begin
+  Result := Assigned(Qry_IntDocs.Connection) and Qry_IntDocs.Connection.Connected;
+end;
+
+procedure TIQWebDocs.CheckDocumentAlreadyAssigned;
+const
+  SqlAssignedDocs =
+    'SELECT COUNT(*) ' +
+    'FROM INTERNAL_DOC_USED ' +
+    'WHERE ' +
+    '  source = ''%s'' AND ' +
+    '  source_id = %d ' +
+    '  iq_docs_id = %d';
+begin
+  // IQMS.WebVcl.ResourceStrings.cTXT0000497 = 'Application Error:  A document has not been assigned.';
+  IQAssert(IQDocsFieldValue > 0, IQMS.WebVcl.ResourceStrings.cTXT0000497);
+
+  // IQMS.WebVcl.ResourceStrings.cTXT0000500 = 'Application Error:  The master field value could not be determined.';
+  IQAssert(MasterFieldValue > 0, IQMS.WebVcl.ResourceStrings.cTXT0000500);
+
+  // Determine if the document has already been assigned
+  if SelectValueFmtAsInteger(SqlAssignedDocs, [Source, MasterFieldValue, IQDocsFieldValue]) > 0 then
+    // IQMS.WebVcl.ResourceStrings.cTXT0000501 = 'The selected document has already been assigned.';
+    raise Exception.Create(IQMS.WebVcl.ResourceStrings.cTXT0000501);
+end;
+
+function TIQWebDocs.GetSource: string;
+begin
+  if FSource <> '' then
+    Result := FSource
+  else
+    if Assigned(MasterSource) and Assigned(MasterSource.DataSet) then
+    begin
+      if MasterSource.DataSet is TFDTable then
+        FSource := StrAfterDot( TFDTable(MasterSource.DataSet).TableName )
+      else if (DocsLink.MasterSource.DataSet is TFDQuery) then
+        FSource := StrAfterDot( TFDQuery(MasterSource.DataSet).UpdateOptions.UpdateTableName)
+      else
+        FSource := '';
+
+      Result := FSource;
+    end;
+end;
+
+procedure TIQWebDocs.CheckParentAssigned;
+begin
+  // IQMS.WebVcl.ResourceStrings.cTXT0000334 =
+  // 'Parent record has not been assigned.  The document cannot ' +
+  // 'be associated with an undefined parent.'
+  IQAssert( MasterFieldValue > 0, IQMS.WebVcl.ResourceStrings.cTXT0000334);
+  // IQMS.WebVcl.ResourceStrings.cTXT0000496 = 'Application Error:  The key field name could not be determined.';
+  //  IQAssert(DocsLinkField <> '', IQMS.WebVcl.ResourceStrings.cTXT0000496);
+end;
+
+procedure TIQWebDocs.DoNewRecord(DataSet: TDataSet);
+begin
+  Qry_IntDocsID.AsLargeInt        := GetNextID('INTERNAL_DOC_USED');
+  Qry_IntDocsSOURCE_ID.AsLargeInt := MasterFieldValue;
+  Qry_IntDocsPRINT_WITH.AsString  := 'NONE';
+  if Assigned(FOnNewRecord) then
+    FOnNewRecord( DataSet );
+end;
+
+procedure TIQWebDocs.DoBeforeInsert(DataSet: TDataSet);
+begin
+  CheckParentAssigned;
+end;
+
+procedure TIQWebDocs.DoBeforePost(DataSet: TDataSet);
+begin
+  CheckParentAssigned;
+
+  if Qry_IntDocs.State in [dsInsert] then
+    CheckDocumentAlreadyAssigned;
+
+  if Qry_IntDocsSOURCE_ID.IsNull then
+    Qry_IntDocsSOURCE_ID.AsLargeInt := MasterFieldValue;
+end;
+
+procedure TIQWebDocs.DoCalcFields( DataSet: TDataSet );
+begin
+  Qry_IntDocsPrintWithToShow.AsString := GetPrintWithDisplay(Qry_IntDocsPRINT_WITH.AsString ); //IQMS.WebVcl.DocumentUtils
+end;
+
+function TIQWebDocs.AssignQuery: Boolean;
+const
+  SqlInsert =
+    'INSERT INTO INTERNAL_DOC_USED(ID, IQ_DOCS_ID, SOURCE, SOURCE_ID, SEQ, PRINT_WITH, ORIGIN) ' +
+    'VALUES(:NEW_ID, :NEW_IQ_DOCS_ID, :NEW_SOURCE, :NEW_SOURCE_ID, :NEW_SEQ, :NEW_PRINT_WITH, ''WEB'')';
+  SqlUpdate = '';
+  SqlDelete = '';
+var
+  AFieldList: TStringList;
+  i: Integer;
+begin
+  AFieldList := TStringList.Create;
+  try
+    with UpdateSQL_IntDocs do
+    begin
+      // Insert SQL
+      InsertSQL.Clear;
+      for i := 0 to AFieldList.Count - 1 do
+        begin
+          if i = 0 then
+            InsertSQL.Add(Format('INSERT INTO %s(%s,',[DocsTableName, AFieldList.Strings[i]]))
+          else if i < AFieldList.Count - 1 then
+            InsertSQL.Add(Format('               %s,',[AFieldList.Strings[i]]))
+          else
+            InsertSQL.Add(Format('               %s)',[AFieldList.Strings[i]]));
+        end;
+      for i := 0 to AFieldList.Count - 1 do
+        begin
+          if i = 0 then
+            InsertSQL.Add(Format('  VALUES(:NEW_%s,',[AFieldList.Strings[i]]))
+          else if i < AFieldList.Count - 1 then
+            InsertSQL.Add(Format('         :NEW_%s,',[AFieldList.Strings[i]]))
+          else
+            InsertSQL.Add(Format('         :NEW_%s)',[AFieldList.Strings[i]]));
+        end;
+      {
+      // Modify SQL
+      ModifySQL.Clear;
+      ModifySQL.Add(Format('UPDATE %s',[FTableName]));
+      ModifySQL.Add('   SET docseq = :NEW_DOCSEQ,');
+      ModifySQL.Add('       type = :NEW_TYPE');
+      ModifySQL.Add(Format(' WHERE %s = :OLD_%s AND',[DocsLinkField, DocsLinkField]));
+      ModifySQL.Add('       iq_docs_id = :OLD_IQ_DOCS_ID');
+
+      // Delete SQL
+      DeleteSQL.Clear;
+      DeleteSQL.Add(Format('DELETE FROM %s',[FTableName]));
+      DeleteSQL.Add(Format(' WHERE %s = :OLD_%s AND',[DocsLinkField, DocsLinkField]));
+      DeleteSQL.Add('       iq_docs_id = :OLD_IQ_DOCS_ID');
+
+      // Fetch Row SQL
+      FetchRowSQL.Clear;
+      FetchRowSQL.Add('SELECT');
+      for i := 0 to AFieldList.Count - 1 do
+        FetchRowSQL.Add(Format('         a.%s,',[AFieldList.Strings[i]]));
+
+//      FetchRowSQL.Add(Format('  SELECT a.%s,',[DocsLinkField]));
+//      FetchRowSQL.Add('         a.iq_docs_id,');
+//      FetchRowSQL.Add('         a.docseq,');
+//      FetchRowSQL.Add('         a.type,');
+      FetchRowSQL.Add('         b.doc_class,');
+      FetchRowSQL.Add('         b.descrip,');
+      FetchRowSQL.Add('         b.userid,');
+      FetchRowSQL.Add('         b.timestamp,');
+      FetchRowSQL.Add('         b.doc_blob');
+      FetchRowSQL.Add(Format('    FROM %s a, iq_docs b',[FTableName]));
+      FetchRowSQL.Add('   WHERE b.id = a.iq_docs_id AND');
+      FetchRowSQL.Add(Format('         a.%s = :%s',[DocsLinkField, AParamName]));
+      }
+    end;
+  finally
+    FreeAndNil(AFieldList);
+  end;
+  Result := True;
+end;
+
+end.

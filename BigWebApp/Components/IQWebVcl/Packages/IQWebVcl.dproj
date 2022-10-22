@@ -1,0 +1,1317 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{F41C9F08-5275-4942-875B-4E3B5772C033}</ProjectGuid>
+        <MainSource>IQWebVcl.dpk</MainSource>
+        <ProjectVersion>18.2</ProjectVersion>
+        <FrameworkType>VCL</FrameworkType>
+        <Base>True</Base>
+        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+        <TargetedPlatforms>1</TargetedPlatforms>
+        <AppType>Package</AppType>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+        <Base_Win32>true</Base_Win32>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_1)'!=''">
+        <Cfg_1>true</Cfg_1>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
+        <Cfg_1_Win32>true</Cfg_1_Win32>
+        <CfgParent>Cfg_1</CfgParent>
+        <Cfg_1>true</Cfg_1>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_2)'!=''">
+        <Cfg_2>true</Cfg_2>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base)'!=''">
+        <DCC_UnitSearchPath>..\..\..\Libraries\LockBox;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
+        <DCC_CBuilderOutput>All</DCC_CBuilderOutput>
+        <RuntimeOnlyPackage>true</RuntimeOnlyPackage>
+        <GenDll>true</GenDll>
+        <GenPackage>true</GenPackage>
+        <SanitizedProjectName>IQWebVcl</SanitizedProjectName>
+        <DCC_DcuOutput>$(IQDCU)\WebIQ</DCC_DcuOutput>
+        <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
+        <DCC_E>false</DCC_E>
+        <DCC_N>false</DCC_N>
+        <DCC_S>false</DCC_S>
+        <DCC_F>false</DCC_F>
+        <DCC_K>false</DCC_K>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win32)'!=''">
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+        <VerInfo_Keys>CompanyName=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1)'!=''">
+        <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+        <DCC_DebugDCUs>true</DCC_DebugDCUs>
+        <DCC_Optimize>false</DCC_Optimize>
+        <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
+        <DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
+        <DCC_RemoteDebug>true</DCC_RemoteDebug>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <DCC_Description>IQWeb VCL</DCC_Description>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <DCC_RemoteDebug>false</DCC_RemoteDebug>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2)'!=''">
+        <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+        <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+        <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+        <DCC_DebugInformation>0</DCC_DebugInformation>
+    </PropertyGroup>
+    <ItemGroup>
+        <DelphiCompile Include="$(MainSource)">
+            <MainSource>MainSource</MainSource>
+        </DelphiCompile>
+        <DCCReference Include="rtl.dcp"/>
+        <DCCReference Include="vcl.dcp"/>
+        <DCCReference Include="firedac.dcp"/>
+        <DCCReference Include="vcldb.dcp"/>
+        <DCCReference Include="vclactnband.dcp"/>
+        <DCCReference Include="vclx.dcp"/>
+        <DCCReference Include="vclimg.dcp"/>
+        <DCCReference Include="DbxCommonDriver.dcp"/>
+        <DCCReference Include="soaprtl.dcp"/>
+        <DCCReference Include="vclFireDAC.dcp"/>
+        <DCCReference Include="dsnap.dcp"/>
+        <DCCReference Include="dbexpress.dcp"/>
+        <DCCReference Include="DBXOracleDriver.dcp"/>
+        <DCCReference Include="FireDACOracleDriver.dcp"/>
+        <DCCReference Include="adortl.dcp"/>
+        <DCCReference Include="uniGUI25.dcp"/>
+        <DCCReference Include="uniGUI25Core.dcp"/>
+        <DCCReference Include="uniTools25.dcp"/>
+        <DCCReference Include="uIndy25.dcp"/>
+        <DCCReference Include="uniGUI25Chart.dcp"/>
+        <DCCReference Include="RESTComponents.dcp"/>
+        <DCCReference Include="IQUniEditors.dcp"/>
+        <DCCReference Include="IQWebCommon.dcp"/>
+        <DCCReference Include="dbrtl.dcp"/>
+        <DCCReference Include="xmlrtl.dcp"/>
+        <DCCReference Include="inet.dcp"/>
+        <DCCReference Include="vclie.dcp"/>
+        <DCCReference Include="VclSmp.dcp"/>
+        <DCCReference Include="FireDACADSDriver.dcp"/>
+        <DCCReference Include="FireDACODBCDriver.dcp"/>
+        <DCCReference Include="..\Source\IQMS.Common.AddressFormat.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.UOM.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.XML.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.VerticalParam.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.JumpDispatcher.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.MfgShare.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.EmailUtils.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.VistaAltFixUnit.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.EmbeddedWebIISForm.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.PrincipalSource.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.Regional.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.ProdDateShift.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.ChromeEmbeddedBrowser.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.ChromeEmbeddedBrowserForm.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.DataLibSQLite.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.Dispo.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.FormFocus.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.InventoryLotDocs.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.OracleEmail.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.Print.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.Proc.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.ProgressMemo.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.ProgressDialog.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.PlantLayout.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.RecordCount.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.RFShare.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.RollbackManager.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.ShopDataSettings.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.TableSequence.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.UserFieldsXMLImportExport.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.WriteLogFile.pas"/>
+        <DCCReference Include="..\Source\IQMS.PrintLabels.LabelMatrix.pas"/>
+        <DCCReference Include="..\Source\IQMS.PrintLabels.Events.pas"/>
+        <DCCReference Include="..\Source\IQMS.Web.MicrosoftWord.Types.pas"/>
+        <DCCReference Include="..\Source\IQMS.PackSlip.VMIShared.pas"/>
+        <DCCReference Include="..\source\IQMS.WebVcl.AppDef.pas"/>
+        <DCCReference Include="..\source\IQMS.WebVcl.Jump.pas"/>
+        <DCCReference Include="..\source\IQMS.WebVcl.Connection.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.Trans.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.ToggleButton.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.DropDownButton.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.BomTreeView.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.SoftEPlant.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.HyperLinkDialog.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.OptionDialog.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.BookMark.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.Actions.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.CaptionPanel.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.UserDefinedLabel.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.RecordViewPanel.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.SpiralBook.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.MessageBar.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.UDComboBox.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.VerticalCaptionBar.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.NotificationBar.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.Animator.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.Tab.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.FloatSpinner.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.PreviewPanel.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.HeaderCheckListBox.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.KeyPad.pas">
+            <Form>IQWebKeyPad</Form>
+            <DesignClass>TUniFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.BulletinViewer.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.UDEmbeddedForm.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.LargeOptionControls.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.ExcelTbl.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.SpiralSplitter.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.ExcelPiv.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.DataCoordinator.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.DateControls.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.TransparentPanel.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.DocumentsDelete.pas">
+            <Form>IQWebDocDelete</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.UserDefinedLabelDialog.pas">
+            <Form>FrmUserDefLabel</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.ActionsForm.pas">
+            <Form>FrmActionList</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.OptionDialogForm.pas">
+            <Form>FrmIQOptionDialog</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.WizardBase.pas">
+            <Form>FrmWizardBase</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.CharDialog.pas">
+            <Form>FrmCharDlg</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.EditMemo.pas">
+            <Form>FrmEditMemo</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.ImagePreviewPopup.pas">
+            <Form>FrmImagePreviewPopup</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.Update.pas">
+            <Form>frmUpdate</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.wDateDlg.pas">
+            <Form>FrmSelectWWDate</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.GridBase.pas">
+            <Form>FrmIQGridBase</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.InputQuery.pas">
+            <Form>FrmIQInputQuery</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.ListForum.pas">
+            <Form>ListForm</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.ProgressMemoForm.pas">
+            <Form>FrmProgressMemo</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.ErrorDialog.pas">
+            <Form>FrmStringError</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.WarningDialog.pas">
+            <Form>FrmStringWarning</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.SignatureCapture.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.Graphics.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.Trace.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.License.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.JumpFile.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.COMShellBase.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.COMExe.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.BMP.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.UserFieldsPicklistEditor.pas">
+            <Form>FrmUserFieldsPicklistEditor</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.Rep_Releases.pas">
+            <Form>FrmRepeatingReleases</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.prod_date_shift.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.PrincipalSourceTypes.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.PrincipalSourceInfoDlg.pas">
+            <Form>FrmPrincipalSourceInfoDlg</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.SpellChecker.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.WatchDogShare.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.DataLib.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.Time.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.Strings.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.Dates.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.DocumentsExternal.pas">
+            <Form>IQWebExtDoc</Form>
+            <DesignClass>TUniFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.DocumentUtils.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.ResourceStrings.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.DocumentsCoordinator.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.HPick.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.DBExpress.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.FieldMap.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.QueryNavigator.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.Controls.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.SecurityRegister.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.UDRecView.pas">
+            <Form>IQWebUDRecView</Form>
+            <DesignClass>TUniFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.Search.pas">
+            <Form>IQWebSearch</Form>
+            <DesignClass>TUniFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.HyperlinkCombo.pas"/>
+        <DCCReference Include="..\Source\IQMS.Web.MicrosoftWord.pas"/>
+        <DCCReference Include="..\Source\IQMS.Web.MicrosoftApplication.pas"/>
+        <DCCReference Include="..\Source\IQMS.Web.MicrosoftWord.Interop.pas"/>
+        <DCCReference Include="..\Source\IQMS.Web.MicrosoftApplication.Interop.pas"/>
+        <DCCReference Include="..\Source\IQMS.Web.MicrosoftApplication.Types.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.EmailCorrespondence.pas">
+            <Form>IQWebEmailCorrespondence</Form>
+            <DesignClass>TUniFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.LargeGrid.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.Documents.pas">
+            <Form>IQWebDocs</Form>
+            <DesignClass>TUniFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.Blob.pas">
+            <Form>IQWebBlob</Form>
+            <DesignClass>TUniFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.Sequence.pas"/>
+        <DCCReference Include="..\Source\IQMS.Web.MicrosoftWord.Utils.pas"/>
+        <DCCReference Include="..\Source\IQMS.Web.MicrosoftExcel.Interop.pas"/>
+        <DCCReference Include="..\Source\IQMS.Web.MicrosoftExcel.pas"/>
+        <DCCReference Include="..\Source\IQMS.Web.MicrosoftExcel.Types.pas"/>
+        <DCCReference Include="..\Source\IQMS.Web.MicrosoftExcel.Utils.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.Miscellaneous.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.SecurityManager.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.Applications.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.Regfrm.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.About.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.BuildVersion.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.Aboutf.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.HotLabel.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.Screen.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.COMServer.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.DotNetCOMShared.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.DotNetInteropInterfacedObject.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.DotNetInteropServer.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.DotNetRegister.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.DotNetUpdateManager.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.ApplicationSet.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.HelpHook.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.HtmHelp.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.COMShare.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.COMServerShare.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.Version.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.PanelMsg.pas">
+            <Form>PanelMesg</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.MsgFrm.pas">
+            <Form>FrmShowStr</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.MsgFrmTm.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.SortCols.pas">
+            <Form>SortColumns</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.fglotno.pas">
+            <Form>FrmIQFGLotno</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.DateRangeDlg.pas">
+            <Form>FrmDatesRangeDialog</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.formula_editor_base.pas">
+            <Form>FrmFormulaEditorBase</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.ConfBas.pas">
+            <Form>IQDialogCheckBox</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.FormulaExpressionEval.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.ConfMissingLotno.pas">
+            <Form>FrmConfirmMissingLotNo</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.ComBase.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.httpservice.pas"/>
+        <DCCReference Include="..\Source\IQMS.PrintLabels.LMShare.pas"/>
+        <DCCReference Include="..\Source\IQMS.PrintLabels.LMChkBoxQty.pas">
+            <Form>FrmIQLMChkBoxQty</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.PrintLabels.LMChkBoxMfgNotRunning.pas">
+            <Form>FrmIQLMChkBoxMfgNotRunning</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.PrintLabels.lmedit.pas">
+            <Form>FrmLabels</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.LabelEditor.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.PLSQLArray.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.QuickAddBase.pas">
+            <Form>QuickAddBase</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.QuickAddContacts.pas">
+            <Form>QuickAddContacts</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.selcase.pas">
+            <Form>FrmChangeCase</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.CommonUomConv.pas">
+            <Form>FrmConvertUOM</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.CGIShare.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.ExistingLocks.pas">
+            <Form>FrmExistingLocks</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.ExistingLocksEx.pas">
+            <Form>FrmExistingLocksEx</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.HTTPServicesProxy.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.DotNetInteropConst.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.RequestProxy.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.DotNetInterop.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.DotNetCOMInterOp.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.DotNetCOMInteropConst.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.WCProces.pas">
+            <Form>FrmProcess</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.MEMMAP.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.RECMMAP.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.DART_STA.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.DARTNODE.pas">
+            <Form>FrmDartNodes</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.Dartwin.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.JumperBase.pas">
+            <Form>FrmJumperBase</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.SecuredConfirm.pas">
+            <Form>FrmSecuredConfirm</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.GetPassword.pas">
+            <Form>FrmSystemPassword</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.GetPrivilegedUserPassword.pas">
+            <Form>FrmPrivilegedUserPassword</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.ProgressDialogForm.pas">
+            <Form>FrmIQProgressDlg</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.WebRevoke.pas">
+            <Form>FrmWebRevoke</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.RollBack.pas">
+            <Form>FrmRollBack</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.QC_PkBase.pas">
+            <Form>FrmQC_PkBase</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.QC_PkLib.pas">
+            <Form>FrmQC_PkLib</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.QC_PkDoc.pas">
+            <Form>FrmQC_PkDoc</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.Choose.pas">
+            <Form>FrmIQChoice</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.DebugSQL.pas">
+            <Form>FrmIQDebugSessionSQL</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.ConfirmWithSecurity.pas">
+            <Form>FrmConfirmWithSecurity</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.DialogsTimed.pas">
+            <Form>FrmIQTimedMessageDlg</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.AddVendorAccess.pas">
+            <Form>FrmAddVendorAccess</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.ChangePassword.pas">
+            <Form>FrmChangePassword</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.iqwin32Rscstr.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.CompareSecurityRoles.pas">
+            <Form>FrmCompareSecurityRoles</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.SetPlant.pas">
+            <Form>FrmChangePlantID</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.UserFields.pas">
+            <Form>FrmUserFields</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.ActionBox.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.ActionBoxFrm.pas">
+            <Form>FrmMenuList</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.DBTrans.dbttypes.pas"/>
+        <DCCReference Include="..\Source\IQMS.DBTrans.dbtdb.pas"/>
+        <DCCReference Include="..\Source\IQMS.DBTrans.dbtado.pas"/>
+        <DCCReference Include="..\Source\IQMS.DBTrans.dbtrscstr.pas"/>
+        <DCCReference Include="..\Source\IQMS.DBTrans.dbtdsn.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.DMSqlite.pas">
+            <Form>sqlite_DM</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.InventoryLotDocumentShare.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.ExtFileBas.pas">
+            <Form>FrmExtFileBas</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.SqlLiteImportExport.pas"/>
+        <DCCReference Include="..\Source\IQMS.PrintLabels.LMEditTouchScreen.pas">
+            <Form>FrmLabelsTouchScreen</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.DBTrans.dbtfiredac.pas"/>
+        <DCCReference Include="..\Source\IQMS.PrintLabels.LMBase.pas">
+            <Form>FrmLM_Base</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.PrintLabels.DmLm.pas">
+            <Form>LM_DM</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.Sd_settings.pas"/>
+        <DCCReference Include="..\Source\IQMS.PrintLabels.LMManu.pas">
+            <Form>FrmLM_Manu</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.RepDefRemove.pas">
+            <Form>FrmRepDefRemove</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.AboutAlter.pas">
+            <Form>IQAboutAlterSession</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVCL.FaxDialog.pas">
+            <Form>FrmFaxDialog</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.FaxMan.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.PlantBase.pas">
+            <Form>FrmChangeEPlantBase</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.RepDefVersions.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.PrintDialogsShare.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.DebugHelpContext.pas">
+            <Form>FrmDebugHelpContext</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.CheckPoint.pas">
+            <Form>FrmCheckPointList</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.Period.pas">
+            <Form>FrmPeriod</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.RfProShare.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.RepDefParamPkListCols.pas">
+            <Form>FrmRepDefParamPkListCols</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.PkHideManager.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.HPickSubquery.pas">
+            <Form>FrmHPickSubquery</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.HPickSortCriteriaPickList.pas">
+            <Form>FrmHPickSortCriteriaPickList</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.HPickFilterPickList.pas">
+            <Form>FrmHPickFilterPickList</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.RepDefEdit.pas">
+            <Form>RepDefEdit</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.REPDECRW.pas">
+            <Form>CRWColumns</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.RepDefLog.pas">
+            <Form>FrmRepDefLog</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.QueryNavigatorScopeInfo.pas">
+            <Form>FrmQueryNavigatorScopeInfo</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.QueryInfo.pas">
+            <Form>FrmQueryInfo</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.EditMemoStr.pas">
+            <Form>FrmEditMemoString</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.InfoBox.pas">
+            <Form>FrmInfoBox</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.AccountingShare.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.POApproverTree.pas">
+            <Form>FrmPOApproverTree</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.UDSelectGridFields.pas">
+            <Form>FrmSelectGridFields</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.SearchPickList.pas">
+            <Form>FrmIQSearchPickList</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.SecGroupUsers.pas">
+            <Form>TFrmSecGroupUsers</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.SecCloneUser.pas">
+            <Form>FrmSecInsCloneUserSettings</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.SecAutoLoginSetup.pas">
+            <Form>FrmSecInsAutoLoginSetup</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.SecurityQuery.pas">
+            <Form>SecurityQuery</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.RepDefFilterEdit.pas">
+            <Form>frmRepDefFilterEdit</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.DocumentsExternalRevisions.pas">
+            <Form>FrmIQExtDocRevisions</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.DocumentsShare.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.DocumentsDescript.pas">
+            <Form>DocDescrip</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Qc_Doc.qc_doc_const.pas"/>
+        <DCCReference Include="..\Source\IQMS.Qc_Doc.qc_doc_dnet.pas"/>
+        <DCCReference Include="..\Source\IQMS.Qc_Doc.qc_doc_share.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.QC_Const.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.StatChk.pas">
+            <Form>FrmStatusException</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.HardAllocatedMaterialChk.pas">
+            <Form>FrmHardAllocatedMaterial</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.xmlView.pas">
+            <Form>FrmXMLViewer</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.HrRscstr.pas"/>
+        <DCCReference Include="..\Source\IQMS.Payroll.ViewSentMessages.pas">
+            <Form>FrmViewSentMsgs</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Payroll.NewPortalMessage.pas">
+            <Form>frmNewPortalMsg</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.NewPortalMessageBase.pas">
+            <Form>frmNewPortalMsgBase</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.ViewPortalMessagesBase.pas">
+            <Form>FrmViewPortalMsgBase</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.InvalidObjectsWarning.pas">
+            <Form>FrmInvalidObjectWarning</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.OracleShared.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.ServerShare.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.CreateOracleDSN.pas">
+            <Form>FrmIQCreateDSN</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.DataSetToRecord.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.DMConvert.pas">
+            <Form>Cnvrt_DM</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.TextStream.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.ReprintLabels.pas">
+            <Form>FrmReprintLabels</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.PrnOtherAttachments.pas">
+            <Form>FrmPrnOtherAttachments</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.EmailDialog.pas">
+            <Form>FrmEmailDialog</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.TransError.pas">
+            <Form>TransError</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.Repbomwo.pas">
+            <Form>TFrmRepBomWo</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.RepProps.pas">
+            <Form>FrmRepProps</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.InactiveInvItemChk.pas">
+            <Form>FrmInactiveInventoryItemException</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.XmlLogFile.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.PrintWithDialog.pas">
+            <Form>FrmPrintWithDlg</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.DBTrans.dbtfields.pas"/>
+        <DCCReference Include="..\Source\IQMS.DBTrans.dbtshare.pas"/>
+        <DCCReference Include="..\Source\IQMS.DBTrans.dbtdbexp.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.McRscstr.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.Mcshare.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.SortFields.pas">
+            <Form>FrmSortFields</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.SysShare.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.HpickBase.pas">
+            <Form>FrmPickListBase</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.ExportDBGrid.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.HpickFrm.pas">
+            <Form>HyperPick</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.UserFieldsLayoutManager.pas">
+            <Form>FrmUserFieldsLayoutManager</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.Usr_Stru.pas">
+            <Form>FrmUsr_Define_Stru</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.LabelsShare.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.TransMisc.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.StringGridUtils.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.HHPFiles.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.Usr_Flds.pas">
+            <Form>FrmUsr_Flds</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.UDComboListDlg.pas">
+            <Form>FrmIQUDComboListDlg</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.Citrix.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.REPFUNC.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.Repdeffr.pas">
+            <Form>FrmRepDefFormulasDataEntry</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.HpickTouchScreen.pas">
+            <Form>FrmTouchScreenPickList</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.PreviewWindow.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.UDWorksheet.pas">
+            <Form>FrmUDWorksheet</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.UserFieldsWorksheet.pas">
+            <Form>FrmUsrFldsWS</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.DMDbexpress.pas">
+            <Form>DBExpress_DM</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.AutoSaveMan.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.ScrollBox.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.TimeDiffDlg.pas">
+            <Form>TimeDiff</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.TRBase.pas">
+            <Form>FrmTraceBase</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.RepDef.pas">
+            <Form>frmRepDef</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.DateDlg.pas">
+            <Form>FrmSelectDate</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.RepDefTouchScreen.pas">
+            <Form>FrmRepDefTouchScreen</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.SecGroup.pas">
+            <Form>FrmSecurityGroups</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.MsgConf.pas">
+            <Form>FrmShowConfirmStr</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.SecGroupClone.pas">
+            <Form>FrmSecurityGroupClone</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.PictureGallery.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.LGMSG1.pas">
+            <Form>FrmMsg1</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.LGMSG2.pas">
+            <Form>FrmMsg2</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.LgMsg3.pas">
+            <Form>FrmMsg3</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\PickListDlg.pas">
+            <Form>PickListForm</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.BomTV.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.InvMisc.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.TransLotExpDateDlg.pas">
+            <Form>FrmTransLotExpDateDlg</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.BomAuxTool.pas">
+            <Form>FrmBomAuxTool</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.Auxequip.pas">
+            <Form>FrmIQAuxEquip</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.BulletinBoardEdit.pas">
+            <Form>BulletinBoardEdit</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.TimeForm.pas">
+            <Form>TimeForm</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.MultimediaSounds.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.TinyMCE.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVcl.DBTinyMCE.pas"/>
+        <DCCReference Include="..\Source\IQMS.Common.Eventlog.pas">
+            <Form>Event_Log</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.DATESDLG.pas">
+            <Form>FrmDatesDialog</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.PrintLabels.LMPack.pas">
+            <Form>FrmLM_Pack</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.PrintLabels.LMPack_Multi.pas">
+            <Form>FrmLM_Pack_Multi</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.WebVcl.BookmarkManager.pas"/>
+        <DCCReference Include="..\Source\IQMS.WebVCL.BookMarkLink.pas">
+            <Form>FrmLinkDisplay</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\IQMS.Common.DatesDlg2.pas">
+            <Form>FrmDatesDialog2</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Source\UniListView.pas"/>
+        <BuildConfiguration Include="Release">
+            <Key>Cfg_2</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Base">
+            <Key>Base</Key>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Debug">
+            <Key>Cfg_1</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Delphi.Personality.12</Borland.Personality>
+        <Borland.ProjectType>Package</Borland.ProjectType>
+        <BorlandProject>
+            <Delphi.Personality>
+                <Source>
+                    <Source Name="MainSource">IQWebVcl.dpk</Source>
+                </Source>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k250.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp250.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
+            </Delphi.Personality>
+            <Deployment Version="3">
+                <DeployFile LocalName="$(BDS)\Redist\iossimulator\libcgunwind.1.0.dylib" Class="DependencyModule"/>
+                <DeployFile LocalName="$(BDS)\Redist\iossimulator\libPCRE.dylib" Class="DependencyModule"/>
+                <DeployFile LocalName="$(BDS)\Redist\osx32\libcgunwind.1.0.dylib" Class="DependencyModule"/>
+                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\17.0\Bpl\IQWebVcl.bpl" Configuration="Debug" Class="ProjectOutput"/>
+                <DeployClass Name="AdditionalDebugSymbols">
+                    <Platform Name="OSX32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>0</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidClassesDexFile">
+                    <Platform Name="Android">
+                        <RemoteDir>classes</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidGDBServer">
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\armeabi-v7a</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidLibnativeArmeabiFile">
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\armeabi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidLibnativeMipsFile">
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\mips</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidServiceOutput">
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\armeabi-v7a</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidSplashImageDef">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidSplashStyles">
+                    <Platform Name="Android">
+                        <RemoteDir>res\values</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_DefaultAppIcon">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_LauncherIcon144">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-xxhdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_LauncherIcon36">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-ldpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_LauncherIcon48">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-mdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_LauncherIcon72">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-hdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_LauncherIcon96">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-xhdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_SplashImage426">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-small</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_SplashImage470">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-normal</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_SplashImage640">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-large</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_SplashImage960">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-xlarge</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="DebugSymbols">
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="DependencyFramework">
+                    <Platform Name="OSX32">
+                        <Operation>1</Operation>
+                        <Extensions>.framework</Extensions>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="DependencyModule">
+                    <Platform Name="OSX32">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                        <Extensions>.dll;.bpl</Extensions>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Required="true" Name="DependencyPackage">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                        <Extensions>.bpl</Extensions>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="File">
+                    <Platform Name="Android">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_Launch1024">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_Launch1536">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_Launch2048">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_Launch768">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_Launch320">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_Launch640">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_Launch640x1136">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectAndroidManifest">
+                    <Platform Name="Android">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectiOSDeviceDebug">
+                    <Platform Name="iOSDevice32">
+                        <RemoteDir>..\$(PROJECTNAME).app.dSYM\Contents\Resources\DWARF</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).app.dSYM\Contents\Resources\DWARF</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectiOSDeviceResourceRules"/>
+                <DeployClass Name="ProjectiOSEntitlements"/>
+                <DeployClass Name="ProjectiOSInfoPList"/>
+                <DeployClass Name="ProjectiOSResource">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectOSXEntitlements"/>
+                <DeployClass Name="ProjectOSXInfoPList"/>
+                <DeployClass Name="ProjectOSXResource">
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\Resources</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Required="true" Name="ProjectOutput">
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\armeabi-v7a</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Linux64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectUWPManifest">
+                    <Platform Name="Win32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win64">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="UWP_DelphiLogo150">
+                    <Platform Name="Win32">
+                        <RemoteDir>Assets</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win64">
+                        <RemoteDir>Assets</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="UWP_DelphiLogo44">
+                    <Platform Name="Win32">
+                        <RemoteDir>Assets</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win64">
+                        <RemoteDir>Assets</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <ProjectRoot Platform="iOSDevice64" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="Linux64" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="iOSSimulator" Name="$(PROJECTNAME).app"/>
+            </Deployment>
+            <Platforms>
+                <Platform value="Win32">True</Platform>
+                <Platform value="Win64">False</Platform>
+            </Platforms>
+        </BorlandProject>
+        <ProjectFileVersion>12</ProjectFileVersion>
+    </ProjectExtensions>
+    <Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
+    <Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
+    <Import Project="$(MSBuildProjectName).deployproj" Condition="Exists('$(MSBuildProjectName).deployproj')"/>
+</Project>

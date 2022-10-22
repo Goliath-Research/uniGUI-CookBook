@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="yes"?>
+<DATAPACKET Version="2.0">
+	<METADATA>
+		<FIELDS>
+			<FIELD attrname="ID" fieldtype="string" WIDTH="10" required="true"/>
+			<FIELD attrname="Name" fieldtype="string" WIDTH="50"/>
+		</FIELDS>
+		<PARAMS DEFAULT_ORDER="1" PRIMARY_KEY="1" LCID="1033"/>
+	</METADATA>
+	<ROWDATA>
+		<ROW ID="UPS" Name="UPS International"/>
+		<ROW ID="DHL" Name="DHL International"/>
+		<ROW ID="Emery" Name="Emery Whoever it is"/>
+	</ROWDATA>
+</DATAPACKET>

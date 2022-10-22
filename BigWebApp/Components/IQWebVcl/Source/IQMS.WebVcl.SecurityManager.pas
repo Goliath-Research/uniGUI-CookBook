@@ -1,0 +1,930 @@
+(* Security Manager
+  ------------------
+   
+  FSecurityRegisters : List of TSecurityRegister
+  ================================================
+  
+  |- SecurityRegisters[ 0 ] : TSecurityRegister -|   ....  |- SecurityRegisters[ N ] : TSecurityRegister -|
+  |                                              |         |                                              |
+  | TSecurityRegister is TStrings                |         | TSecurityRegister is TStrings                |
+  |                                              |         |                                              |
+  |    |- Items[ 0 ] = ComponentName ------------|         |    |- Items[ 0 ] = ComponentName  ------|    |
+  |    |  - Objects[ 0 ] - TSecurityCargo   |    |         |    |  - Objects[ 0 ] - TSecurityCargo   |    |
+  |    |                      C_Enabled     |    |         |    |                      C_Enabled     |    |
+  |    |                      C_Insert      |    |         |    |                      C_Insert      |    |
+  |    |                      C_Delete      |    |         |    |                      C_Delete      |    |
+  |    |                      C_Rd_Wr       |    |         |    |                      C_Rd_Wr       |    |
+  |    -------------------------------------|    |         |    -------------------------------------|    |
+  |    ....                                      |         |    ....                                      |
+  |                                              |         |                                              |
+  |    |- Items[ N ]------------------------|    |         |    |- Items[ N ]------------------------|    |
+  |    |                                    |    |         |    |                                    |    |
+  |    |------------------------------------|    |         |    |------------------------------------|    |
+  |                                              |         |                                              |
+  |--------------------------------------------- |         |--------------------------------------------- |
+*)
+
+
+unit IQMS.WebVcl.SecurityManager;
+
+interface
+
+uses
+  Windows,
+  Messages,
+  SysUtils,
+  Classes,
+  Graphics,
+  Controls,
+  Forms,
+  Dialogs,
+  ComCtrls,
+  IQMS.WebVcl.SecurityRegister,
+  Buttons,
+  Menus,
+  DB,
+  SqlExpr,
+  IQMS.WebVcl.DBExpress,
+  IQMS.Common.Applications,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Error,
+  FireDAC.UI.Intf,
+  FireDAC.Phys.Intf,
+  FireDAC.Stan.Def,
+  FireDAC.Stan.Pool,
+  FireDAC.Stan.Async,
+  FireDAC.Phys,
+  FireDAC.Comp.Client,
+  FireDAC.Comp.DataSet,
+  FireDAC.VCLUI.Wait,
+  FireDAC.ConsoleUI.Wait,
+  FireDAC.Comp.UI,
+  FireDAC.Phys.Oracle,
+  FireDAC.Comp.Script,
+  FireDAC.Comp.ScriptCommands,
+  uniSpeedButton,
+  uniMainMenu;
+
+{ TSecurityManager }
+
+type
+  TSecurityManager = class
+  private
+    FSecurityRegisters    : TList;
+    FIsUserDBA            : Boolean;
+    FUserName             : string;
+    FPassword             : string;
+    FConnectionName       : string;
+    FEPlant_ID            : string;  // I declare FEPlant_ID as string so it can be '' to denote NULL id
+    FEPlant_Name          : string;
+    FLicensedModules      : string;
+    FEPlant_Include_Nulls : Boolean;
+    FDBANeedsSecurityRoles: Boolean;
+    //FLaunchSecInsFlag    : Boolean;
+    FFullAccessSecurityCode: string;
+    FHasUnrestrictedAccess: Boolean;
+    FOracleSID            : Real;
+    FOracleSerial         : Real;
+    FOracleProcess        : string;
+    FDisableEplantChange  : Boolean;
+   
+    procedure SetUserName( const AValue : string );
+    
+    procedure SetEPlant_ID( const AValue : string );
+    
+    procedure AssigngEPlant_ID( const AValue : string; DB: string = 'IQFD' );
+    procedure SetEPlant_Include_Nulls( AValue: Boolean );
+    function GetEPlant_ID_AsFloat: Real;
+    procedure SetEPlant_ID_AsFloat( AValue: Real );
+    
+    procedure AssignIQRepMng_Active( DB: string = 'IQFD' );
+    function GetEPlantsExist: Boolean;
+    procedure AssignDBANeedsSecurityRoles( DB: string = 'IQFD' );
+    procedure CheckAssignClientInfo( DB: string = 'IQFD' );
+    function GetFullAccessSecurityCode: string;
+    procedure SetFullAccessSecurityCode(const Value: string);
+    procedure SetHasUnrestrictedAccess(const Value: Boolean);
+    procedure StoreOracleSID( DB: string = 'IQFD' );
+    function GetColor: TColor;
+    function GetEPlant_ID_AsInt64: Int64;
+    procedure SetEPlant_ID_AsInt64(const Value: Int64);
+    function GetServerName: string;
+    //procedure SetLaunchSecInsFlag( AValue: Boolean );
+  protected
+    procedure AssignLicensedModules;
+  public
+    constructor Create( const AUserName, APassword, aConnectionName : string );
+    destructor Destroy; override;
+
+    class procedure CheckModuleLicensed(const AIQAppsType: TIQAppsType);
+    class procedure CheckSecuredComponentEnabled(AApp_ID, AComponentName: string);
+
+    procedure DeleteSecurityRegisters;
+    procedure AssignSecurityRegister( SR : TIQWebSecurityRegister );
+    function IndexOf( SR : TIQWebSecurityRegister ): Integer;
+    procedure RemoveSecurityManager( SR : TIQWebSecurityRegister );
+    function SetVisibleIfLicensed( SpeedBtn: TUniSpeedButton; MenuItem, AssocMenuBreakItem:TUniMenuItem; const sAppName:string; SR: TIQWebSecurityRegister ):Boolean;
+    function SetEnabledIfLicensed( SpeedBtn: TUniSpeedButton; MenuItem, AssocMenuBreakItem:TUniMenuItem; const sAppName:string; SR: TIQWebSecurityRegister ):Boolean;
+    function IsModuleLicensed(const AppName: string): Boolean; overload;
+    function IsModuleLicensed(const AIQAppsType: TIQAppsType): Boolean; overload;
+    function GetDefaultUserEPlant_ID( DB: string = 'IQFD' ): string;
+    function LoggedIntoEPlant: Boolean;
+
+    //procedure CheckSecInsOnActivate( Sender: TObject );
+    //procedure CheckSecInsOnDeactivate( Sender: TObject );
+    //property LaunchSecInsFlag: Boolean read FLaunchSecInsFlag write SetLaunchSecInsFlag;
+
+    property SecurityRegisters : TList read FSecurityRegisters write FSecurityRegisters;
+    property IsUserDBA : Boolean read FIsUserDBA write FIsUserDBA;
+    property UserName  : string read FUserName write SetUserName;
+    property Password  : string read FPassword write FPassword;
+    property ConnectionName : string read FConnectionName write FConnectionName;
+    property ServerName: string read GetServerName;
+    property LicensedModules: string read FLicensedModules write FLicensedModules;
+    property EPlant_ID  : string read FEPlant_ID write SetEPlant_ID;
+    property EPlant_ID_AsFloat: Real read GetEPlant_ID_AsFloat write SetEPlant_ID_AsFloat;
+    property EPlant_ID_AsInteger: Int64 read GetEPlant_ID_AsInt64 write SetEPlant_ID_AsInt64;
+    property EPlant_Name: string read FEPlant_Name write FEPlant_Name;
+    property EPlant_Include_Nulls: Boolean read FEPlant_Include_Nulls write SetEPlant_Include_Nulls;
+    property EPlantsExist: Boolean read GetEPlantsExist;
+    property DBANeedsSecurityRoles: Boolean read FDBANeedsSecurityRoles write FDBANeedsSecurityRoles;
+    property Color: TColor read GetColor;
+    property HasUnrestrictedAccess: Boolean read FHasUnrestrictedAccess write SetHasUnrestrictedAccess;      // 10-26-2011 for IQ_Clock
+    property DisableEplantChange: Boolean read FDisableEplantChange write FDisableEplantChange;
+    
+    procedure AssignUserName( AValue : string; DB: string = 'IQFD' );
+    property FullAccessSecurityCode: string read GetFullAccessSecurityCode write SetFullAccessSecurityCode;
+    function IsFullAccessGrantedToSecurityCode( ASecurityCode: string ): Boolean;
+    function IsInvisibleAnotherEPlant( AEplant_ID: Real ): Boolean;
+
+    procedure WriteFailedProcessToNetworkFailureLog;
+
+    procedure EnsureFDConnectionInSync( AConn: TFDConnection = nil );
+    procedure EnsureDBXConnectionInSync;
+    
+    class function GetComponentSecurityFlag( AApp_ID, AComponentName,  AFieldName: string ): Boolean; static;
+    class function IsSecuredComponentEnabled( AApp_ID, AComponentName: string ): Boolean;
+    class procedure CheckEnsureUserNameLookupIsAssigned(var AIsUserNameAltered: Boolean);
+    class procedure ResetUserNameLookup;
+    class function GetEPlant_ID: Real;
+    class function IsPowerUser: Boolean;
+    function IsUserIQMS: Boolean;
+  end;
+
+function SecurityManager(AUserName: string = ''; APassword: string = ''; AAliasName: string = ''): TSecurityManager;
+procedure CheckSecurityManagerAssigned;
+
+implementation
+
+uses
+  IQMS.Common.DataLib,
+  IQMS.Common.Dialogs,
+  IQMS.Common.Numbers,
+  IQMS.Common.StringUtils,
+  IQMS.Common.RegFrm,
+  IQMS.Common.COMServer,
+  //IQSecIns,
+  IQMS.WebVcl.ResourceStrings,
+  IQMS.Common.JumpConstants,
+  IQMS.Common.Miscellaneous,
+  Variants,
+  XMLDoc,
+  XMLIntf,
+  ActiveX;     // ComObj
+
+const
+  cnstNetworkFailureLogFileName = 'network_failure_log.xml';
+  cnstNetworkFailureNodeName = 'network_failure_log';
+  cnstOracleProcessNodeName = 'process';
+
+var
+  InternalSecurityManager : TSecurityManager;
+
+function SecurityManager(AUserName: string = ''; APassword: string = ''; AAliasName: string = ''): TSecurityManager;
+begin
+  if (not AUserName.IsEmpty) then
+  begin
+    if Assigned(InternalSecurityManager) then
+      if (InternalSecurityManager.UserName <> AUserName) then
+        FreeAndNil(InternalSecurityManager);
+
+    if (not Assigned(InternalSecurityManager)) then
+      InternalSecurityManager := TSecurityManager.Create(AUserName, APassword, AAliasName);
+  end;
+
+  Result := InternalSecurityManager;
+end;
+
+procedure CheckSecurityManagerAssigned;
+begin
+  if Assigned(InternalSecurityManager) then
+     raise Exception.Create( IQMS.WebVcl.ResourceStrings.cTXT0000175 {'Security Manager is not assigned'});
+end;
+
+
+function _CheckCreateApplicationNodeInNetworkFailureXML( var XMLDoc: IXMLDocument; AFileName: string; AAppend: Boolean = TRUE ): IXMLNode; forward;
+
+{ Aux functions }
+
+class procedure TSecurityManager.CheckSecuredComponentEnabled( AApp_ID, AComponentName: string );
+begin
+  if not TSecurityManager.IsSecuredComponentEnabled( AApp_ID, AComponentName ) then
+     // 'Insufficient rights.  Access denied. [%s, %s]'
+     raise TInsufficientRights.CreateFmt(IQMS.WebVcl.ResourceStrings.cTXT0000176, [ AApp_ID, AComponentName ]);
+end;
+
+class procedure TSecurityManager.CheckModuleLicensed(const AIQAppsType: TIQAppsType);
+begin
+  if not Assigned(InternalSecurityManager) then
+    // IQMS.WebVcl.ResourceStrings.cTXT0000420 = 'Access denied.  You are not licensed to use this module.';
+    raise TInsufficientRights.Create(IQMS.WebVcl.ResourceStrings.cTXT0000420)
+  else if not InternalSecurityManager.IsModuleLicensed(AIQAppsType) then
+    // IQMS.WebVcl.ResourceStrings.cTXT0000421 = 'Access denied.  You are not licensed to use %s.';
+    raise TInsufficientRights.CreateFmt(IQMS.WebVcl.ResourceStrings.cTXT0000421, [IQAppsNames[AIQAppsType]]);
+end;
+
+class function TSecurityManager.GetEPlant_ID: Real;
+begin
+  if Assigned(InternalSecurityManager) then
+     Result:= InternalSecurityManager.EPlant_ID_AsFloat
+  else   
+     Result:= 0;
+end;
+
+{TSecurityManager}
+
+constructor TSecurityManager.Create( const AUserName, APassword, aConnectionName : string );
+begin
+  inherited Create;
+
+  //if not IQRegBooleanScalarRead( Application, 'EPlant_Include_Nulls', FEPlant_Include_Nulls ) then
+  FEPlant_Include_Nulls:= FALSE;  { Aug 18,99 AA. We neutralized this option }
+
+  FSecurityRegisters:= TList.Create;
+  AssignLicensedModules;
+  UserName := AUserName;
+  Password := APassword;
+  ConnectionName := aConnectionName;
+  FullAccessSecurityCode := '';
+end;
+
+destructor TSecurityManager.Destroy;
+begin
+  //IQRegBooleanScalarWrite( Application, 'EPlant_Include_Nulls', FEPlant_Include_Nulls );
+  DeleteSecurityRegisters;
+  FSecurityRegisters.Free;
+  inherited;
+end;
+
+//procedure TSecurityManager.CheckSecInsOnActivate( Sender: TObject );
+//begin
+//  if LaunchSecInsFlag then
+//     CreateSecurityInspector
+//  else
+//     CheckCloseSecurityInspector;
+//end;
+//
+//procedure TSecurityManager.CheckSecInsOnDeactivate( Sender: TObject );
+//begin
+//  CheckHideSecurityInspector;
+//end;
+
+//procedure TSecurityManager.SetLaunchSecInsFlag( AValue: Boolean );
+//begin
+//  if AValue <> FLaunchSecInsFlag then
+//  begin
+//    FLaunchSecInsFlag:= AValue;
+//    if Assigned(IQComSrvList) then
+//       IQComSrvList.FlagSecurityInspectorsToLaunchOnActivate( AValue );
+//  end;
+//end;
+
+procedure TSecurityManager.AssignLicensedModules;
+begin
+  try
+     FLicensedModules:= CharXOR( SelectValueAsString( 'select modules from iqorder2' )) + ';'  ; {get registered modules and make sure it ends with ';'}
+     FLicensedModules := ';' + FLicensedModules;
+  except on E: Exception do
+     begin
+       FLicensedModules:= '';
+       IQWarning( Format(IQMS.WebVcl.ResourceStrings.cTXT0000368, [ E.Message ])); {'Proceeding with no registered licensed modules.'#13#13'%s'}
+     end;
+  end;
+end;
+
+function TSecurityManager.IsModuleLicensed(const AppName: string): Boolean;
+var
+ s:string;
+begin
+  s:=';' + AppName + ';';
+  if (AppName <> '') and ( Pos( s, LicensedModules ) > 0 ) then
+    Result:=True
+  else
+    Result:=false;
+end;
+
+function TSecurityManager.IsModuleLicensed(const AIQAppsType: TIQAppsType): Boolean;
+begin
+  Result := IsModuleLicensed(IQAppsNames[AIQAppsType]);
+end;
+
+function TSecurityManager.SetVisibleIfLicensed( SpeedBtn: TUniSpeedButton; MenuItem, AssocMenuBreakItem:TUniMenuItem; const sAppName:string; SR: TIQWebSecurityRegister ):Boolean;
+var
+  IsRegistered: Boolean;
+begin
+//   IsRegistered:= (sAppName <> '') and ( Pos( sAppName + ';', LicensedModules ) > 0 );
+  IsRegistered:= IsModuleLicensed( sAppName );
+
+  if SpeedBtn <> NIL then
+     SpeedBtn.Visible:= IsRegistered and (not Assigned( SR ) or SR.Visible[ SpeedBtn.Name ]);
+
+  if MenuItem <> NIL then
+     MenuItem.Visible:= IsRegistered and (not Assigned( SR ) or SR.Visible[ MenuItem.Name ]);
+
+  if AssocMenuBreakItem <> NIL then
+     AssocMenuBreakItem.Visible:= MenuItem.Visible;
+
+  Result:= IsRegistered;
+end;
+
+function TSecurityManager.SetEnabledIfLicensed( SpeedBtn: TUniSpeedButton; MenuItem, AssocMenuBreakItem:TUniMenuItem; const sAppName:string; SR: TIQWebSecurityRegister ):Boolean;
+var
+  IsRegistered: Boolean;
+begin
+  IsRegistered:= IsModuleLicensed( sAppName );
+
+  if SpeedBtn <> NIL then
+     SpeedBtn.Enabled := IsRegistered and (not Assigned( SR ) or SR.Visible[ SpeedBtn.Name ]);
+
+  if MenuItem <> NIL then
+     MenuItem.Enabled := IsRegistered and (not Assigned( SR ) or SR.Visible[ MenuItem.Name ]);
+
+  if AssocMenuBreakItem <> NIL then
+     AssocMenuBreakItem.Enabled := MenuItem.Visible;
+
+  Result:= IsRegistered;
+end;
+
+procedure TSecurityManager.DeleteSecurityRegisters;
+var
+  I:Integer;
+begin
+  {see RemoveSecurityManager below that gets called from SecurityRegister.Destroy}
+  for I:= FSecurityRegisters.Count - 1 downto 0 do
+     TIQWebSecurityRegister( FSecurityRegisters[ I ] ).Free;
+end;
+
+procedure TSecurityManager.RemoveSecurityManager( SR : TIQWebSecurityRegister );
+var
+  I:Integer;
+begin
+  I:= SecurityRegisters.IndexOf( SR );
+  if I >= 0 then
+     SecurityRegisters.Delete( I );
+end;
+
+procedure TSecurityManager.SetHasUnrestrictedAccess(const Value: Boolean);
+begin
+  // 10-26-2011 introduced to allow IQ_Clock autologin with user=rtbox to avoid insufficient rights error
+  FHasUnrestrictedAccess:= Value;
+end;
+
+procedure TSecurityManager.SetUserName( const AValue : string );
+begin
+  AssignUserName( AValue );
+end;
+
+
+procedure TSecurityManager.AssignUserName( AValue : string; DB: string);
+begin
+  FUserName:= UpperCase( Trim( AValue ));
+
+  {04-16-2012 allow DD to proceed when installing repository doc control instance}
+  try
+    ExecuteCommandFmt('BEGIN iqms.misc.set_username(''%s''); END;', [ FUserName ], DB);
+  except 
+    if CompareText('dd.exe', SysUtils.ExtractFileName( Application.ExeName )) <> 0 then
+       raise;
+  end;
+    
+  try
+    ExecuteCommandFmt('BEGIN iqms.misc.set_username(''%s''); END;', [FUserName], DB);
+  except
+  end;
+
+  try
+    FIsUserDBA:= SelectValueFmt( 'select 1 from dba_role_privs where grantee = ''%s'' and granted_role = ''DBA'' and rownum < 2',
+                            [ FUserName ],
+                            DB ) = 1;
+  except
+    FIsUserDBA:= FALSE;
+  end;
+
+  StoreOracleSID( DB );
+  
+  AssigngEPlant_ID( GetDefaultUserEPlant_ID( DB ), DB );
+
+  AssignIQRepMng_Active( DB );
+
+  AssignDBANeedsSecurityRoles( DB );
+                         
+  CheckAssignClientInfo( DB );
+end;
+
+
+procedure TSecurityManager.StoreOracleSID( DB: string);
+var
+  A: Variant;
+begin
+  FOracleSID    := 0;
+  FOracleSerial := 0;
+  FOracleProcess:= '';
+  try                 
+    A:= SelectValueArray('select sid, serial#, process from v$session where audsid = sys_context(''userenv'',''sessionid'')' );
+    if (VarArrayDimCount( A ) = 0) then
+       EXIT;
+  except
+    EXIT;  // in case there is no connection
+  end;
+
+  FOracleSID    := A[ 0 ];
+  FOracleSerial := A[ 1 ];
+  FOracleProcess:= A[ 2 ];
+end;
+
+function TSecurityManager.GetColor: TColor;
+var
+  AEPlantColor: Integer;
+  ASysColor: Integer;
+begin
+  try
+    AEPlantColor:= SelectValueFmtAsInteger(
+      'SELECT mainform_color FROM eplant WHERE id = %.0f',
+      [EPlant_ID_AsFloat]);
+    ASysColor   := SelectValueAsInteger(
+      'SELECT mainform_color FROM iqsys2 WHERE ROWNUM < 2');
+    if AEPlantColor > 0 then
+       Result := TColor(AEPlantColor)
+    else if ASysColor > 0 then
+       Result := TColor(ASysColor)
+    else
+       Result := clBtnFace;
+  except
+    Result := clBtnFace;
+  end;
+end;
+
+function TSecurityManager.GetDefaultUserEPlant_ID( DB: string): string;
+begin
+  Result := '';
+  try
+    with TFDQuery.Create(nil) do
+    try
+      Connection := FDManager.FindConnection( DB ) as TFDConnection;
+      // SessionName := GetSessionNameFromDataBaseName( DB );
+      SQL.Add(Format( 'select eplant_id from s_user_general where RTrim(user_name) = ''%s''', [ UserName ] ));
+      Open;
+      Result:= Fields[ 0 ].asString;
+    finally
+      Free;
+    end;
+  except
+    // on exception return null value below
+  end;
+  if Result = '' then
+     Result := 'NULL';
+end;
+
+procedure TSecurityManager.SetEPlant_ID( const AValue : string );
+begin
+  AssigngEPlant_ID( AValue );
+end;
+
+procedure TSecurityManager.AssigngEPlant_ID( const AValue : string; DB: string);
+var
+  AEplantID: Real;
+begin
+  FEPlant_ID:= AValue;
+  if (FEPlant_ID = '') or (Trim(FEPlant_ID) = '0') or (CompareText(FEPlant_ID,'NULL')=0) then
+     FEPlant_ID:= 'NULL';
+
+  if not IQMS.Common.Numbers.IsStringValidFloat(FEplant_ID, AEplantID) then
+     AEplantID := 0;
+
+  try
+    with TFDQuery.Create(nil) do
+    try
+      Connection := FDManager.FindConnection( DB ) as TFDConnection;
+      SQL.Add(Format( 'select name, inactive from eplant where id = %s', [ FEPlant_ID ]));
+      Open;
+      FEPlant_Name:= Fields[ 0 ].asString;
+
+      if FieldByName('inactive').asString = 'Y' then
+      begin
+        FEPlant_Name:= '';
+        FEPlant_ID  := 'NULL';
+      end;
+    finally
+      Free;
+    end;
+  except
+    FEPlant_Name:= 'N/A';
+  end;
+
+  
+  {Now update the backend as well}
+  try
+    ExecuteCommandFmt(
+	  'BEGIN '#13 +
+      '  iqms.misc.set_eplant_id(%.0f, ''%s''); '#13 +
+      'END; ',
+      [AEplantID, FEPlant_Name],
+      DB );
+  except
+  end;
+
+  { jobshop2 }
+  try
+    ExecuteCommandFmt(
+	  'begin                               '+
+      '  misc.set_jobshop2_licensed( %d ); '+
+      'end;                                ',
+      [ iIIf( IsModuleLicensed( IQAppsNames[ apJobShop2 ]), 1, 0) ],
+      DB );
+  except
+  end;
+  
+  {Post to IQWin32 main launcher to show eplant associated color}
+  if (DB = 'IQFD') and Assigned(Application.MainForm) then
+  begin
+     PostMessage( Application.MainForm.Handle, iq_RefreshColor, 1, 0 );  // color
+     PostMessage( Application.MainForm.Handle, iq_Notify, 10, 0 );       // caption
+  end;
+end;
+
+
+procedure TSecurityManager.SetEPlant_Include_Nulls( AValue: Boolean );
+begin
+  FEPlant_Include_Nulls:= AValue;
+  {backend}
+  try
+     ExecuteCommandFmt('begin Misc.EPlant_Include_Nulls::= %d; end; ', [ iIIf( FEPlant_Include_Nulls, 1, 0 )]);
+  except
+  end;
+end;                             
+
+function TSecurityManager.GetEPlantsExist: Boolean;
+begin
+  Result:= SelectValue('select count(*) from eplant') > 0;
+end;
+
+function TSecurityManager.GetEPlant_ID_AsFloat: Real;
+begin
+  // Initial value
+  Result := 0;
+
+  // 10/06/2008 Trap for NULL
+  if (EPlant_ID <> 'NULL') and (EPlant_ID <> '') then
+  try
+    Result:= StrToFloat( EPlant_ID );
+  except
+    Result:= 0;
+  end;
+end;
+
+procedure TSecurityManager.SetEPlant_ID_AsFloat( AValue: Real );
+begin
+  EPlant_ID:= FloatToStr( AValue );
+end;
+
+function TSecurityManager.GetEPlant_ID_AsInt64: Int64;
+begin
+  // Initial value
+  Result := 0;
+
+  // 10/06/2008 Trap for NULL
+  if (EPlant_ID <> 'NULL') and (EPlant_ID <> '') then
+  try
+    Result:= StrToInt64Def( EPlant_ID, 0 );
+  except
+    Result:= 0;
+  end;
+end;
+
+procedure TSecurityManager.SetEPlant_ID_AsInt64(const Value: Int64);
+begin
+  EPlant_ID  := IntToStr(Value);
+end;
+
+procedure TSecurityManager.AssignIQRepMng_Active( DB: string);
+var
+  S: string;
+begin
+  S:= sIIf( SetVisibleIfLicensed( NIL, NIL, NIL, 'IQRepMng', NIL ), 'Y', 'N');
+  {Now update the backend as well}
+  try
+     ExecuteCommandFmt('begin                              '+
+               '  misc.IQRepMng_Active ::= ''%s''; '+
+               'end;                               ', 
+               [ S ],
+               DB );
+  except
+  end;
+end;  
+
+function TSecurityManager.IndexOf( SR : TIQWebSecurityRegister ): Integer;
+var
+  I:Integer;
+begin
+  for I:= 0 to SecurityRegisters.Count - 1 do with TIQWebSecurityRegister( SecurityRegisters[ I ])  do
+  begin
+    if AnsiCompareText( SecurityCode, SR.SecurityCode ) = 0 then
+    begin
+       Result:= I;
+       EXIT;
+    end;
+  end;  
+  Result:= -1;
+end;       
+
+procedure TSecurityManager.AssignSecurityRegister( SR : TIQWebSecurityRegister );
+var
+  I:Integer;
+  SR_RunTime : TIQWebSecurityRegister;
+begin
+  //I:= IndexOf( SR );
+  //if I < 0 then
+  //begin
+  //   I:= SecurityRegisters.Add( TIQWebSecurityRegister.Create( Application ));
+  //   with TIQWebSecurityRegister(SecurityRegisters[ I ]) do
+  //   begin
+  //     Assign( SR );
+  //     ReadSecurityData( UserName );
+  //   end;  
+  //end;
+
+  //SR_RunTime:= SecurityRegisters[ I ];
+  
+  { Just recreate the SR run time evry time}
+  //SR_RunTime:= TIQWebSecurityRegister.Create( Application );
+  //try
+  //  with SR_RunTime do
+  //  begin
+  //    Assign( SR );
+  //    ReadSecurityData( UserName );
+  //  end;  
+  //
+  //  SR.RefreshSecurityRegisterFrom( SR_RunTime );
+  //  SR.MapSecurityItemsToComponents;
+  //finally
+  //  SR_RunTime.Free;
+  //end;   
+
+  SR.ReadSecurityData( UserName );
+  SR.MapSecurityItemsToComponents;
+end;
+
+class function TSecurityManager.IsSecuredComponentEnabled( AApp_ID, AComponentName: string ): Boolean;
+begin
+  Result:= GetComponentSecurityFlag( AApp_ID, AComponentName, 'c_enabled' );
+end;
+
+
+class function TSecurityManager.GetComponentSecurityFlag( AApp_ID, AComponentName, AFieldName: string ): Boolean;
+var
+  AIsUserNameAltered: Boolean;
+begin
+  Result:= TRUE;
+  if not Assigned( InternalSecurityManager ) then
+     EXIT;
+     
+  if InternalSecurityManager.IsUserDBA then
+     EXIT;
+
+  // 11-10-2008 the view v_s_detail_ex filters records based on misc.user_name_lookup that defaults to misc.user_name
+  TSecurityManager.CheckEnsureUserNameLookupIsAssigned( AIsUserNameAltered );
+
+  // AFieldName: c_enabled, c_visible
+  try
+    Result:= SelectValueFmt('select 1 from v_s_detail_ex where app_s_code = ''%s'' and c_name = ''%s'' and %s = ''Y''',
+                       [ UpperCase( AApp_ID ), 
+                         UpperCase( AComponentName ),
+                         AFieldName ]) = 1;
+  finally
+    if AIsUserNameAltered then
+       TSecurityManager.ResetUserNameLookup;
+  end;
+end;
+
+
+class procedure TSecurityManager.CheckEnsureUserNameLookupIsAssigned( var AIsUserNameAltered: Boolean );
+begin
+  AIsUserNameAltered:= FALSE;
+  if (InternalSecurityManager.UserName <> '') and (SelectValueAsString('select substr(misc.get_user_name_lookup, 1, 50) from dual') = '') then
+  begin
+    ExecuteCommandFmt('begin                                '+
+              '  misc.set_user_name_lookup(''%s''); '+
+              'end;                                 ',
+              [ InternalSecurityManager.UserName ]);
+    AIsUserNameAltered:= TRUE;
+  end;
+end;
+
+class procedure TSecurityManager.ResetUserNameLookup;
+begin
+  ExecuteCommand( 'begin misc.set_user_name_lookup(null); end;' );
+end;
+
+procedure TSecurityManager.AssignDBANeedsSecurityRoles( DB: string);
+begin
+  if CheckLoggedintoNonIQMSSchema then
+  begin
+    //EIQ-6292 2015 Data Dictionary Historian DB throws Error AMB 03-16-15
+    FDBANeedsSecurityRoles:= False;
+    Exit; //If they aren't using IQMS schema, and are logged in as a non-IQMS DBA user, the params table isn't available for the query below!
+  end;
+
+  FDBANeedsSecurityRoles:= not IsUserIQMS and (SelectValueAsString('select sec_dba_needs_roles from params', DB ) = 'Y');
+end;
+
+function TSecurityManager.IsUserIQMS: Boolean;
+begin
+  Result:= CompareText( UserName, 'IQMS' ) = 0;
+end;
+
+procedure TSecurityManager.CheckAssignClientInfo( DB: string);
+var
+  ATmp: string;
+begin                                      
+  if not IQMS.Common.Miscellaneous.ExtractInLineParam( '_SPAWNED_SESSION_', ATmp ) then    {IQMS.Common.Miscellaneous.pas}
+     EXIT;
+
+  //  client info looks like this: <SPAWN=SID-123;SER-123;PRC-123:123>
+  ExecuteCommandFmt('begin                                           '+
+            '  misc.update_client_info( ''SPAWN'', ''%s'');  '+  // 'dbms_application_info.set_client_info ( ''SPAWNED SESSION = %s'' ); '+
+            'end;                                            ',
+            [ ATmp ]);
+
+end;
+
+function TSecurityManager.GetFullAccessSecurityCode: string;
+begin
+  Result:= FFullAccessSecurityCode;
+end;
+
+function TSecurityManager.GetServerName: string;
+begin
+  Result := '';
+//  Result := DB_DM.FServerName;
+end;
+
+function TSecurityManager.IsFullAccessGrantedToSecurityCode( ASecurityCode: string): Boolean;
+begin
+  Result:= (FullAccessSecurityCode <> '')
+           and
+           (CompareText( FullAccessSecurityCode, ASecurityCode ) = 0);
+end;
+
+procedure TSecurityManager.SetFullAccessSecurityCode(const Value: string);
+begin
+  FFullAccessSecurityCode:= Value;
+end;
+
+
+class function TSecurityManager.IsPowerUser: Boolean;
+begin
+  try
+    Result:= SelectValueFmt( 'select 1 from s_user_general where user_name = ''%s'' and NVL(sec_allow_non_dba_sec_ins, ''N'') = ''Y''',
+                        [ InternalSecurityManager.UserName  ] ) = 1;
+  except
+    Result:= FALSE;
+  end;
+end;
+
+function TSecurityManager.IsInvisibleAnotherEPlant( AEplant_ID: Real ): Boolean;
+var
+  AFlag: string;
+begin
+  Result:= FALSE;
+
+  if AEplant_ID = 0 then
+     EXIT;
+
+  if EPlant_ID_AsFloat = 0 then
+     EXIT;
+
+  if AEplant_ID = EPlant_ID_AsFloat then
+     EXIT;
+
+  if SelectValueByID('not_visible', 'eplant',  AEplant_ID) <> 'Y' then
+     EXIT;
+
+  Result:= TRUE;   
+end;
+
+
+function TSecurityManager.LoggedIntoEPlant: Boolean;
+begin
+  Result := EPlant_ID_AsFloat > 0;
+end;
+
+function _CheckCreateApplicationNodeInNetworkFailureXML( var XMLDoc: IXMLDocument; AFileName: string; AAppend: Boolean = TRUE ): IXMLNode;
+  
+  function GetApplicationNameNode: IXMLNode;
+  var
+    I: Integer;
+  begin
+    if XMLDoc.DocumentElement.HasChildNodes then
+       for I:= 0 to XMLDoc.DocumentElement.ChildNodes.Count - 1 do
+         if CompareText( XMLDoc.DocumentElement.ChildNodes.Nodes[ I ].NodeName, ExtractFileName( Application.ExeName )) = 0 then
+         begin
+           Result:= XMLDoc.DocumentElement.ChildNodes.Nodes[ I ];
+           EXIT;
+         end;
+     Result:= nil;    
+  end;
+  
+begin
+  // load XML 
+  if FileExists(AFileName) then
+     XMLDoc.LoadFromFile(AFileName)
+  else
+     XMLDoc.Active:= TRUE;
+
+  // Ensure main node is assigned
+  if not Assigned(XMLDoc.DocumentElement) then
+     XMLDoc.DocumentElement:= XMLDoc.CreateNode( cnstNetworkFailureNodeName, ntElement );
+  
+  // Ensure application name node is there such as IQwin32.exe
+  Result:= GetApplicationNameNode();
+  if not Assigned( Result ) and AAppend then
+  begin
+     Result:= XMLDoc.CreateNode( ExtractFileName( Application.ExeName ), ntElement );
+     XMLDoc.DocumentElement.ChildNodes.Add( Result );
+  end;   
+end;
+
+
+procedure TSecurityManager.WriteFailedProcessToNetworkFailureLog;
+var
+  XMLDoc: IXMLDocument;
+  AFileName: string;
+  AAppNode: IXMLNode;
+  ANode: IXMLNode;
+  ANeedToUninitialize: Boolean;
+begin
+  AFileName:= IQGetLocalHomePath + cnstNetworkFailureLogFileName;
+  
+  ANeedToUninitialize:= IsConsole and Succeeded(CoInitialize(nil));  // In a console application, the function CoInitialize must be called - not supported for now
+  try
+    try
+      // create XML
+      XMLDoc:= TXMLDocument.Create(nil);  // nil will force delphi to free memory automatically when XMLDoc goes out of scope
+
+      // ensure/build the correct structure and get the node representing current application
+      AAppNode:= _CheckCreateApplicationNodeInNetworkFailureXML( XMLDoc, AFileName );
+
+      // write the process
+      ANode:= AAppNode.AddChild( cnstOracleProcessNodeName );
+      ANode.Attributes['alias'] := ConnectionName;
+      ANode.Text:= FOracleProcess;
+
+      XMLDoc.SaveToFile( AFileName );
+      
+    finally
+      if ANeedToUninitialize then
+         CoUninitialize;
+    end;
+  except on E: Exception do
+    IQError( E.Message );
+  end;
+end;
+
+
+
+procedure TSecurityManager.EnsureDBXConnectionInSync;
+begin
+//  if Assigned(db_dm.DB_DataModule) and
+//    Assigned(db_dm.DB_DataModule.SQLConnection) and
+//    db_dm.DB_DataModule.SQLConnection.Connected then
+//   db_dm.DB_DataModule.SyncSQLConnection;
+end;
+
+
+procedure TSecurityManager.EnsureFDConnectionInSync( AConn: TFDConnection = nil );
+begin
+//  if Assigned(db_dm.DB_DataModule) and
+//    Assigned(db_dm.DB_DataModule.FDConnection) and
+//    db_dm.DB_DataModule.FDConnection.Connected then
+//   db_dm.DB_DataModule.SyncFDConnection(AConn);
+end;
+
+initialization
+  InternalSecurityManager := nil;
+
+finalization
+  if Assigned(InternalSecurityManager) then
+    FreeAndNil(InternalSecurityManager);
+
+end.
+

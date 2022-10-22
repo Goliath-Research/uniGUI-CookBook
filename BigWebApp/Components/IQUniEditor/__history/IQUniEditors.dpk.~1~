@@ -1,0 +1,57 @@
+package IQUniEditors;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'IQ Editors Runtime Package'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  uniGUI23,
+  IQMSWebController;
+
+contains
+  IQUniEditor in 'Source\IQUniEditor.pas',
+  IQUniDlgSample in 'Source\IQUniDlgSample.pas' {IQUniDialogA: TUniForm},
+  IQUniEditorDlg in 'Source\IQUniEditorDlg.pas',
+  IQUniEditorDlgSample in 'Source\IQUniEditorDlgSample.pas',
+  IQUniGrid in 'Source\IQUniGrid.pas' {IQUniGridControl: TUniFrame},
+  IQUniEditorDlgMemo in 'Source\IQUniEditorDlgMemo.pas',
+  IQUniDlgMemo in 'Source\IQUniDlgMemo.pas' {UniDlgMemoForm: TUniForm},
+  IQUniEditorRegDlg in 'Source\IQUniEditorRegDlg.pas',
+  IQGridDesignerFrm in 'Source\IQGridDesignerFrm.pas' {UniForm1: TUniForm},
+  IQUniEditorDlgPickDataSet in 'Source\IQUniEditorDlgPickDataSet.pas',
+  IQUniDlgPickDataSet in 'Source\IQUniDlgPickDataSet.pas' {IQUniDlgPickDataSetForm: TUniForm},
+  IQUniEditorRegEditors in 'Source\IQUniEditorRegEditors.pas',
+  IQGridDesignerSelectFrm in 'Source\IQGridDesignerSelectFrm.pas' {IQDesignerSelectForm: TUniForm},
+  IQWeb.Server.DataServices in '..\..\Interfaces\IQWeb.Server.DataServices.pas',
+  IQModuleFormDesigner in 'Source\IQModuleFormDesigner.pas' {IQUniModuleFormDesigner: TUniFrame},
+  IQUniStream in 'Source\IQUniStream.pas',
+  IQUniModuleFrame in 'Source\IQUniModuleFrame.pas',
+  IQUniEditorUtils in 'Source\IQUniEditorUtils.pas',
+  IQUniEditorFieldsDlg in 'Source\IQUniEditorFieldsDlg.pas' {IQFieldSelect: TUniForm};
+
+end.

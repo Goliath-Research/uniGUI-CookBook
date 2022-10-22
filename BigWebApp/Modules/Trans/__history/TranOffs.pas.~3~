@@ -1,0 +1,229 @@
+unit TranOffs;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Controls,
+  Vcl.Forms,
+  Data.DB,
+  Vcl.DBGrids,
+  Vcl.Buttons,
+  IQMS.WebVcl.Hpick,
+  IQMS.Common.JumpConstants,
+  FireDAC.Comp.Client,
+  FireDAC.Comp.DataSet,
+  FireDAC.Phys,
+  MainModule,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniButton,
+  uniBitBtn,
+  uniSpeedButton,
+  uniPanel,
+  uniBasicGrid,
+  uniDBGrid,
+  uniSplitter,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniDBNavigator,
+  uniLabel,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Stan.Async,
+  FireDAC.DApt;
+
+type
+  TFrmTransOffset = class(TUniForm)
+    Panel1: TUniPanel;
+    sbtnSearch: TUniSpeedButton;
+    sbtnScope: TUniSpeedButton;
+    pnlBottom: TUniPanel;
+    Panel3: TUniPanel;
+    btnOK: TUniButton;
+    btnCancel: TUniButton;
+    pnlTransLogDtls: TUniPanel;
+    gridItems: TUniDBGrid;
+    gridTransLogDtls: TUniDBGrid;
+    NavMain: TUniDBNavigator;
+    Splitter1: TUniSplitter;
+    SrcUniqueItems: TDataSource;
+    QryUniqueItems: TFDQuery;
+    QryUniqueItemsARINVT_ID: TBCDField;
+    QryUniqueItemsCLASS: TStringField;
+    QryUniqueItemsITEMNO: TStringField;
+    QryUniqueItemsREV: TStringField;
+    QryUniqueItemsDESCRIP: TStringField;
+    QryUniqueItemsUNIT: TStringField;
+    SrcTransLogDtl: TDataSource;
+    QryTransLogDtl: TFDQuery;
+    QryUniqueItemsdate1: TDateTimeField;
+    QryUniqueItemsdate2: TDateTimeField;
+    QryTransLogDtlID: TBCDField;
+    QryTransLogDtlTRANS_TYPE: TStringField;
+    QryTransLogDtlTRANS_DATE: TDateTimeField;
+    QryTransLogDtlTRANS_QUAN: TFMTBCDField;
+    QryTransLogDtlRG_QUAN: TFMTBCDField;
+    QryTransLogDtlLOC_DESC: TStringField;
+    QryTransLogDtlLOTNO: TStringField;
+    PkItems: TIQWebHPick;
+    PkItemsARINVT_ID: TBCDField;
+    PkItemsCLASS: TStringField;
+    PkItemsITEMNO: TStringField;
+    PkItemsREV: TStringField;
+    PkItemsDESCRIP: TStringField;
+    PkItemsUNIT: TStringField;
+    QryUniqueItemsEPLANT_ID: TBCDField;
+    Bevel1: TUniPanel;
+    Panel4: TUniPanel;
+    Label1: TUniLabel;
+    QryTransLogDtlWORKORDER_ID: TBCDField;
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure sbtnScopeClick(Sender: TObject);
+    procedure QryUniqueItemsCalcFields(DataSet: TDataSet);
+    procedure sbtnSearchClick(Sender: TObject);
+    procedure AssignParamBeforeOpen(DataSet: TDataSet);
+    procedure gridItemsEnter(Sender: TObject);
+  private
+    { Private declarations }
+    FDateStart: TDateTime;
+    FDateEnd  : TDateTime;
+    FArinvt_Id:Real;
+    procedure PrepareOpenQuery;
+    procedure IQNotify( var Msg: TMessage ); message iq_Notify;
+  public
+   property Arinvt_Id :Real read FArinvt_Id write FArinvt_Id;
+    { Public declarations }
+  end;
+
+function GetTransLogOffsetID( var AID: Real; AArinvt_id:Real = 0): Boolean;
+
+
+implementation
+
+{$R *.DFM}
+
+uses
+  IQMS.Common.DatesDlg,
+  IQMS.Common.DataLib,
+  IQMS.Common.RegFrm,
+  IQMS.Common.PanelMsg;
+
+function GetTransLogOffsetID( var AID: Real; AArinvt_id:Real = 0): Boolean;
+var
+  FrmTransOffset: TFrmTransOffset;
+begin
+  FrmTransOffset:=TFrmTransOffset.Create(uniGUIApplication.UniApplication);
+  with FrmTransOffset do
+  begin
+    Arinvt_Id:=AArinvt_id;
+    Result:= (ShowModal = mrOK) and not (QryTransLogDtl.Bof and QryTransLogDtl.Eof);
+    if Result then
+       AID:= QryTransLogDtl.FieldByName('ID').asFloat;
+  end;
+end;
+
+procedure TFrmTransOffset.FormCreate(Sender: TObject);
+var
+  ADate:TDateTime;
+begin
+  PostMessage( Handle, iq_Notify, 0, 0 );   { restore form position after we showed the form. popupparent is interering with IQRegFormRead }
+   FDateEnd  := Now;
+  if IQRegDateTimeScalarRead( self, 'TRANOFFS_START_DATE', ADate ) then
+    FDateStart := ADate
+  else
+    FDateStart:= FDateEnd - 30;
+
+  PrepareOpenQuery;
+end;
+
+
+procedure TFrmTransOffset.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  IQRegFormWrite( self, [ self, pnlTransLogDtls, gridItems, gridTransLogDtls ]);
+end;
+
+procedure TFrmTransOffset.sbtnScopeClick(Sender: TObject);
+var
+  ADate:TDateTime;
+begin
+  if IQRegDateTimeScalarRead( self, 'TRANOFFS_START_DATE', ADate ) then
+    FDateStart := ADate;
+//  if GetDatesDialog( FDateStart, FDateEnd ) then  {DatesDlg}
+//  begin
+//    IQRegDateTimeScalarWrite( self, 'TRANOFFS_START_DATE', FDateStart );
+//    PrepareOpenQuery;
+//  end;
+end;
+
+procedure TFrmTransOffset.PrepareOpenQuery;
+var
+  H: TPanelMesg;
+begin
+  Caption := Format('Associate with trans item between %s and %s', [ DateToStr( FDateStart ), DateToStr( FDateEnd ) ]);
+
+  H:= hPleaseWait('');
+  try
+    IQSetTablesActive( FALSE, self );
+    //with QryUniqueItems do
+    //begin
+    //  ParamByName('date1').asDateTime:= FDateStart;
+    //  ParamByName('date2').asDateTime:= FDateEnd;
+    //end;
+    IQSetTablesActive( TRUE, self );
+  finally
+    H.Free;
+  end;
+end;
+
+procedure TFrmTransOffset.QryUniqueItemsCalcFields(DataSet: TDataSet);
+begin
+  with DataSet do
+  begin
+    FieldByName('date1').asDateTime:= FDateStart;
+    FieldByName('date2').asDateTime:= FDateEnd;
+  end;
+end;
+
+procedure TFrmTransOffset.sbtnSearchClick(Sender: TObject);
+begin
+  with PkItems do
+    if Execute then
+       QryUniqueItems.Locate('arinvt_id', GetValue('arinvt_id'), []);
+end;
+
+procedure TFrmTransOffset.AssignParamBeforeOpen(DataSet: TDataSet);
+begin
+  AssignQueryParamValue(DataSet, 'date1', FDateStart);
+  AssignQueryParamValue(DataSet, 'date2', FDateEnd);
+end;
+
+procedure TFrmTransOffset.gridItemsEnter(Sender: TObject);
+begin
+  NavMain.DataSource:= (Sender as TUniDBGrid).DataSource;
+end;
+
+procedure TFrmTransOffset.IQNotify(var Msg: TMessage);
+begin
+  if Owner is TUniForm then
+     PopupParent:= Owner as TUniForm;
+
+  IQRegFormRead( self, [ self, pnlTransLogDtls, gridItems, gridTransLogDtls ]);
+  self.FormStyle:= fsNormal; // fsStayOnTop;  03-27-2013 Locations and Transactions - Picklist for item number with Associate with IN Trans is opening behind window CRM# 765284
+
+  pnlBottom.Top:= pnlTransLogDtls.Top + pnlTransLogDtls.Height + 10;
+end;
+
+end.

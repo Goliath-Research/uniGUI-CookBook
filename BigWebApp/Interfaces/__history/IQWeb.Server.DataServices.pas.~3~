@@ -1,0 +1,78 @@
+unit IQWeb.Server.DataServices;
+
+interface
+
+uses
+  Classes,
+  Data.DB,
+  Spring.Collections,
+  Spring.Collections.Lists;
+
+type
+
+  { IQDataServices }
+  // DataServices need different implementations such as:
+  // - FireDAC + Oracle
+  // - FireDAC + DBF
+  // - FireDAC + SQLite
+  // - dBExpress + Oracle
+  // - BDE + Oracle
+  // - BDE + SQLite
+
+  TFieldSortingCriteria = record
+    FieldName       : string;
+    Ascending       : boolean;
+    CaseInsensitive : boolean;
+  end;
+
+  IDataSetSortingCriteria = IList<TFieldSortingCriteria>;
+
+  IIQDataServices = interface
+    ['{3938F75C-6393-47F1-A58A-7E3A0E614ADD}']
+
+    function  GetNextSeqVal       (const aSequenceName : string  ) : Variant;
+    function  CloneDataSet
+    (
+      const aDataSet      : TDataSet;
+            aReset        : boolean = false;
+            aKeepSettings : boolean = false
+    ) : TDataSet;
+    function  RefreshRecord       (const aDataSet     : TDataSet) : boolean;
+
+    function  GetSortingCriteria  (const aDataSet     : TDataSet) : IDataSetSortingCriteria;
+    procedure SetSortingCriteria  (const aDataSet     : TDataSet; const aSortingCriteria : IDataSetSortingCriteria);
+
+    procedure SetParamValue       (const aDataSet     : TDataSet; const aParamName : string; aParamValue : Variant);
+    procedure NotifyOnAfterScroll (const aDataSet     : TDataSet; DoOnAfterScroll : TDataSetNotifyEvent);
+
+    procedure SortDataSet
+    (
+      const aDataSet          : TDataSet;
+      const aFieldName        : string;
+      const aAscending        : boolean;
+      const aCaseInsensitive  : boolean
+    );
+
+    function LoadBlob
+    (
+      const aConnection : TCustomConnection;
+      const aTable,
+            aKeyField,
+            aColumn     : string;
+      const aKeyValue   : Variant;
+      const aBlob       : TMemoryStream
+    ) : boolean;
+    procedure SaveBlob
+    (
+      const aConnection : TCustomConnection;
+      const aTable,
+            aKeyField,
+            aColumn     : string;
+      const aKeyValue   : Variant;
+      const aBlob       : TMemoryStream
+    );
+  end;
+
+implementation
+
+end.

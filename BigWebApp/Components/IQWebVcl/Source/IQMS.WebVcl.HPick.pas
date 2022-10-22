@@ -1,0 +1,1120 @@
+unit IQMS.WebVcl.HPick;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.DBGrids,
+  Vcl.Buttons, Vcl.StdCtrls, Vcl.ExtCtrls, Winapi.CommCtrl, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf,
+  FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, uniDBGrid,
+  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, uniGUIAbstractClasses,
+  FireDAC.Comp.Client, FireDAC.Comp.DataSet, Data.FMTBcd, Data.SqlExpr,
+  IQMS.WebVcl.DBExpress,
+  IQMS.WebVcl.QueryNavigator,
+  IQMS.WebVcl.HpickBase,
+  IQMS.WebVcl.HPickFrm;
+//  IQHpickTouchScreen,
+//  db_dm;
+
+
+type
+
+  TModifyProc = procedure( Sender:TObject; var Action:TModalResult; var ResultValue:Variant ) of object;
+  TIQCreateHPickColumn = procedure( Sender: TObject; AField: TField ) of object;
+  TIQBeforeCreateHPickColumn = procedure( Sender: TObject; AField: TField; var ACanCreateColumn: Boolean ) of object;
+  TIQAfterCreateHPickColumn = procedure( Sender: TObject; AQuery: TDataSet; AColumn: TUniBaseDbGridColumn ) of object;
+  TIQAfterHPickCreate = procedure( Sender: TObject ) of object;
+  TIQCalcSearchText = procedure( Sender: TObject; ASortField: TField; var AText: string ) of object;
+
+
+  TIQWebHpick = class(TFDQuery)
+  private
+    { Private declarations }
+    FResultList       : TStringList;
+    FInitialSeek      : string;
+    FOnModify         : TModifyProc;
+    FOnIQCreateHPickColumn: TIQCreateHPickColumn;
+    FOnIQAfterCreateHPickColumn: TIQAfterCreateHPickColumn;
+    FOnIQAfterHPickCreate: TIQAfterHPickCreate;
+    FOnIQCalcSearchText: TIQCalcSearchText;
+
+    FUserBtn1: TSpeedButton;
+    FUserBtn1OnClick: TModifyProc;
+
+    FCustomBtn1: TBitBtn;
+    FCustomBtn1OnClick: TModifyProc;
+
+    FNewResultValue   :Boolean;
+    FTitle            : string;
+    FIQDrawColumnCell : TUniDrawColumnCellEvent;
+
+    FAssociatedDataSource: TDataSource;
+    FAssociatedDataSetOnFilterRecord: TFilterRecordEvent;
+    FAssociatedDataSetFiltered: Boolean;
+    FAssociatedDataSetIndexNameExists: Boolean;
+
+    FKeysList         : TStringList;
+    FFirstExecute     : Boolean;
+    FAssociatedQueryNavigator: TIQWebQueryNavigator;
+    FTouchscreen: Boolean;
+    FKeyScopeField  : string;
+    FRegistryPathExtension: string;
+    FAssociatedIQSearch: TComponent;
+    FResultSortColumnName: string;
+    FForceShowWaitForPrompt: Boolean;
+    FIQBeforeCreateHPickColumn: TIQBeforeCreateHPickColumn;
+    FSubqueryBatch: Integer;
+    FSubqueryModuleName: string;
+    FSubqueryFieldName: string;
+    FHPickSubqueryHdr_ID: Integer;
+    FFrmPickList: TFrmPickListBase;
+    FDatabaseName, FSessionName: string;
+    FParamCheck: Boolean;
+    FUpdateMode: TUpdateMode;
+
+    procedure DeleteResultList;
+    procedure PropagateToAssociatedDataSet(APk: TFrmPickListBase);
+    procedure SetAssociatedDataSource(const Value: TDataSource);
+    function GetAssociatedDataSet: TDataSet;
+    procedure ReorderAssociatedQueryBy(AFieldName: string);
+    procedure SetAssociatedQueryNavigator(const Value: TIQWebQueryNavigator);
+    procedure Notification(AComponent: TComponent; Operation: TOperation); override;
+    function GetAssociatedDataSource: TDataSource;
+    procedure LoadIDIntoGlobalTempTable(Sender: TFrmPickListBase);
+    function ShowDefaultPickList: Boolean;
+    function ShowTouchscreenPickList: Boolean;
+
+    {user button}
+    function GetUserBtn1Glyph: TBitMap;
+    procedure SetUserBtn1Glyph(const Value: TBitMap);
+
+    function GetUserBtn1Hint: String;
+    procedure SetUserBtn1Hint(const Value: String);
+
+    procedure SetUserBtn1OnClick(const Proc: TModifyProc);
+
+    function GetCustomBtn1Glyph: TBitMap;
+    procedure SetCustomBtn1Glyph(const Value: TBitMap);
+
+    function GetCustomBtn1Hint: String;
+    procedure SetCustomBtn1Hint(const Value: String);
+
+    function GetCustomBtn1Caption: String;
+    procedure SetCustomBtn1Caption(const Value: String);
+
+    procedure SetCustomBtn1OnClick(const Proc: TModifyProc);
+    procedure SetTitle(const Value: string);
+    function ShowIQSearchBasedPickList: Boolean;
+    function GetResultHasColumn( AFieldName: string ): Boolean;
+    function GetSubqueryBatch: Integer;
+    procedure SetSubqueryBatch(const Value: Integer);
+    procedure SetSubqueryModuleName(const Value: string);
+    procedure DeleteSubqueryResults;
+    procedure SetPickSubqueryHdr_ID(const Value: Integer);
+    procedure BuildSubqueryFilter;
+
+  protected
+    { Protected declarations }
+    procedure Loaded; override;
+    procedure SetOnModify( const Proc: TModifyProc );
+    procedure LoadResultsIntoList(Sender: TFrmPickListBase);
+    procedure LoadScopeIntoList( Sender: TFrmPickListBase; const AFieldName:string);
+    procedure LoadFieldIntoList( Sender: TFrmPickListBase; const AFieldName:string; AList: TStringList );
+    function DoPropagateSort( APk: TFrmPickListBase ): Boolean;
+    function DoPropagateScope( APk: TFrmPickListBase ): Boolean;
+    procedure LocalOnFilterRecordApplyScope( DataSet: TDataSet; var Accept: Boolean );
+
+  public
+    { Public declarations }
+    WasModified:Boolean;
+    SkipRestoreRegistry: Boolean;
+
+    property AssociatedIQSearch: TComponent read FAssociatedIQSearch write FAssociatedIQSearch;
+    property SubqueryBatch: Integer read GetSubqueryBatch write SetSubqueryBatch;   // used in conjuction with HPick to track scope
+
+    constructor Create( AOwner:Tcomponent ); override;
+    destructor  Destroy; override;
+
+    function GetValue( cFieldName:string ):Variant;
+    property ResultSortColumnName: string read FResultSortColumnName write FResultSortColumnName;
+    property ResultHasColumn[ AFieldName: string ]: Boolean read GetResultHasColumn;
+
+    function Execute:boolean;                             // get selected rec values
+    procedure DoModify( Sender: TObject; var Action:TModalResult; var ResultValue:Variant );
+    procedure DoUserBtn1Click( Sender: TObject; var Action:TModalResult; var ResultValue:Variant );
+    procedure DoCustomBtn1Click( Sender: TObject; var Action:TModalResult; var ResultValue:Variant );
+
+    function ExecuteScope( const AFieldName:string ):boolean;
+    function ExecuteEx(const AFieldName: string): Boolean;
+
+    property ResultList : TStringList read FResultList write FResultList;
+    property NewResultValue:Boolean read FNewResultValue write FNewResultValue;
+    property AssociatedDataSet: TDataSet read GetAssociatedDataSet;
+    property KeyScopeField: string read FKeyScopeField write FKeyScopeField;
+    property RegistryPathExtension: string read FRegistryPathExtension write FRegistryPathExtension;
+    property HPickSubqueryHdr_ID: Integer read FHPickSubqueryHdr_ID write SetPickSubqueryHdr_ID;
+
+  published
+    { Published declarations }
+    // Obsolete properties
+    property DatabaseName: string read FDatabaseName write FDatabaseName stored False;
+    property SessionName: string read FSessionName write FSessionName stored False;
+    property ParamCheck: Boolean read FParamCheck write FParamCheck stored False;
+    property UpdateMode: TUpdateMode read FUpdateMode write FUpdateMode stored False;
+
+    property IQInitialSeek        : string read FInitialSeek write FInitialSeek ;
+    property OnIQModify           : TModifyProc read FOnModify  write SetOnModify;
+    property OnIQCreateHPickColumn: TIQCreateHPickColumn read FOnIQCreateHPickColumn write FOnIQCreateHPickColumn;
+    property OnIQBeforeCreateHPickColumn: TIQBeforeCreateHPickColumn read FIQBeforeCreateHPickColumn write FIQBeforeCreateHPickColumn;
+    property OnIQAfterCreateHPickColumn: TIQAfterCreateHPickColumn read FOnIQAfterCreateHPickColumn write FOnIQAfterCreateHPickColumn;
+    property OnIQAfterHPickCreate: TIQAfterHPickCreate read FOnIQAfterHPickCreate write FOnIQAfterHPickCreate;
+    property OnIQCalcSearchText: TIQCalcSearchText read FOnIQCalcSearchText write FOnIQCalcSearchText;
+
+    property Title              : string read FTitle write SetTitle;
+    // 03/13/2009 Touchscreen property added (Byron)
+    property Touchscreen: Boolean read FTouchscreen write FTouchscreen;
+    property OnIQDrawColumnCell : TUniDrawColumnCellEvent read FIQDrawColumnCell write FIQDrawColumnCell;
+//    property AssociatedDataSource: TDataSource read FAssociatedDataSource write SetAssociatedDataSource;
+    property AssociatedDataSource: TDataSource read GetAssociatedDataSource write SetAssociatedDataSource;
+    property AssociatedQueryNavigator: TIQWebQueryNavigator read FAssociatedQueryNavigator write SetAssociatedQueryNavigator;
+
+    property UserBtn1Glyph: TBitMap read GetUserBtn1Glyph write SetUserBtn1Glyph;
+    property UserBtn1Hint: String read GetUserBtn1Hint write SetUserBtn1Hint;
+    property OnUserBtn1Click: TModifyProc read FUserBtn1OnClick write SetUserBtn1OnClick;
+
+    property CustomBtn1Glyph: TBitMap read GetCustomBtn1Glyph write SetCustomBtn1Glyph;
+    property CustomBtn1Hint: String read GetCustomBtn1Hint write SetCustomBtn1Hint;
+    property CustomBtn1Caption: String read GetCustomBtn1Caption write SetCustomBtn1Caption;
+    property OnCustomBtn1Click: TModifyProc read FCustomBtn1OnClick write SetCustomBtn1OnClick;
+    property ForceShowWaitForPrompt: Boolean read FForceShowWaitForPrompt write FForceShowWaitForPrompt;
+    property SubqueryModuleName: string read FSubqueryModuleName write SetSubqueryModuleName;
+    property SubqueryFieldName: string read FSubqueryFieldName write FSubqueryFieldName;
+
+  end;
+
+implementation
+
+uses
+  System.StrUtils,
+  System.Variants,
+  IQMS.Common.ApplicationSet,
+  IQMS.Common.Controls,
+  IQMS.Common.DataLib,
+  IQMS.Common.Dialogs,
+  IQMS.Common.Miscellaneous,
+  IQMS.Common.NLS,
+  IQMS.Common.Numbers,
+  IQMS.WebVcl.Search,
+  IQMS.WebVcl.SearchPickList,
+  IQMS.Common.Sequence,
+  IQMS.Common.StringUtils,
+  IQMS.Common.JumpConstants,
+  IQMS.Common.PanelMsg,
+  IQMS.Common.RegFrm,
+  IQMS.WebVcl.ResourceStrings;
+
+type
+  TResultCargo = class
+    Value: Variant;
+  end;
+
+constructor TIQWebHpick.Create( AOwner:Tcomponent );
+begin
+ inherited Create( AOwner );
+ ConnectionName:='IQFD';
+ //Connection := db_dm.FDConnection;
+ FInitialSeek := '';
+ FResultList  := TStringList.Create;
+ FKeysList    := TStringList.Create;
+ FFirstExecute:= TRUE;
+ FUserBtn1 := TSpeedButton.Create(nil);
+ FCustomBtn1 := TBitBtn.Create(nil);
+ FKeyScopeField := 'ID';
+ FTitle      := IQMS.WebVcl.ResourceStrings.cTXT0000104; // 'Select from Picklist'
+end;
+
+destructor TIQWebHpick.Destroy;
+begin
+  DeleteSubqueryResults;
+  DeleteResultList;
+  if Assigned(FResultList) then FreeAndNil(FResultList);
+  if Assigned(FKeysList) then FreeAndNil(FKeysList);
+  if Assigned(FUserBtn1) then FreeAndNil(FUserBtn1);
+  if Assigned(FCustomBtn1) then FreeAndNil(FCustomBtn1);
+  //if Assigned(FFrmPickList) then FreeAndNil(FFrmPickList);
+
+  inherited Destroy;
+end;
+
+procedure TIQWebHpick.Loaded;
+begin
+  inherited Loaded;
+
+
+//  if Assigned(db_dm.DB_DataModule) and
+//    (db_dm.FDConnection <> nil) then
+//    Connection := db_dm.FDConnection;
+end;
+
+procedure TIQWebHpick.DeleteSubqueryResults;
+begin
+  if FSubqueryBatch > 0 then
+  try
+    HPickSubqueryHdr_ID:= 0;
+  except
+    {intentional suppress}
+  end;
+end;
+
+procedure TIQWebHpick.DeleteResultList;
+var
+  i:integer;
+begin
+  if not Assigned(FResultList) then
+     Exit;
+
+  for i:= 0 to FResultList.Count - 1 do
+    TResultCargo(FResultList.Objects[i]).Free;
+  FResultList.Clear;
+end;
+
+function TIQWebHpick.ExecuteScope( const AFieldName:string ):boolean;
+//var
+//  o : THyperPick;
+begin
+  FFrmPickList := THyperPick.Create(IQMS.Common.Controls.GetOwnerForm(Self), TIQWebHpick(Self));
+  try
+    FFrmPickList.MultiSelect := True;
+    Result := FFrmPickList.ShowModal = mrOK;
+    if Result then
+       LoadScopeIntoList(FFrmPickList, AFieldName );
+  finally
+    self.Close;
+    if Assigned(FFrmPickList) then
+      FFrmPickList.Release;
+    FFrmPickList := nil;
+    Screen.Cursor:= crDefault;
+  end;
+end;
+
+(* 01-23-2009 Call IQMS.WebVcl.Search based on TIQWebHpick component query.  See example in \sndop\snd_as.pas.
+   Example:
+   with SomePkList do
+    if ExecuteEx('ID') then
+       for I:= 0 to ResultList.Count - 1 do
+         ShowMessage( 'Selected ID: ' + ResultList[ I ]);
+*)
+
+function TIQWebHpick.ExecuteEx( const AFieldName:string ): Boolean;
+var
+  APkList : TFrmIQSearchPickList;
+begin
+  APkList:= TFrmIQSearchPickList.Create( self as TFDQuery );
+  try
+    APkList.Caption:= self.Title;
+    APkList.SubqueryFieldName := Self.SubqueryFieldName;
+    APkList.SubqueryModuleName := Self.SubqueryModuleName;
+    if Assigned(FOnIQAfterHPickCreate) then
+       FOnIQAfterHPickCreate( APkList );
+    Result:= APkList.ShowModal = mrOK;
+    if Result then
+       APkList.SaveToList( ResultList, AFieldName );
+  finally
+    self.Close;
+    APkList.Free;
+  end;
+end;
+
+
+function TIQWebHpick.Execute:boolean;
+begin
+  if ConnectionName='' then
+    ConnectionName := 'IQFD';
+
+
+  if FFirstExecute then
+  begin
+    FFirstExecute:= FALSE;
+    if Assigned( AssociatedDataSet ) then
+    begin
+      if not Assigned(FAssociatedDataSetOnFilterRecord) then                            {keep only original OnFilterRecord}
+         FAssociatedDataSetOnFilterRecord:= AssociatedDataSet.OnFilterRecord;
+
+      FAssociatedDataSetFiltered:= AssociatedDataSet.Filtered;
+      FAssociatedDataSetIndexNameExists:= (AssociatedDataSet is TFDTable) and
+                                          ((TFDTable(AssociatedDataSet).IndexFieldNames > '')
+                                            or
+                                           (TFDTable(AssociatedDataSet).IndexName > ''));
+    end;
+  end;
+
+  //  // delete prev scope from the global temp table
+  //  if Assigned(AssociatedQueryNavigator) and (AssociatedQueryNavigator.ScopeBatch > 0) then
+  //  begin
+  //     ExecuteCommandFmt('delete from GTT_picklist_scope where batch = %f', [ AssociatedQueryNavigator.ScopeBatch ]);
+  //     AssociatedQueryNavigator.ViewMode:= vmSingle;
+  //  end;
+
+  // 03/13/2009 Added conditional (Byron).  See below for functions.
+  // 10/08/2014 Added check for IQAppSet.IsTouchScreen (EIQ-4504)
+  if FTouchscreen or IsTouchScreen then
+     Result := ShowTouchscreenPickList
+
+  else if Assigned(AssociatedIQSearch) and (AssociatedIQSearch is TIQWebSearch) then
+     Result := ShowIQSearchBasedPickList
+
+  else
+     Result := ShowDefaultPickList;
+
+end;
+
+function TIQWebHpick.ShowDefaultPickList: Boolean;
+begin
+  FFrmPickList := THyperPick.Create(IQMS.Common.Controls.GetOwnerForm(Self), TIQWebHpick(Self));
+  try
+    if Assigned(FOnIQAfterHPickCreate) then
+       FOnIQAfterHPickCreate(FFrmPickList);
+    Result:= FFrmPickList.ShowModal = mrOK;
+    if Result then
+    begin
+      LoadResultsIntoList(FFrmPickList);
+      if Assigned(AssociatedDataSet) then
+         PropagateToAssociatedDataSet(FFrmPickList);
+    end;
+  finally
+    self.Close;
+    if Assigned(FFrmPickList) then
+      FFrmPickList.Release;
+    FFrmPickList := nil;
+    Screen.Cursor:= crDefault;
+  end;
+end;
+
+function TIQWebHpick.ShowIQSearchBasedPickList: Boolean;
+begin
+  FFrmPickList := THyperPickOfIQSearch.Create(IQMS.Common.Controls.GetOwnerForm(Self), TIQWebHpick(Self));  // HPickFrm.pas
+  try
+    if Assigned(FOnIQAfterHPickCreate) then
+       FOnIQAfterHPickCreate(FFrmPickList);
+      Result:= FFrmPickList.ShowModal = mrOK;
+      if Result then
+      begin
+        LoadResultsIntoList(THyperPickOfIQSearch(FFrmPickList));
+
+        if Assigned(AssociatedDataSet) then
+           PropagateToAssociatedDataSet(FFrmPickList);
+      end;
+  finally
+    self.Close;
+    if Assigned(FFrmPickList) then
+      FFrmPickList.Release;
+    FFrmPickList := nil;
+    Screen.Cursor:= crDefault;
+  end;
+end;
+
+
+function TIQWebHpick.ShowTouchscreenPickList: Boolean;
+begin
+  Result := False;
+//  FFrmPickList := TFrmTouchScreenPickList.Create(IQMS.Common.Controls.GetOwnerForm(Self), TIQWebHpick(Self));
+//  try
+//    if Assigned(FOnIQAfterHPickCreate) then
+//       FOnIQAfterHPickCreate(FFrmPickList);
+//    Result:= FFrmPickList.ShowModal = mrOK;
+//    if Result then
+//    begin
+//      LoadResultsIntoList(FFrmPickList);
+//
+//      if Assigned(AssociatedDataSet) then
+//         PropagateToAssociatedDataSet(FFrmPickList);
+//    end;
+//  finally
+//    self.Close;
+//    if Assigned(FFrmPickList) then
+//      FFrmPickList.Release;
+//    FFrmPickList := nil;
+//    Screen.Cursor:= crDefault;
+//  end;
+end;
+
+procedure TIQWebHpick.LoadResultsIntoList( Sender: TFrmPickListBase );
+var
+  i     : Integer;
+  Data  : TResultCargo;
+  AField: TField;
+begin
+  if Assigned(Sender) then
+  try
+     DeleteResultList;
+     ResultSortColumnName:= '';
+
+     if NewResultValue then
+       begin
+         if Assigned(Sender.SortColumn) then
+            ResultSortColumnName:= Sender.SortColumn.FieldName;
+         Data:= TResultCargo.Create;
+         Data.Value:= Sender.ResultValue;
+         FResultList.AddObject( 'Result', Data );
+       end
+     else
+       begin
+         if Assigned(Sender.SortColumn) then
+            ResultSortColumnName:= Sender.SortColumn.FieldName;
+
+         // Load a New one list
+         for i:= 0 to Sender.GetFieldsCount - 1 do
+           begin
+             AField:= Sender.GetField(i);
+
+             Data:= TResultCargo.Create;
+             if AField.Value = NULL then
+               case AField.DataType of
+                 ftUnknown    : raise Exception.Create( IQMS.WebVcl.ResourceStrings.cTXT0000105 {'Unknown or undetermined data type. Please contact IQMS.'} );
+                 ftSmallint, ftInteger, ftLargeInt,
+                 ftWord,ftFloat,ftCurrency,
+                 ftBCD, ftBytes,
+                 ftVarBytes   : Data.Value:= 0;
+                 ftDate,
+                 ftDateTime   : Data.Value:= Date;
+                 ftTime       : Data.Value:= Now;
+                 ftString,
+                 ftMemo,
+                 ftFmtMemo    : Data.Value:= '';
+                 ftBoolean    : Data.Value:= FALSE;
+               end
+             else
+               Data.Value:= AField.Value;
+
+             FResultList.AddObject( AField.FieldName, Data );
+         end;
+       end;
+
+  finally
+     Screen.Cursor:= crDefault;
+  end;
+end;
+//
+procedure TIQWebHpick.LoadScopeIntoList( Sender: TFrmPickListBase; const AFieldName:string);
+var
+  I: Integer;
+  AField: TField;
+begin
+  try
+     Screen.Cursor:= crHourGlass;
+     DeleteResultList;             // Clear prev result set
+
+     AField:= Sender.GetFieldByName( AFieldName );
+     for I:= 0 to Sender.Grid.SelectedRows.Count - 1 do
+     begin
+       Sender.Query.GotoBookmark( TBookmark( Sender.Grid.SelectedRows[ I ]));
+       FResultList.Add( AField.AsString );
+     end;
+
+  finally
+     Screen.Cursor:= crDefault;
+  end;
+end;
+//
+procedure TIQWebHpick.LoadFieldIntoList(Sender: TFrmPickListBase; const AFieldName: string; AList: TStringList);
+var
+  AField: TField;
+begin
+  AField:= Sender.GetFieldByName( AFieldName );
+  Sender.Query.First;
+  while not Sender.Query.Eof do
+  begin
+    AList.Add( AField.AsString );
+    Sender.Query.Next;
+  end;
+end;
+
+
+procedure TIQWebHpick.DoModify( Sender:TObject; var Action:TModalResult; var ResultValue:Variant);
+begin
+  WasModified:= TRUE;
+  LoadResultsIntoList( THyperPick(Sender) );
+  FOnModify( self, Action, ResultValue );
+  NewResultValue:= Action = mrOK;
+end;
+
+procedure TIQWebHpick.SetOnModify( const Proc: TModifyProc );
+begin
+  FOnModify:= Proc;
+end;
+
+procedure TIQWebHpick.SetPickSubqueryHdr_ID(const Value: Integer);
+begin
+  FHPickSubqueryHdr_ID:= Value;
+  BuildSubqueryFilter;
+end;
+
+procedure TIQWebHpick.BuildSubqueryFilter;
+var
+  hMsg: TPanelMesg;
+  B: Boolean;
+begin
+  try
+    if FHPickSubqueryHdr_ID <= 0 then
+    begin
+      ExecuteCommandFmt('delete from gtt_picklist_subquery where batch = %d', [  FSubqueryBatch ]);
+      EXIT;
+    end;
+
+    B:= FALSE;
+    IQRegBooleanScalarRead( nil,  'AdvancedSearch_ExcludeOtherEPlants', B, TRUE );
+
+    hMsg:= hPleaseWait( IQMS.WebVcl.ResourceStrings.cTXT0000490 ); // 'Evaluating selected filter - please wait...';
+    try
+      ExecuteCommandFmt('declare                                                             '+
+                '  v_hpick_subquery_hdr_id        number::= %d;                      '+
+                '  v_batch                        number::= %d;                      '+
+                '  v_excl_same_items_other_eplant number::= %.0f;                    '+
+                'begin                                                               '+
+                '  hpick_misc.populate_subquery( v_hpick_subquery_hdr_id, v_batch, v_excl_same_items_other_eplant ); '+
+                'end;                                                                ',
+                [ HPickSubqueryHdr_ID,
+                  SubqueryBatch,
+                  BoolToNum( B )]);
+    finally
+      hMsg.Free;
+    end;
+  except on E: Exception do
+    IQError( E.Message );
+  end;
+end;
+
+
+procedure TIQWebHpick.SetSubqueryBatch(const Value: Integer);
+begin
+  FSubqueryBatch:= Value;
+end;
+
+procedure TIQWebHpick.SetSubqueryModuleName(const Value: string);
+begin
+  FSubqueryModuleName:= UpperCase(Value);
+end;
+
+procedure TIQWebHpick.SetTitle(const Value: string);
+var
+  I: Integer;
+begin
+  FTitle:= Value;
+
+  I:= Pos('picklist', LowerCase(FTitle));
+
+  if I > 0 then
+  begin
+    if FTitle[ I ] = 'P' then  // ensure upper case when spelled Picklist -> PickList
+       FTitle[ I+4 ]:= 'L';
+    FTitle:= System.StrUtils.StuffString( FTitle, I+4, 0, ' ' );
+  end;
+end;
+
+function TIQWebHpick.GetValue( cFieldName:string ):Variant;
+var
+  i:integer;
+begin
+  if NewResultValue then         {if they clicked "New" button - look for "Result" field regardless of cFieldName}
+     cFieldName:= 'Result';
+
+  i:= FResultList.IndexOf( cFieldName );
+  if i < 0 then
+    raise Exception.Create( Format( IQMS.WebVcl.ResourceStrings.cTXT0000106 {'Unable to identify field, %s, in the Picklist dataset.'}, [ cFieldName ] ));
+
+  result:= TResultCargo(FResultList.Objects[i]).Value;
+end;
+
+procedure TIQWebHpick.SetAssociatedDataSource(const Value: TDataSource);
+begin
+  if Assigned( Value ) then
+  begin
+    if Value.DataSet = self then
+       raise Exception.Create(IQMS.WebVcl.ResourceStrings.cTXT0000273); {'Cannot point to itself - select TDataSource with TFDTable dataset to be controlled based on picklist sort and scope'}
+  end;
+  FAssociatedDataSource:= Value;
+
+  {mutually exclusive AssociatedDataSource and AssociatedQueryNavigator}
+  if Assigned( FAssociatedDataSource ) then
+     FAssociatedQueryNavigator:= nil;
+end;
+
+function TIQWebHpick.GetAssociatedDataSet: TDataSet;
+begin
+  if Assigned( AssociatedDataSource ) then
+     Result:= AssociatedDataSource.DataSet
+
+  else if Assigned(AssociatedQueryNavigator) and Assigned(AssociatedQueryNavigator.DataSource) then
+     Result:= AssociatedQueryNavigator.DataSource.DataSet
+
+  else
+     Result:= NIL;
+end;
+
+procedure TIQWebHpick.PropagateToAssociatedDataSet( APk: TFrmPickListBase );
+var
+  AOnDataChange  : TDataChangeEvent;
+  AAfterScroll   : TDataSetNotifyEvent;
+begin
+  // delete prev scope from the global temp table
+  if Assigned(AssociatedQueryNavigator) and (AssociatedQueryNavigator.ScopeBatch > 0) then
+    begin
+     ExecuteCommandFmt('delete from GTT_picklist_scope where batch = %.0f',
+       [AssociatedQueryNavigator.ScopeBatch]);
+     ExecuteCommandFmt('delete from GTT_picklist_scope where batch = %.0f',
+       [AssociatedQueryNavigator.ScopeBatch]);
+    end;
+
+  if not APk.chkbPropagateSort.Checked
+     and ( not APk.chkbPropagateScope.Checked and (@AssociatedDataSet.OnFilterRecord = @FAssociatedDataSetOnFilterRecord)) then
+    EXIT;
+
+  AOnDataChange:= AssociatedDataSource.OnDataChange;
+  AAfterScroll := AssociatedDataSet.AfterScroll;
+  try
+    AssociatedDataSource.OnDataChange := NIL;
+    AssociatedDataSet.AfterScroll:= NIL;
+
+    DoPropagateSort( APk );
+    DoPropagateScope( APk );
+
+    if AssociatedDataSet is TFDTable then
+       begin
+         if not AssociatedDataSet.Active then
+            AssociatedDataSet.Open
+         else
+            AssociatedDataSet.Refresh
+       end
+    else if Assigned(AssociatedQueryNavigator) then
+       // AssociatedQueryNavigator.RefreshDataSet
+    else
+       // AssociatedDataSet is TFDQuery
+       Reopen( AssociatedDataSet );
+
+  finally
+    AssociatedDataSet.AfterScroll:= AAfterScroll;
+    AssociatedDataSource.OnDataChange:= AOnDataChange;
+  end;
+end;
+//
+function TIQWebHpick.DoPropagateSort( APk: TFrmPickListBase ): Boolean;
+var
+  hMsg: TPanelMesg;
+begin
+  {Note!
+   If associated dataset has IndexFieldNames filled in like in the case of child dataset -
+   we cannot use AssociatedDataSet!}
+
+  Result:= FALSE;
+
+  if not APk.chkbPropagateSort.Checked then
+     EXIT;
+
+  if not Assigned( AssociatedDataSet ) then
+  begin
+    IQInformation( IQMS.WebVcl.ResourceStrings.cTXT0000267 ); {'Unable to propagate sort or scope - Associated DataSet is not assigned'}
+    EXIT;
+  end;
+
+  // with TFDTable( AssociatedDataSet ) do
+  with AssociatedDataSet do
+    if (FindField( APk.SortColumn.FieldName ) = nil) or (FieldByName(APk.SortColumn.FieldName).FieldKind <> fkData ) then
+    begin
+      if AssociatedDataSet is TFDTable then with AssociatedDataSet as TFDTable do
+         {'Unable to propagate sort - sorting column %s is not available in %s dataset.'#13+
+          'Execution will continue normally using current sorting criteria by %s'}
+         IQInformation( Format( IQMS.WebVcl.ResourceStrings.cTXT0000268, [ APk.SortColumn.FieldName,
+                                            TableName,
+                                           IIf( IndexName = '', IndexFieldNames, IndexName )]))
+     else
+         {'Unable to propagate the sort - sorting column ''%s'' is not available in %s dataset.'}
+         IQInformation( Format( IQMS.WebVcl.ResourceStrings.cTXT0000311, [ APk.SortColumn.FieldName,
+                                           AssociatedDataSet.Name ]));
+
+      EXIT;
+    end;
+
+  hMsg:= hPleaseWait( Format( IQMS.WebVcl.ResourceStrings.cTXT0000269, [APk.SortColumn.DisplayLabel])); {'Sorting by %s ...'}
+  try
+    if AssociatedDataSet is TFDTable then
+       TFDTable( AssociatedDataSet ).IndexFieldNames:= APk.SortColumn.FieldName
+    else
+       ReorderAssociatedQueryBy( APk.SortColumn.FieldName );
+  finally
+    hMsg.Free;
+  end;
+
+  Result:= TRUE;
+end;
+//
+function TIQWebHpick.DoPropagateScope( APk: TFrmPickListBase ): Boolean;
+var
+  hMsg: TPanelMesg;
+
+  function _associated_dataset_name: string;
+  begin
+    if AssociatedDataSet is TFDTable then
+       Result:= TFDTable( AssociatedDataSet ).TableName
+    else
+       Result:= AssociatedDataSet.Name
+  end;
+
+begin
+  Result:= FALSE;
+
+  if not Assigned( AssociatedDataSet ) then
+  begin
+    IQInformation( IQMS.WebVcl.ResourceStrings.cTXT0000267 ); {'Unable to propagate sort or scope - Associated DataSet is not assigned'}
+    EXIT;
+  end;
+
+  if not APk.chkbPropagateScope.Checked
+     // and (@TTable(AssociatedDataSet).OnFilterRecord = @FAssociatedDataSetOnFilterRecord) then
+     and (@AssociatedDataSet.OnFilterRecord = @FAssociatedDataSetOnFilterRecord) then
+     EXIT;
+
+  Result:= TRUE;
+
+  {validation}
+  if APk.chkbPropagateScope.Checked then
+  begin
+//    if FindField('ID') = nil then
+    if FindField(FKeyScopeField) = nil then
+    begin
+      // IQInformation( IQMS.WebVcl.ResourceStrings.cTXT0000270 ); {'Unable to propagate scope - ID is not available in the picklist dataset'}
+      IQInformation( Format(IQMS.WebVcl.ResourceStrings.cTXT0000422, [ FKeyScopeField ])); {'Unable to propagate scope - %s is not available in the picklist dataset'}
+      EXIT;
+    end;
+
+    // if (AssociatedDataSet.FindField( 'ID' ) = nil) and (AssociatedDataSet.FieldDefs.Find('ID') = nil) then
+    if (AssociatedDataSet.FindField( FKeyScopeField ) = nil) and (AssociatedDataSet.FieldDefs.Find( FKeyScopeField ) = nil) then
+    begin
+      // if AssociatedDataSet is TFDTable then
+      //    IQInformation( Format( IQMS.WebVcl.ResourceStrings.cTXT0000271, [ TFDTable( AssociatedDataSet ).TableName ]))  {'Unable to propagate scope - ID is not available in the %s dataset'}
+      // else
+      //    IQInformation( Format( IQMS.WebVcl.ResourceStrings.cTXT0000271, [ AssociatedDataSet.Name ]));                {'Unable to propagate scope - ID is not available in the %s dataset'}
+      IQInformation( Format( IQMS.WebVcl.ResourceStrings.cTXT0000423, [ FKeyScopeField, _associated_dataset_name() ]));  {'Unable to propagate scope - %s is not available in the %s dataset'}
+      EXIT;
+    end;
+  end;
+
+  hMsg:= hPleaseWait(IQMS.WebVcl.ResourceStrings.cTXT0000272); {'Assigning scope ...'}
+  try
+    FKeysList.Clear;
+    if not APk.chkbPropagateScope.Checked then
+       begin
+         AssociatedDataSet.OnFilterRecord:= FAssociatedDataSetOnFilterRecord
+       end
+
+    else if Assigned(FAssociatedDataSource) then
+       begin
+//         LoadFieldIntoList( APk, 'ID', FKeysList );
+         LoadFieldIntoList( APk, FKeyScopeField, FKeysList );
+         AssociatedDataSet.Close;  // 06-03-2008 close query before reassigning OnFilterRecord - Forecast was getting list out of bounds
+         AssociatedDataSet.OnFilterRecord:= LocalOnFilterRecordApplyScope;
+       end
+
+    else if Assigned(AssociatedQueryNavigator) then
+       begin
+         LoadIDIntoGlobalTempTable( APk );
+       end;
+
+    AssociatedDataSet.Filtered:= FAssociatedDataSetFiltered or Assigned( AssociatedDataSet.OnFilterRecord );
+
+    // if AssociatedDataSet is TFDTable then
+    //    AssociatedDataSet.Refresh
+    // else
+    //    begin
+    //      AssociatedDataSet.Close;
+    //      AssociatedDataSet.Open;
+    //    end;
+  finally
+    hMsg.Free;
+  end;
+end;
+
+procedure TIQWebHpick.LocalOnFilterRecordApplyScope( DataSet: TDataSet; var Accept: Boolean );
+begin
+  if Assigned( FAssociatedDataSetOnFilterRecord ) then
+     FAssociatedDataSetOnFilterRecord( DataSet, Accept );
+
+  if not Accept then EXIT;
+
+  if FKeyScopeField = '' then EXIT;
+
+  {check dataset if associated TFDTable fieldbyname(id) is in FKeysList}
+  Accept:= FKeysList.IndexOf( DataSet.FieldByName(FKeyScopeField).asString ) > -1;
+//  Accept:= FKeysList.IndexOf( DataSet.FieldByName('id').asString ) > -1;
+end;
+
+
+procedure TIQWebHpick.ReorderAssociatedQueryBy( AFieldName: string );
+
+  procedure ApplyOrderByUsingAssociatedSource( AFieldName: string; AReportMissingKeywords: Boolean = TRUE );
+  var
+    I,J,K: Integer;
+    ASQL: TStringList;
+  begin
+    ASQL := TStringList.Create;
+    try
+      if (AssociatedDataSet is TFDQuery) then
+        ASQL.AddStrings(TFDQuery(AssociatedDataSet).SQL)
+      else if (AssociatedDataSet is TFDQuery) then
+        ASQL.AddStrings(TFDQuery(AssociatedDataSet).SQL)
+      else if (AssociatedDataSet is TSQLQuery) then
+        ASQL.AddStrings(TFDQuery(AssociatedDataSet).SQL)
+      else if (AssociatedDataSet is TIQWebDbxQuery) then
+        ASQL.AddStrings(TIQWebDbxQuery(AssociatedDataSet).SQL)
+      else
+        Exit;
+
+      // Delete between HPICK_PROPAGATE_SORT_START and HPICK_PROPAGATE_SORT_END
+      I := LinePosInList('HPICK_PROPAGATE_SORT_START', ASQL);
+      J := LinePosInList('HPICK_PROPAGATE_SORT_END',   ASQL);
+
+      if (I < 0) or (J < 0) then
+      begin
+        // IQMS.WebVcl.ResourceStrings.cTXT0000312 =
+        // 'Unable to propagate the sort - key words
+        // HPICK_PROPAGATE_SORT_START or HPICK_PROPAGATE_SORT_END is not
+        // available in %s dataset.'
+        if AReportMissingKeywords then
+           IQInformation(Format(IQMS.WebVcl.ResourceStrings.cTXT0000312,
+             [AssociatedDataSet.Name]));
+        EXIT;
+      end;
+
+      {Add filter}
+      for K := 1 to J-(I+1) do
+        ASQL.Delete(I + 1);
+      ASQL.Insert(I + 1, ' order by ' + AFieldName);
+
+      if (AssociatedDataSet is TFDQuery) then
+        TFDQuery(AssociatedDataSet).SQL.Text := ASQL.Text
+      else if (AssociatedDataSet is TFDQuery) then
+        TFDQuery(AssociatedDataSet).SQL.Text := ASQL.Text
+      else if (AssociatedDataSet is TSQLQuery) then
+        TSQLQuery(AssociatedDataSet).SQL.Text := ASQL.Text
+      else if (AssociatedDataSet is TIQWebDbxQuery) then
+        TIQWebDbxQuery(AssociatedDataSet).SQL.Text := ASQL.Text;
+    finally
+      ASQL.Free;
+    end;
+  end;
+
+  procedure ApplyOrderByUsingAssociatedNavigator;
+  begin
+    if AssociatedQueryNavigator.DataSet.FieldByName( AFieldName ).Origin > '' then
+       AssociatedQueryNavigator.OrderByFieldName:= AssociatedQueryNavigator.DataSet.FieldByName( AFieldName ).Origin
+    else
+       AssociatedQueryNavigator.OrderByFieldName:= AFieldName;
+  end;
+
+begin
+  if Assigned(AssociatedQueryNavigator) then
+     begin
+       ApplyOrderByUsingAssociatedNavigator;
+       // Optional! Change "order by" inside the main query - applicable only when we support grid view for QueryNavigator
+       ApplyOrderByUsingAssociatedSource( AssociatedQueryNavigator.OrderByFieldName, FALSE );
+     end
+
+  else if Assigned(FAssociatedDataSource) then
+     ApplyOrderByUsingAssociatedSource( AFieldName )
+end;
+
+procedure TIQWebHpick.SetAssociatedQueryNavigator(const Value: TIQWebQueryNavigator);
+begin
+  FAssociatedQueryNavigator:= Value;
+
+  {ask to be notified if navigator is deleted}
+  if FAssociatedQueryNavigator <> nil then
+     FAssociatedQueryNavigator.FreeNotification(Self);
+
+  {mutually exclusive AssociatedDataSource and AssociatedQueryNavigator}
+  if Assigned( FAssociatedQueryNavigator ) then
+     FAssociatedDataSource:= nil;
+end;
+
+
+procedure TIQWebHpick.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) then
+  begin
+    if (AComponent is TIQWebQueryNavigator) and (FAssociatedQueryNavigator = AComponent) then
+       FAssociatedQueryNavigator:= NIL;
+
+    if (AComponent is TDataSource) and (FAssociatedDataSource = AComponent) then
+       FAssociatedDataSource:= NIL;
+  end;
+end;
+
+function TIQWebHpick.GetAssociatedDataSource: TDataSource;
+begin
+  if Assigned(FAssociatedDataSource) then
+     Result:= FAssociatedDataSource
+
+  else if Assigned(AssociatedQueryNavigator) then
+     Result:= AssociatedQueryNavigator.DataSource
+
+  else
+     Result:= NIL;
+end;
+
+procedure TIQWebHpick.LoadIDIntoGlobalTempTable( Sender: TFrmPickListBase );
+const
+  cREC_COUNT = 100;
+var
+  AList: TStringList;
+
+  function TranslateListToSelectStatement: string;
+  var
+    I: Integer;
+  begin
+    for I:= 0 to AList.Count - 1 do
+      if I = 0 then
+        Result:= IQFormat(' select %f, %s from dual', [ AssociatedQueryNavigator.ScopeBatch, AList[ I ] ])
+      else
+        Result:= Result + IQFormat(' union all select %f, %s from dual', [ AssociatedQueryNavigator.ScopeBatch, AList[ I ] ]);
+  end;
+
+  procedure InsertBatchOfRecords;
+  var
+    s: string;
+  begin
+    s := Format('insert into GTT_picklist_scope( batch, id ) (%s)', [ TranslateListToSelectStatement ]);
+    // BDE
+//    ExecuteCommand(s);
+    // FireDAC
+//    ExecuteCommand(s);
+    AList.Clear;
+  end;
+
+begin
+  // ensure batch is assigned
+  if (AssociatedQueryNavigator.ScopeBatch = 0) then
+     AssociatedQueryNavigator.ScopeBatch:= IQMS.Common.Sequence.GetNextSequenceNumber( 'S_GTT_PICKLIST_SCOPE' );
+
+  // insert into gtt_picklist_scope table in batch of 100 records
+  try
+    AList:= TStringList.Create;
+    AList.Sorted:= TRUE;
+    AList.Duplicates:= dupIgnore;
+
+    Sender.Query.First;
+    Sender.Query.DisableControls;
+    try
+      while not Sender.Query.Eof do
+      begin
+        if (AList.Count mod cREC_COUNT = 0) and (AList.Count > 0) then
+           InsertBatchOfRecords
+        else
+           AList.Add( Sender.Query.FieldByName('ID').asString );
+
+        Sender.Query.Next;
+      end;
+    finally
+      Sender.Query.EnableControls;
+    end;
+
+    if AList.Count > 0 then
+       InsertBatchOfRecords;
+
+  finally
+    if Assigned(AList) then FreeAndNil(AList);
+  end;
+end;
+
+
+function TIQWebHpick.GetUserBtn1Glyph: TBitMap;
+begin
+  Result:= FUserBtn1.Glyph;
+end;
+
+procedure TIQWebHpick.SetUserBtn1Glyph(const Value: TBitMap);
+begin
+  FUserBtn1.Glyph := Value;
+end;
+
+function TIQWebHpick.GetUserBtn1Hint: String;
+begin
+  Result:= FUserBtn1.Hint;
+end;
+
+procedure TIQWebHpick.SetUserBtn1Hint(const Value: String);
+begin
+  FUserBtn1.Hint := Value;
+end;
+
+procedure TIQWebHpick.SetUserBtn1OnClick(const Proc: TModifyProc);
+begin
+  FUserBtn1OnClick := Proc;
+end;
+
+procedure TIQWebHpick.DoUserBtn1Click(Sender: TObject; var Action: TModalResult; var ResultValue: Variant);
+begin
+  {See example in FrmCost.pas component PkMfgNo}
+  LoadResultsIntoList( THyperPick(Sender) );
+  FUserBtn1OnClick( self, Action, ResultValue );
+  NewResultValue:= Action = mrOK;
+end;
+
+
+function TIQWebHpick.GetCustomBtn1Caption: String;
+begin
+  Result:= FCustomBtn1.Caption;
+end;
+
+function TIQWebHpick.GetCustomBtn1Glyph: TBitMap;
+begin
+  Result:= FCustomBtn1.Glyph;
+end;
+
+procedure TIQWebHpick.SetCustomBtn1Caption(const Value: String);
+begin
+  FCustomBtn1.Caption:= Value;
+end;
+
+procedure TIQWebHpick.SetCustomBtn1Glyph(const Value: TBitMap);
+begin
+  FCustomBtn1.Glyph := Value;
+end;
+
+function TIQWebHpick.GetCustomBtn1Hint: String;
+begin
+  Result:= FCustomBtn1.Hint;
+end;
+
+function TIQWebHpick.GetResultHasColumn(AFieldName: string ): Boolean;
+begin
+  Result:= FResultList.IndexOf( AFieldName ) > -1;
+end;
+
+function TIQWebHpick.GetSubqueryBatch: Integer;
+begin
+  if FSubqueryBatch = 0 then
+     FSubqueryBatch:= Trunc(IQMS.Common.Sequence.GetNextSequenceNumber( 'S_GTT_PICKLIST_SUBQUERY' ));
+
+  Result:= FSubqueryBatch;
+end;
+
+procedure TIQWebHpick.SetCustomBtn1Hint(const Value: String);
+begin
+  FCustomBtn1.Hint := Value;
+end;
+
+procedure TIQWebHpick.SetCustomBtn1OnClick(const Proc: TModifyProc);
+begin
+  FCustomBtn1OnClick := Proc;
+end;
+
+procedure TIQWebHpick.DoCustomBtn1Click(Sender: TObject; var Action: TModalResult; var ResultValue: Variant);
+begin
+  LoadResultsIntoList( THyperPick(Sender) );
+  FCustomBtn1OnClick( self, Action, ResultValue );
+  NewResultValue:= Action = mrOK;
+end;
+
+
+end.

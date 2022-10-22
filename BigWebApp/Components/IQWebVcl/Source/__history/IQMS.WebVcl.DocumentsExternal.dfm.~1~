@@ -1,0 +1,23 @@
+object IQWebExtDoc: TIQWebExtDoc
+  Left = 0
+  Top = 0
+  Width = 320
+  Height = 240
+  TabOrder = 0
+  object FQryExtDocs: TFDQuery
+    Left = 168
+    Top = 80
+  end
+  object FSrcExtDocs: TDataSource
+    DataSet = FQryExtDocs
+    Left = 104
+    Top = 152
+  end
+  object PkDoc: TIQWebHpick
+    Title = 'Select from Pick List'
+    Touchscreen = False
+    ForceShowWaitForPrompt = False
+    Left = 200
+    Top = 136
+  end
+end

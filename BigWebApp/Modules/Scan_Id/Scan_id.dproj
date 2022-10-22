@@ -1,0 +1,169 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{0C9A879F-BB27-4A16-97FC-972B44676D5C}</ProjectGuid>
+        <MainSource>Scan_id.dpr</MainSource>
+        <Base>True</Base>
+        <Config Condition="'$(Config)'==''">Debug</Config>
+        <TargetedPlatforms>1025</TargetedPlatforms>
+        <AppType>Application</AppType>
+        <FrameworkType>VCL</FrameworkType>
+        <ProjectVersion>18.1</ProjectVersion>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+        <Base_Win32>true</Base_Win32>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+        <Base_Win64>true</Base_Win64>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+        <Cfg_1>true</Cfg_1>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
+        <Cfg_1_Win32>true</Cfg_1_Win32>
+        <CfgParent>Cfg_1</CfgParent>
+        <Cfg_1>true</Cfg_1>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+        <Cfg_2>true</Cfg_2>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='iOSDevice64' and '$(Cfg_2)'=='true') or '$(Cfg_2_iOSDevice64)'!=''">
+        <Cfg_2_iOSDevice64>true</Cfg_2_iOSDevice64>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+        <Cfg_2_Win32>true</Cfg_2_Win32>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base)'!=''">
+        <DCC_UnitSearchPath>..\;..\..\common\Components\Source;..\..\common\Libraries;..\..\common\Libraries\TaskManager\;..\Analysis;..\Ap;..\Ar;..\AssyData;..\AssyTrack;..\Bioscan;..\Bm;..\Bom;..\Br;..\Capacity;..\Cd;..\Central_Client;..\Costsrc;..\Cr;..\Creditcard;..\Crm;..\Crm_Alert;..\Crm_Answerbook;..\Crm_Callcenter;..\Crm_Dbtrans;..\Crm_Mail;..\Crm_Market;..\Crm_Notify;..\Crm_Package;..\Crm_Popup;..\Crm_Quote;..\Crm_Support;..\Crm_Word;..\Customer;..\Custstat;..\Dbcompare;..\Dblh_Shared;..\Dd;..\DelphiFix;..\Dhr;..\Dimp;..\Dispo;..\Dispo_Server;..\DocumentAnalysis;..\DrawObjects;..\Dunning;..\Edi_Hist;..\Edi_In;..\Edimonitor;..\Eiqarchiver;..\EIS;..\Encons;..\Eserver;..\Examdir;..\External Web Service Interfaces;..\Fa;..\Fabdata;..\Fabtrack;..\Fgavail;..\Fin_Rpt;..\FindTimes;..\Frx;..\Gj;..\Gj_import;..\Gl;..\Heijunka;..\Ict;..\Image_Library;..\Inv;..\Iq_Clock;..\IQ941;..\Iqactive;..\Iqalert;..\Iqarchive;..\IQBF;..\Iqchat;..\Iqconfig;..\Iqcorvu;..\Iqcost;..\Iqdbtrans;..\Iqdbu;..\Iqdbx;..\Iqdload;..\Iqedi;..\Iqencrypt;..\Iqexecinfo;..\Iqexp;..\Iqfax;..\Iqforecast;..\Iqgate;..\Iqhr;..\Iqimp;..\Iqinst;..\Iqlicens;..\Iqlink;..\Iqlog;..\Iqmaster;..\Iqmeter;..\Iqmps;..\Iqora_Server_10g;..\Iqora_Server_11g;..\Iqora_Server_11gR2;..\Iqora_Server_12c;..\IQOracleProfiler;..\Iqpra;..\Iqpurge;..\IqRebate;..\Iqrepmng;..\Iqrf;..\Iqrs;..\IQSHARE;..\Iqshipman;..\Iqspc;..\iqspc_chart;..\Iqspc_Dbtrans;..\Iqstatus;..\Iqsys;..\Iqtool;..\Iqverify;..\Iqvoice;..\Iqwebdir;..\Iqwebservicesoap;..\Iqwin32;..\Iqworkflow;..\Iqxml;..\IQzip;..\Irv32;..\Jc;..\Jobshop;..\Label_Id;..\License_Info;..\Localization;..\Lotusnotes;..\Matrix;..\Mettlerlink;..\Motefirmware;..\Multicur;..\Oe;..\Oracle_Shared;..\outsource_central;..\Packslip;..\pallet_pattern;..\Palletconstructor;..\Palletwrap;..\Payroll;..\Philips;..\Plm;..\Pm;..\Po;..\Print_Dialogs;..\Print_Labels;..\private_ApplRbr;..\private_dblh;..\private_iqmlc;..\Private_Mpc;..\private_Mullinix;..\private_WrkCntrPltBldr;..\Prod;..\Profile;..\Prw;..\Qc;..\Qc_Apqp;..\Qc_Audit;..\Qc_Capa;..\Qc_Car;..\Qc_Coq;..\Qc_Dev;..\Qc_Doc;..\Qc_Eco;..\Qc_Exec;..\Qc_Mrb;..\Qc_Ppap;..\Qc_Proc_Pq;..\Qc_Prod_Pq;..\Quote;..\Rbom;..\Rd;..\Receive;..\Regional;..\Relmng;..\Rma;..\Rt;..\Rt_Wd;..\Rtchart;..\Rtlabel;..\Rtpcmon;..\Rts_Dart;..\Rtserver;..\Salesmen;..\Sanalys;..\Scan_Id;..\Scan_Image;..\Scanline;..\Sched;..\Search_Engine;..\Setup_Apache_11g;..\Setup_Apache_11gR2;..\Shop_Su;..\Shopdata;..\Signaturecapture;..\Sndop;..\Ta;..\Taginv;..\Taxcodes;..\Testhttpservices;..\Touchscreen;..\Tracking;..\Trans;..\Ups_Httplink;..\UPSComponents;..\Upslink;..\VCL;..\Vend_Rma;..\Vendor;..\vendor_rfq;..\Volume;..\Wave;..\Web_Cgi;..\Web_Misc;..\web_twiki;..\WebFilesApache;..\Webkeyinstall;..\Webrestservice;..\Wms;..\Workcntr;..\Wrkorder;..\Www_Oe;..\Zipcode;..\..\3rdPartyTools\LockBox\;..\..\3rdPartyTools\Spring4D\Source\Base;..\..\3rdPartyTools\Spring4D\Source\Base\Collections;..\..\3rdPartyTools\Spring4D\Source\Base\Reflection;..\..\3rdPartyTools\Spring4D\Source\Core\Container;..\..\3rdPartyTools\Spring4D\Source\Core\Services;..\..\3rdPartyTools\Spring4D\Source\Extensions\Cryptography;..\..\3rdPartyTools\Spring4D\Source\Extensions\Utils;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_DcuOutput>$(IQDCU)\Win</DCC_DcuOutput>
+        <DCC_ImageBase>00400000</DCC_ImageBase>
+        <DCC_K>false</DCC_K>
+        <DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;Bde;System.Win;DUnitX.Utils;VclTee;$(DCC_Namespace)</DCC_Namespace>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <DCC_S>false</DCC_S>
+        <DCC_ExeOutput>$(IQSRC)\Win</DCC_ExeOutput>
+        <DCC_F>false</DCC_F>
+        <DCC_N>true</DCC_N>
+        <DCC_UNSAFE_CODE>true</DCC_UNSAFE_CODE>
+        <DCC_UNSAFE_CAST>true</DCC_UNSAFE_CAST>
+        <DCC_SymbolReferenceInfo>1</DCC_SymbolReferenceInfo>
+        <DCC_Optimize>false</DCC_Optimize>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <DCC_WriteableConstants>true</DCC_WriteableConstants>
+        <DCC_E>false</DCC_E>
+        <SanitizedProjectName>Scan_id</SanitizedProjectName>
+        <DCC_UNSAFE_TYPE>true</DCC_UNSAFE_TYPE>
+        <DCC_DebugInformation>1</DCC_DebugInformation>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win32)'!=''">
+        <DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+        <Icon_MainIcon>Scan_id_Icon.ico</Icon_MainIcon>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win64)'!=''">
+        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <Icon_MainIcon>Scan_id_Icon.ico</Icon_MainIcon>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1)'!=''">
+        <DCC_DebugInformation>0</DCC_DebugInformation>
+        <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+        <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+        <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <AppEnableHighDPI>true</AppEnableHighDPI>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2)'!=''">
+        <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+        <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2_iOSDevice64)'!=''">
+        <BT_BuildType>Debug</BT_BuildType>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+        <Icon_MainIcon>..\Graphics\EnterpriseIQ.ico</Icon_MainIcon>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <AppEnableHighDPI>true</AppEnableHighDPI>
+    </PropertyGroup>
+    <ItemGroup>
+        <DelphiCompile Include="$(MainSource)">
+            <MainSource>MainSource</MainSource>
+        </DelphiCompile>
+        <DCCReference Include="ScanID.pas">
+            <Form>FrmScanIDMain</Form>
+        </DCCReference>
+        <DCCReference Include="..\iqshare\Db_dm.pas">
+            <Form>DB_DataModule</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="scanid_rscstr.pas"/>
+        <DCCReference Include="scanid_settings.pas"/>
+        <DCCReference Include="scanid_config.pas">
+            <Form>FrmScanIDConfig</Form>
+        </DCCReference>
+        <DCCReference Include="scanid_endprompt.pas">
+            <Form>FrmEndPrompt</Form>
+        </DCCReference>
+        <DCCReference Include="scanid_test.pas">
+            <Form>FrmScanIDTest</Form>
+        </DCCReference>
+        <DCCReference Include="..\iqrf\ConsLib.pas"/>
+        <BuildConfiguration Include="Debug">
+            <Key>Cfg_2</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Base">
+            <Key>Base</Key>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Release">
+            <Key>Cfg_1</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Delphi.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Delphi.Personality>
+                <Source>
+                    <Source Name="MainSource">Scan_id.dpr</Source>
+                </Source>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k230.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
+            </Delphi.Personality>
+            <Platforms>
+                <Platform value="iOSDevice64">True</Platform>
+                <Platform value="Win32">True</Platform>
+                <Platform value="Win64">False</Platform>
+            </Platforms>
+        </BorlandProject>
+        <ProjectFileVersion>12</ProjectFileVersion>
+    </ProjectExtensions>
+    <Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
+    <Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
+</Project>

@@ -1,0 +1,411 @@
+unit IQMS.Common.Registry;
+
+{$R-}
+
+{$REGION 'History'}
+// 7/18/06 - matt Kilbride -- Added logic to for 32-bit applications on 64-bit to use the 64-bit registry space
+// 01/16/14 - ABiery -- Added constructor to request RO registry access only
+{$ENDREGION}
+
+interface
+
+uses Winapi.Windows, System.Classes, System.SysUtils;
+
+const
+  KEY_ALL_ACCESS_IQ  = (KEY_READ or                 {Added}
+                        KEY_WRITE or                {Added}
+                        {STANDARD_RIGHTS_ALL or}    {Taken out}
+                        KEY_QUERY_VALUE or
+                        KEY_SET_VALUE or
+                        KEY_CREATE_SUB_KEY or
+                        KEY_ENUMERATE_SUB_KEYS or
+                        KEY_NOTIFY {or}
+                        {KEY_CREATE_LINK}           {Taken out}
+                        ) and not
+                        SYNCHRONIZE;
+
+  KEY_ALL_ACCESS_IQ_64  = (KEY_READ or
+                           KEY_WRITE or
+                           KEY_QUERY_VALUE or
+                           KEY_SET_VALUE or
+                           KEY_CREATE_SUB_KEY or
+                           KEY_ENUMERATE_SUB_KEYS or
+                           $100 or                   //KEY_WOW64_64KEY
+                           KEY_NOTIFY
+                          ) and not
+                           SYNCHRONIZE;
+
+  KEY_RO_ACCESS_IQ = (  KEY_READ or
+                        KEY_ENUMERATE_SUB_KEYS or
+                        KEY_QUERY_VALUE or
+                        KEY_NOTIFY
+                     )
+                     and not
+                     SYNCHRONIZE;
+
+  KEY_RO_ACCESS_IQ_64 = (  KEY_READ or
+                           KEY_ENUMERATE_SUB_KEYS or
+                           KEY_QUERY_VALUE or
+                           KEY_NOTIFY or
+                           $100 //KEY_WOW64_64KEY
+                        )
+                        and not
+                        SYNCHRONIZE;
+
+function LoadStrFromCurrentUserRegistry( const APath, AKey: string ):string;
+procedure SaveStrToCurrentUserRegistry( const APath, AKey, AValue: string );
+function LoadStrFromLocalMachineRegistry( const APath, AKey: string ):string;
+procedure SaveStrToLocalMachineRegistry( const APath, AKey, AValue: string );
+
+// Export Registry key, subkeys, and values to a Registry (.REG) file format,
+// contained in the ARegFile (TStringList) parameter.
+
+function CanWriteToRoot( ARootKey: HKey ): Boolean;
+function Is64Bit: Boolean;
+function RegPathSoftwareCheckWow6432Node:String;
+function GetEnvVariable(Name: string; User: Boolean = True): string;
+procedure SetEnvVariable(Name, Value: string; User: Boolean = TRUE);
+
+
+type
+  TIQWebRegistry = class(TObject)
+  private
+    FAccess: LongWord;
+    FRootKey: HKEY;
+    procedure SetRootKey(const Value: HKEY);
+  protected
+    procedure ReadError(const Name: string); 
+
+  public
+    constructor CreateRO;
+    
+    procedure CloseKey;
+    function DeleteKey(const Key: string): Boolean;
+    function GetDataSize(const ValueName: string): Integer;
+    procedure GetKeyNames(Strings: TStrings);
+    procedure GetValueNames(Strings: TStrings);
+    function KeyExists(const Key: string): Boolean;
+    function OpenKey(const Key: string; CanCreate: Boolean): Boolean;
+    function OpenKeyReadOnly(const Key: String): Boolean;
+    function ReadBool(const Name: string): Boolean;
+    function ReadDate(const Name: string): TDateTime;
+    function ReadDateTime(const Name: string): TDateTime;
+    function ReadFloat(const Name: string): Double;
+    function ReadInteger(const Name: string): Integer;
+    function ReadString(const Name: string): string;
+    function ValueExists(const Name: string): Boolean;
+    procedure WriteBool(const Name: string; Value: Boolean);
+    procedure WriteDate(const Name: string; Value: TDateTime);
+    procedure WriteDateTime(const Name: string; Value: TDateTime);
+    procedure WriteFloat(const Name: string; Value: Double);
+    procedure WriteInteger(const Name: string; Value: Integer);
+    procedure WriteString(const Name, Value: string);
+
+
+    property Access: LongWord read FAccess write FAccess;
+    property RootKey: HKEY read FRootKey write SetRootKey;
+
+
+  end;
+
+
+implementation
+
+uses
+  System.RTLConsts,
+  IQMS.Common.ResStrings,
+  WinAPI.Messages;
+
+procedure SaveStrToCurrentUserRegistry( const APath, AKey, AValue: string );
+begin
+  with TIQWebRegistry.Create do
+  try
+    RootKey:= HKEY_CURRENT_USER;
+    if not OpenKey( APath, TRUE ) then
+       // 'Unable to open or create the Registry Key, %s.'
+       raise Exception.CreateFmt( IQMS.Common.ResStrings.cTXT0000172, [ APath ]);
+    WriteString( AKey, AValue );
+  finally
+    Free;
+  end;
+end;
+
+function LoadStrFromCurrentUserRegistry( const APath, AKey: string ):string;
+begin
+  Result:= '';
+  with TIQWebRegistry.Create do
+  try
+    RootKey:= HKEY_CURRENT_USER;
+    if OpenKey( APath, FALSE ) and ValueExists( AKey ) then
+       Result:= ReadString( AKey );
+  finally
+    Free;
+  end;
+end;
+
+procedure SaveStrToLocalMachineRegistry( const APath, AKey, AValue: string );
+begin
+  with TIQWebRegistry.Create do
+  try
+    RootKey:= HKEY_LOCAL_MACHINE;
+    if not OpenKey( APath, TRUE ) then
+       // 'Unable to open or create the Registry Key, %s.'
+       raise Exception.CreateFmt(IQMS.Common.ResStrings.cTXT0000172, [ APath ]);
+    WriteString( AKey, AValue );
+  finally
+    Free;
+  end;
+end;
+
+function LoadStrFromLocalMachineRegistry( const APath, AKey: string ):string;
+begin
+  Result:= '';
+  with TIQWebRegistry.Create do
+  try
+    RootKey:= HKEY_LOCAL_MACHINE;
+    if OpenKey( APath, FALSE ) and ValueExists( AKey ) then
+       Result:= ReadString( AKey );
+  finally
+    Free;
+  end;
+end;
+
+function CanWriteToRoot( ARootKey: HKey ): Boolean;
+const
+  cKey_Name = '\IQMS_PERMISSION_TEST';
+var
+  Reg: TIQWebRegistry;
+begin
+  Result:= FALSE;
+  Reg:= TIQWebRegistry.Create;
+  try
+    Reg.RootKey:= HKEY_CLASSES_ROOT;
+    Result:= Reg.OpenKey( cKey_Name, TRUE ) and Reg.DeleteKey( cKey_Name );  {note we create and immediately delete that key on-fly}
+  finally
+    Reg.Free;
+  end;
+end;
+
+
+function Is64Bit: Boolean;
+type
+  TIsWow64Process = function( // Type of IsWow64Process API fn
+    Handle: THandle;
+    var Res: BOOL
+  ): BOOL; stdcall;
+var
+  IsWow64Result: BOOL;              // result from IsWow64Process
+  IsWow64Process: TIsWow64Process;  // IsWow64Process fn reference
+begin
+   // Try to load required function from kernel32
+   IsWow64Process := GetProcAddress( GetModuleHandle('kernel32'), 'IsWow64Process');
+   if Assigned(IsWow64Process) then
+      begin
+         // Function is implemented: call it
+         if not IsWow64Process(GetCurrentProcess, IsWow64Result) then
+            raise Exception.Create('Bad process handle');
+         // Return result of function
+         Result := IsWow64Result;
+      end
+   else
+      // Function not implemented: can't be running on Wow64
+      Result := False;
+end;
+
+function RegPathSoftwareCheckWow6432Node:String;
+begin
+  Result:= 'SOFTWARE\';
+  if Is64Bit then
+    Result:= 'SOFTWARE\Wow6432Node\';
+end;
+
+function GetEnvVariable(Name: string; User: Boolean = True): string;
+var
+  Str: array[0..255] of char;
+begin
+  with TIQWebRegistry.Create do
+  try
+    if User then
+    begin
+      RootKey := HKEY_CURRENT_USER;
+      //OpenKey('Environment', False);
+      OpenKeyReadOnly('Environment');
+    end
+    else
+    begin
+      RootKey := HKEY_LOCAL_MACHINE;
+      //OpenKey('SYSTEM\CurrentControlSet\Control\Session ' +
+      //  'Manager\Environment', False);
+      OpenKeyReadOnly('SYSTEM\CurrentControlSet\Control\Session ' +
+        'Manager\Environment');
+    end;
+    Result := ReadString(Name);
+    ExpandEnvironmentStrings(PChar(Result), Str, 255);
+    Result := Str;
+  finally
+    Free;
+  end;
+end;
+
+procedure SetEnvVariable(Name, Value: string; User: Boolean = TRUE);
+var
+  rv: DWORD;
+begin
+  with TIQWebRegistry.Create do
+  try
+   if User then
+   begin
+     RootKey := HKEY_CURRENT_USER;
+     OpenKey('Environment', False);
+     WriteString(Name, Value);
+   end
+   else
+   begin
+     RootKey := HKEY_LOCAL_MACHINE;
+     OpenKey('SYSTEM\CurrentControlSet\Control\Session ' +
+       'Manager\Environment', False);
+   end;
+   WriteString(Name, Value);
+   SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, 0, LParam
+     (PChar('Environment')), SMTO_ABORTIFHUNG, 5000, rv);
+  finally
+   Free;
+  end;
+end;
+
+
+{ TIQWebRegistry }
+
+procedure TIQWebRegistry.CloseKey;
+begin
+
+end;
+
+constructor TIQWebRegistry.CreateRO;
+begin
+  inherited Create;
+end;
+
+function TIQWebRegistry.DeleteKey(const Key: string): Boolean;
+begin
+  Result := False;
+end;
+
+function TIQWebRegistry.GetDataSize(const ValueName: string): Integer;
+begin
+  Result := 0;
+end;
+
+procedure TIQWebRegistry.GetKeyNames(Strings: TStrings);
+begin
+
+end;
+
+procedure TIQWebRegistry.GetValueNames(Strings: TStrings);
+begin
+
+end;
+
+function TIQWebRegistry.KeyExists(const Key: string): Boolean;
+begin
+  Result := True;
+end;
+
+function TIQWebRegistry.OpenKey(const Key: string; CanCreate: Boolean): Boolean;
+begin
+  Result := True;
+end;
+
+function TIQWebRegistry.OpenKeyReadOnly(const Key: String): Boolean;
+begin
+  Result := True;
+end;
+
+function TIQWebRegistry.ReadBool(const Name: string): Boolean;
+begin
+  Result := ReadInteger(Name) <> 0;
+end;
+
+function TIQWebRegistry.ReadDate(const Name: string): TDateTime;
+begin
+  Result := ReadDateTime(Name);
+end;
+
+function TIQWebRegistry.ReadDateTime(const Name: string): TDateTime;
+var
+  s: string;
+begin
+  s := ReadString(Name);
+  if not TryStrToDateTime(s, Result) then
+    ReadError(Name);
+end;
+
+procedure TIQWebRegistry.ReadError(const Name: string);
+begin
+  raise Exception.CreateResFmt(@SInvalidRegType, [Name]);
+end;
+
+function TIQWebRegistry.ReadFloat(const Name: string): Double;
+var
+  s: string;
+begin
+  s := ReadString(Name);
+  if not TryStrToFloat(s, Result) then
+    ReadError(Name);
+end;
+
+function TIQWebRegistry.ReadInteger(const Name: string): Integer;
+var
+  s: string;
+begin
+  s := ReadString(Name);
+  if not TryStrToInt(s, Result) then
+    ReadError(Name);
+end;
+
+function TIQWebRegistry.ReadString(const Name: string): string;
+begin
+  Result := '0';
+end;
+
+procedure TIQWebRegistry.SetRootKey(const Value: HKEY);
+begin
+  FRootKey := Value;
+end;
+
+function TIQWebRegistry.ValueExists(const Name: string): Boolean;
+begin
+  Result := False;
+end;
+
+procedure TIQWebRegistry.WriteBool(const Name: string; Value: Boolean);
+begin
+
+end;
+
+procedure TIQWebRegistry.WriteDate(const Name: string; Value: TDateTime);
+begin
+
+end;
+
+procedure TIQWebRegistry.WriteDateTime(const Name: string; Value: TDateTime);
+begin
+
+end;
+
+procedure TIQWebRegistry.WriteFloat(const Name: string; Value: Double);
+begin
+
+end;
+
+procedure TIQWebRegistry.WriteInteger(const Name: string; Value: Integer);
+begin
+
+end;
+
+procedure TIQWebRegistry.WriteString(const Name, Value: string);
+begin
+
+end;
+
+end.

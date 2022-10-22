@@ -1,0 +1,40 @@
+unit MyForm2Intf;
+
+interface
+
+type
+
+  IMyForm2 = interface
+    ['{80CDB092-DDA0-49A0-9FFF-F8D69E18777C}']
+
+    function GetSomeText: string;
+    procedure SetSomeText(const Value: string);
+
+    property SomeText : string read GetSomeText write SetSomeText;
+  end;
+
+  function GetOrModifySomeText(var aText : string) : boolean;
+
+implementation
+
+uses
+  Vcl.Controls,
+  uniGUIForm,
+  System.SysUtils,
+  Spring.Services;
+
+function GetOrModifySomeText(var aText : string) : boolean;
+var
+  MyForm: IMyForm2;
+begin
+  MyForm := ServiceLocator.GetService<IMyForm2>;
+
+  MyForm.SomeText := aText;
+
+  Result := TUniForm(MyForm).ShowModal = mrOk;
+
+  if Result then
+    aText := MyForm.SomeText;
+end;
+
+end.

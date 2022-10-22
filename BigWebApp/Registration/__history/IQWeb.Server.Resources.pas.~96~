@@ -1,0 +1,70 @@
+unit IQWeb.Server.Resources;
+
+interface
+
+uses
+  // Interfaces
+  IQWeb.Session.RegServices
+  // Forms
+  , DayHrs
+  , LAB_DTL
+  , Day_Proj
+  , LAB_Shft
+  , DAY_SHFT
+  , SELCLASS
+  , Cap_Main
+  , DAY_PART
+  , LAB_WO
+  , DPPFILT
+  ;
+
+type
+
+  TFormDef = record
+    ModuleClass : TClass;
+    Singleton   : boolean;
+    ImplInfs    : array of integer
+  end;
+
+  TNavNode = record
+    Caption : string;
+    Level   : integer;
+    FormIdx : integer;
+  end;
+
+const
+
+  IntfQty = 0;
+  FormQty = 10;
+  NodeQty = 3;
+
+  FormDefs : array[1..FormQty] of TFormDef =
+  (
+    {  1 } (ModuleClass: TFrmDayHrsCalc         ; Singleton: false),
+    {  2 } (ModuleClass: TFrmLabor_Details_Base ; Singleton: false),
+    {  3 } (ModuleClass: TFrmDPartsProj         ; Singleton: false),
+    {  4 } (ModuleClass: TFrmLabor_Shift        ; Singleton: false),
+    {  5 } (ModuleClass: TFrmProjectedHoursShift; Singleton: false),
+    {  6 } (ModuleClass: TFrmSelClass           ; Singleton: false),
+    {  7 } (ModuleClass: TUniCap_Main           ; Singleton: true ),
+    {  8 } (ModuleClass: TFrmShowDayParts       ; Singleton: false),
+    {  9 } (ModuleClass: TFrmLabor_WO           ; Singleton: false),
+    { 10 } (ModuleClass: TFrmDppFilter          ; Singleton: false)
+  );
+
+  NavTree : array[1..NodeQty] of TNavNode =
+  (
+    (Caption: 'Home'         ; Level: 0; FormIdx:  0),
+    (Caption: 'Capacity'     ; Level: 1; FormIdx:  0),
+    (Caption: 'Capacity Main'; Level: 2; FormIdx:  7)
+  );
+
+var
+  Intfs : array[1..IntfQty] of TGUID;
+
+implementation
+
+initialization
+
+
+end.

@@ -1,0 +1,108 @@
+unit ARCrMemo;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  Vcl.Controls,
+  Vcl.Forms,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniLabel,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniEdit,
+  uniButton;
+
+type
+  TFrmICrMemo = class(TUniForm)
+    Label1: TUniLabel;
+    Edit1: TUniEdit;
+    BtnOk: TUniButton;
+    BtnCancel: TUniButton;
+    procedure BtnOkClick(Sender: TObject);
+    procedure UniFormCreate(Sender: TObject);
+    procedure UniFormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+    FAmount:Real;
+    FRetAmount:Real;
+
+    procedure SetAmount(aAmount : Real);
+  public
+    { Public declarations }
+
+    property Amount    : Real read FAmount write SetAmount;
+    property RetAmount : Real read FRetAmount;
+  end;
+
+function GetCreditMemoAmount(var AAmount:Real):Boolean;
+
+implementation
+
+uses
+  ar_rscstr,
+  uniGUIVars,
+  MainModule,
+  IQMS.Common.RegFrm;
+
+
+{$R *.DFM}
+
+function GetCreditMemoAmount(var AAmount:Real):Boolean;
+var
+  aFrmIcrMemo : TFrmICrMemo;
+begin
+  aFrmIcrMemo := TFrmICrMemo.Create(UniApplication);
+  aFrmIcrMemo.Amount := AAmount;
+  Result := aFrmIcrMemo.ShowModal = mrOk;
+  if Result then
+    AAmount := aFrmIcrMemo.RetAmount;
+end;
+
+procedure TFrmICrMemo.SetAmount(aAmount : Real);
+begin
+  FAmount    := AAmount;
+  FRetAmount := AAmount;
+  Edit1.Text := FloatToStr(AAmount);
+end;
+
+procedure TFrmICrMemo.UniFormCreate(Sender: TObject);
+begin
+  IQRegFormRead( self, [ self ]);
+end;
+
+procedure TFrmICrMemo.UniFormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  IQRegFormWrite( self, [ self ]);
+end;
+
+procedure TFrmICrMemo.BtnOkClick(Sender: TObject);
+begin
+  try
+    FRetAmount := StrToFloat(Edit1.Text);
+  except
+    Edit1.Text := FloatToStr(FAmount);
+    raise Exception.Create(ar_rscstr.cTXT0000067 {'Invalid amount'});
+  end;
+
+  if Abs(FRetAmount) > Abs(FAmount) then
+  begin
+    Edit1.Text := FloatToStr(FAmount);
+    // 'Absolute amount must not be greater than %m'
+    raise Exception.Create(Format(ar_rscstr.cTXT0000068, [Abs(FAmount)]));
+  end;
+
+  if FRetAmount > 0 then
+  begin
+    Edit1.Text := FloatToStr(FAmount);
+    raise Exception.Create( ar_rscstr.cTXT0000069); // 'The amount must be negative'
+  end;
+
+  ModalResult := mrOk;
+end;
+
+end.

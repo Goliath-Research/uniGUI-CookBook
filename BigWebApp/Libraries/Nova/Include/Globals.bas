@@ -1,0 +1,580 @@
+Attribute VB_Name = "Globals"
+
+'NovaProfilePreset
+Public Const NOVAPDF_PDF_VERSION As Long = 1
+Public Const NOVAPDF_PDFA As Long = 2
+Public Const NOVAPDF_PDFA_VERSION As Long = 3
+Public Const NOVAPDF_PDF_LINEARIZE As Long = 4
+Public Const NOVAPDF_URL_ANALIZE As Long = 5
+Public Const NOVAPDF_EMAIL_SEND As Long = 6
+Public Const NOVAPDF_INFO_ENABLE As Long = 7
+Public Const NOVAPDF_INFO_VIEWER_ENABLE As Long = 8
+Public Const NOVAPDF_COMPRESS_ENABLE As Long = 9
+Public Const NOVAPDF_GR_CONVERT_ENABLE As Long = 10
+Public Const NOVAPDF_GR_DOWNSMPL_ENABLE As Long = 11
+Public Const NOVAPDF_BMARK_EN_AUTO_DET_BMARKS As Long = 12
+Public Const NOVAPDF_SEC_ENABLE As Long = 13
+Public Const NOVAPDF_SAVE_LOCATION As Long = 14
+'Metadata
+Public Const NOVAPDF_PROFILE_NAME As Long = 22
+Public Const NOVAPDF_PROFILE_AUTHOR As Long = 23
+Public Const NOVAPDF_PROFILE_DESCRIPTION As Long = 24
+'ViewerOptionsPreset
+Public Const NOVAPDF_VIEWOP_HIDE_TOOLBARS As Long = 25
+Public Const NOVAPDF_VIEWOP_SHOW_DOCTITLE As Long = 26
+Public Const NOVAPDF_VIEWOP_TRANSITION_TYPE As Long = 27
+Public Const NOVAPDF_VIEWOP_TRANSITION_DIRECTION As Long = 28
+Public Const NOVAPDF_VIEWOP_TRANSITION_DURATION As Long = 29
+Public Const NOVAPDF_VIEWOP_PAGE_DURATION As Long = 30
+Public Const NOVAPDF_VIEWOP_ZOOM As Long = 31
+Public Const NOVAPDF_VIEWOP_USE_START_PAGE As Long = 32
+Public Const NOVAPDF_VIEWOP_START_PAGE As Long = 33
+Public Const NOVAPDF_VIEWOP_PAGE_LAYOUT As Long = 34
+Public Const NOVAPDF_VIEWOP_HIDE_MENUBAR As Long = 35
+Public Const NOVAPDF_VIEWOP_RESIZE_WINDOW As Long = 36
+Public Const NOVAPDF_VIEWOP_HIDE_USER As Long = 37
+Public Const NOVAPDF_VIEWOP_PAGE_MODE As Long = 38
+Public Const NOVAPDF_VIEWOP_FULLSCREEN As Long = 39
+Public Const NOVAPDF_VIEWOP_PAGE_SCALING As Long = 40
+'AfterSaveActionPreset
+Public Const NOVAPDF_ACTION_DEFAULT_VIEWER As Long = 41
+Public Const NOVAPDF_ACTION_RUN_APPLICATION As Long = 42
+Public Const NOVAPDF_ACTION_APPLICATION As Long = 43
+Public Const NOVAPDF_ACTION_USER_NAME As Long = 45
+Public Const NOVAPDF_ACTION_USER_PASSWORD As Long = 46
+Public Const NOVAPDF_ACTION_CMDLINE_PARAMETERS As Long = 47
+'AdvancedOptionsPreset
+Public Const NOVAPDF_ADV_OPTIMIZE_TEXT As Long = 48
+Public Const NOVAPDF_ADV_SILENT_PRINT As Long = 49
+Public Const NOVAPDF_ADV_OPTIMIZE_IMAGE As Long = 50
+Public Const NOVAPDF_ADV_CORRECT_LINEWIDTH As Long = 51
+Public Const NOVAPDF_ADV_CORRECT_FILLCOLOR As Long = 52
+Public Const NOVAPDF_ADV_IGNORE_EMPTY_PAGES As Long = 53
+'ContentCompressionPreset
+Public Const NOVAPDF_COMPRESS_HIGH_COLOR As Long = 54
+Public Const NOVAPDF_COMPRESS_HIGH_COLOR_TYPE As Long = 55
+Public Const NOVAPDF_COMPRESS_HIGH_COLOR_LEVEL As Long = 56
+Public Const NOVAPDF_COMPRESS_INDEXED As Long = 57
+Public Const NOVAPDF_COMPRESS_INDEXED_TYPE As Long = 58
+Public Const NOVAPDF_COMPRESS_INDEXED_LEVEL As Long = 59
+Public Const NOVAPDF_COMPRESS_MONOCHROM As Long = 60
+Public Const NOVAPDF_COMPRESS_MONOCHROM_TYPE As Long = 61
+Public Const NOVAPDF_COMPRESS_MONOCHROM_LEVEL As Long = 62
+Public Const NOVAPDF_COMPRESS_TEXT_GRAPHICS As Long = 63
+Public Const NOVAPDF_COMPRESS_TEXT_GRAPHICS_TYPE As Long = 64
+Public Const NOVAPDF_COMPRESS_TEXT_GRAPHICS_LEVEL As Long = 65
+'DocumentInfoPreset
+Public Const NOVAPDF_DOCINFO_TITLE As Long = 66
+Public Const NOVAPDF_DOCINFO_CREATOR As Long = 67
+Public Const NOVAPDF_DOCINFO_SUBJECT As Long = 68
+Public Const NOVAPDF_DOCINFO_AUTHOR As Long = 69
+Public Const NOVAPDF_DOCINFO_KEYWORDS As Long = 70
+'ImageConversionPreset
+Public Const NOVAPDF_IMAGE_CONVERT_HIGH_COLOR As Long = 71
+Public Const NOVAPDF_IMAGE_DITHER_HIGH_COLOR As Long = 72
+Public Const NOVAPDF_IMAGE_CONVERT_TYPE_HIGH_COLOR As Long = 73
+Public Const NOVAPDF_IMAGE_CONVERT_TRESH_HIGH_COLOR As Long = 74
+Public Const NOVAPDF_IMAGE_DITHER_TYPE_HIGH_COLOR As Long = 75
+Public Const NOVAPDF_IMAGE_CONVERT_INDEXED As Long = 76
+Public Const NOVAPDF_IMAGE_DITHER_INDEXED As Long = 77
+Public Const NOVAPDF_IMAGE_CONVERT_TYPE_INDEXED As Long = 78
+Public Const NOVAPDF_IMAGE_CONVERT_TRESH_INDEXED As Long = 79
+Public Const NOVAPDF_IMAGE_DITHER_TYPE_INDEXED As Long = 80
+Public Const NOVAPDF_IMAGE_CONVERT_TEXTANDGR As Long = 81
+Public Const NOVAPDF_IMAGE_CONVERT_TYPE_TEXTANDGR As Long = 82
+Public Const NOVAPDF_IMAGE_CONVERT_TRESH_TEXTANDGR As Long = 83
+'ImageDownsamplingPreset
+Public Const NOVAPDF_DOWNSAMPLE_HIGH_COLOR As Long = 84
+Public Const NOVAPDF_DOWNSAMPLE_TYPE_HIGH_COLOR As Long = 85
+Public Const NOVAPDF_DOWNSAMPLE_RES_HIGH_COLOR As Long = 86
+Public Const NOVAPDF_DOWNSAMPLE_INDEXED As Long = 87
+Public Const NOVAPDF_DOWNSAMPLE_TYPE_INDEXED As Long = 88
+Public Const NOVAPDF_DOWNSAMPLE_RES_INDEXED As Long = 89
+Public Const NOVAPDF_DOWNSAMPLE_MONOCHROM As Long = 90
+Public Const NOVAPDF_DOWNSAMPLE_TYPE_MONOCHROM As Long = 91
+Public Const NOVAPDF_DOWNSAMPLE_RES_MONOCHROM As Long = 92
+'OverlaysPreset
+Public Const NOVAPDF_OVERLAY_FILE As Long = 93
+Public Const NOVAPDF_OVERLAY_USER_NAME As Long = 94
+Public Const NOVAPDF_OVERLAY_USER_PASSWORD As Long = 95
+Public Const NOVAPDF_OVERLAY_FILE_LOCATION As Long = 96
+Public Const NOVAPDF_OVERLAY_FILE_PASSWORD As Long = 97
+Public Const NOVAPDF_OVERLAY_REPEAT_TYPE As Long = 99
+Public Const NOVAPDF_OVERLAY_OPACITY As Long = 100
+'SaveOptionsPreset
+Public Const NOVAPDF_SAVE_PROMPT_TYPE As Long = 101
+Public Const NOVAPDF_SAVE_FOLDER As Long = 103
+Public Const NOVAPDF_SAVE_FILE_NAME As Long = 104
+Public Const NOVAPDF_SAVE_USER_NAME As Long = 105
+Public Const NOVAPDF_SAVE_USER_PASSWORD As Long = 106
+Public Const NOVAPDF_SAVE_APPEND_PASSWORD As Long = 107
+Public Const NOVAPDF_SAVE_FILEEXIST_ACTION As Long = 108
+'SecurityPreset
+Public Const NOVAPDF_SECURITY_LEVEL As Long = 109
+Public Const NOVAPDF_SECURITY_USER_PASSWORD As Long = 110
+Public Const NOVAPDF_SECURITY_OWNER_PASSWORD As Long = 111
+Public Const NOVAPDF_SECURITY_FLAG_PRINTDOC As Long = 112
+Public Const NOVAPDF_SECURITY_FLAG_MODIFYDOC As Long = 113
+Public Const NOVAPDF_SECURITY_FLAG_EXTRACTTEXT As Long = 114
+Public Const NOVAPDF_SECURITY_FLAG_MODIFYANNOTATION As Long = 115
+Public Const NOVAPDF_SECURITY_FLAG_PRINTHIGHRES As Long = 116
+Public Const NOVAPDF_SECURITY_FLAG_ASSEMBLEDOC As Long = 117
+Public Const NOVAPDF_SECURITY_FLAG_ADVANCEDEXTRACT As Long = 118
+Public Const NOVAPDF_SECURITY_FLAG_ADVANCEDFILL As Long = 119
+'SignaturesPreset
+Public Const NOVAPDF_SIGN_FILECERT_LOCATION As Long = 120
+Public Const NOVAPDF_SIGN_FILECERT_FILE As Long = 121
+Public Const NOVAPDF_SIGN_FILECERT_FILE_PASSWORD As Long = 122
+Public Const NOVAPDF_SIGN_FILECERT_USER_NAME As Long = 123
+Public Const NOVAPDF_SIGN_FILECERT_USER_PASSWORD As Long = 124
+Public Const NOVAPDF_SIGN_SYSCERT_ISSUEDTO As Long = 125
+Public Const NOVAPDF_SIGN_SYSCERT_ISSUEDBY As Long = 126
+Public Const NOVAPDF_SIGN_SYSCERT_FRIENDLYNAME As Long = 127
+Public Const NOVAPDF_SIGN_SYSCERT_SUBJECT As Long = 128
+Public Const NOVAPDF_SIGN_SYSCERT_SUBJECT_NAME As Long = 129
+Public Const NOVAPDF_SIGN_SYSCERT_EXPIRE_DATE As Long = 130
+Public Const NOVAPDF_SIGN_CERTIFICATE_TYPE As Long = 131
+Public Const NOVAPDF_SIGN_SHOW_GRAPHIC_NAME As Long = 132
+Public Const NOVAPDF_SIGN_SHOW_GRAPHIC_IAMGE As Long = 133
+Public Const NOVAPDF_SIGN_SHOW_KEEPASPECTRATIO As Long = 134
+Public Const NOVAPDF_SIGN_SHOW_CERTIFICATE_NAME As Long = 135
+Public Const NOVAPDF_SIGN_SHOW_SIGN_DATE As Long = 136
+Public Const NOVAPDF_SIGN_SHOW_CONTACT_INFO As Long = 137
+Public Const NOVAPDF_SIGN_SHOW_SIGN_REASON As Long = 138
+Public Const NOVAPDF_SIGN_SHOW_SIGN_LOCATION As Long = 139
+Public Const NOVAPDF_SIGN_SHOW_DETAILS As Long = 140
+Public Const NOVAPDF_SIGN_SHOW_LABELS As Long = 141
+Public Const NOVAPDF_SIGN_FONT_NAME As Long = 142
+Public Const NOVAPDF_SIGN_FONT_TYPE As Long = 143
+Public Const NOVAPDF_SIGN_FONT_SIZE As Long = 144
+Public Const NOVAPDF_SIGN_CUSTOM_SIZE As Long = 145
+Public Const NOVAPDF_SIGN_NAME_COLOR As Long = 146
+Public Const NOVAPDF_SIGN_NAME_OPACITY As Long = 147
+Public Const NOVAPDF_SIGN_IMAGE_LOCATION As Long = 148
+Public Const NOVAPDF_SIGN_IMAGE_FILE As Long = 149
+Public Const NOVAPDF_SIGN_IMAGE_USER_NAME As Long = 150
+Public Const NOVAPDF_SIGN_IMAGE_USER_PASSWORD As Long = 151
+Public Const NOVAPDF_SIGN_IMAGE_OPACITY As Long = 152
+Public Const NOVAPDF_SIGN_INFO_CONTACT As Long = 153
+Public Const NOVAPDF_SIGN_INFO_REASON As Long = 154
+Public Const NOVAPDF_SIGN_INFO_LOCATION As Long = 155
+Public Const NOVAPDF_SIGN_VIEW_VIEW As Long = 156
+Public Const NOVAPDF_SIGN_VIEW_PRINT As Long = 157
+Public Const NOVAPDF_SIGN_VIEW_EXPORT As Long = 158
+'FontsPreset
+Public Const NOVAPDF_FONTS_EMBED_SUBSETS As Long = 159
+Public Const NOVAPDF_FONTS_EMBED_ALL_USED_FONTS As Long = 160
+Public Const NOVAPDF_FONTS_FORCE_EMBED_PROTECTED As Long = 161
+'LinksPreset
+Public Const NOVAPDF_URL_DETECT_FILES As Long = 163
+Public Const NOVAPDF_URL_CHECK_FILE_EXISTS As Long = 164
+Public Const NOVAPDF_URL_UNDERLINE As Long = 166
+Public Const NOVAPDF_URL_OVERWRITE_COLOR As Long = 167
+Public Const NOVAPDF_URL_COLOR As Long = 168
+'ImageWatermarksPreset
+Public Const NOVAPDF_WTM_IMG_IMAGE_FILE_NAME As Long = 200
+Public Const NOVAPDF_WTM_IMG_IMAGE_LOCATION As Long = 201
+Public Const NOVAPDF_WTM_IMG_IMAGE_USER_NAME As Long = 202
+Public Const NOVAPDF_WTM_IMG_IMAGE_USER_PASSWORD As Long = 203
+Public Const NOVAPDF_WTM_IMG_IMAGE_TRANSPARENCY As Long = 204
+Public Const NOVAPDF_WTM_IMG_IMAGE_TRANSP_COLOR As Long = 205
+Public Const NOVAPDF_WTM_IMG_IMAGE_OPACITY As Long = 206
+Public Const NOVAPDF_WTM_IMG_COLOR_VARIATION As Long = 207
+Public Const NOVAPDF_WTM_IMG_VISIBILITY_VIEW As Long = 208
+Public Const NOVAPDF_WTM_IMG_VISIBILITY_PRINT As Long = 209
+Public Const NOVAPDF_WTM_IMG_VISIBILITY_EXPORT As Long = 210
+'Metadata
+Public Const NOVAPDF_WTM_IMG_NAME As Long = 211
+Public Const NOVAPDF_WTM_IMG_AUTHOR As Long = 212
+Public Const NOVAPDF_WTM_IMG_DESCRIPTION As Long = 213
+'TextWatermarksPreset
+Public Const NOVAPDF_WTM_TXT_WATERMARK_TEXT As Long = 240
+Public Const NOVAPDF_WTM_TXT_FONT_NAME As Long = 241
+Public Const NOVAPDF_WTM_TXT_FONT_TYPE As Long = 242
+Public Const NOVAPDF_WTM_TXT_FONT_SIZE As Long = 243
+Public Const NOVAPDF_WTM_TXT_FONT_BOLD As Long = 244
+Public Const NOVAPDF_WTM_TXT_FONT_ITALIC As Long = 245
+Public Const NOVAPDF_WTM_TXT_FONT_OUTLINE As Long = 246
+Public Const NOVAPDF_WTM_TXT_FONT_UNDERLINE As Long = 247
+Public Const NOVAPDF_WTM_TXT_FONT_COLOR As Long = 248
+Public Const NOVAPDF_WTM_TXT_OPACITY As Long = 249
+Public Const NOVAPDF_WTM_TXT_VISIBILITY_VIEW As Long = 250
+Public Const NOVAPDF_WTM_TXT_VISIBILITY_PRINT As Long = 251
+Public Const NOVAPDF_WTM_TXT_VISIBILITY_EXPORT As Long = 252
+Public Const NOVAPDF_WTM_TXT_UNDERLINE_POSITION As Long = 253
+Public Const NOVAPDF_WTM_TXT_UNDERLINE_THICKNESS As Long = 254
+Public Const NOVAPDF_WTM_TXT_TEXT_CORRECTION As Long = 255
+'Metadata
+Public Const NOVAPDF_WTM_TXT_NAME As Long = 256
+Public Const NOVAPDF_WTM_TXT_AUTHOR As Long = 257
+Public Const NOVAPDF_WTM_TXT_DESCRIPTION As Long = 258
+'Border (additions)
+Public Const NOVAPDF_URL_BORDER_WIDTH_UNITS As Long = 259
+'Save (additions)
+Public Const NOVAPDF_SAVE_FOLDER_TYPE As Long = 260
+'BookmarksPreset
+Public Const NOVAPDF_BMK_ALLOW_MULTILINE As Long = 280
+Public Const NOVAPDF_BMK_MATCH_ALL_LEVELS As Long = 281
+Public Const NOVAPDF_BMK_USE_LEVELS As Long = 282
+Public Const NOVAPDF_BMK_OPEN_TO_LEVEL As Long = 283
+Public Const NOVAPDF_BMK_ROOT_NAME As Long = 284
+Public Const NOVAPDF_BMK_ROOT_ENABLED As Long = 285
+Public Const NOVAPDF_BMK_ROOT_BOLD As Long = 286
+Public Const NOVAPDF_BMK_ROOT_ITALIC As Long = 287
+Public Const NOVAPDF_BMK_ROOT_COLOR As Long = 288
+'LayoutsPreset
+Public Const NOVAPDF_LAYOUT_LEFTANCHOR_USED As Long = 320
+Public Const NOVAPDF_LAYOUT_LEFTANCHOR_OFFSET As Long = 321
+Public Const NOVAPDF_LAYOUT_LEFTANCHOR_USE_PERCENT As Long = 322
+Public Const NOVAPDF_LAYOUT_RIGHTANCHOR_USED As Long = 323
+Public Const NOVAPDF_LAYOUT_RIGHTANCHOR_OFFSET As Long = 324
+Public Const NOVAPDF_LAYOUT_RIGHTANCHOR_USE_PERCENT As Long = 325
+Public Const NOVAPDF_LAYOUT_TOPANCHOR_USED As Long = 326
+Public Const NOVAPDF_LAYOUT_TOPANCHOR_OFFSET As Long = 327
+Public Const NOVAPDF_LAYOUT_TOPANCHOR_USE_PERCENT As Long = 328
+Public Const NOVAPDF_LAYOUT_BOTTOMANCHOR_USED As Long = 329
+Public Const NOVAPDF_LAYOUT_BOTTOMANCHOR_OFFSET As Long = 330
+Public Const NOVAPDF_LAYOUT_BOTTOMANCHOR_USE_PERCENT As Long = 331
+Public Const NOVAPDF_LAYOUT_VERTANCHOR_USED As Long = 332
+Public Const NOVAPDF_LAYOUT_VERTLANCHOR_OFFSET As Long = 333
+Public Const NOVAPDF_LAYOUT_VERTANCHOR_USE_PERCENT As Long = 334
+Public Const NOVAPDF_LAYOUT_HORIZANCHOR_USED As Long = 335
+Public Const NOVAPDF_LAYOUT_HORIZANCHOR_OFFSET As Long = 336
+Public Const NOVAPDF_LAYOUT_HORIZANCHOR_USE_PERCENT As Long = 337
+Public Const NOVAPDF_LAYOUT_USE_ASPECT_RATIO As Long = 338
+Public Const NOVAPDF_LAYOUT_WIDTH As Long = 339
+Public Const NOVAPDF_LAYOUT_HEIGHT As Long = 340
+Public Const NOVAPDF_LAYOUT_ROTATION As Long = 341
+Public Const NOVAPDF_LAYOUT_UNITS As Long = 342
+Public Const NOVAPDF_LAYOUT_FIRSTPAGE As Long = 343
+Public Const NOVAPDF_LAYOUT_LASTPAGE As Long = 344
+Public Const NOVAPDF_LAYOUT_ODDPAGE As Long = 345
+Public Const NOVAPDF_LAYOUT_EVENPAGE As Long = 346
+Public Const NOVAPDF_LAYOUT_ALLPAGE As Long = 347
+Public Const NOVAPDF_LAYOUT_PAGES As Long = 348
+Public Const NOVAPDF_LAYOUT_PAGERANGE As Long = 349
+Public Const NOVAPDF_LAYOUT_ZINDEX As Long = 350
+Public Const NOVAPDF_LAYOUT_FORM_WIDTH As Long = 351
+Public Const NOVAPDF_LAYOUT_FORM_HEIGHT As Long = 352
+Public Const NOVAPDF_LAYOUT_BOUNDING_WIDTH As Long = 353
+Public Const NOVAPDF_LAYOUT_BOUNDING_HEIGHT As Long = 354
+Public Const NOVAPDF_LAYOUT_ORIGINAL_WIDTH As Long = 355
+Public Const NOVAPDF_LAYOUT_ORIGINAL_HEIGHT As Long = 356
+Public Const NOVAPDF_LAYOUT_ALLOW_STRETCH As Long = 386
+Public Const NOVAPDF_LAYOUT_STRETCH_X As Long = 387
+Public Const NOVAPDF_LAYOUT_STRETCH_Y As Long = 388
+Public Const NOVAPDF_LAYOUT_STRETCH_ROT_X As Long = 389
+Public Const NOVAPDF_LAYOUT_STRETCH_ROT_Y As Long = 390
+Public Const NOVAPDF_LAYOUT_OBJECT_WIDTH As Long = 393
+Public Const NOVAPDF_LAYOUT_OBJECT_HEIGHT As Long = 394
+'Metadata
+Public Const NOVAPDF_LAYOUT_NAME As Long = 357
+Public Const NOVAPDF_LAYOUT_AUTHOR As Long = 358
+Public Const NOVAPDF_LAYOUT_DESCRIPTION As Long = 359
+Public Const NOVAPDF_LAYOUT_SCALE_X As Long = 360
+Public Const NOVAPDF_LAYOUT_SCALE_Y As Long = 361
+'BordersPreset (layout)
+Public Const NOVAPDF_LAYOUT_USE_BORDER As Long = 380
+Public Const NOVAPDF_LAYOUT_BORDER_STYLE As Long = 382
+Public Const NOVAPDF_LAYOUT_BORDER_WIDTH As Long = 383
+Public Const NOVAPDF_LAYOUT_BORDER_COLOR As Long = 384
+Public Const NOVAPDF_LAYOUT_BORDER_POSITION As Long = 385
+'Email options
+'SendEmailsPreset
+Public Const NOVAPDF_SENDEMAIL_ACTION As Long = 400
+'SMTPPreset
+Public Const NOVAPDF_SMTP_SERVER As Long = 401
+Public Const NOVAPDF_SMTP_PORT As Long = 402
+Public Const NOVAPDF_SMTP_SSL As Long = 403
+Public Const NOVAPDF_SMTP_AUTHENTICATION As Long = 404
+Public Const NOVAPDF_SMTP_ACCOUNT As Long = 405
+Public Const NOVAPDF_SMTP_PASSWORD As Long = 406
+Public Const NOVAPDF_SMTP_TLS As Long = 407
+'EmailsPreset
+Public Const NOVAPDF_EMAIL_COMPRESS As Long = 411
+Public Const NOVAPDF_EMAIL_CHANGEEXTENSION As Long = 412
+Public Const NOVAPDF_EMAIL_ATTACH_PDF As Long = 413
+Public Const NOVAPDF_EMAIL_DELETE_PDF As Long = 414
+Public Const NOVAPDF_EMAIL_LOOKUP_ADDRESS As Long = 415
+Public Const NOVAPDF_EMAIL_ATTACH_OTHER_FILES As Long = 416
+Public Const NOVAPDF_EMAIL_OTHER_FILES As Long = 417
+Public Const NOVAPDF_EMAIL_SUBJECT As Long = 418
+Public Const NOVAPDF_EMAIL_BODY As Long = 419
+Public Const NOVAPDF_EMAIL_EXTENSION As Long = 420
+'Printer options
+Public Const NOVAPDF_PRINTER_ACTIVE_PROFILE As Long = 501
+Public Const NOVAPDF_PRINTER_SELECT_PROFILE_DLG As Long = 502
+'Location type
+Public Const LOCATION_TYPE_LOCAL As Long = 1
+Public Const LOCATION_TYPE_SERVER As Long = 2
+'Option types
+Public Const PRESET_OPTION_TYPE_STRING As Long = 1
+Public Const PRESET_OPTION_TYPE_LONG As Long = 2
+Public Const PRESET_OPTION_TYPE_BOOL As Long = 3
+Public Const PRESET_OPTION_TYPE_FLOAT As Long = 4
+'PDF version
+Public Const PDF_VERSION_13 As Long = 3
+Public Const PDF_VERSION_14 As Long = 4
+Public Const PDF_VERSION_15 As Long = 5
+Public Const PDF_VERSION_16 As Long = 6
+Public Const PDF_VERSION_17 As Long = 7
+'PDF/A version
+Public Const PDFA_1A As Long = 1
+Public Const PDFA_1B As Long = 2
+'Border style
+Public Const BORDER_STYLE_SOLID As Long = 0
+Public Const BORDER_STYLE_DASHED As Long = 1
+'Border position
+Public Const BORDER_POSITION_NEUTRAL As Long = 0
+Public Const BORDER_POSITION_INTERIOR As Long = 1
+Public Const BORDER_POSITION_EXTERIOR As Long = 2
+'Units
+Public Const NOVA_UNITS_MILIMETERS As Long = 0
+Public Const NOVA_UNITS_CENTIMETERS As Long = 1
+Public Const NOVA_UNITS_INCHES As Long = 2
+'Transition types
+Public Const TRANSITION_TYPE_VIEWERDEFAULT As Long = 0
+Public Const TRANSITION_TYPE_REPLACE As Long = 1
+Public Const TRANSITION_TYPE_SPLIT As Long = 2
+Public Const TRANSITION_TYPE_BLINDS As Long = 3
+Public Const TRANSITION_TYPE_BOX As Long = 4
+Public Const TRANSITION_TYPE_WIPE As Long = 5
+Public Const TRANSITION_TYPE_DISSOLVE As Long = 6
+Public Const TRANSITION_TYPE_GLITTER As Long = 7
+Public Const TRANSITION_TYPE_FLYIN As Long = 8
+Public Const TRANSITION_TYPE_FLYOUT As Long = 9
+Public Const TRANSITION_TYPE_PUSH As Long = 10
+Public Const TRANSITION_TYPE_COVER As Long = 11
+Public Const TRANSITION_TYPE_UNCOVER As Long = 12
+Public Const TRANSITION_TYPE_FADE As Long = 13
+'Transition direction
+Public Const TRANSITION_DIR_HORZ As Long = 0
+Public Const TRANSITION_DIR_VERT As Long = 1
+'Page layout
+Public Const PAGE_LAY_VIEWERDEF As Long = 0
+Public Const PAGE_LAY_SINGLE As Long = 1
+Public Const PAGE_LAY_COLUMN As Long = 2
+Public Const PAGE_LAY_TWOCOL_LEFT As Long = 3
+Public Const PAGE_LAY_TWOCOL_RIGHT As Long = 4
+Public Const PAGE_LAY_TWOPAGE_LEFT As Long = 5
+Public Const PAGE_LAY_TWOPAGE_RIGHT As Long = 6
+'Page mode
+Public Const PAGE_MODE_VIEWERDEFAULT As Long = 0
+Public Const PAGE_MODE_NONE As Long = 1
+Public Const PAGE_MODE_OUTLINES As Long = 2
+Public Const PAGE_MODE_PAGES As Long = 3
+Public Const PAGE_MODE_FULLSCREEN As Long = 4
+Public Const PAGE_MODE_LAYERS As Long = 5
+Public Const PAGE_MODE_ATTACHMENTS As Long = 6
+'Page magnification
+Public Const PAGE_MAGN_VIEWERDEFAULT As Long = 0
+Public Const PAGE_MAGN_DEFAULT As Long = 1
+Public Const PAGE_MAGN_FITWIDTH As Long = 2
+Public Const PAGE_MAGN_FITHEIGHT As Long = 3
+Public Const PAGE_MAGN_FITPAGE As Long = 4
+Public Const PAGE_MAGN_PERCENT As Long = 5
+Public Const PAGE_MAGN_FITVISIBLE As Long = 6
+'Page scale
+Public Const PAGE_SCALE_APPDEFAULT As Long = 0
+Public Const PAGE_SCALE_NONE As Long = 1
+'Fullscreen mode
+Public Const FULLSCREEN_VIEWERDEF As Long = 0
+Public Const FULLSCREEN_NONE As Long = 1
+Public Const FULLSCREEN_BOOKMARKS As Long = 2
+Public Const FULLSCREEN_PAGES As Long = 3
+Public Const FULLSCREEN_LAYERS As Long = 4
+'Compression method
+Public Const COMPRESS_METHOD_ZIP As Long = 0
+Public Const COMPRESS_METHOD_JPEG As Long = 1
+'Image convertion type
+Public Const CONVERT_GRAYSCALE As Long = 0
+Public Const CONVERT_MONOCHROME As Long = 1
+'Dither
+Public Const DITHER_FS As Long = 0
+Public Const DITHER_BAYER4 As Long = 1
+Public Const DITHER_BAYER8 As Long = 2
+Public Const DITHER_ORDER6 As Long = 3
+Public Const DITHER_ORDER8 As Long = 4
+Public Const DITHER_ORDER16 As Long = 5
+'Downsample
+Public Const DOWNSAMPLE_FILTER_BOX As Long = 0
+Public Const DOWNSAMPLE_FILTER_BILINEAR As Long = 1
+Public Const DOWNSAMPLE_FILTER_BSPLINE As Long = 2
+Public Const DOWNSAMPLE_FILTER_BICUBIC As Long = 3
+Public Const DOWNSAMPLE_FILTER_CATMULLROM As Long = 4
+Public Const DOWNSAMPLE_FILTER_LANCZOS3 As Long = 5
+'Overlay repeat type
+Public Const OVERLAY_REPEAT_NONE As Long = 0
+Public Const OVERLAY_REPEAT_LAST As Long = 1
+Public Const OVERLAY_REPEAT_ALL As Long = 2
+'Save dlg
+Public Const PROMPT_SAVE_STNANDARD As Long = 0
+Public Const PROMPT_SAVE_NONE As Long = 1
+Public Const PROMPT_SAVE_SIMPLE As Long = 2
+'Save file conflict
+Public Const FILE_CONFLICT_STRATEGY_PROMPT As Long = 0
+Public Const FILE_CONFLICT_STRATEGY_AUTONUMBER_NEW As Long = 1
+Public Const FILE_CONFLICT_STRATEGY_APPEND_DATE As Long = 2
+Public Const FILE_CONFLICT_STRATEGY_OVERWRITE As Long = 3
+Public Const FILE_CONFLICT_STRATEGY_AUTONUMBER_EXIST As Long = 4
+Public Const FILE_CONFLICT_STRATEGY_APPEND As Long = 5
+Public Const FILE_CONFLICT_STRATEGY_INSERT_BEFORE As Long = 6
+Public Const FILE_CONFLICT_STRATEGY_DONTSAVE As Long = 7
+'Security level
+Public Const SECURITY_40BITS As Long = 1
+Public Const SECURITY_128BITS As Long = 2
+'Certificate type
+Public Const CERTIFICATE_TYPE_USER As Long = 0
+Public Const CERTIFICATE_TYPE_SYSTEM As Long = 1
+Public Const CERTIFICATE_TYPE_FILE As Long = 2
+'Font type
+Public Const NOVA_FONTTYPE_TRUETYPE As Long = 0
+Public Const NOVA_FONTTYPE_TYPE1 As Long = 1
+Public Const NOVA_FONTTYPE_OT_TRUETYPE As Long = 2
+Public Const NOVA_FONTTYPE_OT_TYPE1 As Long = 3
+'Send email method
+Public Const EMAIL_TYPE_MAPI_NO_DLG As Long = 0
+Public Const EMAIL_TYPE_MAPI_DLG As Long = 1
+Public Const EMAIL_TYPE_SMTP As Long = 2
+'Predefined save folders
+Public Const SAVEFOLDER_APPLICATION As Long = 1
+Public Const SAVEFOLDER_LAST As Long = 2
+Public Const SAVEFOLDER_CUSTOM As Long = 3
+Public Const SAVEFOLDER_MYDOCUMENTS As Long = 4
+
+'*********************************************************************************
+'***** Error codes
+'*********************************************************************************
+Public Const FACILITY_NOVA As Integer = &H55DA
+
+' general error codes
+' MessageId: NV_NOT_INITIALIZED
+' MessageText: Initialize was not called.
+Public Const NV_NOT_INITIALIZED As Long = &HD5DA0001
+
+' get/set options error codes
+' MessageId: NV_INVALID_OPTION
+' MessageText: invalid option name
+Public Const NV_INVALID_OPTION As Long = &HD5DA0004
+
+' get/set options error codes
+' MessageId: NV_WRONG_OPTION_TYPE
+' MessageText: invalid option type
+Public Const NV_WRONG_OPTION_TYPE As Long = &HD5DA0005
+
+' MessageId: NV_UNKNOWN_PROFILE
+' MessageText: profile does not exist
+Public Const NV_UNKNOWN_PROFILE As Long = &HD5DA0008
+
+' MessageId: NV_NO_MORE_PROFILES
+' MessageText: enumeration of profiles is finished
+Public Const NV_NO_MORE_PROFILES As Long = &HD5DA000A
+
+' MessageId: NV_ENUM_NOT_INIT
+' MessageText: GetFirstProfile or GetFirstForm not called
+Public Const NV_ENUM_NOT_INIT As Long = &HD5DA000B
+
+' MessageId: NV_NODEFAULT_PRINTER
+' MessageText: SetDefaultPrinter was not called
+Public Const NV_NODEFAULT_PRINTER As Long = &HD5DA0014
+
+' MessageId: NV_NOT_REGISTERED
+' MessageText: novapi2.dll (this module) is not registered
+Public Const NV_NOT_REGISTERED As Long = &HD5DA0015
+
+' MessageId: NV_INVALID_BOOKMARK_DEF
+' MessageText: invalif bookmark definition index
+Public Const NV_INVALID_BOOKMARK_DEF As Long = &HD5DA0016
+
+' MessageId: NV_INVALID_PRINTER_NAME
+' MessageText: cannot find printer with given printer name
+Public Const NV_INVALID_PRINTER_NAME As Long = &HD5DA0018
+
+' MessageId: NV_NOT_A_NOVAPDF_PRINTER
+' MessageText: printer is not a novaPDF printer
+Public Const NV_NOT_A_NOVAPDF_PRINTER As Long = &HD5DA0019
+
+' MessageId: NV_PUBLIC_PROFILE
+' MessageText: you are not allowed to modify public profiles on client PCs
+Public Const NV_PUBLIC_PROFILE As Long = &HD5DA0020
+
+' MessageId: NV_INVALID_WATERMARK_IMG
+' MessageText: invalid watermark image index
+Public Const NV_INVALID_WATERMARK_IMG As Long = &HD5DA0021
+
+' MessageId: NV_INVALID_WATERMARK_TXT
+' MessageText: invalid watermark text index
+Public Const NV_INVALID_WATERMARK_TXT As Long = &HD5DA0022
+
+' MessageId: NV_ERROR_DELETE_PRINTER
+' MessageText: there was an error deleting printer
+Public Const NV_ERROR_DELETE_PRINTER As Long = &HD5DA0025
+
+' MessageId: NV_PROFILE_ERROR
+' MessageText: error reading profile
+Public Const NV_PROFILE_ERROR As Long = &HD5DA0027
+
+' MessageId: NV_NO_ACTIVE_PROFILE
+' MessageText: there is no valid active profile
+Public Const NV_NO_ACTIVE_PROFILE As Long = &HD5DA0028
+
+' MessageId: NV_NO_PROFILE
+' MessageText: there is no profile loaded
+Public Const NV_NO_PROFILE As Long = &HD5DA0029
+
+' MessageId: NV_SERVICE_ERROR
+' MessageText: cannot load connect to service module
+Public Const NV_SERVICE_ERROR As Long = &HD5DA002A
+
+' MessageId: NV_PROFILE_SAVE_ERROR
+' MessageText: error saving profile
+Public Const NV_PROFILE_SAVE_ERROR As Long = &HD5DA002B
+
+' MessageId: NV_PROFILE_DELETE_ERROR
+' MessageText: error deleting profile
+Public Const NV_PROFILE_DELETE_ERROR As Long = &HD5DA002C
+
+' MessageId: NV_INVALID_LAYOUT
+' MessageText: invalid layout id
+Public Const NV_INVALID_LAYOUT As Long = &HD5DA002D
+
+' MessageId: NV_INVALID_EMAIL
+' MessageText: invalid email id
+Public Const NV_INVALID_EMAIL As Long = &HD5DA002E
+
+' MessageId: NV_INVALID_RECIPIENT
+' MessageText: invalid email recipient id
+Public Const NV_INVALID_RECIPIENT As Long = &HD5DA002F
+
+' MessageId: NV_INVALID_LICENSE
+' MessageText: license does not allow COM usage
+Public Const NV_INVALID_LICENSE As Long = &HD5DA0030
+
+'Messages
+Public Const MSG_NOVAPDF2_STARTDOC = "NOVAPDF2_STARTDOC"
+Public Const MSG_NOVAPDF2_ENDDOC = "NOVAPDF2_ENDDOC"
+Public Const MSG_NOVAPDF2_STARTPAGE = "NOVAPDF2_STARTPAGE"
+Public Const MSG_NOVAPDF2_ENDPAGE = "NOVAPDF2_ENDPAGE"
+Public Const MSG_NOVAPDF2_FILESENT = "NOVAPDF2_FILESENT"
+Public Const MSG_NOVAPDF2_PRINTERROR = "NOVAPDF2_PRINTERROR"
+Public Const MSG_NOVAPDF2_FILESAVED = "NOVAPDF2_FILESAVED"
+Public Const MSG_NOVAPDF2_EMAILSENT = "NOVAPDF2_EMAILSENT"
+Public Const MSG_NOVAPDF2_EMAILERROR = "NOVAPDF2_EMAILERROR"
+
+'ERROR CODES FOR NOVAPDF2_PRINTERROR MESSAGE
+Public Const ERROR_MSG_TEMP_FILE As Integer = 1
+Public Const ERROR_MSG_LIC_INFO As Integer = 2
+Public Const ERROR_MSG_SAVE_PDF As Integer = 3
+Public Const ERROR_MSG_JOB_CANCELED As Integer = 4
+Public Const ERROR_MSG_LIC_COPIES As Integer = 5
+Public Const ERROR_MSG_LIC_CLIENT As Integer = 6
+Public Const ERROR_MSG_SEND_EMAIL As Integer = 7
+Public Const ERROR_MSG_CONNECT_SRV As Integer = 8
+Public Const ERROR_MSG_JOB_INFO As Integer = 9
+Public Const ERROR_MSG_READ_PROFILE As Integer = 10
+Public Const ERROR_MSG_PDF_ENCRYPT_AP As Integer = 11
+Public Const ERROR_MSG_PDF_ENCRYPT_INS As Integer = 12
+Public Const ERROR_MSG_PDF_APPEND As Integer = 13
+Public Const ERROR_MSG_PDF_INSERT As Integer = 14
+Public Const ERROR_MSG_OVERLAY_ENCRYPT As Integer = 15
+Public Const ERROR_MSG_OVERLAY_READ As Integer = 16

@@ -1,0 +1,100 @@
+object FrmIQDBXMRU: TFrmIQDBXMRU
+  Left = 342
+  Top = 200
+  ClientHeight = 234
+  ClientWidth = 501
+  Caption = 'Open Previous Project'
+  OldCreateOrder = False
+  OnClose = FormClose
+  MonitoredKeys.Keys = <>
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object PnlMain: TUniPanel
+    Left = 0
+    Top = 0
+    Width = 501
+    Height = 234
+    Hint = ''
+    Align = alClient
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    TabOrder = 0
+    Caption = ''
+    object PnlList: TUniPanel
+      Left = 1
+      Top = 1
+      Width = 499
+      Height = 193
+      Hint = ''
+      Align = alClient
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      TabOrder = 1
+      Caption = ''
+      object lvFiles: TUniStringGrid
+        Left = 1
+        Top = 1
+        Width = 497
+        Height = 191
+        Hint = ''
+        FixedCols = 0
+        FixedRows = 0
+        RowCount = 1
+        ColCount = 2
+        Options = [goVertLine, goHorzLine, goRowSelect]
+        ShowColumnTitles = True
+        Columns = <
+          item
+            Title.Caption = 'File Name'
+            Width = 200
+          end
+          item
+            Title.Caption = 'Directory'
+            Width = 295
+          end>
+        Align = alClient
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        TabOrder = 1
+      end
+    end
+    object PnlButtons: TUniPanel
+      Left = 1
+      Top = 193
+      Width = 499
+      Height = 41
+      Hint = ''
+      Align = alBottom
+      Anchors = [akLeft, akRight, akBottom]
+      TabOrder = 0
+      Caption = ''
+      object BitBtn1: TUniBitBtn
+        Left = 8
+        Top = 8
+        Width = 97
+        Height = 25
+        Hint = ''
+        Caption = 'Browse'
+        TabOrder = 0
+        OnClick = BitBtn1Click
+      end
+      object btnOpenSelected: TUniBitBtn
+        Left = 112
+        Top = 8
+        Width = 97
+        Height = 25
+        Hint = ''
+        Caption = 'Select'
+        TabOrder = 1
+        OnClick = btnOpenSelectedClick
+      end
+    end
+  end
+  object SelectDBDlg: TOpenDialog
+    DefaultExt = '*.mdb'
+    Filter = 
+      'Microsoft Access Database (*.mdb;*.mde;*.accdb;*.accde)|*.mdb;*.' +
+      'mde;*.accdb;*.accde'
+    Title = 'Select Database'
+    Left = 132
+    Top = 64
+  end
+end

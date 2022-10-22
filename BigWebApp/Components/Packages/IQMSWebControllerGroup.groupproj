@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{152D9F90-0DEA-4BF5-9D43-D3B761700313}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="IQMSWebController.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="IQMSWebControllerDesign.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="IQMSWebController">
+        <MSBuild Projects="IQMSWebController.dproj"/>
+    </Target>
+    <Target Name="IQMSWebController:Clean">
+        <MSBuild Projects="IQMSWebController.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IQMSWebController:Make">
+        <MSBuild Projects="IQMSWebController.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="IQMSWebControllerDesign">
+        <MSBuild Projects="IQMSWebControllerDesign.dproj"/>
+    </Target>
+    <Target Name="IQMSWebControllerDesign:Clean">
+        <MSBuild Projects="IQMSWebControllerDesign.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IQMSWebControllerDesign:Make">
+        <MSBuild Projects="IQMSWebControllerDesign.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="IQMSWebController;IQMSWebControllerDesign"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="IQMSWebController:Clean;IQMSWebControllerDesign:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="IQMSWebController:Make;IQMSWebControllerDesign:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

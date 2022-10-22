@@ -1,0 +1,36 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{79118E97-823B-408C-9130-3FC9D0457AB4}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="VCL\LocalSQLVCL.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="LocalSQLVCL">
+        <MSBuild Projects="VCL\LocalSQLVCL.dproj"/>
+    </Target>
+    <Target Name="LocalSQLVCL:Clean">
+        <MSBuild Projects="VCL\LocalSQLVCL.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="LocalSQLVCL:Make">
+        <MSBuild Projects="VCL\LocalSQLVCL.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="LocalSQLVCL"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="LocalSQLVCL:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="LocalSQLVCL:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

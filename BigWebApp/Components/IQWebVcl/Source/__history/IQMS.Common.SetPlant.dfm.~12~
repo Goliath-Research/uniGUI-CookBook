@@ -1,0 +1,135 @@
+object FrmChangePlantID: TFrmChangePlantID
+  Left = 163
+  Top = 170
+  ClientHeight = 144
+  ClientWidth = 339
+  Caption = 'Assign Plant Designation'
+  BorderStyle = bsSingle
+  OldCreateOrder = True
+  OnClose = FormClose
+  MonitoredKeys.Keys = <>
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Bevel1: TUniPanel
+    Left = 8
+    Top = 8
+    Width = 323
+    Height = 97
+    Hint = ''
+    TabOrder = 3
+    Caption = ''
+  end
+  object rbtnAll: TUniRadioButton
+    Left = 17
+    Top = 15
+    Width = 104
+    Height = 17
+    Hint = ''
+    Caption = 'Unassign'
+    TabOrder = 0
+    OnClick = rbtnAllClick
+  end
+  object rbtnOne: TUniRadioButton
+    Left = 17
+    Top = 39
+    Width = 113
+    Height = 17
+    Hint = ''
+    Caption = 'One Plant'
+    TabOrder = 1
+    OnClick = rbtnAllClick
+  end
+  object btnCancel: TUniButton
+    Left = 207
+    Top = 111
+    Width = 75
+    Height = 25
+    Hint = ''
+    Caption = '&Cancel'
+    Cancel = True
+    ModalResult = 2
+    TabOrder = 4
+  end
+  object wwcombPlant: TUniDBLookupComboBox
+    Left = 26
+    Top = 70
+    Width = 279
+    Height = 21
+    Hint = ''
+    ListField = 'PLANT_ID;PLANT_NAME'
+    ListSource = dsEPlants
+    KeyField = 'PLANT_ID'
+    ListFieldIndex = 0
+    DataField = 'EPLANT_ID'
+    DataSource = dsTarget
+    TabOrder = 2
+    Color = clWindow
+  end
+  object btnOK: TUniButton
+    Left = 39
+    Top = 111
+    Width = 75
+    Height = 25
+    Hint = ''
+    Caption = '&OK'
+    ModalResult = 1
+    TabOrder = 5
+    OnClick = btnOKClick
+  end
+  object qryEPlants: TFDQuery
+    Active = True
+    ConnectionName = 'IQFD'
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select c.code as ecode,'
+      '       c.company as company_name,'
+      '       p.id as plant_id,'
+      '       p.name as plant_name'
+      '  from ecompany c,'
+      '       eplant p'
+      ' where c.id = p.ecompany_id'
+      ' order by p.name')
+    Left = 232
+    Top = 13
+    object qryEPlantsPLANT_NAME: TStringField
+      DisplayLabel = 'Plant Name'
+      DisplayWidth = 15
+      FieldName = 'PLANT_NAME'
+      Origin = 'EPLANT.NAME'
+      Size = 30
+    end
+    object qryEPlantsECODE: TStringField
+      DisplayLabel = 'ECode'
+      DisplayWidth = 5
+      FieldName = 'ECODE'
+      Origin = 'ECOMPANY.CODE'
+      Size = 10
+    end
+    object qryEPlantsCOMPANY_NAME: TStringField
+      DisplayLabel = 'Company'
+      DisplayWidth = 10
+      FieldName = 'COMPANY_NAME'
+      Origin = 'ECOMPANY.COMPANY'
+      Size = 60
+    end
+    object qryEPlantsPLANT_ID: TBCDField
+      DisplayLabel = 'Plant ID'
+      DisplayWidth = 5
+      FieldName = 'PLANT_ID'
+      Origin = 'EPLANT.ID'
+      Size = 0
+    end
+  end
+  object dsEPlants: TDataSource
+    DataSet = qryEPlants
+    Left = 168
+    Top = 16
+  end
+  object dsTarget: TDataSource
+    Left = 112
+    Top = 16
+  end
+end

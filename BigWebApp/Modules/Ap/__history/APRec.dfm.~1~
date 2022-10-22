@@ -1,0 +1,341 @@
+object FrmAPPoRecDrillDwn: TFrmAPPoRecDrillDwn
+  Left = 192
+  Top = 180
+  Caption = 'PO Receiving Drill Down'
+  ClientHeight = 335
+  ClientWidth = 439
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Style = []
+  OldCreateOrder = False
+  OnClose = FormClose
+  object Splitter3: TUniSplitter
+    Left = 0
+    Top = 159
+    Width = 439
+    Height = 3
+    Cursor = crVSplit
+    Align = alTop
+    ExplicitWidth = 447
+  end
+  object Panel12: TUniPanel
+    Left = 0
+    Top = 0
+    Width = 439
+    Height = 159
+    Align = alTop
+    TabOrder = 0
+    object GridPoReceipts: TUniDBGrid
+      Left = 0
+      Top = 47
+      Width = 439
+      Height = 112
+      Align = alClient
+      Color = clBtnFace
+      DataSource = SrcRec
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Style = []
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'RECEIPTNO'
+          Title.Caption = 'Receipt #'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'QTY_RECEIVED'
+          Title.Caption = 'Quantity Received'
+          Width = 104
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'DATE_RECEIVED'
+          Title.Caption = 'Date'
+          Width = 58
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'POSTED'
+          Title.Caption = 'Posted'
+          Width = 41
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'COMMENT1'
+          Title.Caption = 'Comment'
+          Width = 129
+          Visible = True
+        end>
+    end
+    object PnlToolbar: TUniPanel
+      Tag = 1999
+      Left = 0
+      Top = 0
+      Width = 439
+      Height = 47
+      Align = alTop
+      ParentBackground = False
+      TabOrder = 1
+      object PnlToolbarCaption: TUniPanel
+        Tag = 1999
+        Left = 1
+        Top = 1
+        Width = 437
+        Height = 20
+        Align = alTop
+        Color = clBtnShadow
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -11
+        Font.Style = []
+        ParentBackground = False
+        TabOrder = 0
+        object lblCaptionLabel: TUniLabel
+          Left = 3
+          Top = 3
+          Width = 55
+          Height = 14
+          Align = alLeft
+          Caption = 'Received'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Style = [fsBold]
+          ExplicitHeight = 13
+        end
+      end
+      object PnlToolbarInner: TUniPanel
+        Tag = 1999
+        Left = 1
+        Top = 21
+        Width = 437
+        Height = 25
+        Align = alClient
+        ParentBackground = False
+        TabOrder = 1
+        object NavReceipts: TUniDBNavigator
+          Left = 337
+          Top = 0
+          Width = 100
+          Height = 25
+          DataSource = SrcRec
+          VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+          Align = alRight
+          TabOrder = 0
+        end
+      end
+    end
+  end
+  object Panel11: TUniPanel
+    Left = 0
+    Top = 162
+    Width = 439
+    Height = 173
+    Align = alClient
+    TabOrder = 1
+    object gridRejects: TUniDBGrid
+      Left = 0
+      Top = 47
+      Width = 439
+      Height = 126
+      Align = alClient
+      Color = clBtnFace
+      DataSource = SrcRej
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Style = []
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'QTY_REJECTED'
+          Title.Caption = 'Quantity Rejected'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'DATE_REJECTED'
+          Title.Caption = 'Date'
+          Width = 55
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'RMANO'
+          Title.Caption = 'RMA #'
+          Width = 81
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'REASON'
+          Title.Caption = 'Reason'
+          Width = 160
+          Visible = True
+        end>
+    end
+    object Panel1: TUniPanel
+      Tag = 1999
+      Left = 0
+      Top = 0
+      Width = 439
+      Height = 47
+      Align = alTop
+      ParentBackground = False
+      TabOrder = 1
+      object Panel2: TUniPanel
+        Tag = 1999
+        Left = 1
+        Top = 1
+        Width = 437
+        Height = 20
+        Align = alTop
+        Color = clBtnShadow
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -11
+        Font.Style = []
+        ParentBackground = False
+        TabOrder = 0
+        object Label1: TUniLabel
+          Left = 3
+          Top = 3
+          Width = 52
+          Height = 14
+          Align = alLeft
+          Caption = 'Rejected'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Style = [fsBold]
+          ExplicitHeight = 13
+        end
+      end
+      object Panel3: TUniPanel
+        Tag = 1999
+        Left = 1
+        Top = 21
+        Width = 437
+        Height = 25
+        Align = alClient
+        ParentBackground = False
+        TabOrder = 1
+        object navRejects: TUniDBNavigator
+          Left = 337
+          Top = 0
+          Width = 100
+          Height = 25
+          DataSource = SrcRej
+          VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+          Align = alRight
+          TabOrder = 0
+        end
+      end
+    end
+  end
+  object SrcRej: TDataSource
+    DataSet = QryRej
+    Left = 32
+    Top = 240
+  end
+  object QryRej: TFDQuery
+    MasterSource = SrcRec
+    MasterFields = 'ID'
+    Connection = UniMainModule.FDConnection1
+    FetchOptions.AssignedValues = [evCache]
+    FetchOptions.Cache = [fiBlobs, fiMeta]
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select qty_rejected,'
+      '          date_rejected,'
+      '          rmano,'
+      '          reason'
+      '  from po_rejects'
+      ' where po_receipts_id = :ID')
+    Left = 48
+    Top = 240
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftBCD
+        ParamType = ptInput
+        Size = 8
+      end>
+  end
+  object SrcRec: TDataSource
+    DataSet = QryRec
+    Left = 32
+    Top = 80
+  end
+  object QryRec: TFDQuery
+    MasterSource = FrmAp.SrcDetail
+    MasterFields = 'PO_DETAIL_ID'
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select id,'
+      '           receiptno,'
+      '           qty_received,'
+      '           date_received,'
+      '           posted,'
+      '          comment1'
+      'from po_receipts'
+      'where po_detail_id = :PO_DETAIL_ID')
+    Left = 40
+    Top = 80
+    ParamData = <
+      item
+        Name = 'PO_DETAIL_ID'
+        DataType = ftBCD
+        ParamType = ptInput
+        Size = 8
+      end>
+    object QryRecRECEIPTNO: TStringField
+      FieldName = 'RECEIPTNO'
+      Origin = 'PO_RECEIPTS.RECEIPTNO'
+      Size = 50
+    end
+    object QryRecQTY_RECEIVED: TBCDField
+      FieldName = 'QTY_RECEIVED'
+      Origin = 'PO_RECEIPTS.QTY_RECEIVED'
+    end
+    object QryRecDATE_RECEIVED: TDateTimeField
+      FieldName = 'DATE_RECEIVED'
+      Origin = 'PO_RECEIPTS.DATE_RECEIVED'
+    end
+    object QryRecPOSTED: TStringField
+      FieldName = 'POSTED'
+      Origin = 'PO_RECEIPTS.POSTED'
+      Size = 1
+    end
+    object QryRecCOMMENT1: TStringField
+      FieldName = 'COMMENT1'
+      Origin = 'PO_RECEIPTS.COMMENT1'
+      Size = 250
+    end
+    object QryRecID: TBCDField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+      Precision = 15
+      Size = 0
+    end
+  end
+end

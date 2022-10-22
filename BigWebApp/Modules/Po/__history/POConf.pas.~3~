@@ -1,0 +1,46 @@
+unit POConf;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Forms,
+  IQMS.Common.Confbas,
+  FireDAC.Phys,
+  MainModule,
+  IQMS.WebVcl.SecurityRegister,
+  Vcl.Controls,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniPanel,
+  uniButton, uniCheckBox, uniLabel;
+
+type
+  TFrm_POReceivedReleasesConfirm = class(TIQDialogCheckBox)
+    Panel3: TUniPanel;
+    btnOk: TUniButton;
+    btnCancel: TUniButton;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    constructor Create(AStr, AKey :String);
+  end;
+
+implementation
+
+{$R *.DFM}
+
+constructor TFrm_POReceivedReleasesConfirm.Create(AStr, AKey :String);
+begin
+  inherited Create(AStr, AKey);
+  if AKey > '' then
+  begin
+     SR.SecurityCode := UpperCase(AKey);
+     SR.Refresh;
+  end;
+end;
+
+end.

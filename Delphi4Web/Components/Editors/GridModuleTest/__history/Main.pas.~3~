@@ -1,0 +1,82 @@
+unit Main;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics,
+  Controls, Forms, Dialogs, uniGUITypes, uniGUIAbstractClasses,
+  uniGUIClasses, uniGUIRegClasses, uniGUIForm, uniGUIFrame, D4WGrid,
+  DB, Datasnap.DBClient, uniGUIBaseClasses, uniImageList, uniPanel,
+  uniPageControl, uniEdit, uniDBGrid, uniMultiItem, uniComboBox, uniDBComboBox,
+  D4WEditor, uniCheckBox, uniDBCheckBox, uniMemo, uniSpinEdit,
+  D4WEditorRegDlg, uniDateTimePicker, D4WModuleFormDesigner, D4WModuleFrame;
+
+type
+  TMainForm = class(TUniForm)
+    D4WModuleFrmDsgnr1: TD4WModuleFrmDsgnr;
+    procedure D4WModuleFrmDsgnr1SaveModuleForm(Sender: TObject; const Stream: TMemoryStream);
+    procedure D4WModuleFrmDsgnr1LoadModuleForm(Sender: TObject; const Stream: TMemoryStream);
+    procedure D4WModuleFrmDsgnr1NewModuleForm(Sender: TObject);
+    procedure D4WModuleFrmDsgnr1LoadDialog(Sender: TObject);
+    procedure D4WModuleFrmDsgnr1SaveDialog(Sender: TObject);
+    procedure D4WModuleFrmDsgnr1NewDialog(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  published
+  end;
+
+function MainForm: TMainForm;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  uniGUIVars, MainModule, uniGUIApplication, uniModuleA;
+
+function MainForm: TMainForm;
+begin
+  Result := TMainForm(UniMainModule.GetFormInstance(TMainForm));
+end;
+
+procedure TMainForm.D4WModuleFrmDsgnr1LoadDialog(Sender: TObject);
+begin
+  (Sender as TD4WModuleFrmDsgnr).LoadModule;
+end;
+
+procedure TMainForm.D4WModuleFrmDsgnr1LoadModuleForm(Sender: TObject; const Stream: TMemoryStream);
+begin
+  Stream.LoadFromFile('C:\TEMP\DFM\1.dfm');
+end;
+
+procedure TMainForm.D4WModuleFrmDsgnr1NewDialog(Sender: TObject);
+begin
+  (Sender as TD4WModuleFrmDsgnr).CreateNewModule;
+end;
+
+procedure TMainForm.D4WModuleFrmDsgnr1NewModuleForm(Sender: TObject);
+begin
+  with (Sender as TD4WModuleFrmDsgnr) do
+  begin
+    CurrentFrame.Name := 'ModulaFormA';
+    CurrentFrame.ModuleCategory := 'ModulaCat';
+    CurrentFrame.ModuleName := 'Modula Form A';
+  end;
+end;
+
+procedure TMainForm.D4WModuleFrmDsgnr1SaveDialog(Sender: TObject);
+begin
+  (Sender as TD4WModuleFrmDsgnr).SaveModule;
+end;
+
+procedure TMainForm.D4WModuleFrmDsgnr1SaveModuleForm(Sender: TObject; const Stream: TMemoryStream);
+begin
+  Stream.SaveToFile('C:\TEMP\DFM\1.dfm');
+end;
+
+initialization
+  RegisterAppFormClass(TMainForm);
+
+end.

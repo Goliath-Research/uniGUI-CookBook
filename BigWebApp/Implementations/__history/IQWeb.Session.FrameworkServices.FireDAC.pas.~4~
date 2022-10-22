@@ -1,0 +1,214 @@
+unit IQWeb.Session.FrameworkServices.FireDAC;
+
+interface
+
+uses
+  DB,
+  IQCore.Interfaces,
+  IQWeb.Server.DataServices,
+  IQWeb.Session.FrameworkServices,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+
+type
+
+  TIQFrameworkServicesFireDAC_Oracle = class(TInterfacedObject, IIQFrameworkServices)
+  private
+    FConnection       : TCustomConnection;
+    FDataServices     : IIQDataServices;
+    FModules          : IIQModules;
+    FModuleDS         : TDataSet;
+    FDataModules      : IIQDataModules;
+    FDataModuleDS     : TDataSet;
+    FDataSetDS        : TDataSet;
+    FFieldDS          : TDataSet;
+    FPickTreeDS       : TDataSet;
+    FPickTreeNodeDS   : TDataSet;
+    FQryPickTreeNodes : TDataSet;
+    FPickTrees        : IIQPickTrees;
+    FPickListDS       : TDataSet;
+    FPickListItemDS   : TDataSet;
+    FPickLists        : IIQPickLists;
+    FPickDataSets     : IIQPickDataSets;
+    FPickDataSetDS    : TDataSet;
+    FPickListItems    : TFDQuery;
+
+    function  GetConnection     : TCustomConnection;
+    function  GetDataServices   : IIQDataServices;
+    function  GetModules        : IIQModules;
+    function  GetModuleDS       : TDataSet;
+    function  GetDataModules    : IIQDataModules;
+    function  GetDataModuleDS   : TDataSet;
+    function  GetDataSetDS      : TDataSet;
+    function  GetFieldDS        : TDataSet;
+    function  GetPickTreeDS     : TDataSet;
+    function  GetTreeNodeDS     : TDataSet;
+    function  GetQryTreeNodes   : TDataSet;
+    function  GetPickTrees      : IIQPickTrees;
+    function  GetPickListDS     : TDataSet;
+    function  GetListItemDS     : TDataSet;
+    function  GetPickLists      : IIQPickLists;
+    function  GetPickDataSetDS  : TDataSet;
+    function  GetPickDataSets   : IIQPickDataSets;
+    function  GetPickListItems  : TFDQuery;
+    function  GetDataSet        (aObj : IIQObj; aID : integer = 0) : TDataSet;
+  public
+    constructor Create;
+    destructor  Destroy; override;
+  end;
+
+implementation
+
+uses
+  SysUtils,
+  Spring.Services,
+  IQMS.Common.Params,
+  MainModule,
+  IQCore.Module,
+  IQCore.DataSet,
+  IQCore.PickTree,
+  IQCore.PickList,
+  IQCore.PickDataSet,
+  IQCore.DM;
+
+{ TIQFrameworkServicesFireDAC_Oracle }
+
+constructor TIQFrameworkServicesFireDAC_Oracle.Create;
+begin
+  inherited;
+
+  // IQCore_DM could be created here
+
+  FDataServices     := ServiceLocator.GetService<IIQDataServices>('FireDAC-Oracle');
+  FConnection       := UniMainModule.FDConnection1;
+  FModules          := TIQModules.Create;
+  FModuleDS         := IQCore_DM.IQModule;
+  FDataSetDS        := IQCore_DM.IQDataSet;
+  FFieldDS          := IQCore_DM.IQField;
+  FPickTreeDS       := IQCore_DM.IQPickTree;
+  FPickTreeNodeDS   := IQCore_DM.IQPickTreeNode;
+  FQryPickTreeNodes := IQCore_DM.QryPickTreeNodes;
+  FPickTrees        := TIQPickTrees.Create;
+  FPickListDS       := IQCore_DM.IQPickList;
+  FPickListItemDS   := IQCore_DM.IQPickListItem;
+  FPickLists        := TIQPickLists.Create;
+  FPickDataSets     := TIQPickDataSets.Create;
+  FPickListItems    := IQCore_DM.QryPickListItems;
+end;
+
+destructor TIQFrameworkServicesFireDAC_Oracle.Destroy;
+begin
+  // IQCore_DM could be destroyed here
+
+  inherited;
+end;
+
+function TIQFrameworkServicesFireDAC_Oracle.GetConnection: TCustomConnection;
+begin
+  Result := FConnection;
+end;
+
+function TIQFrameworkServicesFireDAC_Oracle.GetDataModuleDS: TDataSet;
+begin
+  Result := FDataModuleDS;
+end;
+
+function TIQFrameworkServicesFireDAC_Oracle.GetDataModules: IIQDataModules;
+begin
+  Result := FDataModules;
+end;
+
+function TIQFrameworkServicesFireDAC_Oracle.GetDataServices: IIQDataServices;
+begin
+  Result := FDataServices;
+end;
+
+function TIQFrameworkServicesFireDAC_Oracle.GetDataSet(aObj: IIQObj; aID : integer = 0): TDataSet;
+var
+  TableName : string;
+  Query     : TFDQuery;
+begin
+  TableName := (aObj as TObject).ClassName;
+  Delete(TableName, 1, 1);
+
+  Query := TFDQuery.Create(nil);
+  Query.Connection := GetConnection as TFDCustomConnection;
+  Query.SQL.Text   := 'SELECT * FROM ' + TableName;
+  if aID <> 0 then
+    Query.SQL.Add(Format('WHERE ID = %d', [aID]));
+
+  Result := Query;
+end;
+
+function TIQFrameworkServicesFireDAC_Oracle.GetDataSetDS: TDataSet;
+begin
+  Result := FDataSetDS;
+end;
+
+function TIQFrameworkServicesFireDAC_Oracle.GetFieldDS: TDataSet;
+begin
+  Result := FFieldDS;
+end;
+
+function TIQFrameworkServicesFireDAC_Oracle.GetListItemDS: TDataSet;
+begin
+  Result := FPickListItemDS;
+end;
+
+function TIQFrameworkServicesFireDAC_Oracle.GetModuleDS: TDataSet;
+begin
+  Result := FModuleDS;
+end;
+
+function TIQFrameworkServicesFireDAC_Oracle.GetModules: IIQModules;
+begin
+  Result := FModules;
+end;
+
+function TIQFrameworkServicesFireDAC_Oracle.GetPickDataSetDS: TDataSet;
+begin
+  Result := FPickDataSetDS;
+end;
+
+function TIQFrameworkServicesFireDAC_Oracle.GetPickDataSets: IIQPickDataSets;
+begin
+  Result := FPickDataSets;
+end;
+
+function TIQFrameworkServicesFireDAC_Oracle.GetPickListDS: TDataSet;
+begin
+  Result := FPickListDS;
+end;
+
+function TIQFrameworkServicesFireDAC_Oracle.GetPickListItems: TFDQuery;
+begin
+  Result := FPickListItems;
+end;
+
+function TIQFrameworkServicesFireDAC_Oracle.GetPickLists: IIQPickLists;
+begin
+  Result := FPickLists;
+end;
+
+function TIQFrameworkServicesFireDAC_Oracle.GetPickTreeDS: TDataSet;
+begin
+  Result := FPickTreeDS;
+end;
+
+function TIQFrameworkServicesFireDAC_Oracle.GetPickTrees: IIQPickTrees;
+begin
+  Result := FPickTrees;
+end;
+
+function TIQFrameworkServicesFireDAC_Oracle.GetQryTreeNodes: TDataSet;
+begin
+  Result := FQryPickTreeNodes;
+end;
+
+function TIQFrameworkServicesFireDAC_Oracle.GetTreeNodeDS: TDataSet;
+begin
+  Result := FPickTreeNodeDS;
+end;
+
+end.

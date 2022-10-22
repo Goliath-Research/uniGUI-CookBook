@@ -1,0 +1,100 @@
+unit SchdChk;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Controls,
+  Vcl.Forms,
+  IQMS.Common.StatChk,
+  Data.DB,
+  Vcl.DBGrids,
+  Mask,
+  FireDAC.Comp.Client,
+  FireDAC.Comp.DataSet,
+  FireDAC.Phys,
+  MainModule,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Stan.Async,
+  FireDAC.DApt,
+  IQMS.WebVcl.SecurityRegister,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniBasicGrid,
+  uniDBGrid, uniButton, uniCheckBox, uniPanel, uniEdit, uniDBEdit, uniLabel,
+  uniPageControl;
+
+type
+  TFrmOrdScheduledException = class(TFrmStatusException)
+    TabSheet2: TUniTabSheet;
+    DataSource2: TDataSource;
+    QryScheduled: TFDQuery;
+    DBGrid1: TUniDBGrid;
+    QryScheduledEQNO: TStringField;
+    QryScheduledWORKORDER_ID: TBCDField;
+    QryScheduledCNTR_SEQ: TBCDField;
+    QryScheduledITEMNO: TStringField;
+    QryScheduledPROD_START_TIME: TDateTimeField;
+    QryScheduledPROD_END_TIME: TDateTimeField;
+  private
+    { Private declarations }
+    FOrd_Detail_ID: Real;
+    procedure SetOrd_Detail_ID(const Value: Real);
+  protected
+    procedure PrepareQuery( AOrders_ID: Real ); override;
+  public
+    { Public declarations }
+    property Ord_Detail_ID : Real write SetOrd_Detail_ID;
+  end;
+
+procedure CheckOrdScheduled( AOrders_ID, AOrder_Dtl_ID: Real );
+
+implementation
+
+{$R *.DFM}
+
+uses
+  IQMS.Common.DataLib, uniGUIApplication;
+
+procedure CheckOrdScheduled( AOrders_ID, AOrder_Dtl_ID: Real );
+var
+  LFrmOrdScheduledException : TFrmOrdScheduledException;
+begin
+  LFrmOrdScheduledException := TFrmOrdScheduledException.Create(UniGUIApplication.UniApplication);
+  with LFrmOrdScheduledException do
+  begin
+    Ord_Detail_ID := AOrder_Dtl_ID;
+    rcusto_ID := AOrders_ID;
+    if not (QryScheduled.Eof and QryScheduled.Bof) then
+       if not (ShowModal = mrOK) then
+          raise TIQNotAuthorizedException.Create;
+  end;
+end;
+
+procedure TFrmOrdScheduledException.PrepareQuery( AOrders_ID: Real );
+begin
+  inherited PrepareQuery( AOrders_ID );
+
+  QryScheduled.Close;
+  AssignQueryParamValue(QryScheduled, 'orders_id', AOrders_ID);
+  AssignQueryParamValue(QryScheduled, 'ord_detail_id', FOrd_Detail_ID);
+  if FOrd_Detail_ID > 0 then
+    AssignQueryParamValue(QryScheduled, 'any_ord_dtl', 0)
+  else
+    AssignQueryParamValue(QryScheduled, 'any_ord_dtl', 1);
+end;
+
+procedure TFrmOrdScheduledException.SetOrd_Detail_ID(const Value: Real);
+begin
+  FOrd_Detail_ID := Value;
+end;
+
+end.

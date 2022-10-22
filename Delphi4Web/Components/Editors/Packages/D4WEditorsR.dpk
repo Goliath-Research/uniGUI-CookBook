@@ -1,0 +1,58 @@
+package D4WEditorsR;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'IQ Editors Runtime Package'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  uniGUI25;
+
+contains
+  D4WEditor in '..\Source\D4WEditor.pas',
+  D4WDlgSample in '..\Source\D4WDlgSample.pas' {D4WDialogA: TUniForm},
+  D4WEditorDlg in '..\Source\D4WEditorDlg.pas',
+  D4WEditorDlgSample in '..\Source\D4WEditorDlgSample.pas',
+  D4W.HyperGrid in '..\Source\D4W.HyperGrid.pas' {D4WHyperGrid: TUniFrame},
+  D4WEditorDlgMemo in '..\Source\D4WEditorDlgMemo.pas',
+  D4WDlgMemo in '..\Source\D4WDlgMemo.pas' {D4WDlgMemoForm: TUniForm},
+  D4WEditorRegDlg in '..\Source\D4WEditorRegDlg.pas',
+  D4WGridDesignerFrm in '..\Source\D4WGridDesignerFrm.pas' {D4WGridDesigner: TUniForm},
+  D4WEditorDlgPickDataSet in '..\Source\D4WEditorDlgPickDataSet.pas',
+  D4WDlgPickDataSet in '..\Source\D4WDlgPickDataSet.pas' {D4WDlgPickDataSetForm: TUniForm},
+  D4WEditorRegEditors in '..\Source\D4WEditorRegEditors.pas',
+  D4WGridDesignerSelectFrm in '..\Source\D4WGridDesignerSelectFrm.pas' {D4WDesignerSelectForm: TUniForm},
+  D4W.DataServices in '..\Source\D4W.DataServices.pas',
+  D4WModuleFormDesigner in '..\Source\D4WModuleFormDesigner.pas' {D4WModuleFrmDsgnr: TUniFrame},
+  D4WStream in '..\Source\D4WStream.pas',
+  D4WModuleFrame in '..\Source\D4WModuleFrame.pas',
+  D4WEditorUtils in '..\Source\D4WEditorUtils.pas',
+  D4WEditorFieldsDlg in '..\Source\D4WEditorFieldsDlg.pas' {D4WFieldSelect: TUniForm},
+  D4W.DataControllerList in '..\Source\D4W.DataControllerList.pas',
+  D4W.MenuToActionList in '..\Source\D4W.MenuToActionList.pas';
+
+end.

@@ -1,0 +1,54 @@
+unit IQMS.PrintLabels.LMChkBoxMfgNotRunning;
+
+interface
+
+uses
+  Winapi.Windows,
+  Vcl.Forms,
+  IQMS.Common.ConfBas,
+  FireDAC.Comp.Client,
+  FireDAC.Phys,
+  IQMS.WebVcl.SecurityRegister,
+  Vcl.Controls,
+  System.Classes,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniPanel,
+  uniButton, uniCheckBox, uniLabel;
+
+type
+  TFrmIQLMChkBoxMfgNotRunning = class(TIQDialogCheckBox)
+    pnlButtons: TUniPanel;
+    btnContinue: TUniButton;
+    btnCancel: TUniButton;
+    procedure btnContinueClick(Sender: TObject);
+  private
+    { Private declarations }
+  protected
+    { Protected declarations }
+    procedure AssignText( S: string ); override;
+  public
+    { Public declarations }
+  end;
+
+
+implementation
+
+{$R *.dfm}
+
+{ TFrmIQLMChkBoxMfgNotRunning }
+
+procedure TFrmIQLMChkBoxMfgNotRunning.AssignText(S: string);
+begin
+  inherited;
+  lblConfBasMsgText.Caption:= S;
+end;
+
+procedure TFrmIQLMChkBoxMfgNotRunning.btnContinueClick(Sender: TObject);
+begin
+  inherited; {nothing}
+  FResult:= TUniButton(Sender).Tag;
+  Close;
+end;
+
+end.

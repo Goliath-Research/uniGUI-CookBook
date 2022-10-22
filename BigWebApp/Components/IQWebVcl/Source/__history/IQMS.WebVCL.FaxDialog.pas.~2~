@@ -1,0 +1,333 @@
+unit IQMS.WebVcl.FaxDialog;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Data.DB,
+//  Vcl.Wwdatsrc,
+  Vcl.Buttons,
+  Vcl.Menus,
+  IQMS.WebVcl.About,
+  IQMS.WebVcl.Hpick,
+  IQMS.WebVcl.FaxMan,
+  FireDAC.Comp.Client,
+  FireDAC.Comp.DataSet,
+  FireDAC.Stan.Intf,
+  FireDAC.Phys,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Stan.Async,
+  FireDAC.DApt,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniButton,
+  uniBitBtn,
+  uniSpeedButton,
+  uniMultiItem,
+  uniListBox,
+  uniEdit,
+  uniComboBox,
+  uniPanel,
+  uniSplitter,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniDBNavigator,
+  uniMainMenu,
+  uniLabel,
+  uniPageControl, IQUniGrid, uniGUIFrame, Vcl.StdCtrls, Vcl.ComCtrls, uniMemo,
+  uniFileUpload;
+
+type
+  TFrmFaxDialog = class(TUniForm)
+    PageControl1: TUniPageControl;
+    TabSheet1: TUniTabSheet;
+    TabSheet4: TUniTabSheet;
+    lboxFiles: TUniListBox;
+    Panel1: TUniPanel;
+    sbtnAddFile: TUniSpeedButton;
+    sbtnDelFile: TUniSpeedButton;
+    TabSheet2: TUniTabSheet;
+    reText: TUniMemo;
+    wwDBGridRecipient: TIQUniGridControl;
+    SrcRecipients: TDataSource;
+    QryRecipients: TFDQuery;
+    QryRecipientsTO_NAME: TStringField;
+    QryRecipientsTO_ORGANIZATION: TStringField;
+    QryRecipientsTO_FAX: TStringField;
+    PopupMenu1: TUniPopupMenu;
+    About1: TUniMenuItem;
+    Splitter1: TUniSplitter;
+    Panel3: TUniPanel;
+    PnlButtonsInner: TUniPanel;
+    btnOK: TUniButton;
+    btnCancel: TUniButton;
+    PnlDetailsLabels: TUniPanel;
+    PnlDetailsEdit: TUniPanel;
+    Label1: TUniLabel;
+    Label2: TUniLabel;
+    Label8: TUniLabel;
+    Splitter2: TUniSplitter;
+    edSubject: TUniEdit;
+    edFrom: TUniEdit;
+    cboxCoversheet: TUniComboBox;
+    reCoverNote: TUniMemo;
+    Label9: TUniLabel;
+    PnlToolbar: TUniPanel;
+    PnlToolbarCaption: TUniPanel;
+    lblCaptionLabel: TUniLabel;
+    PnlToolbarInner: TUniPanel;
+    NavRecipients: TUniDBNavigator;
+    sbtnPkFromVendor: TUniSpeedButton;
+    sbtnPickFromArcusto: TUniSpeedButton;
+    Bevel1: TUniPanel;
+    UniFileUpload1: TUniFileUpload;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnOKClick(Sender: TObject);
+    procedure QryRecipientsUpdateRecord(ASender: TDataSet;
+      ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
+    procedure QryRecipientsBeforePost(DataSet: TDataSet);
+    procedure sbtnAddFileClick(Sender: TObject);
+    procedure sbtnDelFileClick(Sender: TObject);
+    procedure About1Click(Sender: TObject);
+    procedure cboxCoversheetChange(Sender: TObject);
+    procedure sbtnPkFromVendorClick(Sender: TObject);
+    procedure sbtnPickFromArcustoClick(Sender: TObject);
+    procedure UniFormCreate(Sender: TObject);
+    procedure UniFileUpload1Completed(Sender: TObject; AStream: TFileStream);
+  private
+    { Private declarations }
+    procedure LoadFromCargo( AFaxMan: TFaxMan );
+    procedure SaveToCargo( AFaxMan: TFaxMan );
+    procedure AddFromPickList( APkList: TIQWebHPick );
+    procedure SetFaxMan(const AFaxMan: TFaxMan);
+  public
+    { Public declarations }
+    property FaxMan : TFaxMan write SetFaxMan;
+  end;
+
+  function GetFaxDialog( var AFaxMan: TFaxMan ): Boolean;
+
+
+implementation
+
+{$R *.DFM}
+
+uses
+  IQMS.Common.Controls,
+  IQMS.Common.DataLib,
+  IQMS.Common.RegFrm,
+  IQMS.Common.StringUtils,
+  IQMS.Common.Miscellaneous,
+  IQMS.Common.Numbers,
+  IQMS.WebVcl.ResourceStrings;
+
+{ wrapper }
+function GetFaxDialog( var AFaxMan: TFaxMan ): Boolean;
+begin
+  with TFrmFaxDialog.Create( uniGUIApplication.UniApplication) do
+  begin
+    FaxMan:=AFaxMan;
+    Result:= ShowModal = mrOK;
+    if Result then
+       SaveToCargo( AFaxMan );
+  end;
+end;
+
+
+{ TFrmFaxDialog }
+
+procedure TFrmFaxDialog.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  IQRegFormWrite( self, [ self, wwDBGridRecipient ]);
+end;
+
+procedure TFrmFaxDialog.LoadFromCargo( AFaxMan: TFaxMan );
+
+  procedure LoadRecipients;
+  var
+    I: Integer;
+  begin
+    with QryRecipients do
+    begin
+      {Load}
+      Close;
+      for I:= 0 to AFaxMan.FRecipients.Count - 1 do
+      begin
+        if I = 0 then
+           SQL.Clear;
+
+        if I > 0 then
+           SQL.Add('union all');
+
+        SQL.Add( Format( 'select                           '+
+                         '      ''%s'' as to_name,         '+
+                         '      ''%s'' as to_organization, '+
+                         '      ''%s'' as to_fax           '+
+                         '  from dual                      ',
+                         [ StrTran( PadR ( GetToken( AFaxMan.FRecipients[ I ], #9, 1 ), 25), '''', '''''' ),
+                           StrTran( PadR ( GetToken( AFaxMan.FRecipients[ I ], #9, 2 ), 25), '''', '''''' ),
+                           StrTran( PadR ( GetToken( AFaxMan.FRecipients[ I ], #9, 3 ), 25), '''', '''''' )]));
+      end;
+
+      {check if nothing was added and delete the "fake one"}
+      Open;
+      if AFaxMan.FRecipients.Count = 0 then
+         Delete;
+    end;
+  end;
+
+begin
+  LoadRecipients;
+
+  with AFaxMan do
+  begin
+    edSubject.Text := FSubject;
+    edFrom.Text    := FFrom;
+
+    cboxCoversheet.ItemIndex:= cboxCoversheet.Items.IndexOf( FCoversheet );
+
+    reCoverNote.Text:= FCoverNote;
+    // cboxLetterHead.ItemIndex:= cboxLetterHead.Items.IndexOf( FLetterHead );
+
+    lboxFiles.Items.Text:= FAttachments.Text;
+    reText.Lines.Text:= FText;
+  end;
+end;
+
+procedure TFrmFaxDialog.SaveToCargo( AFaxMan: TFaxMan );
+
+  procedure SaveRecipients;
+  begin
+    with QryRecipients do
+    begin
+      First;
+      AFaxMan.FRecipients.Clear;
+      while not Eof do
+      begin
+         {Update property of object AFaxMan}
+         AFaxMan.AddRecipient( FieldByName('to_name').asString,
+                                 FieldByName('to_organization').asString,
+                                 FieldByName('to_fax').asString );
+         Next;
+      end;
+    end;
+  end;
+
+begin
+  SaveRecipients;
+
+  with AFaxMan do
+  begin
+    FSubject         := edSubject.Text;
+    FFrom            := edFrom.Text;
+    FCoversheet      := cboxCoversheet.Text;
+    FCoverNote       := reCoverNote.Text;
+    // FLetterHead      := cboxLetterHead.Text;
+    FAttachments.Text:= lboxFiles.Items.Text;
+    FText            := reText.Lines.Text;
+  end;
+
+end;
+
+procedure TFrmFaxDialog.btnOKClick(Sender: TObject);
+begin
+  QryRecipients.CheckBrowseMode;
+  ModalResult:= mrOK;
+end;
+
+procedure TFrmFaxDialog.QryRecipientsUpdateRecord(ASender: TDataSet;
+  ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
+begin
+  AAction := eaApplied;
+end;
+
+procedure TFrmFaxDialog.QryRecipientsBeforePost(DataSet: TDataSet);
+begin
+  IQAssert( Trim(QryRecipientsTO_FAX.asString)  > '', IQMS.WebVcl.ResourceStrings.cTXT0000058  {'Fax must be entered'} );
+  IQAssert( Trim(QryRecipientsTO_NAME.asString) > '', IQMS.WebVcl.ResourceStrings.cTXT0000260  {'Recipient name must be entered'} );
+end;
+
+procedure TFrmFaxDialog.sbtnAddFileClick(Sender: TObject);
+begin
+  UniFileUpload1.Execute;
+end;
+
+procedure TFrmFaxDialog.sbtnDelFileClick(Sender: TObject);
+begin
+  with lboxFiles do
+    if ItemIndex > -1 then
+       Items.Delete( ItemIndex );
+end;
+
+procedure TFrmFaxDialog.About1Click(Sender: TObject);
+begin
+  IQAbout1.Execute;
+end;
+
+procedure TFrmFaxDialog.cboxCoversheetChange(Sender: TObject);
+begin
+  reCoverNote.Enabled:= (CompareText( cboxCoversheet.Text, IQMS.WebVcl.ResourceStrings.cTXT0000059 {'None'} ) <> 0) and ( cboxCoversheet.Text <> '');
+  reCoverNote.Color  := cIIf( reCoverNote.Enabled, clWindow, clBtnFace )
+end;
+
+procedure TFrmFaxDialog.sbtnPkFromVendorClick(Sender: TObject);
+begin
+  AddFromPickList( PkFaxVendor );
+end;
+
+procedure TFrmFaxDialog.SetFaxMan(const AFaxMan: TFaxMan);
+begin
+  LoadFromCargo( AFaxMan );
+  cboxCoversheetChange( NIL );
+end;
+
+procedure TFrmFaxDialog.UniFileUpload1Completed(Sender: TObject;
+  AStream: TFileStream);
+begin
+   lboxFiles.Items.Add( AStream.FileName );
+end;
+
+procedure TFrmFaxDialog.UniFormCreate(Sender: TObject);
+begin
+
+  IQRegFormRead( self, [ self, wwDBGridRecipient ]);
+
+  // 12/03/2007
+  IQMS.Common.Controls.AdjustRightAlignedControlsToParent(PnlDetailsEdit);
+end;
+
+procedure TFrmFaxDialog.sbtnPickFromArcustoClick(Sender: TObject);
+begin
+  AddFromPickList( PkFaxCustomer );
+end;
+
+procedure TFrmFaxDialog.AddFromPickList( APkList: TIQWebHPick );
+begin
+  QryRecipients.CheckBrowseMode;
+
+  with APkList do
+    if Execute then
+    begin
+      if not( QryRecipients.State in [ dsEdit, dsInsert ]) then
+         QryRecipients.Append;
+      QryRecipientsTO_NAME.asString        := GetValue('FIRST_NAME') + ' ' + GetValue('LAST_NAME');
+      QryRecipientsTO_ORGANIZATION.asString:= GetValue('COMPANY');
+      QryRecipientsTO_FAX.asString         := GetValue('FAX_NUMBER');
+    end;
+end;
+
+end.

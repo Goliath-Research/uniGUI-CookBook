@@ -1,0 +1,36 @@
+unit IQMS.Common.ConfMissingLotno;
+
+interface
+
+uses
+  Vcl.Forms,
+  IQMS.Common.ConfBas,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniPanel,
+  uniButton, IQMS.WebVcl.SecurityRegister, uniCheckBox, uniLabel,
+  System.Classes, Vcl.Controls;
+
+type
+  TFrmConfirmMissingLotNo = class(TIQDialogCheckBox)
+    Panel3: TUniPanel;
+    btnYes: TUniButton;
+    btnAbort: TUniButton;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure AssignText( S: string ); override;
+  end;
+
+
+implementation
+
+{$R *.dfm}
+
+procedure TFrmConfirmMissingLotNo.AssignText(S: string);
+begin
+  lblConfBasMsgText.Caption:= S;
+end;
+
+end.

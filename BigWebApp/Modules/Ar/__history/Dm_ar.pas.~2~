@@ -1,0 +1,176 @@
+unit DM_AR;
+
+interface
+
+Uses
+  Winapi.Windows, 
+  System.SysUtils, 
+  System.Classes, 
+  Data.DB,
+  MainModule,
+  //Iqhpick,
+  IQMS.WebVcl.Hpick,
+  Vcl.Wwdatsrc, 
+  FireDAC.Comp.Client, 
+//  db_dm,
+  IQMS.Common.DataLib,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param, 
+  FireDAC.Stan.Error, 
+  FireDAC.DatS, 
+  FireDAC.Phys.Intf, 
+  FireDAC.DApt.Intf, 
+  FireDAC.Stan.Async, 
+  FireDAC.DApt, 
+  FireDAC.Comp.DataSet;
+
+type
+  TAR_DM = class(TDataModule)
+    TblBillTo: TFDTable;
+    TblBillToID: TBCDField;
+    TblBillToARCUSTO_ID: TBCDField;
+    TblTerms: TFDTable;
+    TblGlAcct: TFDTable;
+    SrcTerms: TDataSource;
+    SrcGlAcct: TDataSource;
+    TblGLPeriods: TFDTable;
+    TblGLPeriodsID: TBCDField;
+    TblGLPeriodsGLYEAR_ID: TBCDField;
+    TblGLPeriodsPERIOD: TBCDField;
+    TblGLPeriodsSTART_DATE: TDateTimeField;
+    TblGLPeriodsEND_DATE: TDateTimeField;
+    TblGLPeriodsSTATUS: TStringField;
+    TblSalesPeople: TFDTable;
+    TblOrders: TFDTable;
+    TblOrdersID: TBCDField;
+    TblOrdersPONO: TStringField;
+    TblOrdersARCUSTO_ID: TBCDField;
+    TblOrdersORD_DATE: TDateTimeField;
+    TblOrdersORD_BY: TStringField;
+    TblOrdersDATE_TAKEN: TDateTimeField;
+    TblOrdersBILL_TO_ID: TBCDField;
+    TblOrdersSHIP_TO_ID: TBCDField;
+    TblOrdersCUSER1: TStringField;
+    TblOrdersCUSER2: TStringField;
+    TblOrdersCUSER3: TStringField;
+    TblOrdersCUSER5: TStringField;
+    TblOrdersCUSER6: TStringField;
+    TblOrdersTIMESTAMP: TDateTimeField;
+    TblOrdersFOB: TStringField;
+    TblOrdersCHANGEUSER_ID: TStringField;
+    TblOrdersTERMS_ID: TBCDField;
+    TblArInvt: TFDQuery;
+    TblBillToATTN: TStringField;
+    TblBillToADDR1: TStringField;
+    TblBillToADDR2: TStringField;
+    TblBillToADDR3: TStringField;
+    TblBillToCITY: TStringField;
+    TblBillToSTATE: TStringField;
+    TblBillToCOUNTRY: TStringField;
+    TblBillToZIP: TStringField;
+    TblBillToPHONE_NUMBER: TStringField;
+    TblBillToEXT: TStringField;
+    TblBillToFAX: TStringField;
+    TblBillToPRIME_CONTACT: TStringField;
+    SrcQryBillTo: TDataSource;
+    QryBillTo: TFDQuery;
+    QryBillToID: TBCDField;
+    QryBillToARCUSTO_ID: TBCDField;
+    QryBillToATTN: TStringField;
+    QryBillToADDR1: TStringField;
+    QryBillToADDR2: TStringField;
+    QryBillToADDR3: TStringField;
+    QryBillToCITY: TStringField;
+    QryBillToSTATE: TStringField;
+    QryBillToCOUNTRY: TStringField;
+    QryBillToZIP: TStringField;
+    QryBillToPHONE_NUMBER: TStringField;
+    QryBillToEXT: TStringField;
+    QryBillToFAX: TStringField;
+    QryBillToPRIME_CONTACT: TStringField;
+    SrcFreight: TDataSource;
+    TblFreight: TFDTable;
+    TblArCusto: TFDQuery;
+    ViewTaxCodes: TFDQuery;
+    TblGlAcctID: TBCDField;
+    TblGlAcctACCT: TStringField;
+    TblGlAcctDESCRIP: TStringField;
+    TblGlAcctGL_SUBACCT_TYPE_ID: TBCDField;
+    TblTaxCodes: TFDTable;
+    TblFreightID: TBCDField;
+    TblFreightDESCRIP: TStringField;
+    TblFreightGLACCT_ID_FREIGHT: TBCDField;
+    TblFreightSCAC_IATA_CODE: TStringField;
+    TblFreightCODE_QUALIFIER: TStringField;
+    TblFreightTRANSPORT_CODE: TStringField;
+    TblTermsID: TBCDField;
+    TblTermsDESCRIPTION: TStringField;
+    TblTermsDAYS: TBCDField;
+    TblTermsDISCOUNT: TBCDField;
+    TblTermsDISCOUNT_DAYS: TBCDField;
+    TblTaxCodesID: TBCDField;
+    TblTaxCodesTAX_CODE: TStringField;
+    TblTaxCodesTAX_CODE_DESC: TStringField;
+    TblTaxCodesTOT_TAX_RATE: TFMTBCDField;
+    ViewArTaxCodes: TFDQuery;
+    TblOrdersUSERID: TStringField;
+    PkPM: TIQWebHPick;
+    PkPMID: TBCDField;
+    PkPMWORK_ORDER_NO: TBCDField;
+    PkPMWO_DATE: TDateTimeField;
+    PkPMEQNO: TStringField;
+    PkPMTASKNO: TStringField;
+    PkPMTASK_DESCRIP: TStringField;
+    TblTermsBASED_ON: TStringField;
+    TblTermsNVLBasedON: TStringField;
+    TblGlAcctEPLANT_ID: TBCDField;
+    ViewArTaxCodesVoid: TFDQuery;
+    TblOrdersORDERNO: TStringField;
+    TblTermsEND_OF_MONTH: TStringField;
+    TblTermsDAY_OF_MONTH: TBCDField;
+    TblTermsPK_HIDE: TStringField;
+    TblTermsCASH_IN_ADVANCE: TStringField;
+    ViewTaxCodesID: TBCDField;
+    ViewTaxCodesTAX_CODE: TStringField;
+    ViewTaxCodesTAX_CODE_DESC: TStringField;
+    ViewTaxCodesTAX_RATE: TFMTBCDField;
+    procedure TblTermsBeforePost(DataSet: TDataSet);
+    procedure TblTermsCalcFields(DataSet: TDataSet);
+    procedure TblTermsFilterRecord(DataSet: TDataSet; var Accept: Boolean);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  AR_DM: TAR_DM;
+
+implementation
+{$R *.DFM}
+uses
+  IQMS.Data.Lib;
+
+procedure TAR_DM.TblTermsBeforePost(DataSet: TDataSet);
+begin
+  IQAssignIDBeforePost(DataSet); {in IQlib}
+end;
+
+procedure TAR_DM.TblTermsCalcFields(DataSet: TDataSet);
+begin
+  with TblTerms do
+  begin
+    if FieldByName('BASED_ON').asString = '' then
+      FieldByName('NVLBasedOn').asString := 'I'
+    else
+      FieldByName('NVLBasedOn').asString := FieldByName('BASED_ON').asString;
+  end
+end;
+
+procedure TAR_DM.TblTermsFilterRecord(DataSet: TDataSet; var Accept: Boolean);
+begin
+  Accept := (SelectValueFmtAsString('select NVL(pk_hide, ''N'') from terms where id = %f', [TblTermsID.asFloat]) = 'N');
+end;
+
+end.

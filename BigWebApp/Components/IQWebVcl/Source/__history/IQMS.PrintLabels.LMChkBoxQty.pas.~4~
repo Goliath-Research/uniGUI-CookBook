@@ -1,0 +1,54 @@
+unit IQMS.PrintLabels.LMChkBoxQty;
+
+interface
+
+uses
+  Winapi.Windows,
+  Vcl.Forms,
+  IQMS.Common.ConfBas,
+  FireDAC.Comp.Client,
+  FireDAC.Phys,
+  IQMS.WebVcl.SecurityRegister,
+  Vcl.Controls,
+  System.Classes,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniPanel,
+  uniButton, uniCheckBox, uniLabel;
+
+type
+  TFrmIQLMChkBoxQty = class(TIQDialogCheckBox)
+    pnlButtons: TUniPanel;
+    btnContinue: TUniButton;
+    btnCancel: TUniButton;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+  function DoShowModalIQLMChkBoxQty(AStr, AKey : string; AShowCheckBox : boolean = false) : boolean;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  uniGUIApplication;
+
+{ TIQDialogCheckBox1 }
+
+function DoShowModalIQLMChkBoxQty(AStr, AKey : string; AShowCheckBox : boolean = false) : boolean;
+var
+  frm : TFrmIQLMChkBoxQty;
+begin
+  frm := TFrmIQLMChkBoxQty.Create(uniGUIApplication.UniApplication);
+
+  frm.MsgText       := AStr;
+  frm.Key           := AKey;
+  frm.ShowCheckBox  := AShowCheckBox;
+
+  Result := frm.ShowModal = mrOk;
+end;
+
+end.

@@ -1,0 +1,307 @@
+unit IQMS.WebVcl.About;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes,
+  System.StrUtils,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB,
+  FireDAC.Comp.Client, FireDAC.Comp.DataSet, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.Stan.Def, FireDAC.Stan.Pool,
+  FireDAC.Stan.Async, FireDAC.Stan.Param, FireDAC.Phys, FireDAC.Phys.Intf,
+  FireDAC.DatS, FireDAC.DApt, FireDAC.DApt.Intf, FireDAC.UI.Intf;
+
+type
+  TIQWebAbout = class(TComponent)
+  private
+    { Private declarations }
+    FModuleName : string;
+    FVersion  : string;
+    FDatabaseName : string;
+    FResetOwnerRegistry: Boolean;
+    FChangeListNumber: string;
+    FBuildVersion: string;
+    FOraDBInfo: TStringList;
+    function GetReleasedTo:string;
+    function GetOraAlias: string;
+    function GetUpdateVersion: string;
+    function GetEPlant_Name: string;
+    function GetOraDBInfo: TStringList;
+    function GetCrystalVer: string;
+    function GetVersion: string;
+    function GetBuildVersion: string;
+    function GetExecutableDateString: string;
+    function GetCopyright: string;
+  protected
+    { Protected declarations }
+    procedure RemoveAbout; virtual;
+    procedure AddAbout; virtual;
+    procedure Loaded; override;
+    function GetFixedVersion: string;
+  public
+    { Public declarations }
+    constructor Create( AOwner:TComponent ); override;
+    destructor Destroy; override;
+    procedure Execute;
+    procedure GetSummary(var ALines: TStringList);
+    procedure GetSupportEmailBodyText(var ALines: TStringList);
+    property ReleasedTo   : string read GetReleasedTo;
+    property OraAlias     : string read GetOraAlias;
+    property UpdateVersion: string read GetUpdateVersion;
+    property ResetOwnerRegistry: Boolean read FResetOwnerRegistry write FResetOwnerRegistry;
+    property EPlant_Name  : string read GetEPlant_Name;
+    property OraDBInfo    : TStringList read GetOraDBInfo;
+    property CrystalVer   : string read GetCrystalVer;
+    property ExecutableDateString: string read GetExecutableDateString;
+    property FixedVersion: string read GetFixedVersion;
+    property Copyright: string read GetCopyright;
+  published
+    { Published declarations }
+    property ModuleName   : string read FModuleName    write FModuleName;
+    property Version      : string read GetVersion     write FVersion;
+    property DatabaseName : string read FDataBaseName  write FDataBaseName stored False;
+    property ChangeListNumber:string read FChangeListNumber write FChangeListNumber;
+    property BuildVersion:string read GetBuildVersion write FBuildVersion;
+  end;
+
+var
+  AboutList: TList  = NIL;
+
+implementation
+
+uses
+  IQMS.WebVcl.BuildVersion,
+  IQMS.WebVcl.Aboutf,
+//  MainModule,
+//  IQAboutF,
+  IQMS.Common.DataLib,
+//  IQMisc,
+//  IQRepDefVersions,
+//  IQSecMan,
+//  IQVersion,
+  IQMS.WebVcl.ResourceStrings;
+
+{ TIQAbout }
+
+constructor TIQWebAbout.Create( AOwner:TComponent );
+begin
+  inherited Create( AOwner );
+  ModuleName := AOwner.Name;  { Default Module Name and Version }
+  Version   := '1.0.1.0';
+  FOraDBInfo := TStringList.Create;
+  ResetOwnerRegistry := FALSE;
+  AddAbout;
+end;
+
+destructor TIQWebAbout.Destroy;
+begin
+  FOraDBInfo.Free;
+  RemoveAbout;
+  inherited Destroy;
+end;
+
+procedure TIQWebAbout.RemoveAbout;
+var
+  i:Integer;
+begin
+  i := AboutList.IndexOf( self );
+  if i > -1 then
+    AboutList.Delete( i );
+end;
+
+procedure TIQWebAbout.AddAbout;
+begin
+  AboutList.Add( self );
+end;
+
+function TIQWebAbout.GetReleasedTo: string;
+begin
+  Result := SelectValueAsString('select company from iqms.iqsys');
+end;
+
+function TIQWebAbout.GetOraDBInfo: TStringList;
+var
+  AData: Variant;
+begin
+  Result := FOraDBInfo;
+  if not Assigned(FOraDBInfo) then
+    EXIT;
+
+  FOraDBInfo.Clear;
+
+  AData := SelectValueArray(
+    'select host_name, instance_name, version from v$instance' );
+  Result.Add( AData[0] );
+  Result.Add( AData[1] );
+  Result.Add( AData[2] );
+end;
+
+function TIQWebAbout.GetBuildVersion: string;
+var
+  i : integer;
+begin
+//  if ChangeListNumber <> '$Change: 176337 $' then
+    for i := 1 to Length(cBUILDVERSION) do
+      if CharInSet(cBUILDVERSION[i], ['0'..'9']) then
+        Result := Result + cBUILDVERSION[i];
+end;
+
+function TIQWebAbout.GetCopyright: string;
+begin
+  // IQMS.WebVcl.ResourceStrings.cTXT0000053 =
+  // 'All Rights Reserved 1989 - %s'
+  Result := Format(IQMS.WebVcl.ResourceStrings.cTXT0000053, [FormatDateTime('yyyy', Date)]);
+end;
+
+function TIQWebAbout.GetCrystalVer: String;
+begin
+  Result := IQMS.WebVcl.ResourceStrings.cTXT0000051; // 'N/A'
+//  if Assigned(db_dm.DB_DataModule) and db_dm.DB_DataModule.IsConnectedToOracle then
+//  begin
+//    if IsCRDotVersion then
+//      Result := 'Crystal 11 .Net'
+//    else
+//      Result := 'Crystal 9';
+//  end;
+end;
+
+function TIQWebAbout.GetUpdateVersion: string;
+begin
+  Result := IQMS.WebVcl.ResourceStrings.cTXT0000051; // 'N/A'
+//  if Assigned(db_dm.DB_DataModule) and
+//    db_dm.DB_DataModule.IsConnectedToOracle then
+//  try
+    Result := SelectValueAsString('select update_ver from iqsys');
+//  except
+//    Result := IQMS.WebVcl.ResourceStrings.cTXT0000051; // 'N/A'
+//  end;
+end;
+
+function TIQWebAbout.GetEPlant_Name: string;
+begin
+//  if Assigned(IQSecMan.SecurityManager) then
+//  try
+//    if IQSecMan.SecurityManager.EPlant_ID = 'NULL' then
+//    begin
+//      if SelectValueAsInteger('select count(*) from eplant') = 0 then
+//         Result := IQMS.WebVcl.ResourceStrings.cTXT0000048 // 'No enterprise plants found'
+//      else
+//         //Result := 'No plant is assigned to the user'
+//         Result := IQMS.WebVcl.ResourceStrings.cTXT0000049 // 'User is not assigned EPlant'
+//    end
+//    else
+//       Result := IQSecMan.SecurityManager.EPlant_Name
+//  except
+//    Result := IQMS.WebVcl.ResourceStrings.cTXT0000050 // 'Cannot query EPlant table'
+//  end
+//  else
+    Result := IQMS.WebVcl.ResourceStrings.cTXT0000051; // 'N/A'
+end;
+
+function TIQWebAbout.GetExecutableDateString: string;
+var
+  FileDateTime: TDateTime;
+begin
+  if FileAge(Application.ExeName, FileDateTime) then
+    Result := DateTimeToStr(FileDateTime)
+  else
+    Result := '';
+end;
+
+function TIQWebAbout.GetOraAlias: string;
+begin
+//  try
+//    Result := IQGetServerName;
+//  finally
+    if Trim( Result ) = '' then
+       Result := IQMS.WebVcl.ResourceStrings.cTXT0000051; // 'N/A';
+//  end;
+end;
+
+procedure TIQWebAbout.Execute;
+begin
+  DoIQAboutBox(Self);
+end;
+
+function TIQWebAbout.GetFixedVersion: string;
+begin
+  Result := StringReplace(Version, '$Change: ', '', [rfReplaceAll, rfIgnoreCase]);
+  Result := Trim(StringReplace(Result, '$', '', [rfReplaceAll, rfIgnoreCase]));
+end;
+
+procedure TIQWebAbout.GetSummary(var ALines: TStringList);
+begin
+  if Assigned(ALines) then
+    begin
+      ALines.Add(Format('Company - %s', [ReleasedTo]));
+      ALines.Add(Format('EnterpriseIQ Release - %s', [UpdateVersion]));
+      ALines.Add(Format('Module Name - %s', [ModuleName]));
+      ALines.Add(Format('Module Version -  %s', [FixedVersion]));
+      ALines.Add(Format('Build Version - %s', [BuildVersion]));
+      ALines.Add(Format('Executable Date - %s', [ExecutableDateString]));
+      ALines.Add(Format('EPlant - %s', [EPlant_Name]));
+//      if Assigned(IQSecMan.SecurityManager) then
+//        ALines.Add(Format('UserName -  %s', [IQSecMan.SecurityManager.UserName]))
+//      else
+        ALines.Add(Format('UserName -  %s', [IQMS.WebVcl.ResourceStrings.cTXT0000051]));
+      ALines.Add(Format('Database Name - %s', [DatabaseName]));
+      ALines.Add(Format('Oracle Alias -  %s', [OraAlias]));
+//      ALines.Add(Format('Server Name - %s', [OraDBInfo[0]]));
+//      ALines.Add(Format('Instance Name - %s', [OraDBInfo[1]]));
+//      ALines.Add(Format('Oracle Version -  %s', [OraDBInfo[2]]));
+      ALines.Add(Format('Crystal Version - %s', [CrystalVer]));
+    end;
+end;
+
+procedure TIQWebAbout.GetSupportEmailBodyText(var ALines: TStringList);
+begin
+  // Do not clear the lines first, in case the calling method has
+  // added text
+  if Assigned(ALines) then
+    begin
+      ALines.Add('IQMS Technical Support,');
+      ALines.Add('');
+      ALines.Add('');
+      ALines.Add('');
+      ALines.Add('Thank you');
+      ALines.Add('');
+      ALines.Add('');
+      ALines.Add('');
+      GetSummary(ALines);
+      ALines.Add('');
+    end;
+end;
+
+procedure FreeAboutList;
+var
+  I:Integer;
+begin
+  for I := AboutList.Count - 1 downto 0 do
+    TIQWebAbout( AboutList[ I ] ).Free;
+  AboutList.Free;
+end;
+
+procedure TIQWebAbout.Loaded;
+begin
+  inherited;
+
+  if (Owner = nil) or not (Owner is TForm) or (Screen = nil) then
+     EXIT;
+
+  if Screen.PixelsPerInch <> 96 then
+     (Owner as TForm).AutoScroll := FALSE;
+end;
+
+function TIQWebAbout.GetVersion: string;
+begin
+  Result := 'Feature unsupported';
+//  Result := Format('%s.%s',[ C_version, BuildVersion ] );
+end;
+
+initialization
+  AboutList := TList.Create;
+
+finalization
+  FreeAboutList;
+
+end.

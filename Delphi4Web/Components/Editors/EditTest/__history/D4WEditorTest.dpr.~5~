@@ -1,0 +1,38 @@
+{$define UNIGUI_VCL} // Comment out this line to turn this project into an ISAPI module'
+
+{$ifndef UNIGUI_VCL}
+library
+{$else}
+program
+{$endif}
+  D4WEditorTest;
+
+uses
+  uniGUIISAPI,
+  Forms,
+  ServerModule in 'ServerModule.pas' {UniServerModule: TUniGUIServerModule},
+  MainModule in 'MainModule.pas' {UniMainModule: TUniGUIMainModule},
+  Main in 'Main.pas' {MainForm: TUniForm},
+  D4W.DataServices in '..\Source\D4W.DataServices.pas',
+  D4WEditor in '..\Source\D4WEditor.pas',
+  D4WEditorDlgPickDataSet in '..\Source\D4WEditorDlgPickDataSet.pas',
+  D4WEditorDlg in '..\Source\D4WEditorDlg.pas',
+  D4WDlgPickDataSet in '..\Source\D4WDlgPickDataSet.pas' {D4WDlgPickDataSetForm: TUniForm};
+
+{$R *.res}
+
+{$ifndef UNIGUI_VCL}
+exports
+  GetExtensionVersion,
+  HttpExtensionProc,
+  TerminateExtension;
+{$endif}
+
+begin
+{$ifdef UNIGUI_VCL}
+  ReportMemoryLeaksOnShutdown := True;
+  Application.Initialize;
+  TUniServerModule.Create(Application);
+  Application.Run;
+{$endif}
+end.

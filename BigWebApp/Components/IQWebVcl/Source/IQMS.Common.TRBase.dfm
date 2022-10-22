@@ -1,0 +1,512 @@
+object FrmTraceBase: TFrmTraceBase
+  Left = 297
+  Top = 182
+  ClientHeight = 479
+  ClientWidth = 554
+  Caption = 'Trace'
+  OldCreateOrder = False
+  OnClose = FormClose
+  OnMouseDown = UniFormMouseDown
+  Menu = MainMenu1
+  MonitoredKeys.Keys = <>
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Splitter1: TUniSplitter
+    Left = 0
+    Top = 197
+    Width = 554
+    Height = 3
+    Cursor = crVSplit
+    Hint = ''
+    Align = alTop
+    ParentColor = False
+    Color = clBtnFace
+  end
+  object Panel3: TUniPanel
+    Left = 0
+    Top = 0
+    Width = 554
+    Height = 197
+    Hint = ''
+    Align = alTop
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 0
+    Caption = ''
+    object Bevel1: TUniPanel
+      Left = 1
+      Top = 28
+      Width = 552
+      Height = 3
+      Hint = ''
+      Align = alTop
+      Anchors = [akLeft, akTop, akRight]
+      TabOrder = 3
+      Caption = ''
+      ExplicitTop = 27
+    end
+    object Panel1: TUniPanel
+      Left = 1
+      Top = 1
+      Width = 552
+      Height = 27
+      Hint = ''
+      Align = alTop
+      Anchors = [akLeft, akTop, akRight]
+      TabOrder = 0
+      Caption = ''
+      object NavMain: TUniDBNavigator
+        Left = 427
+        Top = 1
+        Width = 125
+        Height = 25
+        Hint = ''
+        ShowHint = True
+        ParentShowHint = False
+        DataSource = wwSrcTR_Batch
+        VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbRefresh]
+        Align = alRight
+        Anchors = [akTop, akRight, akBottom]
+        TabOrder = 0
+      end
+    end
+    object Panel4: TUniPanel
+      Left = 1
+      Top = 31
+      Width = 552
+      Height = 165
+      Hint = ''
+      Align = alClient
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      TabOrder = 1
+      Caption = ''
+      inline wwDBGrid1: TIQUniGridControl
+        Left = 1
+        Top = 1
+        Width = 550
+        Height = 163
+        Layout = 'border'
+        ParentAlignmentControl = False
+        AlignmentControl = uniAlignmentClient
+        Align = alClient
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        TabOrder = 0
+        ExplicitLeft = 1
+        ExplicitTop = 1
+        ExplicitWidth = 550
+        ExplicitHeight = 163
+        inherited PageControl: TUniPageControl
+          Width = 550
+          Height = 134
+          ExplicitWidth = 550
+          ExplicitHeight = 134
+        end
+        inherited TopToolBar: TUniToolBar
+          Width = 550
+        end
+      end
+    end
+  end
+  object Panel6: TUniPanel
+    Left = 0
+    Top = 200
+    Width = 554
+    Height = 279
+    Hint = ''
+    Align = alClient
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    TabOrder = 1
+    Caption = ''
+    object Bevel2: TUniPanel
+      Left = 1
+      Top = 28
+      Width = 552
+      Height = 3
+      Hint = ''
+      Align = alTop
+      Anchors = [akLeft, akTop, akRight]
+      TabOrder = 3
+      Caption = ''
+      ExplicitTop = 27
+    end
+    object Panel2: TUniPanel
+      Left = 1
+      Top = 1
+      Width = 552
+      Height = 27
+      Hint = ''
+      Align = alTop
+      Anchors = [akLeft, akTop, akRight]
+      TabOrder = 0
+      Caption = ''
+      object sbtnGridFormToggle: TUniSpeedButton
+        Left = 1
+        Top = 1
+        Width = 25
+        Height = 25
+        Hint = 'Toggle Grid/Form View'
+        ShowHint = True
+        ParentShowHint = False
+        Glyph.Data = {
+          36060000424D3606000000000000360000002800000020000000100000000100
+          1800000000000006000000000000000000000000000000000000FF00FFFF00FF
+          FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+          FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+          00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+          FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+          FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+          00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFBEA99A634935
+          6349356349356349356349356349356349356349356349356349356349356349
+          35634935634935FF00FFA8A8A848484848484848484848484848484848484848
+          4848484848484848484848484848484848484848484848FF00FFBEA99AFAF5F2
+          E9D9CFE8D4C9E4CFC2E1C9BCDFC3B5DBBDADD9B7A6D5B19FD3AB98D0A692CC9E
+          87CA9A83634935FF00FFA8A8A8F5F5F5D9D9D9D4D4D4CECECEC9C9C9C3C3C3BC
+          BCBCB6B6B6B0B0B0AAAAAAA6A6A69E9E9E9A9A9A484848FF00FFBEA99AFBF3EE
+          FAF0EBF9EDE7F8E9E1F7E6DDF5E3D88C89875F5C5A474442474442474442302E
+          2CCDA18B634935FF00FFA8A8A8F3F3F3F0F0F0EDEDEDE9E9E9E6E6E6E3E3E389
+          89895C5C5C4444444444444444442E2E2EA1A1A1484848FF00FFBEA99AFCF5F0
+          FBF2EDFAEFE9F9ECE5F7E9E0F6E5DCA29E9BFDF8F5FCF2EBFCF1EBFCF2EA413D
+          3BD5B19F634935FF00FFA8A8A8F5F5F5F2F2F2EFEFEFECECECE9E9E9E5E5E59E
+          9E9EF8F8F8F1F1F1F1F1F1F1F1F13D3D3DB0B0B0484848FF00FFBEA99AFDF6F2
+          92908F87858371706D5F5C5AF7E8DFBAB7B49996948C8987827E7D7875735552
+          4FD9B8A7634935FF00FFA8A8A8F6F6F69090908585856F6F6F5C5C5CE8E8E8B7
+          B7B79696968989897E7E7E757575525252B7B7B7484848FF00FFBEA99AFDF8F4
+          FDF5F1FBF2EEFBF0EAF9EDE6F8EAE1F7E7DDF5E2D9F4DFD4F2DCCFF0D8CBEFD5
+          C7DCC0B1634935FF00FFA8A8A8F8F8F8F5F5F5F2F2F2F0F0F0EDEDEDEAEAEAE7
+          E7E7E2E2E2DFDFDFDCDCDCD7D7D7D4D4D4BFBFBF484848FF00FFBEA99AFDF9F5
+          FDF6F3FCF5F0FBF2ECFAEFE8F8ECE58C89875F5C5A474442474442474442302E
+          2CE3CBBF634935FF00FFA8A8A8F9F9F9F6F6F6F5F5F5F2F2F2EFEFEFECECEC89
+          89895C5C5C4444444444444444442E2E2ECBCBCB484848FF00FFBEA99AFEF9F6
+          FEF8F5FDF6F2FCF3EFFBF1EBFAEEE7A29E9BFDF8F5FCF2EBFCF1EBFCF2EA413D
+          3BE9D7CF634935FF00FFA8A8A8F9F9F9F8F8F8F6F6F6F3F3F3F1F1F1EEEEEE9E
+          9E9EF8F8F8F1F1F1F1F1F1F1F1F13D3D3DD7D7D7484848FF00FFBEA99AFEF9F6
+          92908F87858371706D5F5C5AFBF0EABAB7B49996948C8987827E7D7875735552
+          4FEEE2DA634935FF00FFA8A8A8F9F9F99090908585856F6F6F5C5C5CF0F0F0B7
+          B7B79696968989897E7E7E757575525252E2E2E2484848FF00FFBEA99AFEF9F6
+          FEF9F6FEF8F6FDF6F3FCF5F0FBF2EDFAEFE9F9ECE5F7E9E0F6E5DCF5E2D7F3DF
+          D3FFFFFF634935FF00FFA8A8A8F9F9F9F9F9F9F8F8F8F6F6F6F5F5F5F2F2F2EF
+          EFEFECECECE9E9E9E5E5E5E2E2E2DFDFDFFFFFFF484848FF00FFEAAA8BEAAA8B
+          E8A686E59F7DE29874E0936CDD8C62DA835AD77D50D47747D17040D16E3ED16E
+          3DD16E3DCF6936FF00FFAAAAAAAAAAAAA6A6A69F9F9F9999999494948D8D8D85
+          85857F7F7F7A7A7A7474747272727272727272726D6D6DFF00FFEAAA8BFFC2A2
+          FFC2A2FDC0A0FEBE9DFCBB98FBB793FBB28DF8AC84F7A77DF5A176F49C70F499
+          6AF39565CE6936FF00FFAAAAAAC2C2C2C2C2C2BFBFBFBEBEBEBABABAB7B7B7B2
+          B2B2ACACACA7A7A7A2A2A29D9D9D9A9A9A9797976D6D6DFF00FFEAAA8BEAAA8B
+          E8A686E6A07FE39A76E0936DDD8C63DA8459D77C4FD47445D06E3DD06E3DD06E
+          3DD06E3DCF6937FF00FFAAAAAAAAAAAAA6A6A6A0A0A09B9B9B9494948D8D8D86
+          86867E7E7E7777777272727272727272727272726D6D6DFF00FFFF00FFFF00FF
+          FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+          FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+          00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
+        Caption = ''
+        ParentColor = False
+        Color = clWindow
+        TabOrder = 2
+        OnClick = sbtnGridFormToggleClick
+      end
+      object NavDetail: TUniDBNavigator
+        Left = 427
+        Top = 1
+        Width = 125
+        Height = 25
+        Hint = ''
+        ShowHint = True
+        ParentShowHint = False
+        DataSource = wwSrcTR_Value
+        VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbRefresh]
+        Align = alRight
+        Anchors = [akTop, akRight, akBottom]
+        TabOrder = 0
+      end
+    end
+    object Panel5: TUniPanel
+      Left = 1
+      Top = 31
+      Width = 552
+      Height = 247
+      Hint = ''
+      Align = alClient
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      TabOrder = 1
+      Caption = ''
+      ExplicitTop = 30
+      ExplicitHeight = 249
+      object pgctrlData: TUniPageControl
+        Left = 1
+        Top = 1
+        Width = 550
+        Height = 245
+        Hint = ''
+        ActivePage = TabGrid
+        Align = alClient
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        TabOrder = 0
+        ExplicitHeight = 247
+        object TabGrid: TUniTabSheet
+          Hint = ''
+          Caption = 'TabGrid'
+          inline wwDBGrid2: TIQUniGridControl
+            Left = 0
+            Top = 0
+            Width = 542
+            Height = 217
+            Layout = 'border'
+            ParentAlignmentControl = False
+            AlignmentControl = uniAlignmentClient
+            Align = alClient
+            Anchors = [akLeft, akTop, akRight, akBottom]
+            TabOrder = 0
+            ExplicitWidth = 542
+            ExplicitHeight = 217
+            inherited PageControl: TUniPageControl
+              Width = 542
+              Height = 188
+              ExplicitWidth = 542
+              ExplicitHeight = 188
+            end
+            inherited TopToolBar: TUniToolBar
+              Width = 542
+            end
+          end
+        end
+        object TabForm: TUniTabSheet
+          Hint = ''
+          ImageIndex = 1
+          Caption = 'TabForm'
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 256
+          ExplicitHeight = 128
+        end
+      end
+    end
+  end
+  object wwSrcTR_Batch: TDataSource
+    DataSet = wwQryTR_Batch
+    Left = 128
+    Top = 128
+  end
+  object wwQryTR_Batch: TFDQuery
+    BeforeRefresh = wwQryTR_BatchBeforeRefresh
+    CachedUpdates = True
+    OnUpdateRecord = wwQryTR_BatchUpdateRecord
+    ConnectionName = 'IQFD'
+    SQL.Strings = (
+      'select id as batch_id,'
+      '       action,'
+      '       time_stamp,'
+      '       user_name,'
+      '       table_name,'
+      '       program_name'
+      '  from tr_batch'
+      ' where'
+      '       table_name = :table_name'
+      '   and parent_id = :parent_id'
+      '  order by'
+      '       time_stamp desc'
+      ' '
+      ' '
+      ' ')
+    Left = 80
+    Top = 112
+    ParamData = <
+      item
+        Name = 'table_name'
+        DataType = ftString
+        ParamType = ptInput
+      end
+      item
+        Name = 'parent_id'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object wwQryTR_BatchACTION: TStringField
+      DisplayLabel = 'Action'
+      DisplayWidth = 11
+      FieldName = 'ACTION'
+      Origin = 'TR_BATCH.ACTION'
+      ReadOnly = True
+      Size = 10
+    end
+    object wwQryTR_BatchTIME_STAMP: TDateTimeField
+      DisplayLabel = 'Time'
+      DisplayWidth = 17
+      FieldName = 'TIME_STAMP'
+      Origin = 'TR_BATCH.TIME_STAMP'
+      ReadOnly = True
+    end
+    object wwQryTR_BatchUSER_NAME: TStringField
+      DisplayLabel = 'User Name'
+      DisplayWidth = 22
+      FieldName = 'USER_NAME'
+      Origin = 'TR_BATCH.USER_NAME'
+      ReadOnly = True
+      Size = 35
+    end
+    object wwQryTR_BatchPROGRAM_NAME: TStringField
+      DisplayLabel = 'Program Name'
+      DisplayWidth = 20
+      FieldName = 'PROGRAM_NAME'
+      Origin = 'IQ.TR_BATCH.PROGRAM_NAME'
+      Size = 48
+    end
+    object wwQryTR_BatchBATCH_ID: TBCDField
+      DisplayWidth = 10
+      FieldName = 'BATCH_ID'
+      Origin = 'TR_BATCH.ID'
+      ReadOnly = True
+      Visible = False
+      Size = 0
+    end
+    object wwQryTR_BatchTABLE_NAME: TStringField
+      FieldName = 'TABLE_NAME'
+      Origin = 'IQ.TR_BATCH.TABLE_NAME'
+      Visible = False
+      Size = 30
+    end
+  end
+  object MainMenu1: TUniMainMenu
+    Left = 88
+    object File1: TUniMenuItem
+      Caption = '&File'
+      object Exit1: TUniMenuItem
+        Caption = 'E&xit'
+        OnClick = Exit1Click
+      end
+    end
+    object Report1: TUniMenuItem
+      Caption = '&Report'
+      object Print1: TUniMenuItem
+        Caption = '&Print'
+        OnClick = Print1Click
+      end
+      object Printersetup1: TUniMenuItem
+        Caption = 'Printer &Setup'
+        OnClick = Printersetup1Click
+      end
+    end
+    object Help1: TUniMenuItem
+      Caption = '&Help'
+      object About1: TUniMenuItem
+        Caption = '&About'
+        OnClick = About1Click
+      end
+    end
+  end
+  object wwSrcTR_Value: TDataSource
+    DataSet = wwQryTR_Value
+    Left = 152
+    Top = 64
+  end
+  object wwQryTR_Value: TFDQuery
+    OnCalcFields = wwQryTR_ValueCalcFields
+    CachedUpdates = True
+    MasterSource = wwSrcTR_Batch
+    MasterFields = 'BATCH_ID;TABLE_NAME'
+    OnUpdateRecord = wwQryTR_BatchUpdateRecord
+    ConnectionName = 'IQFD'
+    FetchOptions.AssignedValues = [evCache]
+    FetchOptions.Cache = [fiBlobs, fiMeta]
+    SQL.Strings = (
+      'select v.col_name,'
+      '       v.old_value,'
+      '       v.new_value,'
+      '       u.data_type,'
+      '       decode( u.data_type, '
+      
+        '               '#39'DATE'#39', to_date( v.old_value, '#39'MM/DD/YYYY HH24:MI' +
+        ':SS'#39' ), sysdate) as old_value_date,'
+      '       decode( u.data_type, '
+      
+        '               '#39'DATE'#39', to_date( v.new_value, '#39'MM/DD/YYYY HH24:MI' +
+        ':SS'#39' ), sysdate) as new_value_date'
+      '  from tr_value v, user_tab_columns u'
+      ' where v.tr_batch_id = :batch_id'
+      '   and v.col_name = u.column_name(+)'
+      '   and u.table_name(+) = :table_name'
+      ' order by v.col_name')
+    Left = 208
+    Top = 104
+    ParamData = <
+      item
+        Name = 'BATCH_ID'
+        DataType = ftBCD
+        ParamType = ptInput
+        Size = 34
+        Value = Null
+      end
+      item
+        Name = 'TABLE_NAME'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 31
+        Value = Null
+      end>
+    object wwQryTR_ValueCOL_NAME: TStringField
+      DisplayLabel = 'Column Name'
+      DisplayWidth = 17
+      FieldName = 'COL_NAME'
+      Origin = 'TR_VALUE.COL_NAME'
+      ReadOnly = True
+      Size = 30
+    end
+    object wwQryTR_ValueOld_Value_Disp: TStringField
+      DisplayLabel = 'Old Value'
+      DisplayWidth = 20
+      FieldKind = fkCalculated
+      FieldName = 'Old_Value_Disp'
+      Size = 4000
+      Calculated = True
+    end
+    object wwQryTR_ValueNew_Value_Disp: TStringField
+      DisplayLabel = 'New Value'
+      DisplayWidth = 22
+      FieldKind = fkCalculated
+      FieldName = 'New_Value_Disp'
+      Size = 4000
+      Calculated = True
+    end
+    object wwQryTR_ValueDATA_TYPE: TStringField
+      FieldName = 'DATA_TYPE'
+      Origin = 'IQ.USER_TAB_COLUMNS.DATA_TYPE'
+      Visible = False
+      Size = 128
+    end
+    object wwQryTR_ValueOLD_VALUE_DATE: TDateTimeField
+      FieldName = 'OLD_VALUE_DATE'
+      Visible = False
+    end
+    object wwQryTR_ValueNEW_VALUE_DATE: TDateTimeField
+      FieldName = 'NEW_VALUE_DATE'
+      Visible = False
+    end
+    object wwQryTR_ValueOLD_VALUE: TStringField
+      FieldName = 'OLD_VALUE'
+      Visible = False
+      Size = 4000
+    end
+    object wwQryTR_ValueNEW_VALUE: TStringField
+      FieldName = 'NEW_VALUE'
+      Visible = False
+      Size = 4000
+    end
+  end
+  object PrinterSetupDialog1: TPrinterSetupDialog
+    Left = 200
+    Top = 200
+  end
+  object PMain: TUniPopupMenu
+    Left = 192
+    object CopyTableNametoClipboard1: TUniMenuItem
+      Caption = 'Copy Table Name to Clipboard'
+      OnClick = CopyTableNametoClipboard1Click
+    end
+    object CopyIDtoClipboard1: TUniMenuItem
+      Caption = 'Copy ID to Clipboard'
+      OnClick = CopyIDtoClipboard1Click
+    end
+    object CopySelectSQLtoClipboard1: TUniMenuItem
+      Caption = 'Copy Select SQL to Clipboard'
+      OnClick = CopySelectSQLtoClipboard1Click
+    end
+  end
+end

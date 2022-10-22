@@ -1,0 +1,268 @@
+unit QC_Del_Action;
+
+interface
+
+uses
+  Windows,
+  Messages,
+  SysUtils,
+  Variants,
+  Classes,
+  Graphics,
+  Controls,
+  Forms,
+  Dialogs,
+  StdCtrls,
+  ExtCtrls,
+  DB,
+  FireDAC.Comp.Client,
+  MainModule,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniRadioButton,
+  uniPanel,
+  uniMultiItem,
+  uniListBox,
+  uniDBLookupComboBox,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniButton, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, uniComboBox,
+  uniDBComboBox;
+
+type
+  TFrmQCDelAction = class(TUniForm)
+    rbtnDelete: TUniRadioButton;
+    rbtnReplace: TUniRadioButton;
+    wwDBLookupComboTeamMember: TUniDBLookupComboBox;
+    Bevel1: TUniPanel;
+    btnOK: TUniButton;
+    btnCancel: TUniButton;
+    QryTeamMembers: TFDQuery;
+    QryTeamMembersID: TBCDField;
+    QryTeamMembersNAME: TStringField;
+    rbtnNoAction: TUniRadioButton;
+    SrcTeamMembers: TDataSource;
+    procedure QryTeamMembersBeforeOpen(DataSet: TDataSet);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnOKClick(Sender: TObject);
+    procedure UniFormShow(Sender: TObject);
+  private
+    { Private declarations }
+    FModuleName: string;
+    FThis_Team_Member_ID: Real;
+    FSource_Type: String;
+    FAction: string;
+    FNew_Team_Member_ID: Real;
+    procedure Validate;
+    procedure SetAction(const Value: char);
+    function  GetAction : char;
+    procedure SetModuleName(const Value: String);
+    procedure SetNew_Team_Member_ID(const Value: Real);
+    procedure SetSource_Type(const Value: String);
+    procedure SetThis_Team_Member_ID(const Value: Real);
+    function  GetNew_Team_Member_ID : Real;
+  public
+    { Public declarations }
+    //constructor Create(AOwner: TComponent; AModuleName, ASource_Type, AAction: string; AThis_Team_Member_ID, ANew_Team_Member_ID: Real );
+    property ModuleName          : String                            write SetModuleName;
+    property Source_Type         : String                            write SetSource_Type;
+    property Action              : char   read  GetAction            write SetAction;
+    property This_Team_Member_ID : Real                              write SetThis_Team_Member_ID;
+    property New_Team_Member_ID  : Real   read GetNew_Team_Member_ID write SetNew_Team_Member_ID;
+  end;
+
+function GetQCActionAndTeamMemberID(AModuleName, ASource_Type: string; AThis_Team_Member_ID: Real; var AAction: char;  var ANew_Team_Member_ID: Real ): Boolean;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  IQMS.Common.DataLib,
+  IQMS.Common.RegFrm,
+  IQMS.Common.Miscellaneous;
+
+{ TFrmQCDelAction }
+
+function GetQCActionAndTeamMemberID(AModuleName, ASource_Type: string; AThis_Team_Member_ID: Real; var AAction: char;  var ANew_Team_Member_ID: Real ): Boolean;
+var
+  LFrmQCDelAction : TFrmQCDelAction;
+begin
+  LFrmQCDelAction := TFrmQCDelAction.Create(UniGUIApplication.UniApplication);
+  with LFrmQCDelAction do
+  begin
+    ModuleName          := AModuleName;
+    This_Team_Member_ID := AThis_Team_Member_ID;
+    Source_Type         := ASource_Type;
+    New_Team_Member_ID  := ANew_Team_Member_ID;
+    Action              := AAction;
+
+    Result := ShowModal = mrOK;
+
+    if Result then
+    begin
+      AAction             := Action;
+      ANew_Team_Member_ID := New_Team_Member_ID;
+      end;
+    end;
+end;
+
+{class function TFrmQCDelAction.DoShowModal(AModuleName, ASource_Type: string; AThis_Team_Member_ID: Real; var AAction: string;  var ANew_Team_Member_ID: Real ): Boolean;
+begin
+  with self.Create( Application, AModuleName, ASource_Type, AAction, AThis_Team_Member_ID, ANew_Team_Member_ID ) do
+  try
+    Result:= ShowModal = mrOK;
+
+    if Result then
+    begin
+      ANew_Team_Member_ID:= 0;
+
+      if rbtnDelete.Checked then
+         AAction:= 'D'
+      else if rbtnReplace.Checked then
+         AAction:= 'R'
+      else
+         AAction:= 'N';
+
+      if AAction = 'R' then
+         ANew_Team_Member_ID:= QryTeamMembersID.asFloat;
+    end;
+  finally
+    Free;
+  end;
+end;   }
+
+
+{constructor TFrmQCDelAction.Create(AOwner: TComponent; AModuleName, ASource_Type, AAction: string; AThis_Team_Member_ID, ANew_Team_Member_ID: Real );
+begin
+  FModuleName:= AModuleName;
+  FThis_Team_Member_ID:= AThis_Team_Member_ID;
+
+  inherited Create( AOwner );
+  IQSetTablesActive( TRUE, self );
+  IQRegFormRead(self, [ self ]);
+
+  if ASource_Type = 'External Document Owner' then
+     rbtnDelete.Enabled:= FALSE;
+
+  if AAction = 'D' then
+     rbtnDelete.Checked:= TRUE
+  else if AAction = 'N' then
+     rbtnNoAction.Checked:= TRUE
+  else if AAction = 'R' then
+     begin
+       rbtnReplace.Checked:= TRUE;
+       wwDBLookupComboTeamMember.LookupValue:= SelectValueByID('name', 'team_member', ANew_Team_Member_ID);
+       wwDBLookupComboTeamMember.PerformSearch;
+     end;
+end;       }
+
+procedure TFrmQCDelAction.FormClose(Sender: TObject;  var Action: TCloseAction);
+begin
+  IQRegFormWrite(self, [ self ]);
+end;
+
+function TFrmQCDelAction.GetAction: char;
+begin
+  if rbtnDelete.Checked then
+    Result := 'D'
+  else if rbtnReplace.Checked then
+    Result := 'R'
+  else
+    Result := 'N';
+end;
+
+function TFrmQCDelAction.GetNew_Team_Member_ID: Real;
+begin
+  if Action = 'R' then
+    Result := QryTeamMembersID.asFloat
+  else
+    Result := 0;
+end;
+
+procedure TFrmQCDelAction.QryTeamMembersBeforeOpen(DataSet: TDataSet);
+var
+  moduleName: string;
+begin
+  with DataSet as TFDQuery do
+  begin
+//    ParamByName('this_team_member_id').asFloat:= FThis_Team_Member_ID;
+    AssignQueryParamValue(DataSet, 'this_team_member_id', FThis_Team_Member_ID);
+
+    if      FModuleName = 'APQP'     then moduleName:= 'APQP'
+    else if FModuleName = 'PPAP'     then moduleName:= 'PPAP'
+    else if FModuleName = 'ECO'      then moduleName:= 'ECO'
+    else if FModuleName = 'CAR'      then moduleName:= 'CAR'
+    else if FModuleName = 'DOC'      then moduleName:= 'DOC'
+    else if FModuleName = 'PROC_PQ'  then moduleName:= 'APQP'
+    else if FModuleName = 'PROD_PQ'  then moduleName:= 'PPAP'
+    else if FModuleName = 'CAPA'     then moduleName:= 'CAR'
+    else                                  moduleName:= 'X';
+
+    AssignQueryParamValue(DataSet, 'module_name', moduleName);
+  end;
+end;
+
+
+procedure TFrmQCDelAction.SetAction(const Value : char);
+begin
+  FAction := Value;
+
+  case Value of
+    'D' : rbtnDelete.Checked   := TRUE;
+    'N' : rbtnNoAction.Checked := TRUE;
+    'R' :
+     begin
+       rbtnReplace.Checked:= TRUE;
+       wwDBLookupComboTeamMember.Text := SelectValueByID('name', 'team_member', FNew_Team_Member_ID);
+     end;
+  end;
+end;
+
+procedure TFrmQCDelAction.SetModuleName(const Value: String);
+begin
+  FModuleName := Value;
+end;
+
+procedure TFrmQCDelAction.SetNew_Team_Member_ID(const Value: Real);
+begin
+  FNew_Team_Member_ID := Value;
+end;
+
+procedure TFrmQCDelAction.SetSource_Type(const Value: String);
+begin
+  FSource_Type := Value;
+  if Value = 'External Document Owner' then
+    rbtnDelete.Enabled:= FALSE;
+end;
+
+procedure TFrmQCDelAction.SetThis_Team_Member_ID(const Value: Real);
+begin
+  FThis_Team_Member_ID := Value;
+end;
+
+procedure TFrmQCDelAction.UniFormShow(Sender: TObject);
+begin
+  IQSetTablesActive( TRUE, self );
+  IQRegFormRead(self, [ self ]);
+end;
+
+procedure TFrmQCDelAction.btnOKClick(Sender: TObject);
+begin
+  Validate;
+  ModalResult:= mrOK;
+end;
+
+procedure TFrmQCDelAction.Validate;
+begin
+  IQAssert( (rbtnDelete.Checked or rbtnReplace.Checked or rbtnNoAction.Checked ), 'No Action is selected.' );
+
+  if rbtnReplace.Checked then
+     IQAssert( wwDBLookupComboTeamMember.Text > '', 'Replacing team member is not specified.' );
+end;
+
+end.

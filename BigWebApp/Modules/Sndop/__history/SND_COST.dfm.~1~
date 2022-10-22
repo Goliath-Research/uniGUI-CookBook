@@ -1,0 +1,286 @@
+object SndCost: TSndCost
+  Left = 247
+  Top = 243
+  ClientHeight = 170
+  ClientWidth = 370
+  Caption = 'Operation Cost Elements'
+  OnShow = FormShow
+  BorderStyle = bsSingle
+  OldCreateOrder = True
+  MonitoredKeys.Keys = <>
+  OnCreate = UniFormCreate
+  OnDestroy = UniFormDestroy
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TUniPanel
+    Left = 258
+    Top = 0
+    Width = 112
+    Height = 170
+    Hint = ''
+    Align = alRight
+    Anchors = [akTop, akRight, akBottom]
+    TabOrder = 0
+    BorderStyle = ubsNone
+    Caption = ''
+    object BitBtn1: TUniBitBtn
+      Left = 8
+      Top = 8
+      Width = 97
+      Height = 25
+      Hint = ''
+      Glyph.Data = {
+        DE010000424DDE01000000000000760000002800000024000000120000000100
+        0400000000006801000000000000000000001000000000000000000000000000
+        80000080000000808000800000008000800080800000C0C0C000808080000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+        3333333333333333333333330000333333333333333333333333F33333333333
+        00003333344333333333333333388F3333333333000033334224333333333333
+        338338F3333333330000333422224333333333333833338F3333333300003342
+        222224333333333383333338F3333333000034222A22224333333338F338F333
+        8F33333300003222A3A2224333333338F3838F338F33333300003A2A333A2224
+        33333338F83338F338F33333000033A33333A222433333338333338F338F3333
+        0000333333333A222433333333333338F338F33300003333333333A222433333
+        333333338F338F33000033333333333A222433333333333338F338F300003333
+        33333333A222433333333333338F338F00003333333333333A22433333333333
+        3338F38F000033333333333333A223333333333333338F830000333333333333
+        333A333333333333333338330000333333333333333333333333333333333333
+        0000}
+      Caption = 'OK'
+      ModalResult = 1
+      TabOrder = 0
+    end
+    object BitBtn2: TUniBitBtn
+      Left = 8
+      Top = 40
+      Width = 97
+      Height = 25
+      Hint = ''
+      Glyph.Data = {
+        36060000424D3606000000000000360400002800000020000000100000000100
+        08000000000000020000C21E0000C21E000000010000000000004F4F4F005454
+        5400565656005757570058585800595959005B5B5B005E5E5E005F5F5F006060
+        6000646464006C6C6C0071717100727272007474740075757500797979007A7A
+        7A007B7B7B007D7D7D007E7E7E007F7F7F00B0481000B05010008D5730008E5A
+        3400B0582000AA743E00C0501000D0501000D0581000C0502000C0582000E058
+        2000F0602000F0682000FF682000FF683000FF7030009B6041009E6D4A00A575
+        4700A2794900C0785000FF704000F0784000FF7840009F815A00AE806000AB8B
+        6600B58E6900B48F7100AF927500B3937300BD9D7700D2864800C58F5B00D080
+        5000D58C5200D28D5800E0805000F0805000FF805000F0885000FF885000C38D
+        6600D0886000C5986B00C6986A00D29C6600D29C7500DB997100F0906000FF90
+        6000F0907000F0987000FF987000D5A07A00D2A47D00D7A47F00E1A47500FF00
+        FF008080800082828200848484008585850087878700888888008A8A8A008B8B
+        8B008D8D8D008F8F8F0090909000929292009494940098989800999999009A9A
+        9A009C9C9C009E9E9E00A1A1A100A2A2A200A6A6A600A9A9A900AAAAAA00ABAB
+        AB00ACACAC00ADADAD00AEAEAE00AFAFAF00B1B1B100B2B2B200B3B3B300B6B6
+        B600B7B7B700B8B8B800B9B9B900BABABA00BEBEBE00BFBFBF00D0A08000D2AA
+        8200D7AD8600D1A98900D4AE8B00D6AF8B00D8B08900DBB28C00D5B59800E0A8
+        8000FFA88000E6B08600E0B28C00E0A89000F0A89000E1B79000E2BA9500FFB0
+        9000E0B8A000E1BAA300F0B8A000FFB8A000E6C29B00E6C39C00ECC6A800FFC0
+        A000E0C8B000E7CCB200F0C0B000F0C8B000FFC8B000EED2B800F0D2B500F1D5
+        BB00C0C0C000C1C1C100C3C3C300C5C5C500C7C7C700C8C8C800C9C9C900CFCF
+        CF00D0D0D000D1D1D100D2D2D200D5D5D500E0C8C000F0D0C000FFD0C000F0D8
+        C000E7E7E700EDEDED00EEEEEE00F0E8E000F0F0E000FFF0E000F0F0F000F2F2
+        F200F7F7F700FFF0F000FFF8F000FFFFFF000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000515151515151
+        5151515151515151515151515151515151515151515151515151515151519336
+        1B19282931805151515151515151A0600C050B0D566F515151515151517C4192
+        B0B5B5B0A6323451515151515168599DB0B5B5B0A0595B51515151517F81AF8A
+        392020398AAD3533515151516C66AC725207075272AA5C5A5151519746AF851C
+        1C85B5161678AE307B5151A161AC67030367B5000063AB156651517DA995211E
+        1D3C811C16168AA62F515169A59E0A0806536603000072A01351513AB44B2221
+        2186B51D1C172BB027515158B2610B0A0A68B506030110B009515137B52E2523
+        223FB59420171AB518515154B5520F0C0B59B59B070106B50251513BB53E2625
+        252448B4A91F20B518515159B556110F0F0E5DB2A50407B502515147B4822C40
+        8926234AB53D42B32A51515FB267125A6E110C5EB55557B10E515188A9A82E4C
+        B5964996B42D959243515171A5A35262B59F5E9FB2149E9D5E51519950B4912E
+        8DB4B5AF4C8CAF38845151A465B29A5275B2B5AC6273AC596D5151518F8BB4A8
+        82404082A7AF794E515151517774B2A3675A5A67A2AC666451515151518E50A9
+        B4B5B5B4A9447E5151515151517665A5B2B5B5B2A55E6A515151515151519887
+        834D454F7A905151515151515151A1706B635F65679C51515151515151515151
+        5151515151515151515151515151515151515151515151515151}
+      Caption = '&Help'
+      TabOrder = 1
+    end
+  end
+  object PnlMain: TUniPanel
+    Left = 0
+    Top = 0
+    Width = 258
+    Height = 170
+    Hint = ''
+    Align = alClient
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    TabOrder = 1
+    BorderStyle = ubsNone
+    Caption = ''
+    object Splitter1: TUniSplitter
+      Left = 130
+      Top = 0
+      Width = 6
+      Height = 170
+      Hint = ''
+      Align = alLeft
+      ParentColor = False
+      Color = clBtnFace
+    end
+    object PnlLeft: TUniPanel
+      Left = 0
+      Top = 0
+      Width = 130
+      Height = 170
+      Hint = ''
+      Align = alLeft
+      Anchors = [akLeft, akTop, akBottom]
+      TabOrder = 0
+      BorderStyle = ubsNone
+      Caption = ''
+      DesignSize = (
+        130
+        170)
+      object Label1: TUniLabel
+        Left = 8
+        Top = 12
+        Width = 27
+        Height = 13
+        Hint = ''
+        Caption = 'Labor'
+        TabOrder = 1
+      end
+      object Label2: TUniLabel
+        Left = 8
+        Top = 36
+        Width = 48
+        Height = 13
+        Hint = ''
+        Caption = 'Overhead'
+        TabOrder = 2
+      end
+      object Label3: TUniLabel
+        Left = 8
+        Top = 60
+        Width = 43
+        Height = 13
+        Hint = ''
+        Caption = 'Materials'
+        TabOrder = 3
+      end
+      object Label4: TUniLabel
+        Left = 8
+        Top = 84
+        Width = 56
+        Height = 13
+        Hint = ''
+        Caption = 'Outsourced'
+        TabOrder = 4
+      end
+      object Label5: TUniLabel
+        Left = 8
+        Top = 116
+        Width = 110
+        Height = 13
+        Hint = ''
+        Caption = 'Standard Cost per Unit'
+        TabOrder = 5
+      end
+      object Bevel1: TUniPanel
+        Left = 2
+        Top = 105
+        Width = 128
+        Height = 3
+        Hint = ''
+        Anchors = [akLeft, akTop, akRight]
+        TabOrder = 6
+        Caption = ''
+      end
+    end
+    object Panel4: TUniPanel
+      Left = 136
+      Top = 0
+      Width = 122
+      Height = 170
+      Hint = ''
+      Align = alClient
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      TabOrder = 1
+      BorderStyle = ubsNone
+      Caption = ''
+      DesignSize = (
+        122
+        170)
+      object Bevel2: TUniPanel
+        Left = 1
+        Top = 105
+        Width = 120
+        Height = 3
+        Hint = ''
+        Anchors = [akLeft, akTop, akRight]
+        TabOrder = 6
+        Caption = ''
+      end
+      object eLabor: TUniEdit
+        Left = 1
+        Top = 8
+        Width = 120
+        Height = 21
+        Hint = ''
+        Text = ''
+        Anchors = [akLeft, akTop, akRight]
+        TabOrder = 0
+        ReadOnly = True
+      end
+      object eOverHead: TUniEdit
+        Left = 1
+        Top = 32
+        Width = 120
+        Height = 21
+        Hint = ''
+        Text = ''
+        Anchors = [akLeft, akTop, akRight]
+        TabOrder = 1
+        ReadOnly = True
+      end
+      object eMaterials: TUniEdit
+        Left = 1
+        Top = 56
+        Width = 120
+        Height = 21
+        Hint = ''
+        Text = ''
+        Anchors = [akLeft, akTop, akRight]
+        TabOrder = 2
+        ReadOnly = True
+      end
+      object eOutSourced: TUniEdit
+        Left = 1
+        Top = 80
+        Width = 120
+        Height = 21
+        Hint = ''
+        Text = ''
+        Anchors = [akLeft, akTop, akRight]
+        TabOrder = 3
+        ReadOnly = True
+      end
+      object eCost: TUniEdit
+        Left = 1
+        Top = 112
+        Width = 120
+        Height = 21
+        Hint = ''
+        Text = '0.00'
+        Anchors = [akLeft, akTop, akRight]
+        TabOrder = 4
+        ReadOnly = True
+      end
+    end
+  end
+end

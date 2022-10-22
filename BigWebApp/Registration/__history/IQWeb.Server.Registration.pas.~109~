@@ -1,0 +1,158 @@
+unit IQWeb.Server.Registration;
+
+interface
+
+uses
+  uniTreeView,
+  uniImageList,
+  IQWeb.Server.Resources,
+  Spring.Collections;
+
+type
+
+  TIQFormDefs   = IDictionary<TClass, TFormDef>;
+  TIQMenuNodes  = IDictionary<string, string>;
+
+  TIQServerRegistration = class
+  private
+    FFormDefs   : TIQFormDefs;
+    FMenuNodes  : TIQMenuNodes;
+
+    procedure LoadFormDefs;
+    procedure LoadMenuNodes;
+    function  GetFormDefs   : TIQFormDefs;
+    function  GetMenuNodes  : TIQMenuNodes;
+  public
+    constructor Create;
+
+    procedure RegServerWeb;
+    procedure PopulateNavTree(aNavTree : TUniTreeView; aImageList : TUniNativeImageList);
+
+    property  FormDefs  : TIQFormDefs   read GetFormDefs;
+    property  MenuNodes : TIQMenuNodes  read GetMenuNodes;
+  end;
+
+implementation
+
+uses
+  TypInfo,
+  Classes,
+  SysUtils,
+  Spring,
+  Spring.Container,
+  Spring.Services,
+  IQMS.Common.Params,
+  IQCore.Interfaces,
+  IQCore.Module,
+  IQCore.Form,
+  IQCore.DataModule,
+  IQCore.DataSet,
+  IQCore.Field,
+  IQCore.Widget,
+//  IQCore.ActionList,
+  IQCore.PickList,
+  IQCore.PickTree,
+  IQWeb.Server.DataServices,
+  IQWeb.Server.DataServices.FireDAC,
+  IQWeb.Session.RegServices,
+  IQWeb.Session.RegServices.Default,
+  IQWeb.Session.FrameworkServices,
+  IQWeb.Session.FrameworkServices.FireDAC,
+  MainModule;
+
+procedure TIQServerRegistration.RegServerWeb;
+begin
+  GlobalContainer.RegisterType<TIQMS_Params>.AsSingleton;
+  GlobalContainer.RegisterType<TIQDataServicesFireDAC_Oracle>.Implements<IIQDataServices>('FireDAC-Oracle').AsSingleton;
+  GlobalContainer.RegisterType<TIQFrameworkServicesFireDAC_Oracle>.Implements<IIQFrameworkServices>.AsTransient;
+  GlobalContainer.RegisterType<TIQSessionRegistration>.Implements<IIQSessionRegistration>.AsTransient;
+
+  GlobalContainer.RegisterType<TIQModule    >.Implements<IIQModule    >.AsTransient;
+  GlobalContainer.RegisterType<TIQForm      >.Implements<IIQForm      >.AsTransient;
+  GlobalContainer.RegisterType<TIQDataModule>.Implements<IIQDataModule>.AsTransient;
+  GlobalContainer.RegisterType<TIQDataSet   >.Implements<IIQDataSet   >.AsTransient;
+  GlobalContainer.RegisterType<TIQField     >.Implements<IIQField     >.AsTransient;
+  GlobalContainer.RegisterType<TIQWidget    >.Implements<IIQWidget    >.AsTransient;
+//  GlobalContainer.RegisterType<TIQActionList>.Implements<IIQActionList>.AsTransient;
+  GlobalContainer.RegisterType<TIQPickList  >.Implements<IIQPickList  >.AsTransient;
+  GlobalContainer.RegisterType<TIQPickTree  >.Implements<IIQPickTree  >.AsTransient;
+
+  GlobalContainer.Build;
+end;
+
+constructor TIQServerRegistration.Create;
+begin
+  inherited Create;
+
+  FFormDefs := TCollections.CreateDictionary<TClass, TFormDef>;
+  LoadFormDefs;
+
+  FMenuNodes := TCollections.CreateDictionary<string, string>;
+  LoadMenuNodes;
+end;
+
+function TIQServerRegistration.GetFormDefs: TIQFormDefs;
+begin
+  Result := FFormDefs;
+end;
+
+function TIQServerRegistration.GetMenuNodes: TIQMenuNodes;
+begin
+  Result := FMenuNodes;
+end;
+
+procedure TIQServerRegistration.LoadFormDefs;
+var
+  FormDef : IQWeb.Server.Resources.TFormDef;
+begin
+  for FormDef in IQWeb.Server.Resources.FormDefs do
+    FFormDefs.Add(FormDef.ModuleClass, FormDef);
+end;
+
+procedure TIQServerRegistration.LoadMenuNodes;
+var
+  NavTree : IQWeb.Server.Resources.TNavNode;
+begin
+  for FormDef in IQWeb.Server.Resources.FormDefs do
+    FFormDefs.Add(FormDef.ModuleClass, FormDef);
+end;
+
+procedure TIQServerRegistration.PopulateNavTree(aNavTree : TUniTreeView; aImageList : TUniNativeImageList);
+var
+  NodeIdx   : integer;
+  Caption   : string;
+  Level     : integer;
+  FormIdx   : integer;
+  IconFile  : string;
+  IconIndex : integer;
+  CurrNode  : TWebTreeNode;
+  Parent    : TWebTreeNode;
+  TreeNodes : TWebTreeNodes;
+begin
+  TreeNodes := aNavTree.Items as TWebTreeNodes;
+  TreeNodes.Clear;
+  aImageList.Clear;
+
+  CurrNode  := nil;
+  for NodeIdx := 1 to NodeQty do
+  begin
+    Caption   := NavTree[NodeIdx].Caption;
+    Level     := NavTree[NodeIdx].Level;
+    FormIdx   := NavTree[NodeIdx].FormIdx;
+    IconFile  := 'Icons\' + Caption + '.ICO';
+
+    Parent := CurrNode;
+    while (Parent <> nil) and (Parent.Level >= Level) do
+      Parent := Parent.Parent as TWebTreeNode;
+    CurrNode := TreeNodes.AddChild(Parent, Caption) as TWebTreeNode;
+
+    if FileExists(IconFile) then
+      IconIndex := aImageList.AddIconFile(IconFile)
+    else
+      IconIndex := -1;
+
+    CurrNode.ImageIndex := IconIndex;
+  end;
+end;
+
+end.

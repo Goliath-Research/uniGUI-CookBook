@@ -1,0 +1,208 @@
+unit iqdbx_addfield2;
+
+interface
+
+uses
+  Windows,
+  Messages,
+  SysUtils,
+  Variants,
+  Classes,
+  Graphics,
+  Controls,
+  Forms,
+  Dialogs,
+  StdCtrls,
+  Buttons,
+  ExtCtrls,
+  ComCtrls,
+  MainModule,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniSplitter,
+  uniButton,
+  uniBitBtn,
+  uniSpeedButton,
+  uniPanel,
+  uniLabel,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniEdit,
+  uniMultiItem,
+  uniComboBox, uniSpinEdit;
+
+type
+  TFrmIQDBXAddField2 = class(TUniForm)
+    PnlButtons: TUniPanel;
+    PnlClient01: TUniPanel;
+    Splitter1: TUniSplitter;
+    PnlLeft01: TUniPanel;
+    PnlClient02: TUniPanel;
+    Label1: TUniLabel;
+    edtFieldName: TUniEdit;
+    Label2: TUniLabel;
+    Label3: TUniLabel;
+    Label4: TUniLabel;
+    Label5: TUniLabel;
+    edtComment: TUniEdit;
+    cmbType: TUniComboBox;
+    sbtnSQL: TUniSpeedButton;
+    Panel1: TUniPanel;
+    btnOk: TUniBitBtn;
+    btnCancel: TUniBitBtn;
+    edtLength: TUniSpinEdit;
+    udPrecision: TUniSpinEdit;
+    procedure btnOkClick(Sender: TObject);
+    procedure DoEditCtrlChange(Sender: TObject);
+    procedure sbtnSQLClick(Sender: TObject);
+    procedure UniFormCreate(Sender: TObject);
+  private
+    { Private declarations }
+    FCurrentTableName: string;
+    procedure DoAddField;
+    function ValidateAll: Boolean;
+    procedure GetUpdateSQL(var ASQL: TStringList);
+    procedure SetButtons;
+    function GetTypeStr: string;
+  public
+    { Public declarations }
+
+    property CurrentTableName : string read FCurrentTableName;
+
+  end;
+
+function AddField(ACurrentTableName: string): Boolean;
+
+implementation
+
+{$R *.dfm}
+
+
+//uses
+//  dbtdbexp,
+//  dbtshare,
+//  editmemostr,
+//  iqdbx_shared,
+//  iqerrdlg,
+//  iqstring;
+
+function AddField(ACurrentTableName: string): Boolean;
+var
+  aFrmIQDBXAddField2 : TFrmIQDBXAddField2;
+begin
+  aFrmIQDBXAddField2 := UniMainModule.GetFormInstance(TFrmIQDBXAddField2) as TFrmIQDBXAddField2;
+  aFrmIQDBXAddField2.FCurrentTableName := ACurrentTableName;
+  Result := aFrmIQDBXAddField2.ShowModal = mrOk;
+end;
+
+{ TFrmIQDBXAddField2 }
+
+procedure TFrmIQDBXAddField2.UniFormCreate(Sender: TObject);
+begin
+  SetButtons;
+end;
+
+procedure TFrmIQDBXAddField2.DoAddField;
+var
+  ASQL: TStringList;
+begin
+  // validation
+  if not ValidateAll then
+    Exit;
+//  if iqdbx_shared.IQFieldExists(FCurrentTableName, Trim(edtFieldName.Text)) then
+//    raise Exception.CreateFmt('Field %s already exists.',
+//      [Trim(edtFieldName.Text)]);
+
+  // get SQL and add field
+  ASQL := TStringList.Create;
+  try
+    GetUpdateSQL(ASQL);
+//    dbtdbexp.DBX_RunSQL(db_dm.DB_DataModule.SQLConnection, ASQL.Text);
+  finally
+    if Assigned(ASQL) then
+      FreeAndNil(ASQL);
+  end;
+end;
+
+procedure TFrmIQDBXAddField2.GetUpdateSQL(var ASQL: TStringList);
+var
+  ANewField, ATypeStr: string;
+begin
+  if (ASQL = nil) then
+    raise Exception.Create('Application Error:  String list object = NIL.');
+
+  ASQL.Clear;
+
+  ANewField := Trim(UpperCase(edtFieldName.Text));
+  ATypeStr := GetTypeStr;
+
+  ASQL.Add(Format('alter table %s', [Self.FCurrentTableName]));
+  ASQL.Add(Format('   add %s %s', [ANewField, ATypeStr]));
+end;
+
+function TFrmIQDBXAddField2.GetTypeStr: string;
+var
+  S: string;
+begin
+  S := cmbType.Text;
+  S := StringReplace(S, '%n', IntToStr(udLength.Position)); // length
+  S := StringReplace(S, '%s', IntToStr(udLength.Position)); // scale
+  S := StringReplace(S, '%p', IntToStr(udPrecision.Position)); // precision
+  Result := S;
+end;
+
+procedure TFrmIQDBXAddField2.SetButtons;
+begin
+  btnOk.Enabled := (edtFieldName.Text > '') and (cmbType.ItemIndex > -1);
+end;
+
+function TFrmIQDBXAddField2.ValidateAll: Boolean;
+var
+  AError: string;
+begin
+  Result := False;
+  if edtFieldName.Text = '' then
+    raise Exception.Create('Please specify a field name.');
+  if cmbType.ItemIndex = -1 then
+    raise Exception.Create('Please select a type.');
+//  if not dbtshare.ValidFieldName(Trim(edtFieldName.Text), AError) then
+//    raise Exception.Create(AError);
+end;
+
+procedure TFrmIQDBXAddField2.btnOkClick(Sender: TObject);
+begin
+  DoAddField;
+  ModalResult := mrOk;
+end;
+
+procedure TFrmIQDBXAddField2.DoEditCtrlChange(Sender: TObject);
+begin
+  Application.ProcessMessages;
+  SetButtons;
+end;
+
+procedure TFrmIQDBXAddField2.sbtnSQLClick(Sender: TObject);
+var
+  ASQL: TStringList;
+begin
+  // validation
+  if not ValidateAll then
+    Exit;
+//  if iqdbx_shared.IQFieldExists(FCurrentTableName, Trim(edtFieldName.Text)) then
+//    raise Exception.CreateFmt('Field %s already exists.',
+//      [Trim(edtFieldName.Text)]);
+
+  // get SQL and add field
+  ASQL := TStringList.Create;
+  try
+    GetUpdateSQL(ASQL);
+//    editmemostr.DoViewMemoStr(Self, ASQL.Text);
+  finally
+    if Assigned(ASQL) then
+      FreeAndNil(ASQL);
+  end;
+end;
+
+end.

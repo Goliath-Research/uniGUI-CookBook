@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{79118E97-823B-408C-9130-3FC9D0457AB4}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="VCL\MemTableVCL.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="UniGUI\MemTableUniGUI.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="MemTableVCL">
+        <MSBuild Projects="VCL\MemTableVCL.dproj"/>
+    </Target>
+    <Target Name="MemTableVCL:Clean">
+        <MSBuild Projects="VCL\MemTableVCL.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MemTableVCL:Make">
+        <MSBuild Projects="VCL\MemTableVCL.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MemTableUniGUI">
+        <MSBuild Projects="UniGUI\MemTableUniGUI.dproj"/>
+    </Target>
+    <Target Name="MemTableUniGUI:Clean">
+        <MSBuild Projects="UniGUI\MemTableUniGUI.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MemTableUniGUI:Make">
+        <MSBuild Projects="UniGUI\MemTableUniGUI.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="MemTableVCL;MemTableUniGUI"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="MemTableVCL:Clean;MemTableUniGUI:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="MemTableVCL:Make;MemTableUniGUI:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

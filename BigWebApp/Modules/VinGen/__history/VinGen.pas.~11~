@@ -1,0 +1,64 @@
+unit VinGen;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics,
+  Controls, Forms, Dialogs, uniGUITypes, uniGUIAbstractClasses,
+  uniGUIClasses, uniGUIFrame, uniGUIBaseClasses, uniURLFrame,
+  IQWeb.Session.RegServices;
+
+type
+  TUniVinGen = class(TUniFrame)
+    UniURLFrame1: TUniURLFrame;
+    procedure UniFrameCreate(Sender: TObject);
+  private
+    { Private declarations }
+    FID : integer;
+
+    procedure LocateID(aID : integer);
+    procedure SetURL;
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  ServerModule,
+  MainModule;
+
+procedure TUniVinGen.LocateID(aID: integer);
+begin
+  if aID <> FID then
+  begin
+    FID := aID;
+    SetURL;
+  end;
+end;
+
+procedure TUniVinGen.SetURL;
+var
+  RecordLoc : string;
+begin
+  if FID > 0 then
+    RecordLoc := '?PackageID=' + IntToStr(FID)
+  else
+    RecordLoc := '';
+
+  UniURLFrame1.URL :=
+    UniSession.Host +
+    '/account/iframeLogin?token=' + UniMainModule.AuthToken +
+    '&database=iqora&redirect=/EnterpriseIq/vingen?workorderid=' + RecordLoc;
+
+  UniURLFrame1.Refresh;
+end;
+
+procedure TUniVinGen.UniFrameCreate(Sender: TObject);
+begin
+  SetURL;
+end;
+
+end.

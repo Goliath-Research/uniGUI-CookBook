@@ -1,0 +1,199 @@
+object FrmHPickFilterPickList: TFrmHPickFilterPickList
+  Left = 0
+  Top = 0
+  ClientHeight = 358
+  ClientWidth = 257
+  Caption = 'Select Advanced Filter'
+  BorderStyle = bsSizeToolWin
+  OldCreateOrder = False
+  MonitoredKeys.Keys = <>
+  ActiveControl = wwDBGrid1
+  PixelsPerInch = 96
+  TextHeight = 13
+  object pnlMain: TUniPanel
+    Tag = 1999
+    Left = 0
+    Top = 0
+    Width = 257
+    Height = 358
+    Hint = ''
+    Align = alClient
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    TabOrder = 0
+    Caption = ''
+    Color = clWindow
+    ExplicitWidth = 282
+    ExplicitHeight = 371
+    object Panel2: TUniPanel
+      Left = 1
+      Top = 1
+      Width = 255
+      Height = 28
+      Hint = ''
+      Align = alTop
+      Anchors = [akLeft, akTop, akRight]
+      TabOrder = 0
+      Caption = ''
+      ExplicitWidth = 282
+      object NavMain: TUniDBNavigator
+        Left = 197
+        Top = 1
+        Width = 60
+        Height = 26
+        Hint = ''
+        ShowHint = True
+        ParentShowHint = False
+        DataSource = srcFilters
+        VisibleButtons = [nbInsert, nbDelete]
+        ConfirmDelete = False
+        Align = alRight
+        Anchors = [akTop, akRight, akBottom]
+        TabOrder = 0
+        ExplicitLeft = 208
+      end
+    end
+    object pnlBottom: TUniPanel
+      Left = 1
+      Top = 319
+      Width = 255
+      Height = 39
+      Hint = ''
+      Align = alBottom
+      Anchors = [akLeft, akRight, akBottom]
+      TabOrder = 1
+      Caption = ''
+      object Panel1: TUniPanel
+        Left = 56
+        Top = 1
+        Width = 201
+        Height = 37
+        Hint = ''
+        Align = alRight
+        Anchors = [akTop, akRight, akBottom]
+        TabOrder = 0
+        Caption = ''
+        ExplicitLeft = 55
+        ExplicitHeight = 40
+        object btnOK: TUniButton
+          Left = 3
+          Top = 8
+          Width = 90
+          Height = 25
+          Hint = ''
+          Caption = 'OK'
+          TabOrder = 1
+          OnClick = btnOKClick
+        end
+        object btnCancel: TUniButton
+          Left = 103
+          Top = 8
+          Width = 90
+          Height = 25
+          Hint = ''
+          Caption = 'Cancel'
+          ModalResult = 2
+          TabOrder = 2
+        end
+      end
+    end
+    object pnlGrid: TUniPanel
+      Left = 1
+      Top = 28
+      Width = 255
+      Height = 291
+      Hint = ''
+      Align = alClient
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      TabOrder = 2
+      Caption = ''
+      ExplicitWidth = 272
+      ExplicitHeight = 292
+      object wwDBGrid1: TIQUniGridControl
+        Left = 1
+        Top = 1
+        Width = 257
+        Height = 287
+        Layout = 'border'
+        ParentAlignmentControl = False
+        AlignmentControl = uniAlignmentClient
+        Align = alClient
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        TabOrder = 0
+        IQComponents.Grid.Left = 0
+        IQComponents.Grid.Top = 29
+        IQComponents.Grid.Width = 434
+        IQComponents.Grid.Height = 434
+        IQComponents.Grid.Hint = ''
+        IQComponents.Grid.DataSource = srcFilters
+        IQComponents.Grid.LoadMask.Message = 'Loading data...'
+        IQComponents.Grid.Align = alClient
+        IQComponents.Grid.Anchors = [akLeft, akTop, akRight, akBottom]
+        IQComponents.Grid.TabOrder = 0
+        IQComponents.Navigator.Left = 410
+        IQComponents.Navigator.Top = 0
+        IQComponents.Navigator.Width = 241
+        IQComponents.Navigator.Height = 25
+        IQComponents.Navigator.Hint = ''
+        IQComponents.Navigator.ShowHint = True
+        IQComponents.Navigator.DataSource = srcFilters
+        IQComponents.Navigator.LayoutConfig.Region = 'east'
+        IQComponents.Navigator.TabOrder = 3
+        IQComponents.HiddenPanel.Left = 434
+        IQComponents.HiddenPanel.Top = 29
+        IQComponents.HiddenPanel.Width = 209
+        IQComponents.HiddenPanel.Height = 434
+        IQComponents.HiddenPanel.Hint = ''
+        IQComponents.HiddenPanel.Visible = True
+        IQComponents.HiddenPanel.Align = alRight
+        IQComponents.HiddenPanel.Anchors = [akTop, akRight, akBottom]
+        IQComponents.FormTab.Hint = ''
+        IQComponents.FormTab.ImageIndex = 1
+        IQComponents.FormTab.Caption = 'Form'
+        IQComponents.FormTab.Layout = 'border'
+        IQComponents.FormTab.ExplicitLeft = 0
+        IQComponents.FormTab.ExplicitTop = 0
+        IQComponents.FormTab.ExplicitWidth = 256
+        IQComponents.FormTab.ExplicitHeight = 128
+        DataSource = srcFilters
+        Columns = <
+          item
+            FieldName = 'FILTER_NAME'
+            Title.Caption = 'Advanced Filters'
+            Width = 273
+            CheckBoxField.FieldValues = 'true;false'
+          end>
+        ExplicitLeft = -9
+        ExplicitTop = -4
+        ExplicitWidth = 362
+        ExplicitHeight = 221
+        Marker = 0
+      end
+    end
+  end
+  object cdsFilters: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'FILTER_NAME'
+        DataType = ftString
+        Size = 60
+      end>
+    IndexDefs = <>
+    IndexFieldNames = 'FILTER_NAME'
+    Params = <>
+    StoreDefs = True
+    Left = 32
+    Top = 160
+    object cdsFiltersFILTER_NAME: TStringField
+      DisplayLabel = 'Advanced Filter Name'
+      DisplayWidth = 40
+      FieldName = 'FILTER_NAME'
+      Size = 60
+    end
+  end
+  object srcFilters: TDataSource
+    DataSet = cdsFilters
+    Left = 32
+    Top = 128
+  end
+end

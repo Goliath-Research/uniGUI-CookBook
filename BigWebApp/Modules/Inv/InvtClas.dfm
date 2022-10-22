@@ -1,0 +1,130 @@
+object FrmInvClass: TFrmInvClass
+  Left = 269
+  Top = 206
+  ClientHeight = 102
+  ClientWidth = 302
+  Caption = ''
+  OnShow = FormShow
+  BorderStyle = bsDialog
+  OldCreateOrder = True
+  OnClose = FormClose
+  MonitoredKeys.Keys = <>
+  OnCreate = FormCreate
+  DesignSize = (
+    302
+    102)
+  PixelsPerInch = 96
+  TextHeight = 13
+  object pnlMainInvParams: TUniPanel
+    Left = 4
+    Top = 5
+    Width = 290
+    Height = 44
+    Hint = ''
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 1
+    Caption = ''
+    object Label1: TUniLabel
+      Left = 8
+      Top = 14
+      Width = 76
+      Height = 13
+      Hint = ''
+      Caption = 'Inventory Class'
+      TabOrder = 2
+    end
+    object wwLookupClass: TUniDBLookupComboBox
+      Left = 221
+      Top = 10
+      Width = 57
+      Height = 21
+      Hint = ''
+      ListField = 'DESCRIP'
+      ListSource = ds_wwQuery1
+      KeyField = 'CLASS'
+      ListFieldIndex = 0
+      TabOrder = 0
+      Color = clWindow
+    end
+  end
+  object PnlButtons: TUniPanel
+    Left = 0
+    Top = 62
+    Width = 302
+    Height = 40
+    Hint = ''
+    Align = alBottom
+    Anchors = [akLeft, akRight, akBottom]
+    TabOrder = 0
+    Caption = ''
+    DesignSize = (
+      302
+      40)
+    object btnOK: TUniButton
+      Left = 96
+      Top = 7
+      Width = 97
+      Height = 25
+      Hint = ''
+      Caption = 'OK'
+      Anchors = [akTop, akRight]
+      TabOrder = 1
+      Default = True
+      OnClick = btnOKClick
+    end
+    object btnCancel: TUniButton
+      Left = 199
+      Top = 7
+      Width = 97
+      Height = 25
+      Hint = ''
+      Caption = 'Cancel'
+      Cancel = True
+      ModalResult = 2
+      Anchors = [akTop, akRight]
+      TabOrder = 2
+    end
+  end
+  object wwQuery1: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select RTrim(class) as class,'
+      '       descrip'
+      '  from arinvt_class'
+      ' where NVL( RTrim(type), '#39'*'#39') <> '#39'ROUTING'#39
+      ' order by class'
+      ' ')
+    Left = 128
+    Top = 8
+    object wwQuery1CLASS: TStringField
+      DisplayLabel = 'Class'
+      DisplayWidth = 4
+      FieldName = 'CLASS'
+      Required = True
+      Size = 2
+    end
+    object wwQuery1DESCRIP: TStringField
+      DisplayLabel = 'Description'
+      DisplayWidth = 25
+      FieldName = 'DESCRIP'
+      Size = 50
+    end
+  end
+  object SR: TIQWebSecurityRegister
+    SecurityItems.Strings = (
+      'wwLookupClass'
+      'btnOK')
+    SecurityCode = 'FRMINVCLASS'
+    Left = 28
+    Top = 56
+  end
+  object ds_wwQuery1: TDataSource
+    DataSet = wwQuery1
+    Left = 184
+    Top = 8
+  end
+end

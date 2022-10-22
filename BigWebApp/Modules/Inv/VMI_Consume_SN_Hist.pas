@@ -1,0 +1,106 @@
+unit VMI_Consume_SN_Hist;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.Classes,
+  Vcl.Forms,
+  Data.DB,
+//  Vcl.Wwdatsrc,
+  FireDAC.Comp.Client,
+  FireDAC.Comp.DataSet,
+  FireDAC.Phys,
+  MainModule,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Stan.Async,
+  FireDAC.DApt,
+  Vcl.Controls,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniPanel,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniDBNavigator,
+  uniGUIFrame,
+  IQUniGrid;
+
+type
+  TFrmConsumeVMI_SN_Hist = class(TUniForm)
+    wwDBGrid1: TIQUniGridControl;
+    wwDataSource1: TDataSource;
+    wwQuery1: TFDQuery;
+    wwQuery1ID: TBCDField;
+    wwQuery1SCAN_DATE: TDateTimeField;
+    wwQuery1SERIAL: TStringField;
+    wwQuery1USERID: TStringField;
+    wwQuery1QTY: TFMTBCDField;
+    wwQuery1MASTER_LABEL_ID: TBCDField;
+    wwQuery1ARINVT_ID: TBCDField;
+    wwQuery1TRANSLOG_ID: TBCDField;
+    Bevel1: TUniPanel;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure UniFormCreate(Sender: TObject);
+    procedure UniFormShow(Sender: TObject);
+  private
+    FATranslog_ID: Real;
+    procedure SetATranslog_ID(value: Real);
+  public
+    { Public declarations }
+    property ATranslog_ID: Real write SetATranslog_ID;
+    class procedure DoShow(AATranslog_ID: Real);
+  end;
+
+
+implementation
+
+{$R *.DFM}
+
+uses
+  IQMS.Common.RegFrm,
+  IQMS.Common.DataLib,
+  IQMS.Common.Controls;
+
+class procedure TFrmConsumeVMI_SN_Hist.DoShow(AATranslog_ID: Real);
+var
+  AForm: TFrmConsumeVMI_SN_Hist;
+begin
+  AForm := TFrmConsumeVMI_SN_Hist.Create(UniGuiApplication.UniApplication);
+  AForm.ATranslog_ID := AATranslog_ID;
+  AForm.Show;
+end;
+
+procedure TFrmConsumeVMI_SN_Hist.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  IQRegFormWrite( self, [ self, wwDBGrid1 ]);
+end;
+
+procedure TFrmConsumeVMI_SN_Hist.SetATranslog_ID(value: Real);
+begin
+  FATranslog_ID := value;
+end;
+
+procedure TFrmConsumeVMI_SN_Hist.UniFormCreate(Sender: TObject);
+begin
+  IQRegFormRead( self, [ self, wwDBGrid1 ]);
+end;
+
+procedure TFrmConsumeVMI_SN_Hist.UniFormShow(Sender: TObject);
+begin
+  with wwQuery1 do
+  begin
+    Close;
+    wwQuery1.ParamByName('translog_id').Value := FATranslog_ID;
+  end;
+  IQSetTablesActive( TRUE, self );
+end;
+
+end.

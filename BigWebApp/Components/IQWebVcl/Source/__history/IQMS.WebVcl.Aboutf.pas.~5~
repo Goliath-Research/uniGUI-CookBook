@@ -1,0 +1,283 @@
+unit IQMS.WebVcl.Aboutf;
+
+interface
+
+uses
+  Windows,
+  Messages,
+  SysUtils,
+  Classes,
+  Graphics,
+  Controls,
+  Forms,
+  Dialogs,
+  StdCtrls,
+  ExtCtrls,
+  Buttons,
+  Menus,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniMainMenu,
+  IQMS.WebVCL.About, IQMS.WebVcl.HotLabel, uniImage, uniLabel, uniPanel;
+
+type
+  TIQAboutBox = class(TUniForm)
+    PnlMain: TUniPanel;
+    ProductName: TUniLabel;
+    Version: TUniLabel;
+    Label1: TUniLabel;
+    Label2: TUniLabel;
+    Label3: TUniLabel;
+    ReleasedTo: TUniLabel;
+    Image1: TUniImage;
+    Label8: TUniLabel;
+    lblDate: TUniLabel;
+    Label9: TUniLabel;
+    lblUserName: TUniLabel;
+    Label10: TUniLabel;
+    UpdateVersion: TUniLabel;
+    MainMenu1: TUniMainMenu;
+    File1: TUniMenuItem;
+    ResetFormtoDefault1: TUniMenuItem;
+    N1: TUniMenuItem;
+    Exit1: TUniMenuItem;
+    Label11: TUniLabel;
+    EPlant_Name: TUniLabel;
+    Options1: TUniMenuItem;
+    IQRepManagerStatus1: TUniMenuItem;
+    BringMainWindowtoFront1: TUniMenuItem;
+    AlterSession1: TUniMenuItem;
+    TimeZoneOffset1: TUniMenuItem;
+    Panel2: TUniPanel;
+    ApplicationName: TUniLabel;
+    Label4: TUniLabel;
+    lblIQMS: TIQWebHotLabel;
+    Label6: TUniLabel;
+    Copyright: TUniLabel;
+    Bevel2: TUniPanel;
+    lblEmailSupport: TIQWebHotLabel;
+    lblWebSupport: TIQWebHotLabel;
+    Label5: TUniLabel;
+    lblCrystal: TUniLabel;
+    lblOraVersion: TUniLabel;
+    Label13: TUniLabel;
+    Label14: TUniLabel;
+    Label15: TUniLabel;
+    Label16: TUniLabel;
+    lblOraAlias: TUniLabel;
+    lblServer: TUniLabel;
+    lblInstance: TUniLabel;
+    Bevel1: TUniPanel;
+    PnlHeader: TUniPanel;
+    Label7: TUniLabel;
+    Label12: TUniLabel;
+    BuildVersion: TUniLabel;
+    procedure Exit1Click(Sender: TObject);
+    procedure ResetFormtoDefault1Click(Sender: TObject);
+    procedure IQRepManagerStatus1Click(Sender: TObject);
+    procedure BringMainWindowtoFront1Click(Sender: TObject);
+    procedure AlterSession1Click(Sender: TObject);
+    procedure TimeZoneOffset1Click(Sender: TObject);
+    procedure lblEmailSupportClick(Sender: TObject);
+  private
+    FIQWebAbout:TIQWebAbout;
+
+    procedure SetLabelText(ALabel: TUniLabel; ACaption: String);
+    //function GetFixedVersion(s:string): String;
+    { Private declarations }
+    procedure SetIQWebAbout(aIQWebAbout:TIQWebAbout);
+  public
+    property IQWebAbout : TIQWebAbout read FIQWebAbout write SetIQWebAbout;
+    { Public declarations }
+  end;
+
+procedure DoIQAboutBox(IQWebAbout:TIQWebAbout);
+
+implementation
+
+{$R *.DFM}
+
+uses
+//  IQABoutAlter,
+  IQMS.Common.DataLib,
+  IQMS.WebVcl.ResourceStrings;
+//  IQMesg,
+//  IQMisc,
+//  IQNumber,
+//  iqscreen,
+//  IQSecMan,
+//  iqsysinfo,
+//  Shellapi,
+//  TimeDiffDlg,
+
+{ TIQAboutBox }
+
+procedure DoIQAboutBox(IQWebAbout:TIQWebAbout);
+var
+  IQAboutBox:TIQAboutBox;
+begin
+  IQAboutBox:=TIQAboutBox.Create( uniGUIApplication.UniApplication );
+  with IQAboutBox do
+  begin
+    aIQWebAbout:=IQWebAbout;
+    ShowModal;
+  end;
+end;
+
+procedure TIQAboutBox.SetIQWebAbout(aIQWebAbout:TIQWebAbout);
+begin
+//  iqscreen.ApplySystemFont(Self);
+    FIQWebAbout:=IQWebAbout;
+    self.Caption                 := Format( IQMS.WebVcl.ResourceStrings.cTXT0000300 {'About %s'}, [Application.Title] );
+    SetLabelText(self.ApplicationName, Application.Title); // 06/25/2010 (Byron)
+    self.ProductName.Caption     := IQWebAbout.ModuleName;
+    self.Version.Caption         := IQWebAbout.FixedVersion;
+    self.lblDate.Caption         := IQWebAbout.ExecutableDateString;
+    self.ReleasedTo.Caption      := IQWebAbout.ReleasedTo;
+    self.Copyright.Caption       := IQWebAbout.Copyright;
+    self.lblOraAlias.Caption     := IQWebAbout.OraAlias;
+    self.UpdateVersion.Caption   := IQWebAbout.UpdateVersion;
+    self.EPlant_Name.Caption     := IQWebAbout.EPlant_Name;
+    self.lblServer.Caption       := IQWebAbout.OraDBInfo[0];
+    self.lblInstance.Caption     := IQWebAbout.OraDBInfo[1];
+    self.lblOraVersion.Caption   := IQWebAbout.OraDBInfo[2];
+    self.lblCrystal.Caption      := IQWebAbout.CrystalVer;
+    self.BuildVersion.Caption    := IQWebAbout.BuildVersion;
+
+  // lblDotNetVersion.Caption := iqsysinfo.DotNetVersionName[iqsysinfo.DotNetVersion];
+
+//  if Assigned(SecurityManager) then
+//    lblUserName.Caption:= SecurityManager.UserName
+//  else
+//    lblUserName.Caption:= vcl_rscstr.cTXT0000051; // 'N/A'
+
+//  ApplicationName.Font.Name:= self.Font.Name;
+//  lblIQMS.Font.Name        := self.Font.Name;
+//  lblWebSupport.Font.Name  := self.Font.Name;
+end;
+
+
+procedure TIQAboutBox.SetLabelText(ALabel: TUniLabel; ACaption: String);
+begin
+ with ALabel do
+ begin
+   Caption  := ACaption;
+   Width := Parent.ClientWidth - 8 - Left;
+   AutoSize := False;
+   AutoSize := True;
+   Invalidate;
+ end;
+end;
+
+procedure TIQAboutBox.Exit1Click(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TIQAboutBox.ResetFormtoDefault1Click(Sender: TObject);
+begin
+//  with TIQWebAbout( Owner ) do
+    {'This option resets the form to the original settings.  You must close and reopen the form to restore the default settings.'#13#13+
+     'Are you sure you want to reset the form to its default settings?'}
+//    if IQConfirmYN( vcl_rscstr.cTXT0000054 ) then
+//       ResetOwnerRegistry:= TRUE;
+end;
+
+procedure TIQAboutBox.IQRepManagerStatus1Click(Sender: TObject);
+var
+  ALicensed: string;
+  ABackEnd : string;
+begin
+//  if Assigned(SecurityManager) then
+//    begin
+//       ALicensed:= sIIf( SecurityManager.SetVisibleIfLicensed( NIL, NIL, NIL, 'IQRepMng', NIL ), 'Y', 'N');
+//       try
+//         ABackEnd:= SelectValueAsString('select misc.Get_IQRepMng_Active from dual');
+//       except
+//         ABackEnd:= vcl_rscstr.cTXT0000051; // 'N/A'
+//       end;
+//    end
+//  else
+//    begin
+//      ALicensed:= vcl_rscstr.cTXT0000055; // 'N/A (Security Manager is Unavailable)'
+//      ABackEnd := vcl_rscstr.cTXT0000055; // 'N/A (Security Manager is Unavailable)'
+//    end;
+  {'IQ Replication Manager Status:'#13+
+   'Licensed: %s'#13 +
+   'Active (Del Log Enabled): %s'}
+//  IQInformation(Format( vcl_rscstr.cTXT0000056, [ ALicensed, ABackEnd ]));
+end;
+
+procedure TIQAboutBox.BringMainWindowtoFront1Click(Sender: TObject);
+begin
+  Application.MainForm.BringToFront;
+  Close;
+end;
+
+procedure TIQAboutBox.AlterSession1Click(Sender: TObject);
+begin
+//  TIQAboutAlterSession.DoShowModal;  {IQAboutAlter.pas}
+end;
+
+procedure TIQAboutBox.TimeZoneOffset1Click(Sender: TObject);
+var
+  ATimeDiff: Real;
+begin
+//  if not TTimeDiff.GetDiffFromReg( ATimeDiff ) then
+//    ATimeDiff:= 0;
+  {'The current default time zone difference between this workstation and the server is %f hour(s).'#13#10+
+   'Please note: this number is used only when the operating system fails to calculate the time zone difference.'}
+//  TTimeDiff.Execute( Format(vcl_rscstr.cTXT0000057, [ ATimeDiff * 24 ]), ATimeDiff );
+end;
+
+
+procedure TIQAboutBox.lblEmailSupportClick(Sender: TObject);
+var
+  ABody, AMailMsg,
+  ACompany, AUpdateVersion, AProductName, AModuleVersion: string;
+  ABodyText: TStringList;
+begin
+  ABodyText := TStringList.Create;
+  try
+    aIQWebAbout.GetSupportEmailBodyText(ABodyText);
+    ABody := ABodyText.Text;
+    ABody := StringReplace(ABody, #13, ' %0D%0A', [rfReplaceAll]);
+    ABody := StringReplace(ABody, ' ', '%20', [rfReplaceAll]);
+  finally
+    FreeAndNil(ABodyText);
+  end;
+{
+  ABody:=   'IQMS Technical Support, %0D%0A%0D%0A%0D%0A' +
+            'Thank you, %0D%0A%0D%0A%0D%0A' +
+            '==========================================================  '+ '%0D%0A' +
+     Format('Company - %s', [ ReleasedTo.Caption ]                ) + ' %0D%0A' +
+     Format('EnterpriseIQ Release - %s', [ UpdateVersion.Caption ]) + ' %0D%0A' +
+     Format('Module Name - %s', [ ProductName.Caption ]           ) + ' %0D%0A' +
+     Format('Module Version -  %s', [ Version.Caption ]           ) + ' %0D%0A' +
+     Format('Executable Date - %s', [ lblDate.Caption ]           ) + ' %0D%0A' +
+     Format('EPlant - %s', [ EPlant_Name.Caption ]                ) + ' %0D%0A' +
+     Format('UserName -  %s', [ lblUserName.Caption ]             ) + ' %0D%0A' +
+     Format('BDE Alias - %s', [ lblBDEAlias.Caption ]             ) + ' %0D%0A' +
+     Format('Oracle Alias -  %s', [ lblOraAlias.Caption ]         ) + ' %0D%0A' +
+     Format('Server Name - %s', [ lblServer.Caption ]             ) + ' %0D%0A' +
+     Format('Instance Name - %s', [ lblInstance.Caption ]         ) + ' %0D%0A' +
+     Format('Oracle Version -  %s', [ lblOraVersion.Caption ]     ) + ' %0D%0A' +
+     Format('Crystal Version - %s', [ lblCrystal.Caption ]        ) + ' %0D%0A';
+}
+  AMailMsg := 'mailto:support@iqms.com?'+
+              'body=' + StringReplace(ABody, ' ', '%20', [rfReplaceAll]);
+
+  UniSession.BrowserWindow(AMailMsg, 0, 0, '_blank');
+//  try
+//    ShellExecute(self.Handle,'open', PChar(AMailMsg), nil, nil, SW_SHOWNORMAL);
+//  except on E:Exception do
+//    IQWarning(Format('Unable to send email. %s', [E.Message]));
+//  end;
+end;
+
+
+end.

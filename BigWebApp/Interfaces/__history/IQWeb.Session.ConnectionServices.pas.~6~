@@ -1,0 +1,23 @@
+unit IQWeb.Session.ConnectionServices;
+
+interface
+
+uses
+  Data.DB;
+
+type
+
+  IIQConnectionProvider = interface
+    ['{A6AEAC73-143A-4ED2-9D8D-FAF4ABBAEF53}']
+
+    function GetConnection : TCustomConnection;
+  end;
+
+  IIQConnectionService = class(IIQConnectionProvider)
+  protected
+    function GetConnection : TCustomConnection;
+  end;
+
+implementation
+
+end.

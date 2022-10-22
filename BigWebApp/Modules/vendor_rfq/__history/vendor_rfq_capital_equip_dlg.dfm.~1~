@@ -1,0 +1,125 @@
+object FrmVendorRFQCapitalEquipment: TFrmVendorRFQCapitalEquipment
+  Left = 0
+  Top = 0
+  Caption = 'Capital Equipment'
+  ClientHeight = 115
+  ClientWidth = 430
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnClose = FormClose
+  OnShow = FormShow
+  object Panel1: TUniPanel
+    Left = 0
+    Top = 0
+    Width = 430
+    Height = 74
+    Align = alClient
+    TabOrder = 0
+    object Splitter1: TUniSplitter
+      Left = 129
+      Top = 0
+      Height = 74
+      ExplicitLeft = 152
+      ExplicitTop = -6
+    end
+    object Panel2: TUniPanel
+      Left = 132
+      Top = 0
+      Width = 298
+      Height = 74
+      Align = alClient
+      TabOrder = 0
+      DesignSize = (
+        298
+        74)
+      object edEquipment: TUniEdit
+        Left = 0
+        Top = 10
+        Width = 286
+        Height = 21
+        Anchors = [akLeft, akTop, akRight]
+        TabOrder = 0
+      end
+      object edEquipmentDescrip: TUniEdit
+        Left = 0
+        Top = 34
+        Width = 286
+        Height = 21
+        Anchors = [akLeft, akTop, akRight]
+        TabOrder = 1
+      end
+    end
+    object Panel4: TUniPanel
+      Left = 0
+      Top = 0
+      Width = 129
+      Height = 74
+      Align = alLeft
+      TabOrder = 1
+      object Label1: TUniLabel
+        Left = 8
+        Top = 13
+        Width = 50
+        Height = 13
+        Caption = 'Equipment'
+      end
+      object Label2: TUniLabel
+        Left = 8
+        Top = 37
+        Width = 106
+        Height = 13
+        Caption = 'Equipment Description'
+      end
+    end
+  end
+  object Panel3: TUniPanel
+    Left = 0
+    Top = 74
+    Width = 430
+    Height = 41
+    Align = alBottom
+    TabOrder = 1
+    object Bevel1: TUniPanel
+      Left = 0
+      Top = 0
+      Width = 430
+      Height = 3
+      Align = alTop
+      ExplicitWidth = 522
+    end
+    object Panel5: TUniPanel
+      Left = 252
+      Top = 3
+      Width = 178
+      Height = 38
+      Align = alRight
+      TabOrder = 0
+      object Button1: TUniButton
+        Left = 2
+        Top = 6
+        Width = 75
+        Height = 25
+        Caption = 'OK'
+        OnClick = Button1Click
+      end
+      object btnCancel: TUniButton
+        Left = 91
+        Top = 6
+        Width = 75
+        Height = 25
+        Caption = 'Cancel'
+        ModalResult = 2
+      end
+    end
+  end
+  object SR: TIQWebSecurityRegister
+    SecurityCode = 'FRMVENDORRFQCAPITALEQUIPMENT'
+    Left = 24
+    Top = 80
+  end
+end

@@ -1,0 +1,142 @@
+unit IQMS.Common.Period;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Controls,
+  Vcl.Forms,
+  Data.DB,
+  Vcl.Wwdatsrc,
+  Vcl.DBGrids,
+  FireDAC.Comp.Client,
+  FireDAC.Comp.DataSet,
+  FireDAC.Phys,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniPanel,
+  uniBasicGrid,
+  uniDBGrid,
+  uniSplitter,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniButton,
+  uniDBNavigator,
+  uniLabel, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt;
+
+type
+  TFrmPeriod = class(TUniForm)
+    Panel3: TUniPanel;
+    Panel4: TUniPanel;
+    Button1: TUniButton;
+    Button2: TUniButton;
+    SrcGlYear: TDataSource;
+    SrcGlPeriods: TDataSource;
+    TblGLYear: TFDTable;
+    Panel2: TUniPanel;
+    GridPeriod: TUniDBGrid;
+    Bevel2: TUniPanel;
+    Splitter1: TUniSplitter;
+    PnlTop: TUniPanel;
+    Bevel1: TUniPanel;
+    GridYear: TUniDBGrid;
+    QryPeriod: TFDQuery;
+    TblGLYearID: TBCDField;
+    TblGLYearDESCRIP: TStringField;
+    TblGLYearSTART_DATE: TDateTimeField;
+    TblGLYearEND_DATE: TDateTimeField;
+    TblGLYearECODE: TStringField;
+    TblGLYearEID: TBCDField;
+    TblGLYearEDATE_TIME: TDateTimeField;
+    TblGLYearECOPY: TStringField;
+    TblGLYearPOSTED_IN_FRX: TStringField;
+    TblGLYearFRL_FISCAL_YEAR: TBCDField;
+    QryPeriodID: TBCDField;
+    QryPeriodGLYEAR_ID: TBCDField;
+    QryPeriodPERIOD: TBCDField;
+    QryPeriodSTART_DATE: TDateTimeField;
+    QryPeriodEND_DATE: TDateTimeField;
+    QryPeriodSTATUS: TStringField;
+    QryPeriodAP_STATUS: TStringField;
+    QryPeriodAR_STATUS: TStringField;
+    QryPeriodGL_STATUS: TStringField;
+    QryPeriodECODE: TStringField;
+    QryPeriodEID: TBCDField;
+    QryPeriodEDATE_TIME: TDateTimeField;
+    QryPeriodECOPY: TStringField;
+    QryPeriodPOSTED_IN_FRX: TStringField;
+    TblGLYearEPLANT_ID: TBCDField;
+    Panel6: TUniPanel;
+    Panel7: TUniPanel;
+    Label2: TUniLabel;
+    Panel1: TUniPanel;
+    DBNavigator1: TUniDBNavigator;
+    Panel8: TUniPanel;
+    Panel9: TUniPanel;
+    Label1: TUniLabel;
+    Panel5: TUniPanel;
+    DBNavigator2: TUniDBNavigator;
+    QryPeriodINV_STATUS: TStringField;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormCreate(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure TblGLYearFilterRecord(DataSet: TDataSet;
+      var Accept: Boolean);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+function DoFindPeriod:Real;
+
+implementation
+{$R *.DFM}
+uses
+  IQMS.Common.RegFrm,
+  IQMS.Common.DataLib,
+  IQMS.Common.HelpHook;
+
+function DoFindPeriod:Real;
+var
+  frm : TFrmPeriod;
+begin
+  frm := TFrmPeriod.Create(uniGUIApplication.UniApplication);
+
+  frm.TblGLYear.Open;
+  frm.QryPeriod.Open;
+  frm.TblGLYear.Locate('ID', SelectValueAsFloat('select glyear_id from iqsys'), []);
+
+  if frm.ShowModal = mrOK then
+    Result := frm.QryPeriodID.AsFloat
+  else
+    Result := 0;
+end;
+
+procedure TFrmPeriod.FormCreate(Sender: TObject);
+begin
+  IQRegFormRead( self, [ self, gridYear, gridPeriod ]);
+end;
+
+procedure TFrmPeriod.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  IQRegFormWrite( self, [ self, gridYear, gridPeriod ]);
+end;
+
+procedure TFrmPeriod.FormActivate(Sender: TObject);
+begin
+  IQHelp.AssignHTMLFile( iqchmACCT{CHM}, iqhtmSETUP{HTM} );  {IQHelpHk.pas}
+end;
+
+procedure TFrmPeriod.TblGLYearFilterRecord(DataSet: TDataSet; var Accept: Boolean);
+begin
+  Accept := SelectValueFmtAsFloat('select GL.CheckGLYearEplant(%f, ''GLYEAR'') from dual', [TblGlYearID.asFloat]) = 1;
+end;
+
+end.

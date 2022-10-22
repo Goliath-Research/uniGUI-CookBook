@@ -1,0 +1,630 @@
+unit OeRel_Dlg;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  Vcl.Controls,
+  Vcl.Forms,
+  Math,
+//  Paste_Rel_OE,
+  Mask,
+  Vcl.wwdbedit,
+  Vcl.Wwdotdot,
+  Vcl.Wwdbcomb,
+  IQMS.WebVcl.SecurityRegister,
+//  Rep_Releases,
+  System.ImageList,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniSplitter,
+  uniPanel,
+  uniLabel,
+  uniImageList,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniEdit,
+  uniMultiItem,
+  uniComboBox,
+  uniDBComboBox,
+  uniDateTimePicker,
+  uniCheckBox,
+  uniButton,
+  System.Generics.Collections;
+
+type
+
+{$ENDREGION 'Temporary inclusion from IQShare\Rep_Releases.pas'}
+  TRecurrenceType = (rtOld, rtDaily, rtWeekly, rtMonthly, rtYearly);
+  TDailyOption    = (doEverySomeDays, doEveryWeekday);
+  TDayOfTheWeek   = (dSunday = 0, dMonday, dTuesday, dWednesday, dThursday, dFriday, dSaturday);
+  TDaysSelection  = set of TDayOfTheWeek;
+  TMonthlyOption  = (moDayEverySomeMonths, moDayPosWeekdayEverySomeMonths);
+  TMonthlyDayPos  = (mdFirst = 0, mdSecond, mdThird, mdFourth, mdLast);
+  TYearlyOption   = (yoOnSomeMonthDay, yoDayPosWeekdayOfSomeMonth);
+
+  TReleases       = TList<TDate>;
+  TRepeatingReleases = record
+
+    function GetReleaseType: string;
+    function GetReleases(ADate: TDateTime; ACount: integer): TReleases;
+
+    case recType: TRecurrenceType of
+      rtOld:
+        (
+          oldInterval: integer;
+        );
+      rtDaily:
+        (
+          dailyOption: TDailyOption;      // Every some days or weekdays
+          dailyEveryDays: integer;        // Right now we are using everySomeDays by default
+        );
+      rtWeekly:
+        (
+          weeklyEveryWeeks: integer;      // Every some weeks
+          weeklyEveryDays: TDaysSelection;      // on the selected days
+        );
+      rtMonthly:
+        (
+          monthlyOption: TMonthlyOption;    // Day 6th or First Thursday
+          monthlyDay: integer;              // Day 6th
+          monthlyDayPos: TMonthlyDayPos;    // First
+          monthlyDayOfWeek: TDayOfTheWeek; // Thursday
+          monthlyEveryMonths: integer;      // every 3 months
+        );
+      rtYearly:
+        (
+          yearlyEveryYears: integer;        // Every 2 years
+          yearlyOption: TYearlyOption;      // On August the 6th or On the first Thursday of August
+          yearlyMonth: integer;             // Month = August = 8
+          yearlyDay: integer;               // 6
+          yearlyDayPos: TMonthlyDayPos;     // First
+          yearlyDayOfWeek: TDayOfTheWeek;  // Thursday
+        );
+  end;
+{$ENDREGION}
+
+  TRelInputCargo = record
+    Count     : Integer;
+    Qty_Per   : Real;
+    Start_Date: TDateTime;
+    LeadDays  : integer;
+    Interval  : Real;
+    Overwrite : Boolean;
+    UseBlanket: Boolean;
+    AllItems  : Boolean;
+    Forecast  : Boolean;
+    Date_Type : string;
+    RepInterval: TRepeatingReleases;
+  end;
+
+  TFrmNewOeReleasesDialog = class(TUniForm)
+    Panel1: TUniPanel;
+    Panel2: TUniPanel;
+    Panel3: TUniPanel;
+    PnlRight1: TUniPanel;
+    PnlClient01: TUniPanel;
+    Splitter1: TUniSplitter;
+    PnlLeft01: TUniPanel;
+    PnlClient02: TUniPanel;
+    Label3: TUniLabel;
+    Label4: TUniLabel;
+    Label1: TUniLabel;
+    Label2: TUniLabel;
+    edtCount: TUniEdit;
+    edtQty: TUniEdit;
+    dtpStartDate: TUniDateTimePicker;
+    chkBlanket: TUniCheckBox;
+    PnlBtm1: TUniPanel;
+    chkAllItems: TUniCheckBox;
+    btnAppend: TUniButton;
+    brnOverwrite: TUniButton;
+    btnCancel: TUniButton;
+    Splitter2: TUniSplitter;
+    chkForecast: TUniCheckBox;
+    Label5: TUniLabel;
+    Bevel1: TUniPanel;
+    Label6: TUniLabel;
+    wwDBComboBoxDateType: TUniDBComboBox;
+    SR: TIQWebSecurityRegister;
+    ImageList1: TUniImageList;
+    edInterval: TUniEdit;
+    btnedtInterval: TUniButton;
+    procedure btnOKClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormActivate(Sender: TObject);
+    procedure chkBlanketClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure PnlClient02Resize(Sender: TObject);
+    procedure btnedtIntervalRightButtonClick(Sender: TObject);
+  private
+    { Private declarations }
+//    FPasteMode: TPasteMode;
+    FRelInputCargo: TRelInputCargo;
+
+    procedure LoadFrom( var ARelInputCargo: TRelInputCargo );
+    procedure SaveTo( var ARelInputCargo: TRelInputCargo );
+  public
+    { Public declarations }
+    constructor Create( AOwner: TComponent; ARelInputCargo: TRelInputCargo );
+  end;
+
+function DoReleasesDialog( AOwner: TComponent; var ARelInputCargo: TRelInputCargo ): Boolean;
+
+var
+  FrmNewOeReleasesDialog: TFrmNewOeReleasesDialog;
+
+implementation
+
+{$R *.DFM}
+
+uses
+  IQMS.Common.Controls,
+//  IQHelpHk,
+  IQMS.Common.Dialogs,
+  DateUtils;
+//  IQMisc,
+  IQMS.Common.Numbers,
+//  IQRegFrm,
+//  IQSecIns,
+//  po_rscstr;
+
+
+function TRepeatingReleases.GetReleaseType: string;
+begin
+  case recType of
+    rtDaily:
+      begin
+        // Default is every 7 days, but we can show something similar to
+        // the previous version by showing the days
+        if dailyOption = doEverySomeDays then
+          result := IntToStr( dailyEveryDays )
+        else
+          result := 'Daily';
+      end;
+    rtWeekly:   result := 'Weekly';
+    rtMonthly:  result := 'Monthly';
+    rtYearly:   result := 'Yearly';
+  end;
+end;
+
+function TRepeatingReleases.GetReleases(ADate: TDateTime; ACount: integer): TReleases;
+var
+  l : TReleases;
+  startDate: TDateTime;
+
+  function OurDayOfTheWeek(ADate: TDateTime): integer;
+  var
+    delphiDayOfTheWeek: integer;
+  begin
+    // Delphi uses Sunday = 7
+    delphiDayOfTheWeek := DayOfTheWeek(ADate);
+
+    // We need Sunday = 0
+    if delphiDayOfTheWeek = 7 then
+      result := 0
+    else
+      result := delphiDayOfTheWeek;
+  end;
+
+  procedure GenDailyReleasesEverySomeDays(days: integer);
+  begin
+    while ACount > 0 do
+      begin
+        if ADate >= startDate then
+          begin
+            l.Add(ADate);
+            Dec(ACount);
+          end;
+
+        ADate := ADate + days;
+      end;
+  end;
+
+  procedure GenDailyReleasesEveryWeekday;
+  var
+    dayOfWeek: integer;
+  begin
+    while ACount > 0 do
+      begin
+        dayOfWeek := OurDayOfTheWeek(ADate);
+
+        if (dayOfWeek in [1..5]) and (ADate >= startDate) then
+          begin
+            l.Add(ADate);
+            Dec(ACount);
+          end;
+
+        ADate := ADate + 1;
+      end;
+  end;
+
+  procedure GenWeeklyReleases(weeks: integer; onDays: TDaysSelection);
+  var
+    dayOfWeek: integer;
+    startOfWeek: TDateTime;
+  begin
+    // Day of week for the provided start date (ADate) - Sunday will be zero
+    dayOfWeek := OurDayOfTheWeek(ADate);
+
+    // Day of week for counting the weeks (Sunday of the first week)
+    startOfWeek := ADate - dayOfWeek;
+
+    while ACount > 0 do
+      begin
+        if (TDayOfTheWeek(dayOfWeek) in onDays) and (startOfWeek + dayOfWeek >= startDate) then
+          begin
+            // Day was selected
+            l.Add(startOfWeek + dayOfWeek);
+            Dec(ACount);
+          end;
+
+        dayOfWeek := (dayOfWeek + 1) mod 7;
+
+        if dayOfWeek = 0 then
+          begin
+            // Calculate Sunday of next week
+            startOfWeek := startOfWeek + 7 * weeks;
+          end;
+      end;
+  end;
+
+  procedure GenMonthlyReleasesEverySomeMonths(day, everyMonths: integer);
+  var
+    dayOfTheMonth: TDateTime;
+  begin
+    // Day of current month, ready to be increased by everyMonths
+    dayOfTheMonth := ADate - DayOf(ADate) + day;
+
+    while ACount > 0 do
+      begin
+        if dayOfTheMonth >= startDate then
+          begin
+            l.Add(dayOfTheMonth);
+            Dec(ACount);
+          end;
+
+        dayOfTheMonth := IncMonth(dayOfTheMonth, everyMonths);
+      end;
+  end;
+
+  procedure GenMonthlyReleasesTheDayPosDayOfWeekEverySomeMonths(
+    dayPos       : TMonthlyDayPos;
+    dayOfWeek    : TDayOfTheWeek;
+    everyMonths  : integer);
+  var
+    firstDayOfTheMonth: TDateTime;
+    lastDayOfTheMonth: TDateTime;
+    reqDay: integer;
+    calcDay: TDateTime;
+    dayOfWeekDiff: integer;
+  begin
+    // Day of current month, ready to be increased by everyMonths
+    firstDayOfTheMonth := ADate - DayOf(ADate) + 1;
+    lastDayOfTheMonth  := EndOfAMonth(YearOf(firstDayOfTheMonth), MonthOf(firstDayOfTheMonth));
+
+    while ACount > 0 do
+      begin
+        if dayPos = mdLast then
+          begin
+            calcDay := lastDayOfTheMonth;
+
+            reqDay := OurDayOfTheWeek(lastDayOfTheMonth);
+
+            // Adjust the day to be dayOfWeek
+            dayOfWeekDiff := ord(dayOfWeek) - reqDay;
+            if dayOfWeekDiff > 0 then
+              calcDay := calcDay - 7;
+            calcDay := calcDay + dayOfWeekDiff;
+          end
+        else
+          begin
+            calcDay := firstDayOfTheMonth;
+
+            // Locate the first dayOfWeek from firstDayOfTheMonth (zero-based)
+            reqDay := OurDayOfTheWeek(firstDayOfTheMonth);
+
+            // Adjust the day to be dayOfWeek
+            dayOfWeekDiff := ord(dayOfWeek) - reqDay;
+            if dayOfWeekDiff < 0 then
+              calcDay := calcDay + 7;
+            calcDay := calcDay + dayOfWeekDiff;
+
+            // Use dayPos (first, second, third, fourth) to calculate the day
+            calcDay := calcDay + ord(dayPos) * 7;
+          end;
+
+        ADate := calcDay;
+
+        if ADate >= startDate then
+        begin
+          l.Add(ADate);
+          Dec(ACount);
+        end;
+
+        firstDayOfTheMonth := IncMonth(firstDayOfTheMonth, everyMonths);
+        lastDayOfTheMonth  := EndOfAMonth(YearOf(firstDayOfTheMonth), MonthOf(firstDayOfTheMonth));
+      end;
+  end;
+
+  procedure GenYearlyReleasesEverySomeYears(month, day, everyYears: integer);
+  var
+    dayOfTheYear: TDateTime;
+  begin
+    dayOfTheYear := EncodeDate(YearOf(ADate), month, day);
+
+    while ACount > 0 do
+      begin
+        if dayOfTheYear >= startDate then
+          begin
+            l.Add(dayOfTheYear);
+            Dec(ACount);
+          end;
+
+        dayOfTheYear := IncYear(dayOfTheYear, everyYears);
+      end;
+  end;
+
+  procedure GenYearlyReleasesTheDayPosDayOfWeekEverySomeYears(
+    dayPos       : TMonthlyDayPos;
+    dayOfWeek    : TDayOfTheWeek;
+    month        : integer;
+    everyYears   : integer);
+  var
+    firstDayOfTheMonth: TDateTime;
+    lastDayOfTheMonth: TDateTime;
+    reqDay: integer;
+    calcDay: TDateTime;
+    dayOfWeekDiff: integer;
+  begin
+    // first day of requested month, ready to be increased by everyYears
+    firstDayOfTheMonth := EncodeDate(YearOf(ADate), month, 1);
+    lastDayOfTheMonth  := EndOfAMonth(YearOf(firstDayOfTheMonth), month);
+
+    while ACount > 0 do
+      begin
+        if dayPos = mdLast then
+          begin
+            calcDay := lastDayOfTheMonth;
+
+            reqDay := OurDayOfTheWeek(lastDayOfTheMonth);
+
+            // Adjust the day to be dayOfWeek
+            dayOfWeekDiff := ord(dayOfWeek) - reqDay;
+            if dayOfWeekDiff > 0 then
+              calcDay := calcDay - 7;
+            calcDay := calcDay - dayOfWeekDiff;
+          end
+        else
+          begin
+            calcDay := firstDayOfTheMonth;
+
+            // Locate the first dayOfWeek from firstDayOfTheMonth (zero-based)
+            reqDay := OurDayOfTheWeek(firstDayOfTheMonth);
+
+            // Adjust the day to be dayOfWeek
+            dayOfWeekDiff := ord(dayOfWeek) - reqDay;
+            if dayOfWeekDiff < 0 then
+              calcDay := calcDay + 7;
+            calcDay := calcDay + dayOfWeekDiff;
+
+            // Use dayPos (first, second, third, fourth) to calculate the day
+            calcDay := calcDay + ord(dayPos) * 7;
+          end;
+
+        ADate := calcDay;
+
+        if ADate >= startDate then
+        begin
+          l.Add(ADate);
+          Dec(ACount);
+        end;
+
+        firstDayOfTheMonth := IncYear(firstDayOfTheMonth, everyYears);
+        lastDayOfTheMonth  := EndOfAMonth(YearOf(firstDayOfTheMonth), month);
+      end;
+  end;
+
+begin
+  startDate := ADate;
+
+  l := TReleases.Create;
+  try
+    if ACount = 0 then
+      Exit;
+
+    case recType of
+      rtOld:
+        begin
+          GenDailyReleasesEverySomeDays(oldInterval);
+        end;
+      rtDaily:
+        begin
+          if dailyOption = doEverySomeDays then
+            GenDailyReleasesEverySomeDays(dailyEveryDays)
+          else
+            GenDailyReleasesEveryWeekday;
+        end;
+      rtWeekly:
+        begin
+          GenWeeklyReleases(weeklyEveryWeeks, weeklyEveryDays);
+        end;
+      rtMonthly:
+        begin
+          if monthlyOption = moDayEverySomeMonths then
+            GenMonthlyReleasesEverySomeMonths(monthlyDay, monthlyEveryMonths)
+          else
+            GenMonthlyReleasesTheDayPosDayOfWeekEverySomeMonths(
+              monthlyDayPos,
+              monthlyDayOfWeek,
+              monthlyEveryMonths);
+        end;
+      rtYearly:
+        begin
+          if yearlyOption = yoOnSomeMonthDay then
+            GenYearlyReleasesEverySomeYears(yearlyMonth, yearlyDay, yearlyEveryYears)
+          else
+            GenYearlyReleasesTheDayPosDayOfWeekEverySomeYears(
+              yearlyDayPos,
+              yearlyDayOfWeek,
+              yearlyMonth,
+              yearlyEveryYears);
+        end;
+    end;
+  finally
+    result := l;
+  end;
+end;
+
+function DoReleasesDialog( AOwner: TComponent; var ARelInputCargo: TRelInputCargo ): Boolean;
+begin
+  Result:= False;
+//  with TFrmNewOeReleasesDialog.Create( AOwner, ARelInputCargo ) do
+//  try
+//    Result:= ShowModal = mrOK;
+//    if Result then
+//      SaveTo( ARelInputCargo );
+//  finally
+//    Free;
+//  end;
+end;
+
+constructor TFrmNewOeReleasesDialog.Create( AOwner: TComponent; ARelInputCargo: TRelInputCargo );
+var
+  AScalarValue: Boolean;
+begin
+  inherited Create( AOwner );
+//  FPasteMode:= pmCancel;
+
+  FRelInputCargo := ARelInputCargo;
+  LoadFrom( FRelInputCargo );
+
+//  IQRegFormRead( self, [ self, PnlLeft01, PnlRight1 ]);
+//  if IQRegBooleanScalarRead( self, 'UseBlanket', AScalarValue ) then
+//     chkBlanket.Checked:= AScalarValue;
+//
+//  if IQRegBooleanScalarRead( self, 'Forecast', AScalarValue ) then
+//     chkForecast.Checked:= AScalarValue;
+//
+//  if IQRegBooleanScalarRead( self, 'AllItems', AScalarValue ) then
+//     chkAllItems.Checked:= AScalarValue;
+
+//  IQMS.Common.Controls.ResizeCheckBoxes(Self, PnlBtm1);
+//  IQMS.Common.Controls.ResizeCheckBoxes(Self, PnlRight1);
+end;
+
+procedure TFrmNewOeReleasesDialog.FormClose(Sender: TObject;  var Action: TCloseAction);
+begin
+//  IQRegFormWrite( self, [ self, PnlLeft01, PnlRight1 ]);
+//  IQRegBooleanScalarWrite( self, 'UseBlanket', chkBlanket.Checked );
+//  IQRegBooleanScalarWrite( self, 'AllItems', chkAllItems.Checked );
+//  IQRegBooleanScalarWrite( self, 'Forecast', chkForecast.Checked );
+end;
+
+procedure TFrmNewOeReleasesDialog.LoadFrom( var ARelInputCargo: TRelInputCargo );
+begin
+  with ARelInputCargo do
+  begin
+    edtCount.Text        := IntToStr( IfThen( Count = 0, 1, Count ));
+//    dtpStartDate.Date    := IfThen( Start_Date = 0, Date, Start_Date + LeadDays);
+
+    if RepInterval.recType = rtOld then
+      begin
+        RepInterval.recType         := rtDaily;
+        RepInterval.dailyOption     := doEverySomeDays;
+        RepInterval.dailyEveryDays  := 7;
+      end;
+
+    edInterval.Text := RepInterval.GetReleaseType;
+
+    edtQty.Text     := FloatToStr( Qty_Per );
+//    wwDBComboBoxDateType.ItemIndex:= wwDBComboBoxDateType.Items.IndexOf( Date_Type );
+  end;
+end;
+
+procedure TFrmNewOeReleasesDialog.SaveTo( var ARelInputCargo: TRelInputCargo );
+begin
+  with ARelInputCargo do
+  begin
+    Count     := StrToInt(edtCount.Text);
+//    Start_Date:= dtpStartDate.Date;
+
+    RepInterval := FRelInputCargo.RepInterval;
+
+    if chkBlanket.Checked then
+       Qty_Per:= 0
+    else
+       Qty_Per:= StrToFloat(edtQty.Text);
+    Overwrite := False; //(FPasteMode = pmOverwrite);
+    UseBlanket:= chkBlanket.Checked;
+    Forecast  := chkForecast.Checked;
+    AllItems  := chkAllItems.Checked;
+//    Date_Type := wwDBComboBoxDateType.GetComboValue( wwDBComboBoxDateType.Text );
+  end;
+end;
+
+procedure TFrmNewOeReleasesDialog.btnOKClick(Sender: TObject);
+var
+  interval: integer;
+begin
+  {Validate}
+//  IQAssert( StrToInt(edtCount.Text) > 0,      'Number of releases must be greater than 0');
+//  IQAssert( chkBlanket.Checked or (StrToFloat(edtQty.Text) > 0), 'Qty must be greater than 0');
+//  if IsStringValidInteger(edInterval.Text, interval) then
+//  begin
+//    IQAssert( interval > 0, 'Number of intervals must be greater than 0');
+//
+//    with FRelInputCargo.RepInterval do
+//    begin
+//      recType        := rtDaily;
+//      dailyOption    := doEverySomeDays;
+//      dailyEveryDays := interval;
+//    end;
+//  end;
+
+//  if (FRelInputCargo.LeadDays > 0) and
+//     (Date() + FRelInputCargo.LeadDays > dtpStartDate.Date) and
+//     not IQConfirmYNWithSecurity(po_rscstr.cTXT0000127, 'FrmPoBaseGenerateReleases', true)
+//    then
+//      dtpStartDate.Date := Date() + FRelInputCargo.LeadDays;
+//
+//  if Sender = btnAppend then
+//     FPasteMode:= pmAppend
+//  else if Sender = brnOverwrite then
+//     FPasteMode:= pmOverwrite;
+
+  ModalResult:= mrOK;
+end;
+
+procedure TFrmNewOeReleasesDialog.FormActivate(Sender: TObject);
+begin
+//  IQHelp.AssignHTMLFile( iqchmMFG{CHM}, iqhtmSALES_ORDER{HTM} );  {IQHelpHk.pas}
+end;
+
+procedure TFrmNewOeReleasesDialog.btnedtIntervalRightButtonClick(Sender: TObject);
+begin
+//  if TFrmRepeatingReleases.DoShowModal(Self, FRelInputCargo.RepInterval) then
+//    edInterval.Text :=  FRelInputCargo.RepInterval.GetReleaseType;
+end;
+
+procedure TFrmNewOeReleasesDialog.chkBlanketClick(Sender: TObject);
+begin
+  IQEnableControl( edtQty, not chkBlanket.Checked );
+  if chkBlanket.Checked then
+     edtQty.Clear;
+end;
+
+procedure TFrmNewOeReleasesDialog.FormShow(Sender: TObject);
+begin
+//  EnsureSecurityInspectorOnTopOf( self );
+end;
+
+procedure TFrmNewOeReleasesDialog.PnlClient02Resize(Sender: TObject);
+begin
+  IQMS.Common.Controls.RefreshComponentsEx([wwDBComboBoxDateType], SR);
+end;
+
+end.

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2016/09/26 07:16:47.000.566,C:\p4\delphi\iqwin\web\Components\IQWebCommon\Source\IQMS.Common.WatchDogShare.pas=</Transaction>
+    <Transaction>2016/09/26 07:18:00.999.025,C:\p4\delphi\iqwin\web\Components\IQWebCommon\Source\IQMS.Common.SpellChecker.pas=</Transaction>
+    <Transaction>2016/10/03 08:18:12.000.671,=C:\p4\delphi\iqwin\web\Components\IQWebCommon\Source\IQMS.Common.CheckPoint.pas</Transaction>
+    <Transaction>2016/10/03 08:18:57.000.100,C:\p4\delphi\iqwin\web\Components\IQWebCommon\Source\IQMS.Common.CheckPoint.pas=</Transaction>
+    <Transaction>2016/10/03 11:22:49.000.838,=C:\p4\delphi\iqwin\web\Components\IQWebCommon\Source\IQMS.Common.Period.pas</Transaction>
+    <Transaction>2016/10/03 11:23:08.000.713,C:\p4\delphi\iqwin\web\Components\IQWebCommon\Source\IQMS.Common.Period.pas=</Transaction>
+  </Transactions>
+</BorlandProject>

@@ -1,0 +1,338 @@
+{ AA 08-22-2012
+  -- Added reference in "Requires" to dcldb.dcp in order to be able to list DBReg.pas in the uses clause. This unit is required to declare new
+  -- TAnyDataFieldProperty = class( TDataFieldProperty ) so TIQWebUDEmbeddedForm.SourceAttribiteField will show list of fields just like any DataField property.
+  -- In case it causes problems - remove the DBReg unit from the uses and remove dcldb.dcp from the Requires list
+}
+unit IQMS.WebVcl.Registration;
+
+interface
+
+procedure Register;
+
+implementation
+
+uses
+  // Delphi units
+  Classes,
+  TypInfo,
+  DesignIntf,
+  Dialogs,
+  // 3rd party tools
+//  {for TIQWebSearch surface wwDBGrid}
+//  wwPrpEdt,              {TSelectedFieldsProperty used in TIQSelectedFieldsProperty }
+//  Wwselfld,              {TwwSelectedPropertyType used in TIQSelectedFieldsProperty.Edit}
+//  wwDBGrid,
+
+  // IQWebConverted
+  IQMS.WebVcl.About,
+  IQMS.WebVcl.AppDef,
+  IQMS.WebVcl.Jump,
+  IQMS.WebVcl.RepDef,
+  IQMS.WebVcl.HPick,
+  IQMS.WebVcl.SecurityRegister,
+  IQMS.WebVcl.Search,
+  IQMS.WebVcl.DocumentsExternal,
+  IQMS.WebVcl.Time,
+  IQMS.WebVcl.Strings,
+  IQMS.WebVcl.UDRecView,
+  IQMS.WebVcl.EmailCorrespondence,
+  IQMS.WebVcl.QueryNavigator,
+  IQMS.WebVcl.DBExpress,
+  IQMS.WebVcl.HyperlinkCombo,
+  IQMS.WebVcl.Connection,
+  IQMS.WebVcl.PictureGallery,
+  IQMS.WebVcl.ToggleButton,
+  IQMS.WebVcl.DropDownButton,
+  IQMS.WebVcl.SoftEPlant,
+  IQMS.WebVcl.BomTreeView,
+  IQMS.WebVcl.MessageBar,
+  IQMS.PrintLabels.LabelMatrix,
+  IQMS.WebVcl.HyperLinkDialog,
+  IQMS.WebVcl.OptionDialog,
+  IQMS.WebVcl.CaptionPanel,
+  IQMS.WebVcl.BookMark,
+  IQMS.WebVcl.Actions,
+  IQMS.WebVcl.ActionBox,
+  IQMS.WebVcl.RecordViewPanel,
+  IQMS.WebVcl.HotLabel,
+  IQMS.WebVcl.UserDefinedLabel,
+  IQMS.WebVcl.DateControls,
+  IQMS.WebVcl.SpiralBook,
+  IQMS.WebVcl.VerticalCaptionBar,
+  IQMS.WebVcl.UDComboBox,
+  IQMS.WebVcl.NotificationBar,
+  IQMS.WebVcl.Animator,
+  IQMS.WebVcl.Tab,
+  IQMS.WebVcl.FloatSpinner,
+  IQMS.WebVcl.PreviewPanel,
+  IQMS.WebVcl.HeaderCheckListBox,
+  IQMS.WebVcl.KeyPad,
+  IQMS.WebVcl.BulletinViewer,
+  IQMS.WebVcl.UDEmbeddedForm,
+  IQMS.WebVcl.LargeOptionControls,
+  IQMS.WebVcl.LargeGrid,
+  IQMS.WebVcl.ExcelTbl,
+  IQMS.WebVcl.Trans,
+  IQMS.WebVcl.TransparentPanel,
+  IQMS.WebVcl.PkHideManager,
+  // Delphi unit required for using TComponentSprig
+  TreeIntf,
+  // UniGUI
+  uniGUIFrame,
+  // UniGUI Frames as Components
+  IQMS.WebVcl.Documents;
+
+type
+  TFrameClass = class of TUniFrame;
+
+procedure RegisterFramesAsComponents(const Page: string; const FrameClasses: array of TFrameClass);
+var
+  FrameClass: TFrameClass;
+begin
+  for FrameClass in FrameClasses do
+  begin
+    RegisterComponents(Page, [FrameClass]);
+    RegisterSprigType(FrameClass, TComponentSprig);
+  end;
+end;
+
+//  // IQ Units
+//  IQdbGrid,
+//  DBReg,
+//  vcl_share,
+//  ;
+
+//type
+//  TIQSelectedFieldsProperty = class( TSelectedFieldsProperty )  {ww}
+//     procedure Edit; override;
+//  end;
+//
+//type
+//  TIQwwDBGridComponentEditor = class( TwwDBGridComponentEditor )  {ww}
+//     procedure Edit; override;
+//  end;
+//
+//type
+//  TAnyDataFieldProperty = class( TDataFieldProperty )
+//  end;
+
+//
+//procedure TIQSelectedFieldsProperty.Edit;
+//var
+//  grid       : TwwDBGrid;
+//  useTFields: boolean;
+//  I: Integer;
+//begin
+//   if GetComponent(0) is TIQWebSearch then
+//      grid:= (GetComponent(0) as TIQWebSearch).wwDBGrid
+//   else if GetComponent(0) is TIQWebTouchScreenGrid then
+//      grid:= (GetComponent(0) as TIQWebTouchScreenGrid).Grid;
+//
+//
+//   {copied from wwPrpEdt.pas: TSelectedFieldsProperty.Edit}
+//   if (grid.dataSource=Nil) then begin
+//       MessageDlg('Grid requires a DataSource', mtInformation, [mbok], 0);
+//       Exit;
+//   end;
+//
+//   useTFields:= grid.useTFields;
+//   if (EditSelectedFieldsProperty(grid, grid.Selected, grid.dataSource.dataset,
+//      Designer, True, useTFields, sptNone)) then
+//   begin
+//      grid.useTFields:= useTFields;
+//      grid.redrawGrid;
+//   end
+//   else if not useTFields then grid.ApplySelected;
+//end;
+//
+//{ TIQwwDBGridComponentEditor }
+//
+//procedure TIQwwDBGridComponentEditor.Edit;
+//var
+//  grid       : TwwDBGrid;
+//  useTFields: boolean;
+//begin
+//
+//   if Component is TIQWebSearch then
+//      grid:= (Component as TIQWebSearch).wwDBGrid
+//   else if Component is TIQWebTouchScreenGrid then
+//      grid:= (Component as TIQWebTouchScreenGrid).Grid
+//   else if Component is TwwDBGrid then
+//      grid:= Component as TwwDBGrid
+//   else Exit;
+//
+//   if (grid.dataSource=Nil) then begin
+//       MessageDlg('Grid requires a DataSource', mtInformation, [mbok], 0);
+//       exit;
+//   end;
+//   if (grid.dataSource.dataset=Nil) then begin { 12/1/98 }
+//       MessageDlg('Grid requires a DataSet', mtInformation, [mbok], 0);
+//       exit;
+//   end;
+//   useTFields:= grid.useTFields;
+//   if (EditSelectedFieldsProperty(grid, grid.Selected, grid.dataSource.dataset,
+//      Designer, True, useTFields, sptNone)) then begin
+//      grid.useTFields:= useTFields;
+//      grid.redrawGrid;
+//   end
+//   else if not useTFields then grid.ApplySelected;
+//end;
+
+
+procedure Register;
+begin
+  RegisterComponents( 'IQMS Web Vcl', [
+                                TIQWebDbxQuery,
+                                TIQWebDbxTable,
+                                TIQWebAbout,
+                                TIQWebAppDef,
+                                TIQWebJump,
+                                TIQWebConnection,
+                                TIQWebHpick,
+                                TIQWebRepDef,
+                                TIQWebExtDoc,
+                                TIQWebSearch,
+                                TIQWebStrings,
+                                TIQWebTiming,
+                                TIQWebUDRecView,
+                                TIQWebQueryNavigator,
+                                TIQWebPictureGallery,
+                                TIQWebSecurityRegister,
+                                TIQWebTransIn,
+                                TIQWebTransOut,
+                                TIQWebTransMove,
+                                TIQWebTransDispo,
+                                TIQWebTransBackFlush,
+                                TIQWebTransAssoc,
+                                TIQWebTransFloorDispo,
+                                TIQWebDropDownButton,
+                                TIQWebSoftEPlant,
+                                TIQWebToggleButton,
+                                TIQWebBomTreeView,
+                                TIQWebLMPackSlip,
+                                TIQWebLMBom,
+                                TIQWebSDLMPackSlip,
+                                TIQWebLMRaw,
+                                TIQWebLMRT,
+                                TIQWebHyperDlg,
+                                TIQWebHyperlinkComboDlg,
+                                TIQWebOptionDialog,
+                                TIQWebBookMark,
+                                TIQWebActionList,
+                                TIQWebActionBox,
+                                TIQWebUserDefLabel,
+                                TIQWebHotLabel,
+                                TIQWebRecordViewPanel,
+                                TIQWebSpiralBook,
+                                TIQWebRecordViewPanel,
+                                TIQWebMessageBar,
+                                TIQWebUDComboBox,
+                                TIQWebCaptionPanel,
+                                TIQWebTimeComboBox,
+                                TIQWebDurationComboBox,
+                                TIQWebVerticalCaptionBar,
+                                TIQWebNotificationBar,
+                                TIQWebAnimator,
+                                TIQWebTab,
+                                TIQWebFloatSpinner,
+                                TIQWebPreviewWindow,
+                                TIQWebHeaderCheckListBox,
+                                TIQWebKeyPad,
+                                TIQWebBulletinViewer,
+                                TIQWebUDEmbeddedForm,
+                                TIQWebLargeCheckBox,
+                                TIQWebLargeRadioButton,
+                                TIQWebPivotTable,
+                                TIQWebTouchScreenGrid,
+                                TIQWebEMailCorrespondence,
+                                TIQWebTransparentPanel,
+                                TIQWebPkHideManager
+
+
+                                //-----------------
+
+//                                TIQdbGrid,
+//                                ,
+//
+                                ]);
+
+  RegisterFramesAsComponents
+  (
+    'IQMS Web Vcl',
+    [
+      TIQWebDocs
+    ]
+  );
+
+//  RegisterPropertyEditor(TypeInfo(string), TIQWebDocs, 'DatabaseName', TDatabaseNameProperty);
+//  RegisterPropertyEditor(TypeInfo(string), TIQWebDocs, 'TableName', TTableNameProperty);
+
+//  // Selected Fields Editor for TwwDBGrid controls
+//  RegisterPropertyEditor ( TypeInfo(TStrings), TIQWebSearch, 'Selected', TIQSelectedFieldsProperty);
+//  RegisterPropertyEditor ( TypeInfo(TStrings), TIQWebTouchScreenGrid, 'Selected', TIQSelectedFieldsProperty);
+//
+//  // used in IQMS.WebVcl.UDEmbeddedForm.pas for SourceAttributeField
+//  RegisterPropertyEditor ( TypeInfo(string), TIQWebUDEmbeddedForm, 'SourceAttributeField', TAnyDataFieldProperty);
+//
+//  // Component Editor for components based on TwwDBGrid
+//  RegisterComponentEditor(TIQWebSearch,        TIQwwDBGridComponentEditor);
+//  RegisterComponentEditor(TIQWebTouchScreenGrid, TIQwwDBGridComponentEditor);
+
+
+  // Hide these properties
+  DesignIntf.UnlistPublishedProperty(TIQWebDocs, 'Aggregates');
+  DesignIntf.UnlistPublishedProperty(TIQWebDocs, 'Aggregates');
+  DesignIntf.UnlistPublishedProperty(TIQWebDocs, 'Aggregates');
+  DesignIntf.UnlistPublishedProperty(TIQWebDocs, 'Aggregates');
+  DesignIntf.UnlistPublishedProperty(TIQWebDocs, 'Aggregates');
+  DesignIntf.UnlistPublishedProperty(TIQWebDocs, 'Aggregates');
+
+  DesignIntf.UnlistPublishedProperty(TIQWebDbxCustomDataSet, 'Aggregates');
+  DesignIntf.UnlistPublishedProperty(TIQWebDbxCustomDataSet, 'AggregatesActive');
+  DesignIntf.UnlistPublishedProperty(TIQWebDbxCustomDataSet, 'CommandText');
+  DesignIntf.UnlistPublishedProperty(TIQWebDbxCustomDataSet, 'ConnectionBroker');
+  DesignIntf.UnlistPublishedProperty(TIQWebDbxCustomDataSet, 'DataSetField');
+  DesignIntf.UnlistPublishedProperty(TIQWebDbxCustomDataSet, 'DisableStringTrim');
+  DesignIntf.UnlistPublishedProperty(TIQWebDbxCustomDataSet, 'FetchOnDemand');
+  DesignIntf.UnlistPublishedProperty(TIQWebDbxCustomDataSet, 'FileName');
+  DesignIntf.UnlistPublishedProperty(TIQWebDbxCustomDataSet, 'RemoteServer');
+  // 11/11/2011 DesignIntf.UnlistPublishedProperty(TIQWebDbxCustomDataSet, 'PacketRecords');
+  DesignIntf.UnlistPublishedProperty(TIQWebDbxCustomDataSet, 'ProviderName');
+
+  DesignIntf.UnlistPublishedProperty(TIQWebDbxTable, 'AfterApplyUpdates');
+  DesignIntf.UnlistPublishedProperty(TIQWebDbxTable, 'AfterExecute');
+  DesignIntf.UnlistPublishedProperty(TIQWebDbxTable, 'AfterGetParams');
+  DesignIntf.UnlistPublishedProperty(TIQWebDbxTable, 'BeforeApplyUpdates');
+  DesignIntf.UnlistPublishedProperty(TIQWebDbxTable, 'BeforeExecute');
+  DesignIntf.UnlistPublishedProperty(TIQWebDbxTable, 'BeforeGetParams');
+  DesignIntf.UnlistPublishedProperty(TIQWebDbxTable, 'BeforeUpdateRecord');
+  DesignIntf.UnlistPublishedProperty(TIQWebDbxTable, 'ParamCheck');
+  DesignIntf.UnlistPublishedProperty(TIQWebDbxTable, 'Params');
+  DesignIntf.UnlistPublishedProperty(TIQWebDbxTable, 'SQL');
+
+  DesignIntf.UnlistPublishedProperty(TIQWebHyperlinkComboDlg, 'AutoFillDate');
+  DesignIntf.UnlistPublishedProperty(TIQWebHyperlinkComboDlg, 'ButtonEffects');
+  DesignIntf.UnlistPublishedProperty(TIQWebHyperlinkComboDlg, 'ButtonGlyph');
+  DesignIntf.UnlistPublishedProperty(TIQWebHyperlinkComboDlg, 'ButtonStyle');
+  DesignIntf.UnlistPublishedProperty(TIQWebHyperlinkComboDlg, 'NumbersOnly');
+  DesignIntf.UnlistPublishedProperty(TIQWebHyperlinkComboDlg, 'PasswordChar');
+  DesignIntf.UnlistPublishedProperty(TIQWebHyperlinkComboDlg, 'Style');
+  DesignIntf.UnlistPublishedProperty(TIQWebHyperlinkComboDlg, 'ShowButton');
+  DesignIntf.UnlistPublishedProperty(TIQWebHyperlinkComboDlg, 'PopupMenu');
+  DesignIntf.UnlistPublishedProperty(TIQWebHyperlinkComboDlg, 'WordWrap');
+
+  DesignIntf.UnlistPublishedProperty(TIQWebHyperlinkComboDlg, 'OnClick');
+  DesignIntf.UnlistPublishedProperty(TIQWebHyperlinkComboDlg, 'OnCustomDlg');
+  DesignIntf.UnlistPublishedProperty(TIQWebHyperlinkComboDlg, 'OnDblClick');
+  DesignIntf.UnlistPublishedProperty(TIQWebHyperlinkComboDlg, 'OnKeyDown');
+  DesignIntf.UnlistPublishedProperty(TIQWebHyperlinkComboDlg, 'OnKeyPress');
+  DesignIntf.UnlistPublishedProperty(TIQWebHyperlinkComboDlg, 'OnKeyUp');
+  DesignIntf.UnlistPublishedProperty(TIQWebHyperlinkComboDlg, 'OnMouseDown');
+  DesignIntf.UnlistPublishedProperty(TIQWebHyperlinkComboDlg, 'OnMouseUp');
+  DesignIntf.UnlistPublishedProperty(TIQWebHyperlinkComboDlg, 'OnMouseMove');
+
+
+end;
+
+end.
+

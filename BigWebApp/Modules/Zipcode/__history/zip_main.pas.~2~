@@ -1,0 +1,277 @@
+unit zip_main;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Data.DB,
+  System.Variants,
+  Vcl.Wwdbigrd,
+  Vcl.Wwdbgrid,
+  Vcl.Menus,
+  IQMS.common.RepDef, //  IQRepDef,
+  IQMS.WebVcl.About,
+  IQMS.WebVcl.SecurityRegister,
+  Vcl.Buttons,
+  IQMS.WebVcl.Search,
+  dm_zip,
+  FireDAC.Comp.Client,
+  FireDAC.Comp.DataSet,
+  FireDAC.Phys,
+  MainModule,
+  System.ImageList,
+  uniGUIBaseClasses,
+  uniImageList,
+  uniGUIClasses,
+  uniPanel,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniDBNavigator,
+  uniButton,
+  uniBitBtn,
+  uniSpeedButton, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, IQMS.WebVcl.RepDef, uniMainMenu,
+  Vcl.ExtCtrls, IQUniGrid, uniGUIFrame;
+
+type
+  TFrmZipCode = class(TUniForm)
+    PnlGrid: TUniPanel;
+    PnlToolbar: TUniPanel;
+    SrcZipCode: TDataSource;
+    NavMain: TUniDBNavigator;
+    Bevel1: TUniPanel;
+    MainMenu1: TUniMainMenu;
+    File1: TUniMenuItem;
+    Exit1: TUniMenuItem;
+    Reports1: TUniMenuItem;
+    Print1: TUniMenuItem;
+    PrinterSetup1: TUniMenuItem;
+    Help1: TUniMenuItem;
+    About1: TUniMenuItem;
+    IQAbout1: TIQWebAbout;
+    IQRepDef1: TIQWebRepDef;
+    SR: TIQWebSecurityRegister;
+    PrinterSetupDialog1: TPrinterSetupDialog;
+    Import1: TUniMenuItem;
+    Export1: TUniMenuItem;
+    N1: TUniMenuItem;
+    sbtnImport: TUniSpeedButton;
+    sbtnExport: TUniSpeedButton;
+    OpenDialog1: TOpenDialog;
+    SaveDialog1: TSaveDialog;
+    QryZipCode: TFDQuery;
+    QryZipCodeID: TBCDField;
+    QryZipCodeCITY: TStringField;
+    QryZipCodeSTATE: TStringField;
+    QryZipCodeCOUNTRY: TStringField;
+    Search1: TUniMenuItem;
+    N2: TUniMenuItem;
+    Grid: TIQUniGridControl;
+    QryZipCodeMANUAL: TStringField;
+    wwDBGrid1: TIQUniGridControl;
+    sbtnSearch: TUniSpeedButton;
+    PnlLegend: TUniPanel;
+    shpManual: TShape;
+    Administration1: TUniMenuItem;
+    N3: TUniMenuItem;
+    DeleteImportedRecords1: TUniMenuItem;
+    imgMenuImages: TUniImageList;
+    QryZipCodeZIP: TStringField;
+    Contents1: TUniMenuItem;
+    Bevel2: TUniPanel;
+    FDUpdateSQL1: TFDUpdateSQL;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Exit1Click(Sender: TObject);
+    procedure Print1Click(Sender: TObject);
+    procedure PrinterSetup1Click(Sender: TObject);
+    procedure About1Click(Sender: TObject);
+    procedure Import1Click(Sender: TObject);
+    procedure Export1Click(Sender: TObject);
+    procedure Search1Click(Sender: TObject);
+    procedure QryZipCodeNewRecord(DataSet: TDataSet);
+    procedure FormShow(Sender: TObject);
+    procedure wwDBGrid1CalcCellColors(Sender: TObject; Field: TField;
+      State: TGridDrawState; Highlight: Boolean; AFont: TFont;
+      ABrush: TBrush);
+    procedure DeleteImportedRecords1Click(Sender: TObject);
+    procedure Contents1Click(Sender: TObject);
+    procedure UniFormCreate(Sender: TObject);
+  strict private
+    { Private declarations }
+    DM: TZIP_DM;
+    FZipCode: String; // for filtering picklist
+    procedure DeleteZipCodeRecords;
+  public
+    { Public declarations }
+  function  DoShow;
+  //  class procedure DoShow(AOwner: TComponent);
+
+  end;
+
+var
+  FrmZipCode: TFrmZipCode;
+
+implementation
+
+{$R *.DFM}
+
+
+uses
+  iqappset,
+//  iqctrl,
+  IQMS.Common.Controls,
+  IQMS.Common.Dates,
+  iqhelphk,
+  IQMS.Common.DataLib,
+  IQMS.Common.mesg,//  iqmesg,
+  IQMS.Common.Miscellaneous,//  iqmisc,
+  IQMS.Common.RegFrm,//  iqregfrm,
+  IQMS.Common.ResStrings;
+//  zip_export,  desactivado hasta que las migre
+  //zip_import,
+//  zip_rscstr;
+
+{ TFrmZipCode }
+
+{
+class procedure TFrmZipCode.DoShow(AOwner: TComponent);
+begin
+
+  TFrmZipCode.Create(Application).Show;
+end;
+ }
+function DoShow : Integer;
+var
+  aFrmZipCode : TFrmZipCode;
+begin
+  // Display the "Zip Code Lookup" form
+  aFrmZipCode := TFrmZipCode.Create(UniGUIApplication.UniApplication);
+  aFrmZipCode.ShowModal;
+//  Result := aFrmZipCod.Selection;
+end;
+
+
+
+
+procedure TFrmZipCode.FormShow(Sender: TObject);
+begin
+  IQRegFormRead(Self, [Self, Grid.Wwdbgrid]); // iqregfrm.pas
+  Grid.Wwdbgrid.Ctl3D := FALSE;
+
+end;
+
+procedure TFrmZipCode.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+  RestoreForm(Self); // iqctrl.pas
+  IQRegFormWrite(Self, [Self, Grid.Wwdbgrid]); // iqregfrm.pas
+end;
+
+procedure TFrmZipCode.Exit1Click(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TFrmZipCode.Print1Click(Sender: TObject);
+begin
+  IQRepDef1.Execute;
+end;
+
+procedure TFrmZipCode.PrinterSetup1Click(Sender: TObject);
+begin
+  PrinterSetupDialog1.Execute;
+end;
+
+procedure TFrmZipCode.About1Click(Sender: TObject);
+begin
+  IQAbout1.Execute;
+end;
+
+procedure TFrmZipCode.Import1Click(Sender: TObject);
+begin
+//  if TFrmZipImport.DoShowModal(Self) then
+//    ReOpen(QryZipCode);
+end;
+
+procedure TFrmZipCode.Export1Click(Sender: TObject);
+begin
+//  TFrmZipExport.DoShow(Self);
+end;
+
+procedure TFrmZipCode.Search1Click(Sender: TObject);
+begin
+  with DM.PkZipCode do
+    if Execute then
+      QryZipCode.Locate('ID', System.Variants.VarAsType(GetValue('ID'),
+        varInt64), []);
+end;
+
+procedure TFrmZipCode.UniFormCreate(Sender: TObject);
+begin
+     FZipCode := '';
+  DM := TZIP_DM.Create(Self);
+  inherited Create(AOwner);
+  DM.Name := '';
+  ReOpen(QryZipCode);
+  CenterForm(Self); // iqctrl.pas
+  sbtnImport.Enabled := SR.Enabled['Import1'];
+  sbtnExport.Enabled := SR.Enabled['Export1'];
+  iqctrl.ResizeNavBar(NavMain);
+  // Application initialization
+  AssignApplicationSettings(Application); // iqappset
+  IQCalculateTimeZoneDiff; // iqdate
+end;
+
+procedure TFrmZipCode.QryZipCodeNewRecord(DataSet: TDataSet);
+begin
+  QryZipCodeID.AsLargeInt := GetNextID('ZIPCODE');
+end;
+
+procedure TFrmZipCode.DeleteZipCodeRecords;
+begin
+  ExecuteCommand('delete from zipcode where nvl(manual,''N'') <> ''Y''');
+end;
+
+procedure TFrmZipCode.wwDBGrid1CalcCellColors(Sender: TObject;
+  Field: TField; State: TGridDrawState; Highlight: Boolean; AFont: TFont;
+  ABrush: TBrush);
+begin
+  if Highlight then
+    Exit;
+
+  if (QryZipCodeMANUAL.AsString = 'Y') then
+    ABrush.Color := shpManual.Brush.Color;
+
+end;
+
+procedure TFrmZipCode.DeleteImportedRecords1Click(Sender: TObject);
+begin
+  // zip_rscstr.cTXT000004 = 'Delete all imported zip code records?';
+  if IQConfirmYN(zip_rscstr.cTXT000004) then
+    try
+      QryZipCode.DisableControls;
+      QryZipCode.Close;
+      DeleteZipCodeRecords;
+      QryZipCode.Open;
+      Beep;
+    finally
+      QryZipCode.EnableControls;
+    end;
+end;
+
+procedure TFrmZipCode.Contents1Click(Sender: TObject);
+begin
+  IQHelp.AssignHTMLFile(iqchmSETUP, iqhtmSETUPch4); // IQHelpHk.pas
+  IQHelp.HelpContext(Self.HelpContext);
+end;
+
+end.

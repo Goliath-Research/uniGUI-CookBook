@@ -1,0 +1,272 @@
+unit IQMS.WebVcl.HPickSortCriteriaPickList;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Controls,
+  Vcl.Forms,
+  Data.DB,
+  Datasnap.DBClient,
+//  wwDialog,
+//  Vcl.Wwfltdlg,
+  FireDAC.Comp.Client,
+  FireDAC.Comp.DataSet,
+  FireDAC.Phys,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniPanel,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  IQMS.WebVcl.HpickBase,
+  uniButton,
+  uniDBNavigator, IQUniGrid, uniGUIFrame, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
+  IQMS.WebVcl.HPick;
+
+type
+  TFrmHPickSortCriteriaPickList = class(TUniForm)
+    pnlMain: TUniPanel;
+    Panel2: TUniPanel;
+    NavMain: TUniDBNavigator;
+    cdsCriterias: TClientDataSet;
+    srcFilters: TDataSource;
+    pnlBottom: TUniPanel;
+    Panel1: TUniPanel;
+    btnOK: TUniButton;
+    btnCancel: TUniButton;
+    pnlGrid: TUniPanel;
+    wwDBGrid1: TIQUniGridControl;
+    cdsCriteriasCRITERIA_NAME: TStringField;
+    procedure btnOKClick(Sender: TObject);
+    procedure wwDBGrid1DblClick(Sender: TObject);
+    procedure cdsCriteriasBeforeInsert(DataSet: TDataSet);
+    procedure cdsCriteriasBeforeDelete(DataSet: TDataSet);
+  private
+    { Private declarations }
+    FParentKeyName: string;
+    FSortColsList: TList;
+    FPickListOwner: TComponent;
+    procedure PopulateCriteriaNamesList;
+    procedure DeleteCriteriaByName(AName: string);
+    function GetSelectedCriteriaName: string;
+    procedure AddCurrentCriteria;
+    function FieldsListToString: string;
+    procedure StringToFieldsList( strFields: string );
+  public
+    { Public declarations }
+    constructor Create( AOwner, APickListOwner: TComponent; ASortColsList: TList; AParentKeyName: string );
+    property SelectedCriteriaName: string read GetSelectedCriteriaName;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  IQMS.Common.RegFrm,
+  IQMS.Common.Miscellaneous,
+  IQMS.Common.Dialogs,
+  IQMS.Common.InputQuery,
+  IQMS.Common.StringUtils,
+  IQMS.WebVcl.ResourceStrings;
+
+{ TFrmHPickFilterPickList }
+
+constructor TFrmHPickSortCriteriaPickList.Create(AOwner,
+  APickListOwner: TComponent; ASortColsList: TList; AParentKeyName: string );
+begin
+  FParentKeyName:= AParentKeyName;
+  FSortColsList := ASortColsList;
+  FPickListOwner:= APickListOwner;
+
+  inherited Create(AOwner);   // AOwner is the picklist
+
+  PopulateCriteriaNamesList();
+end;
+
+function TFrmHPickSortCriteriaPickList.GetSelectedCriteriaName: string;
+begin
+  if cdsCriterias.Eof and cdsCriterias.Bof then
+     Result:= ''
+  else
+     Result:= cdsCriteriasCRITERIA_NAME.asString;
+end;
+
+procedure TFrmHPickSortCriteriaPickList.PopulateCriteriaNamesList;
+var
+  AList: TStringList;
+  I: Integer;
+begin
+  AList:= TStringList.Create;
+  try
+    with TIQRegForm.Create( self.Owner.Owner ) do
+    try
+      GetKeyNamesOf( self.FParentKeyName, AList );
+    finally
+      Free;
+    end;
+
+    cdsCriterias.Close;
+    cdsCriterias.CreateDataSet;
+    cdsCriterias.Open;
+
+    for I:= 0 to AList.Count - 1 do
+    begin
+      cdsCriterias.Append;
+      cdsCriteriasCRITERIA_NAME.asString:= AList[ I ];
+      cdsCriterias.Post;
+    end;
+    cdsCriterias.First;
+
+  finally
+    AList.Free;
+  end;
+end;
+
+procedure TFrmHPickSortCriteriaPickList.wwDBGrid1DblClick(Sender: TObject);
+begin
+  btnOKClick(Sender);
+end;
+
+procedure TFrmHPickSortCriteriaPickList.DeleteCriteriaByName( AName: string );
+var
+  AKey: string;
+begin
+  with TIQRegForm.Create( FPickListOwner ) do
+  try
+    // \Software\IQMS\IQWin32\Iqwin32.exe\TBOM_DM\PkMfg\AdvancedFilter\Filter Name 1
+    AKey:= Format( '%s\%s\%s', [ FormPath, FParentKeyName, AName ]);
+    // IQMS.WebVcl.ResourceStrings.cTXT0000540 =
+    // 'Unable to remove filter record.  Operation aborted.';
+    IQAssert( DeleteKey( AKey ), IQMS.WebVcl.ResourceStrings.cTXT0000540);
+  finally
+    Free;
+  end;
+end;
+
+procedure TFrmHPickSortCriteriaPickList.AddCurrentCriteria;
+var
+  ACriteriaName: string;
+begin
+  // IQMS.WebVcl.ResourceStrings.cTXT0000545 = 'Please enter a sort criteria.';
+  IQAssert( FSortColsList.Count > 0, IQMS.WebVcl.ResourceStrings.cTXT0000545);
+
+  // IQMS.WebVcl.ResourceStrings.cTXT0000546 = 'Add Sort Criteria';
+  // IQMS.WebVcl.ResourceStrings.cTXT0000547 = 'Enter the criteria name';
+  if not (IQInputQuery(IQMS.WebVcl.ResourceStrings.cTXT0000546, IQMS.WebVcl.ResourceStrings.cTXT0000547,
+    ACriteriaName) and (Trim(ACriteriaName) <> '')) then
+    System.SysUtils.Abort;
+
+  // IQMS.WebVcl.ResourceStrings.cTXT0000548 =
+  // 'Criteria name, %s, already exists.  Please enter a unique name.';
+  IQAssert(not cdsCriterias.Locate('CRITERIA_NAME', ACriteriaName,
+    [loCaseInsensitive]),
+    Format(IQMS.WebVcl.ResourceStrings.cTXT0000548, [ ACriteriaName ]));
+
+  with TIQRegForm.Create( FPickListOwner ) do
+  try
+    // \Software\IQMS\IQWin32\Iqwin32.exe\TBOM_DM\PkMfg\AdvancedFilter\Filter Name 1
+    Path:= Format( '%s\%s\%s', [ FormPath, FParentKeyName, ACriteriaName ]);
+    if KeyIsOpen then
+       WriteString('ScalarValue', FieldsListToString());
+  finally
+    Free;
+  end;
+
+  cdsCriterias.Append;
+  cdsCriteriasCRITERIA_NAME.asString:= ACriteriaName;
+  cdsCriterias.Post;
+end;
+
+
+procedure TFrmHPickSortCriteriaPickList.btnOKClick(Sender: TObject);
+var
+  AKey: string;
+  S: string;
+begin
+  if GetSelectedCriteriaName = '' then
+  begin
+    ModalResult:= mrCancel;
+    EXIT;
+  end;
+
+  with TIQRegForm.Create( FPickListOwner ) do
+  try
+    // Ex Key: FrmRealTime\AdvancedFilterList\Some Filter Name
+    Path:= Format( '%s\%s\%s', [FormPath, FParentKeyName,
+      GetSelectedCriteriaName]);
+    if KeyIsOpen then
+       S:= ReadString( 'ScalarValue' );
+    StringToFieldsList( S );
+  finally
+    Free;
+  end;
+
+  ModalResult:= mrOK;
+end;
+
+
+procedure TFrmHPickSortCriteriaPickList.cdsCriteriasBeforeDelete(
+  DataSet: TDataSet);
+begin
+
+      // IQMS.WebVcl.ResourceStrings.cTXT0000485 = 'Delete record?';
+      if IQConfirmYN(IQMS.WebVcl.ResourceStrings.cTXT0000485) then
+         DeleteCriteriaByName( cdsCriteriasCRITERIA_NAME.asString )
+      else
+         System.SysUtils.Abort;
+end;
+
+procedure TFrmHPickSortCriteriaPickList.cdsCriteriasBeforeInsert(
+  DataSet: TDataSet);
+begin
+  AddCurrentCriteria;
+  ABORT;
+end;
+
+function TFrmHPickSortCriteriaPickList.FieldsListToString: string;
+var
+  I: Integer;
+begin
+  Result:= '';
+  for I:= 0 to  FSortColsList.Count - 1 do
+    if I = 0 then
+       Result:= TField(FSortColsList[ i ]).FieldName
+    else
+       Result:= Result + ',' + TField(FSortColsList[ i ]).FieldName;
+end;
+
+
+procedure TFrmHPickSortCriteriaPickList.StringToFieldsList( strFields: string );
+var
+  I: Integer;
+  ATokens: Integer;
+  AQuery: TFDQuery;
+begin
+  if Owner is TFrmPickListBase then
+     AQuery:= TFrmPickListBase(Owner).Query;
+
+  if not (Assigned(AQuery) and (AQuery.State = dsBrowse)) then
+     EXIT;
+
+  if strFields <> '' then
+  begin
+    FSortColsList.Clear;
+    ATokens := NumToken( strFields, ',');
+    for I:= 1 to ATokens do
+      if AQuery.FindField( GetToken( strFields, ',',  I)) <> nil then
+         FSortColsList.Add( AQuery.FieldByName( GetToken( strFields, ',', I)));
+  end;
+
+end;
+
+
+end.
+
+

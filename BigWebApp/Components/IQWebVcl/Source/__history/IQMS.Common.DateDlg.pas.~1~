@@ -1,0 +1,238 @@
+unit IQMS.Common.DateDlg;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Buttons,
+  System.DateUtils,
+  wwmonthcalendar,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniButton,
+  uniBitBtn,
+  uniEdit,
+  uniMultiItem,
+  uniComboBox,
+  uniPanel,
+  UniCalendar,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication, uniSpinEdit;
+
+type
+  TFrmSelectDate = class(TUniForm)
+    PnlCalendar: TUniPanel;
+    PnlButtons: TUniPanel;
+    Panel1: TUniPanel;
+    cmbMonth: TUniComboBox;
+    btnOk: TUniBitBtn;
+    btnCancel: TUniBitBtn;
+    Calendar: TUniCalendar;
+    udYear: TUniSpinEdit;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure DoCalendarKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CalendarClick(Sender: TObject);
+    procedure cmbMonthChange(Sender: TObject);
+    procedure edtYearChange(Sender: TObject);
+  private
+    { Private declarations }
+    function LastDayOfMonth(const ADate: TDateTime ): Boolean;
+    function FirstDayOfMonth(const ADate: TDateTime ): Boolean;
+    procedure UpdateComboBoxMonthNames;
+  public
+    { Public declarations }
+    constructor Create(AOwner: TComponent; ADate: TDateTime; ACaption: String);
+  end;
+
+  function GetDateDialog( var ADate: TDateTime; ACaption: String = ''): Boolean;
+
+var
+  FrmSelectDate: TFrmSelectDate;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  IQMS.Common.Dates,
+  IQMS.Common.RegFrm,
+  IQMS.Common.Numbers;
+
+function GetDateDialog( var ADate: TDateTime; ACaption: String): Boolean;
+begin
+  with TFrmSelectDate.Create(Application, ADate, ACaption) do
+  try
+     Result:= ShowModal = mrOK;
+     if Result then
+        ADate := Trunc(Calendar.Date);
+  finally
+     Free;
+  end
+end;
+
+constructor TFrmSelectDate.Create(AOwner: TComponent; ADate: TDateTime; ACaption: String);
+var
+  AMonth, dummy:word;
+begin
+  inherited Create( AOwner );
+
+  UpdateComboBoxMonthNames;
+  if Trunc(ADate) > 0 then
+  begin
+    DecodeDate( ADate, dummy, AMonth, dummy );
+    cmbMonth.ItemIndex := AMonth - 1;
+  end;
+
+
+  if ACaption > '' then Self.Caption := ACaption;
+  Calendar.Date := IQMS.Common.Numbers.IIf(Trunc(ADate) > 0, ADate, Date );
+  CalendarClick(Calendar);
+  IQRegFormRead(Self, [Self]);
+end;
+
+procedure TFrmSelectDate.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  IQRegFormWrite(Self, [Self]);
+  Action:= caFree;
+end;
+
+procedure TFrmSelectDate.DoCalendarKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Key = VK_NEXT {pagedown}) and (Shift = []) then
+     begin
+       Calendar.Date := System.SysUtils.IncMonth(Calendar.Date, 1);
+       Key:= 0;
+     end
+
+  else if (Key = VK_NEXT) and ( ssCtrl in Shift ) then
+     begin
+       Calendar.Date := System.DateUtils.IncYear(Calendar.Date, 1);
+       Key:= 0;
+     end
+
+  else if (Key = VK_PRIOR) and (Shift = []) then
+     begin
+       Calendar.Date := System.SysUtils.IncMonth(Calendar.Date, -1);
+       Key:= 0;
+     end
+
+  else if (Key = VK_PRIOR) and ( ssCtrl in Shift ) then
+     begin
+       Calendar.Date := System.DateUtils.IncYear(Calendar.Date, -1);
+       Key:= 0;
+     end
+
+  else if (Key = VK_HOME) then
+     begin
+       Calendar.Date:= Date;
+       Key:= 0;
+     end;
+  CalendarClick(nil);
+end;
+
+function TFrmSelectDate.FirstDayOfMonth(const ADate: TDateTime): Boolean;
+begin
+  //Result:= FormatDateTime( 'MM', ADate - 1) <> FormatDateTime( 'MM', ADate );
+  Result := System.DateUtils.DayOfTheMonth(ADate) = 1;
+end;
+
+function TFrmSelectDate.LastDayOfMonth(const ADate: TDateTime): Boolean;
+begin
+  //Result:= FormatDateTime( 'MM', ADate + 1) <> FormatDateTime( 'MM', ADate );
+  Result := Trunc(ADate) <> Trunc(System.DateUtils.EndOfTheMonth(ADate))
+end;
+
+procedure TFrmSelectDate.UpdateComboBoxMonthNames;
+var
+   i, AItemIndex: Integer;
+begin
+  AItemIndex := cmbMonth.ItemIndex;
+  if AItemIndex = -1 then AItemIndex := 0;
+  try
+     cmbMonth.Items.BeginUpdate;
+     cmbMonth.Items.Clear;
+     for i := 1 to High(FormatSettings.LongMonthNames) do
+      cmbMonth.Items.Add(FormatSettings.LongMonthNames[i]);
+     cmbMonth.ItemIndex := AItemIndex;
+  finally
+     cmbMonth.Items.EndUpdate;
+  end;
+end;
+
+procedure TFrmSelectDate.CalendarClick(Sender: TObject);
+var
+   ev: TNotifyEvent;
+   evp: TNotifyEvent;
+   i: Integer;
+begin
+  try
+     ev := cmbMonth.OnChange;
+     cmbMonth.OnChange := NIL;
+
+     i := System.DateUtils.MonthOf(Calendar.Date);
+     if (i > 0) and (i < 13) then
+        cmbMonth.ItemIndex := i - 1;
+
+     udYear.Value := System.DateUtils.YearOf(Calendar.Date);
+
+  finally
+     cmbMonth.OnChange := ev;
+  end;
+end;
+
+procedure TFrmSelectDate.cmbMonthChange(Sender: TObject);
+var
+   AYear, AMonth, ADay: Word;
+   AGoodDate:boolean;
+begin
+  Application.ProcessMessages;
+  DecodeDate(Calendar.Date, AYear, AMonth, ADay);
+  AMonth := cmbMonth.ItemIndex + 1;
+  AGoodDate := false;
+  while not AGoodDate do
+  begin
+    try
+      Calendar.Date := EncodeDate(AYear, AMonth, ADay);
+      AGoodDate := true;
+    except
+      ADay := ADay - 1;
+      if ADay < 1 then
+        raise exception.Create('Invalid date');
+    end;
+  end
+end;
+
+procedure TFrmSelectDate.edtYearChange(Sender: TObject);
+var
+   AYear, AMonth, ADay: Word;
+   AGoodDate:boolean;
+begin
+  Application.ProcessMessages;
+  DecodeDate(Calendar.Date, AYear, AMonth, ADay);
+  AYear := udYear.Value;
+//  Calendar.Date := EncodeDate(AYear, AMonth, ADay);
+
+  AGoodDate := false;
+  while not AGoodDate do
+  begin
+    try
+      Calendar.Date := EncodeDate(AYear, AMonth, ADay);
+      AGoodDate := true;
+    except
+      ADay := ADay - 1;
+      if ADay < 1 then
+        raise exception.Create('Invalid date');
+    end;
+  end
+
+end;
+
+end.

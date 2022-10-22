@@ -1,0 +1,175 @@
+unit IQMS.Web.MicrosoftWord.Interop;
+
+interface
+
+uses
+  Winapi.Windows, System.Classes, System.SysUtils, System.Variants,
+  IQMS.Web.MicrosoftApplication, IQMS.Web.MicrosoftApplication.Interop,
+  IQMS.Web.MicrosoftWord;
+
+type
+  TMicrosoftWordInterop = class(TMicrosoftApplicationInterop, IMicrosoftApplication, IMicrosoftWord)
+  strict private
+    FTemplateName: string;
+    FDocumentName: string;
+    FVersion: Integer;
+  strict protected
+    function GetServerName: string; override;
+  public
+    constructor Create; reintroduce;
+    function Version: Integer; override;
+    procedure NewDocument; overload;
+    procedure NewDocument(ATemplateName: string); overload;
+    procedure OpenDocument(const AFileName: string; const AReadOnly: Boolean = False);
+    procedure SaveDocument;
+    procedure SaveAsDocument(const ANewFileName: string);
+    procedure CloseDocument;
+    function ActiveDocument: OLEVariant;
+    function Selection: OLEVariant;
+    //Properties
+    ///<summary> Microsoft Word Template to use when creating a new documents. </summary>
+    property TemplateName: string read FTemplateName write FTemplateName;
+    ///<summary> Microsoft Word document file name.
+    ///This value is populated when you call OpenDocument.
+    ///</summary>
+    property DocumentName: string read FDocumentName write FDocumentName;
+  end;
+
+resourcestring
+  cRsc001 = 'Could not connect to Microsoft Word.';
+  cRsc003 = 'Microsoft Word is not installed.';
+  cRsc004 = 'Cannot find file, %s.';
+
+implementation
+
+uses
+  IQMS.Web.MicrosoftApplication.Types,
+  IQMS.Common.Registry,
+  IQMS.Common.StringUtils,
+  System.Win.ComObj,
+  System.Win.Registry;
+
+{ TMicrosoftWordInterop }
+
+constructor TMicrosoftWordInterop.Create;
+begin
+  inherited Create;
+  FVersion := -1;
+end;
+
+function TMicrosoftWordInterop.ActiveDocument: OLEVariant;
+begin
+  Result := Unassigned;
+  if IsConnected then
+    Result := Application.ActiveDocument;
+end;
+
+procedure TMicrosoftWordInterop.CloseDocument;
+begin
+  if IsConnected then
+    Application.ActiveDocument.Close;
+end;
+
+function TMicrosoftWordInterop.GetServerName: string;
+begin
+  Result := IQMS.Web.MicrosoftApplication.Types.MICROSOFT_WORD_APPLICATION;
+end;
+
+procedure TMicrosoftWordInterop.NewDocument;
+begin
+  NewDocument(TemplateName);
+end;
+
+procedure TMicrosoftWordInterop.NewDocument(ATemplateName: string);
+begin
+  //Create a new document.  Use the template, if provided.
+  if IsConnected then
+  begin
+    //Create a new document with a template, if provided
+    if (ATemplateName > '') and FileExists(ATemplateName) then
+      Application.Documents.Add(Template := ATemplateName)
+      //Add a standard (Normal.dot) document
+    else
+      Application.Documents.Add;
+  end;
+end;
+
+procedure TMicrosoftWordInterop.OpenDocument(const AFileName: string; const AReadOnly: Boolean);
+begin
+  //Open the document as indicated by the DocumentName property
+  if IsConnected then
+  begin
+    //The document must already exist
+    if not FileExists(DocumentName) then
+      //cRsc004 = 'Cannot find file, %s.'
+      raise Exception.CreateFmt(cRsc004, [AFileName]);
+
+    //Open the document
+    Application.Documents.Open(FileName := AFileName);
+
+    FDocumentName := AFileName;
+  end;
+end;
+
+procedure TMicrosoftWordInterop.SaveAsDocument(const ANewFileName: string);
+begin
+  if IsConnected then
+    Application.ActiveDocument.SaveAs(ANewFileName);
+end;
+
+procedure TMicrosoftWordInterop.SaveDocument;
+begin
+  if IsConnected then
+    Application.ActiveDocument.Save;
+end;
+
+function TMicrosoftWordInterop.Selection: OLEVariant;
+begin
+  Result := Unassigned;
+  if IsConnected then
+    Result := Application.Selection;
+end;
+
+function TMicrosoftWordInterop.Version: Integer;
+var
+  AVersionString: string;
+  i: Integer;
+begin
+  //Return last value if we have already read the Registry.
+  Result := FVersion;
+
+  if FVersion = -1 then
+    try
+      //Try to read the Registry, but do so in read-only mode
+      try
+        with TIQWebRegistry.CreateRO do
+          try
+            RootKey := HKEY_CLASSES_ROOT;
+            if OpenKey('Word.Application\CurVer', False) then
+            begin
+              AVersionString := ReadString('');
+            end;
+          finally
+            Free;
+          end;
+      except
+        on ERegistryException do
+          FVersion := 0
+        else
+          raise;
+      end;
+
+      //If execution gets here, then this user has rights to read the
+      //Registry.  Now, parse the string value.
+      AVersionString := IQMS.Common.StringUtils.GetToken(AVersionString, '.', 3);
+      if AVersionString > '' then
+      begin
+        if not TryStrToInt(AVersionString, FVersion) then
+          FVersion := 0;
+      end;
+    finally
+      Result := FVersion;
+    end;
+end;
+
+end.

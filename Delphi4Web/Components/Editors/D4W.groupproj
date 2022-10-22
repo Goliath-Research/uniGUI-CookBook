@@ -1,0 +1,84 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{286E8E3E-E7A5-4D62-9DF0-92D8BBB93113}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Packages\D4WEditorsR.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Packages\D4WEditorsD.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="GridTest\D4WGridTest.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="EditTest\D4WEditorTest.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="GridModuleTest\D4WModuleFormDesignerTest.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="D4WEditorsR">
+        <MSBuild Projects="Packages\D4WEditorsR.dproj"/>
+    </Target>
+    <Target Name="D4WEditorsR:Clean">
+        <MSBuild Projects="Packages\D4WEditorsR.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="D4WEditorsR:Make">
+        <MSBuild Projects="Packages\D4WEditorsR.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="D4WEditorsD">
+        <MSBuild Projects="Packages\D4WEditorsD.dproj"/>
+    </Target>
+    <Target Name="D4WEditorsD:Clean">
+        <MSBuild Projects="Packages\D4WEditorsD.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="D4WEditorsD:Make">
+        <MSBuild Projects="Packages\D4WEditorsD.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="D4WGridTest">
+        <MSBuild Projects="GridTest\D4WGridTest.dproj"/>
+    </Target>
+    <Target Name="D4WGridTest:Clean">
+        <MSBuild Projects="GridTest\D4WGridTest.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="D4WGridTest:Make">
+        <MSBuild Projects="GridTest\D4WGridTest.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="D4WEditorTest">
+        <MSBuild Projects="EditTest\D4WEditorTest.dproj"/>
+    </Target>
+    <Target Name="D4WEditorTest:Clean">
+        <MSBuild Projects="EditTest\D4WEditorTest.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="D4WEditorTest:Make">
+        <MSBuild Projects="EditTest\D4WEditorTest.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="D4WModuleFormDesignerTest">
+        <MSBuild Projects="GridModuleTest\D4WModuleFormDesignerTest.dproj"/>
+    </Target>
+    <Target Name="D4WModuleFormDesignerTest:Clean">
+        <MSBuild Projects="GridModuleTest\D4WModuleFormDesignerTest.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="D4WModuleFormDesignerTest:Make">
+        <MSBuild Projects="GridModuleTest\D4WModuleFormDesignerTest.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="D4WEditorsR;D4WEditorsD;D4WGridTest;D4WEditorTest;D4WModuleFormDesignerTest"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="D4WEditorsR:Clean;D4WEditorsD:Clean;D4WGridTest:Clean;D4WEditorTest:Clean;D4WModuleFormDesignerTest:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="D4WEditorsR:Make;D4WEditorsD:Make;D4WGridTest:Make;D4WEditorTest:Make;D4WModuleFormDesignerTest:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

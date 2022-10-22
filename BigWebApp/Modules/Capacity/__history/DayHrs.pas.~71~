@@ -1,0 +1,569 @@
+unit DayHrs;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Controls,
+  Vcl.Forms,
+  System.Types,
+  Mask,
+  Data.DB,
+  IQMS.Common.UserMessages,
+  IQMS.WebVcl.Time,
+  FireDAC.Comp.Client,
+  FireDAC.Phys,
+  MainModule,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Stan.Async,
+  FireDAC.DApt,
+  FireDAC.Comp.DataSet,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniLabel,
+  uniPanel,
+  uniProgressBar,
+  uniGroupBox,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniButton,
+  uniCheckBox, IQMS.WebVcl.Strings;
+
+type
+  TFrmDayHrsCalc = class(TUniForm)
+    Panel1: TUniPanel;
+    Panel2: TUniPanel;
+    GroupBox1: TUniGroupBox;
+    QryWorkOrder: TFDQuery;
+    procSave_Day_Hrs: TFDStoredProc;
+    lblStatus: TUniLabel;
+    ProgressBar1: TUniProgressBar;
+    QryCenterTypes: TFDQuery;
+    QryCenterTypesCNTR_TYPE: TStringField;
+    procSave_Hrs_Avail: TFDStoredProc;
+    chkUpdateAvail: TUniCheckBox;
+    StoredProc1: TFDStoredProc;
+    chkIdealVsExistPOs: TUniCheckBox;
+    chkPlanning: TUniCheckBox;
+    QryCenterTypesMFGCELL_ID: TBCDField;
+    chkDayUseTotal: TUniCheckBox;
+    chkProjected: TUniCheckBox;
+    TM: TIQWebTiming;
+    Bevel1: TUniPanel;
+    Panel3: TUniPanel;
+    btnStatistics: TUniButton;
+    btnCalc: TUniButton;
+    btnCancel: TUniButton;
+    procedure FormCreate(Sender: TObject);
+    procedure btnCalcClick(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
+    procedure btnStatisticsClick(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+  private
+    { Private declarations }
+    FInProgress: Boolean;
+    FBeginCalc : Boolean;
+
+    function GetStatus : string;
+    procedure SetStatus( const AValue : string );
+    function GetProgress:Integer;
+    procedure SetProgress( AValue:Integer );
+    procedure BeforeCalc;
+    procedure CreateDayHrs;
+    procedure EnableButtons( AValue:Boolean );
+    procedure CreateAvailHrs;
+//    procedure IQAfterShowMessage( var Msg: TMessage ); message iq_AfterShowMessage;
+    procedure TruncateExisting;
+    procedure RecalcCentersStartEnd;
+    procedure ExecStoredProc( AProcName, ADescrip: string );
+    procedure TruncateHrs_Day_Avail;
+    procedure TruncateXcpt_Mat_Req;
+    procedure SetBeginCalc(Value : Boolean);
+    procedure SetModules  (Value : TStringDynArray);
+    function GetTimeList: TStringList;
+  public
+    { Public declarations }
+
+    property Status     : string          read GetStatus    write SetStatus;
+    property Progress   : Integer         read GetProgress  write SetProgress;
+    property BeginCalc  : Boolean                           write SetBeginCalc;
+    property Modules    : TStringDynArray                   write SetModules;
+    property TimeList   : TStringList     read GetTimeList;
+  end;
+
+function DoDayHrs( ABeginCalc : Boolean ):Boolean; overload;
+function DoDayHrs( AModules   : TStringDynArray ):Boolean; overload;
+function DoDayHrs( ABeginCalc : Boolean; var AList: TStrings ):Boolean; overload;
+
+implementation
+
+{$R *.DFM}
+
+uses
+  IQMS.Common.DataLib,
+  IQMS.Common.Locks,
+  IQMS.Common.RegFrm,
+  IQMS.Common.Dialogs,
+  IQMS.Common.Proc,
+  IQMS.Common.StringUtils;
+
+function DoDayHrs( ABeginCalc: Boolean ):Boolean;
+var
+  FrmDayHrsCalc: TFrmDayHrsCalc;
+begin
+  FrmDayHrsCalc := TFrmDayHrsCalc.Create(uniGUIApplication.UniApplication);
+  FrmDayHrsCalc.BeginCalc := ABeginCalc;
+  Result := FrmDayHrsCalc.ShowModal = mrOK;
+end;
+
+function DoDayHrs( AModules: TStringDynArray ):Boolean; overload;
+var
+  FrmDayHrsCalc: TFrmDayHrsCalc;
+begin
+  FrmDayHrsCalc := TFrmDayHrsCalc.Create(uniGUIApplication.UniApplication);
+  FrmDayHrsCalc.Modules := AModules;
+  Result:= FrmDayHrsCalc.ShowModal = mrOK;
+end;
+
+function DoDayHrs( ABeginCalc: Boolean; var AList: TStrings ):Boolean;
+var
+  FrmDayHrsCalc: TFrmDayHrsCalc;
+begin
+  FrmDayHrsCalc:=TFrmDayHrsCalc.Create(uniGUIApplication.UniApplication);
+  FrmDayHrsCalc.BeginCalc := ABeginCalc;
+  Result := FrmDayHrsCalc.ShowModal = mrOK;
+  if Result then
+  begin
+    AList.Free;
+    AList := FrmDayHrsCalc.TimeList;
+  end;
+end;
+
+procedure TFrmDayHrsCalc.FormCreate(Sender: TObject);
+begin
+  IQRegFormRead(self, [ self ]);
+  FInProgress := FALSE;
+end;
+
+procedure TFrmDayHrsCalc.FormDestroy(Sender: TObject);
+begin
+  {to be on the safe side lets reset v_mode again to zero otherwise
+   package mat_req will continue calculating mat req in IQCapacity mode}
+  try
+    ExecuteCommand('begin Mat_Req.Set_Mode_Explode_Per_1( 0 ); end;')
+  except
+  end;
+  IQRegFormWrite(self, [ self ]);
+end;
+
+procedure TFrmDayHrsCalc.IQAfterShowMessage( var Msg: TMessage );
+begin
+  btnCalcClick( NIL );
+end;
+
+function TFrmDayHrsCalc.GetStatus : string;
+begin
+  Result:= lblStatus.Caption;
+end;
+
+function TFrmDayHrsCalc.GetTimeList: TStringList;
+var
+  i : integer;
+begin
+  Result := TStringList.Create;
+
+  for i := 0 to TM.Items.Count - 1 do
+    if Assigned( TIQWebTimeCargo( TM.Items.Objects[ I ] )) then
+      with TIQWebTimeCargo( TM.Items.Objects[ I ]) do
+        Result.Add( Format( '%-30s Time = %8.4f sec', [  TM.Items[ I ], Counter ]));
+end;
+
+procedure TFrmDayHrsCalc.SetStatus( const AValue : string );
+begin
+  lblStatus.Caption:= AValue;
+  lblStatus.Update;
+end;
+
+function TFrmDayHrsCalc.GetProgress:Integer;
+begin
+  Result:= ProgressBar1.Position
+end;
+
+procedure TFrmDayHrsCalc.SetModules(Value : TStringDynArray);
+var
+  I: Integer;
+  msg:TMessage;
+begin
+ FBeginCalc:= TRUE;
+
+  {Reset all checkboxes}
+  for I:= 0 to ComponentCount - 1 do
+    if Components[ I ] is TUniCheckBox then
+       TUniCheckBox(Components[ I ]).Checked:= FALSE;
+
+  {Check only required ones}
+  for I:= 0 to High( Value ) do
+   if Value[ I ] = 'IDEAL_VS_EXISTING' then
+      chkIdealVsExistPOs.Checked:= TRUE;
+
+  //FBeginCalc:= FALSE;
+
+  {Start calcs}
+  IQAfterShowMessage(msg);
+end;
+
+procedure TFrmDayHrsCalc.SetBeginCalc(Value: Boolean);
+var
+msg:TMessage;
+begin
+  FBeginCalc:= Value;
+  if FBeginCalc then
+     IQAfterShowMessage(msg);
+end;
+
+procedure TFrmDayHrsCalc.SetProgress( AValue:Integer );
+begin
+  ProgressBar1.Position:= AValue;
+  Invalidate;
+end;
+
+procedure TFrmDayHrsCalc.btnCalcClick(Sender: TObject);
+var
+  IQCapacityLockHandle: string;
+begin
+//  if not DB_DataModule.AcquireIQLock( IQCapacityLockHandle, IQMS_CAPACITY, IQLOCK_EXCLUSIVE ) then
+//  begin
+//    IQWarning('Projected hours, parts and materials used are currently calculated by another user. Please try again later.');
+//    EXIT;
+//  end;
+
+  GroupBox1.Cursor:= crHourGlass;
+
+  try
+    EnableButtons( FALSE );
+    FInProgress:= TRUE;
+    Status:= 'Processing, Please Wait...';
+
+    TM.Clear;
+
+    if chkPlanning.Checked then
+    try
+      if chkProjected.Checked then
+      begin
+         TM.Start( 'Truncate Tables' );
+            BeforeCalc;
+         TM.Stop( 'Truncate Tables' );
+         Invalidate;
+
+         TM.Start( 'Disable Indexes' );
+            ExecStoredProc( 'IQCapacity.Drop_Indexes' , 'Disable Capacity Tables Indexes' );
+         TM.Stop( 'Disable Indexes' );
+         Invalidate;
+
+         TM.Start( 'Projected Items/Materials' );
+            CreateDayHrs;
+         TM.Stop( 'Projected Items/Materials' );
+         Invalidate;
+
+         TM.Start( 'Enable Capacity Tables Indexes' );
+            ExecStoredProc( 'IQCapacity.Create_Indexes' , 'Recreating Capacity Tables Indexes' );
+         TM.Stop( 'Enable Capacity Tables Indexes' );
+         Invalidate;
+
+         TM.Start( 'Reconciliation of Materials' );
+            ExecStoredProc( 'IQCapacity.Reconcile_Hard_Alloc' , 'Reconciliation of Materials' );
+         TM.Stop( 'Reconciliation of Materials' );
+         Invalidate;
+      end;
+
+      TM.Start( 'Calculate Total Usage' );
+      if chkDayUseTotal.Checked then
+         ExecStoredProc( 'IQCapacity.Assign_Day_Use_Total' , 'Assigning Daily Used Totals' );
+      TM.Stop( 'Calculate Total Usage' );
+      Invalidate;
+
+      TM.Start( 'Adjust Blend Components' );
+      if chkProjected.Checked then
+         ExecStoredProc( 'IQCapacity.Split_Negative_Blends', 'Splitting Blends Components' );
+      TM.Stop( 'Adjust Blend Components' );
+      Invalidate;
+
+    finally
+      TM.Start( 'Update Last Calc' );
+         ExecStoredProc( 'IQCapacity.After_calc_capacity', 'Updating Dependent Tables, Please Wait...' );
+      TM.Stop( 'Update Last Calc' );
+      Invalidate;
+    end;
+
+    // initialize progress for visual cues
+    if Progress < 33 then Progress := 33;
+
+    TM.Start( 'Material Exceptions' );
+    if chkIdealVsExistPOs.Checked then
+    begin
+       TruncateXcpt_Mat_Req;
+       ExecStoredProc( 'Mat_PO_Xcpt.Process_Items', 'Generating PO Exceptions' ); {this will populate xcpt_mat_req}
+    end;
+    TM.Stop( 'Material Exceptions' );
+    if Progress < 66 then Progress := 66;
+    Invalidate;
+
+    TM.Start( 'Populate Day_Mat_Req' );
+    if chkIdealVsExistPOs.Checked then
+       ExecStoredProc( 'Mat_PO_Xcpt.Populate_day_mat_req', 'Populating Daily Material Requirements' ); {this will populate day_mat_req}
+    TM.Stop( 'Populate Day_Mat_Req' );
+    Invalidate;
+
+    TM.Start( 'Available Hours' );
+    if chkUpdateAvail.Checked then
+    begin
+       TruncateHrs_Day_Avail;
+       ExecStoredProc( 'IQCapacity.Avail_Hrs_Drop_Indexes', 'Disable Avail Hrs Table Indexes' );
+       CreateAvailHrs;
+       ExecStoredProc( 'IQCapacity.Avail_Hrs_Create_Indexes', 'Enable Avail Hrs Table Indexes' );
+    end;
+    TM.Stop( 'Available Hours' );
+    Progress := 100;
+    Sleep(500); // let it flash on screen
+    Invalidate;
+
+  finally
+    GroupBox1.Cursor:= crDefault;
+    FInProgress:= FALSE;
+    EnableButtons( TRUE );
+    Status  := 'Finished.';
+    Progress:= 0;
+
+//    DB_DataModule.IQUnLock( IQCapacityLockHandle );
+  end;
+
+
+//  if Owner is TUniForm then
+//     PostMessage( TUniForm(Owner).Handle, iq_RefreshDataSets , 0, 0 );
+
+  if FBeginCalc then
+     ModalResult:= mrOK;
+end;
+
+procedure TFrmDayHrsCalc.EnableButtons( AValue:Boolean );
+var
+  I: Integer;
+begin
+  btnCalc.Enabled:= AValue;
+  for I:= 0 to ComponentCount - 1 do
+    if Components[ I ] is TUniCheckBox then
+       (Components[ I ] as TUniCheckBox).Enabled:= AValue;
+end;
+
+procedure TFrmDayHrsCalc.BeforeCalc;
+begin
+  try
+    Screen.Cursor:= crHourGlass;
+    try
+      TruncateExisting;
+      {Truncate tables and set mode of mat_req to 1 (per qty = 1. see mat_req package) }
+      ExecStoredProc( 'IQCapacity.Before_Calc_Capacity', 'Preparing tables for calcs...' );
+
+      {Recalc worl centres}
+      if chkPlanning.Checked then
+         RecalcCentersStartEnd;
+    finally
+      Screen.Cursor:= crDefault;
+    end;
+  except
+    on E:Exception do
+      if IQErrorYN( E.Message + #13#13'Abort Recalculation?') then
+         ABORT;
+  end;
+//   procBeforeCalc.ExecProc;
+end;
+
+procedure TFrmDayHrsCalc.TruncateExisting;
+begin
+  if chkPlanning.Checked then
+  begin
+    Status:= 'Resetting day/used materials, Please Wait...';
+    ExecuteCommand('truncate table day_use');
+
+    Status:= 'Resetting day/parts projected, Please Wait...';
+    ExecuteCommand('truncate table day_pts');
+
+    Status:= 'Resetting day/hours planned, Please Wait...';
+    ExecuteCommand('truncate table day_hrs');
+
+    Status:= 'Resetting day/used totals, Please Wait...';
+    ExecuteCommand('truncate table day_use_total');
+
+    Status:= 'Resetting labour hours, Please Wait...';
+    ExecuteCommand('truncate table day_labor');
+  end;
+
+  TruncateHrs_Day_Avail;
+  TruncateXcpt_Mat_Req;
+end;
+
+procedure TFrmDayHrsCalc.TruncateHrs_Day_Avail;
+begin
+  if chkUpdateAvail.Checked then
+  begin
+     Status:= 'Resetting available hours, Please Wait...';
+     ExecuteCommand('truncate table hrs_day_avail');
+  end;
+end;
+
+procedure TFrmDayHrsCalc.TruncateXcpt_Mat_Req;
+begin
+  if chkIdealVsExistPOs.Checked then
+  begin
+    Status:= 'Resetting po material exceptions, Please Wait...';
+    ExecuteCommand('truncate table xcpt_mat_req');
+  end;
+end;
+
+procedure TFrmDayHrsCalc.RecalcCentersStartEnd;
+begin
+  with TFDQuery.Create(Owner) do
+  try
+    ConnectionName:= 'IQFD';
+    SQL.Add('select ID, EQNO from work_center');
+    Open;
+    while not Eof do
+    begin
+      Status:= Format('Recalculating Center %s Start/End time ...', [ Trim(Fields[ 1 ].asString) ]);
+      Recalc_Center( Fields[ 0 ].asFloat, 0, 0  );
+      Next;
+    end;
+  finally
+    Free;
+  end;
+end;
+
+procedure TFrmDayHrsCalc.CreateDayHrs;
+var
+  I:Integer;
+  ARecCount: Real;
+begin
+   ProgressBar1.Visible:= TRUE;
+   QryWorkOrder.Open;
+   ARecCount:= QryWorkOrder.RecordCount;
+   Progress:= 0;
+   I:= 0;
+
+   while FInProgress and not QryWorkOrder.Eof do
+   begin
+     Inc(I);
+     Status:= Format( 'Processing Mfg# %s, WO# %d  (%d/%0.f)',
+                    [
+                      QryWorkOrder.FieldByName('mfgno').asString,
+                      QryWorkOrder.FieldByName('id').asInteger,
+                      I,
+                      ARecCount ]);
+
+     Progress:= Round( (I / QryWorkOrder.RecordCount) * 100 );
+     Application.ProcessMessages;
+
+     with procSave_Day_Hrs do
+     begin
+       Close;
+       Params[ 0 ].Value:= QryWorkOrder.FieldByName('ID').asFloat;
+       Prepare;
+       ExecProc;
+     end;
+     QryWorkOrder.Next;
+   end;
+   QryWorkOrder.Close;
+   ProgressBar1.Visible:= FALSE;
+end;
+
+procedure TFrmDayHrsCalc.CreateAvailHrs;
+var
+  I:Integer;
+begin
+   if not FInProgress then
+      EXIT;
+
+   ProgressBar1.Visible:= TRUE;
+   QryCenterTypes.Open;
+   Progress:= 0;
+   I:= 0;
+
+   while FInProgress and not QryCenterTypes.Eof do
+   begin
+     Inc(I);
+     Status:= Format( 'Processing Available Hours for Center Type %s',
+                    [ QryCenterTypes.FieldByName('cntr_type').asString ]);
+
+     Progress:= Round( (I / QryCenterTypes.RecordCount) * 100 );
+     Application.ProcessMessages;
+
+      with procSave_Hrs_Avail do
+      begin
+        Close;
+        ParamByName('v_cntr_type').asString:= QryCenterTypes.FieldByName('cntr_type').asString;
+        if QryCenterTypes.FieldByName('mfgcell_id').asFloat > 0 then
+           ParamByName('v_mfgcell_id').asFloat:= QryCenterTypes.FieldByName('mfgcell_id').asFloat
+        else
+           ParamByName('v_mfgcell_id').Clear;
+        Prepare;
+        ExecProc;
+      end;
+
+     // 08-26-2011 XE Migration
+     ExecuteCommandFmt('begin iqcapacity.save_avail_hrs( ''%s'', %s ); end;',
+               [ IQMS.Common.StringUtils.FixStr(QryCenterTypes.FieldByName('cntr_type').asString),
+                 IQMS.Common.StringUtils.FloatToStr0asNull( QryCenterTypes.FieldByName('mfgcell_id').asFloat, 'NULL' )]);
+
+     QryCenterTypes.Next;
+   end;
+   QryCenterTypes.Close;
+   ProgressBar1.Visible:= FALSE;
+end;
+
+procedure TFrmDayHrsCalc.btnCancelClick(Sender: TObject);
+begin
+  if FInProgress then
+  begin
+    if not IQWarningYN('Are you sure you want to cancel the evaluation?') then
+       EXIT;
+
+    FInProgress:= FALSE;
+  end
+  else
+    ModalResult := mrCancel;
+end;
+
+procedure TFrmDayHrsCalc.ExecStoredProc( AProcName, ADescrip: string );
+begin
+  if not FInProgress then
+     EXIT;
+
+  Status:= Format('%s ...', [ ADescrip ]);
+
+//  EnsureIQMSPrefix( AProcName );  {IQMS.Common.StringUtils. Puts IQMS in front of the name - solves AV in OraClient8.dll}
+
+  with StoredProc1 do
+  begin
+    Close;
+    StoredProcName:= UpperCase(AProcName);
+    Prepare;
+    ExecProc;
+  end;
+end;
+
+procedure TFrmDayHrsCalc.btnStatisticsClick(Sender: TObject);
+begin
+  TM.Display;
+end;
+
+end.

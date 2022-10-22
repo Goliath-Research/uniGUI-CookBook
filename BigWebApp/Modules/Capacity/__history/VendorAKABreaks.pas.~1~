@@ -1,0 +1,184 @@
+unit VendorAKABreaks;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Forms,
+  Data.DB,
+  vcl.wwdatsrc,
+  Vcl.Menus,
+  IQMS.WebVcl.About,
+  IQMS.WebVcl.Search,
+  FireDAC.Comp.Client,
+  FireDAC.Comp.DataSet,
+  FireDAC.Phys,
+  MainModule,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Stan.Async,
+  FireDAC.DApt,
+  Vcl.Controls,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniPanel,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication, uniMainMenu, IQUniGrid, uniGUIFrame;
+
+type
+  TFrmVendorAkaBreaks = class(TUniForm)
+    Src: TDataSource;
+    Qry: TFDQuery;
+    QryARINVT_VENDORS_ID: TBCDField;
+    QryARINVT_ID: TBCDField;
+    QryVENDOR_ID: TBCDField;
+    QryVEND_ITEMNO: TStringField;
+    QryVEND_DESCRIP: TStringField;
+    QryVEND_REV: TStringField;
+    QryLEAD_DAYS: TBCDField;
+    QryQUAN: TBCDField;
+    QryQPRICE: TFMTBCDField;
+    QryPRICE_DATE: TDateTimeField;
+    QryEFFECT_DATE: TDateTimeField;
+    QryDEACTIVE_DATE: TDateTimeField;
+    QryARINVT_VENDORS_BREAKS_ID: TBCDField;
+    QryCOMMENT1: TStringField;
+    QryVENDORNO: TStringField;
+    QryVENDOR: TStringField;
+    QryEPLANT_ID: TBCDField;
+    Panel1: TUniPanel;
+    MainMenu1: TUniMainMenu;
+    File1: TUniMenuItem;
+    Exit1: TUniMenuItem;
+    Help1: TUniMenuItem;
+    About1: TUniMenuItem;
+    Contents1: TUniMenuItem;
+    IQAbout1: TIQWebAbout;
+    IQSearch1: TIQUniGridControl;
+    QryAKA_PRICE: TFMTBCDField;
+    Panel2: TUniPanel;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Exit1Click(Sender: TObject);
+    procedure About1Click(Sender: TObject);
+    procedure QryBeforeOpen(DataSet: TDataSet);
+    procedure UniFormCreate(Sender: TObject);
+    procedure UniFormShow(Sender: TObject);
+  private
+    { Private declarations }
+    FArinvt_id : Real;
+    FAQty      : Real;
+    procedure SetArinvt_id(const Value: Real);
+    procedure SetAQty(const Value: Real);
+  public
+    { Public declarations }
+    property Arinvt_id: Real write SetArinvt_id;
+    property AQty: Real write SetAQty;
+  end;
+
+
+
+procedure ShowAllVendorAkaBreaks(Arinvt_id, AQty:Real);
+
+implementation
+uses
+  IQMS.Common.DataLib,
+  IQMS.Common.RegFrm;
+{$R *.dfm}
+
+procedure ShowAllVendorAkaBreaks(Arinvt_id, AQty:Real);
+var
+  FrmVendorAkaBreaks: TFrmVendorAkaBreaks;
+begin
+  FrmVendorAkaBreaks := TFrmVendorAkaBreaks.Create(uniGUIApplication.UniApplication);
+  FrmVendorAkaBreaks.Arinvt_id := Arinvt_id;
+  FrmVendorAkaBreaks.AQty      := AQty;
+  FrmVendorAkaBreaks.ShowModal;
+end;
+
+procedure TFrmVendorAkaBreaks.About1Click(Sender: TObject);
+begin
+  IqAbout1.Execute;
+end;
+
+procedure TFrmVendorAkaBreaks.UniFormCreate(Sender: TObject);
+begin
+  IQRegFormRead( self, [ self]);
+end;
+
+procedure TFrmVendorAkaBreaks.UniFormShow(Sender: TObject);
+var
+  aMinPrice, aId:Real;
+begin
+  Panel2.Caption := Format('  Order Qty: %f', [FAQty]);
+  Panel1.Caption := SelectValueFmtAsString('select descrip || '' ['' || trim(itemno) || '']'' from arinvt where id = %f', [FArinvt_id]);
+
+  aId := 0;
+  aMinPrice := SelectValueFmtAsFloat('select min(po_misc_unit_price.IQ_GetPriceBreak_aka( %.6f, av.id )) ' +
+                         '   from ARINVT_VENDORS av where av.arinvt_id = %f', [FAQty, FArinvt_id]);
+
+  if aMinPrice <> 0 then
+  begin
+    aId := SelectValueFmtAsFloat('select min(avb.id)                     ' +
+                     ' from ARINVT_VENDORS av,               ' +
+                     '      ARINVT_VENDORS_BREAKS avb,       ' +
+                     '      VENDOR v                         ' +
+                     'where avb.ARINVT_VENDORS_ID = av.id    ' +
+                     '  and av.vendor_id = v.id              ' +
+                     '  and av.arinvt_id = %f                ' +
+                     '  and Trunc(sysdate) between NVL(avb.effect_date, trunc(sysdate)) and NVL(avb.deactive_date, trunc(sysdate)) ' +
+//                   '  and po_misc_unit_price.IQ_GetPriceBreak_aka(%.6f, av.id ) = %.6f', [FArinvt_id, FAQty, aMinPrice]);
+                     '  and avb.qprice = %.6f', [FArinvt_id, aMinPrice]);
+
+
+  end;
+  Qry.Close;
+  Qry.Open;
+  if aId <> 0 then
+  begin
+    if Qry.Locate('ARINVT_VENDORS_BREAKS_ID', aId, []) then
+    begin
+      { TODO -oSanketG -cWebConvert : Need to revisit after finding alternative for IQSearch1.wwDbGrid }
+      {IQSearch1.wwDBGrid.UnselectAll;
+      IQSearch1.wwDBGrid.SelectRecord;}
+    end;
+  end;
+end;
+
+procedure TFrmVendorAkaBreaks.Exit1Click(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TFrmVendorAkaBreaks.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  IQRegFormWrite( self, [ self]);
+end;
+
+procedure TFrmVendorAkaBreaks.QryBeforeOpen(DataSet: TDataSet);
+begin
+  Qry.ParamByName('ArinvtId').Value := FArinvt_id;
+  Qry.ParamByName('AQty').Value     := FAQty;
+end;
+
+procedure TFrmVendorAkaBreaks.SetAQty(const Value: Real);
+begin
+  FAQty := Value;
+end;
+
+procedure TFrmVendorAkaBreaks.SetArinvt_id(const Value: Real);
+begin
+  FArinvt_id := Value;
+end;
+
+
+end.

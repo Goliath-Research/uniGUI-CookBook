@@ -1,0 +1,96 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{286E8E3E-E7A5-4D62-9DF0-92D8BBB93113}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="..\Packages\IQMSWebController.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\Packages\IQMSWebControllerDesign.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="IQUniEditors.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="IQUniEditorsdcl.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="EditTest\IQEditTest.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="GridModuleTest\IQGridModuleTest.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="IQMSWebController">
+        <MSBuild Projects="..\Packages\IQMSWebController.dproj"/>
+    </Target>
+    <Target Name="IQMSWebController:Clean">
+        <MSBuild Projects="..\Packages\IQMSWebController.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IQMSWebController:Make">
+        <MSBuild Projects="..\Packages\IQMSWebController.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="IQMSWebControllerDesign">
+        <MSBuild Projects="..\Packages\IQMSWebControllerDesign.dproj"/>
+    </Target>
+    <Target Name="IQMSWebControllerDesign:Clean">
+        <MSBuild Projects="..\Packages\IQMSWebControllerDesign.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IQMSWebControllerDesign:Make">
+        <MSBuild Projects="..\Packages\IQMSWebControllerDesign.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="IQUniEditors">
+        <MSBuild Projects="IQUniEditors.dproj"/>
+    </Target>
+    <Target Name="IQUniEditors:Clean">
+        <MSBuild Projects="IQUniEditors.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IQUniEditors:Make">
+        <MSBuild Projects="IQUniEditors.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="IQUniEditorsdcl">
+        <MSBuild Projects="IQUniEditorsdcl.dproj"/>
+    </Target>
+    <Target Name="IQUniEditorsdcl:Clean">
+        <MSBuild Projects="IQUniEditorsdcl.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IQUniEditorsdcl:Make">
+        <MSBuild Projects="IQUniEditorsdcl.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="IQEditTest">
+        <MSBuild Projects="EditTest\IQEditTest.dproj"/>
+    </Target>
+    <Target Name="IQEditTest:Clean">
+        <MSBuild Projects="EditTest\IQEditTest.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IQEditTest:Make">
+        <MSBuild Projects="EditTest\IQEditTest.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="IQGridModuleTest">
+        <MSBuild Projects="GridModuleTest\IQGridModuleTest.dproj"/>
+    </Target>
+    <Target Name="IQGridModuleTest:Clean">
+        <MSBuild Projects="GridModuleTest\IQGridModuleTest.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IQGridModuleTest:Make">
+        <MSBuild Projects="GridModuleTest\IQGridModuleTest.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="IQMSWebController;IQMSWebControllerDesign;IQUniEditors;IQUniEditorsdcl;IQEditTest;IQGridModuleTest"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="IQMSWebController:Clean;IQMSWebControllerDesign:Clean;IQUniEditors:Clean;IQUniEditorsdcl:Clean;IQEditTest:Clean;IQGridModuleTest:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="IQMSWebController:Make;IQMSWebControllerDesign:Make;IQUniEditors:Make;IQUniEditorsdcl:Make;IQEditTest:Make;IQGridModuleTest:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

@@ -1,0 +1,755 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{38CA9A82-CEA7-4BAD-B98F-2234EDD9DD7A}</ProjectGuid>
+        <MainSource>BigWebApp.dpr</MainSource>
+        <Base>True</Base>
+        <Config Condition="'$(Config)'==''">Debug</Config>
+        <TargetedPlatforms>1</TargetedPlatforms>
+        <AppType>Library</AppType>
+        <FrameworkType>VCL</FrameworkType>
+        <ProjectVersion>18.4</ProjectVersion>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+        <Base_Win32>true</Base_Win32>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+        <Cfg_1>true</Cfg_1>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
+        <Cfg_1_Win32>true</Cfg_1_Win32>
+        <CfgParent>Cfg_1</CfgParent>
+        <Cfg_1>true</Cfg_1>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+        <Cfg_2>true</Cfg_2>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+        <Cfg_2_Win32>true</Cfg_2_Win32>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base)'!=''">
+        <DCC_Define>UNIGUI_VCL;$(DCC_Define)</DCC_Define>
+        <DCC_UnitSearchPath>Components\IQUniEditor\Source;Libraries\LockBox;Libraries\;Components\Source;Components\IQWebVcl\Source;Components\IQWebCommon\Source;$(IQSRC)\web\Modules\Iqshipman;$(IQSRC)\web\Modules\iqshare;$(IQSRC)\web\Modules\ups_HttpLink;$(IQSRC)\web\Modules\Zipcode;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_ExeOutput>$(IQBIN)\WebIQ</DCC_ExeOutput>
+        <DCC_DcuOutput>$(IQDCU)\WebIQ</DCC_DcuOutput>
+        <DCC_S>false</DCC_S>
+        <DCC_N>false</DCC_N>
+        <DCC_F>false</DCC_F>
+        <DCC_E>false</DCC_E>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=;CFBundleName=</VerInfo_Keys>
+        <SanitizedProjectName>BigWebApp</SanitizedProjectName>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <DCC_K>false</DCC_K>
+        <DCC_ImageBase>00400000</DCC_ImageBase>
+        <DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;$(DCC_Namespace)</DCC_Namespace>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win32)'!=''">
+        <VerInfo_Keys>CompanyName=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1)'!=''">
+        <DCC_UnitSearchPath>.\Components\Source;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+        <DCC_DebugInformation>0</DCC_DebugInformation>
+        <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+        <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Keys>CompanyName=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2)'!=''">
+        <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
+        <DCC_Optimize>false</DCC_Optimize>
+        <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+        <DCC_DebugDCUs>true</DCC_DebugDCUs>
+        <OutputExt>EXE</OutputExt>
+        <DCC_WriteableConstants>true</DCC_WriteableConstants>
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Keys>CompanyName=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>
+        <DCC_MapFile>3</DCC_MapFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <DelphiCompile Include="$(MainSource)">
+            <MainSource>MainSource</MainSource>
+        </DelphiCompile>
+        <DCCReference Include="ServerModule.pas">
+            <Form>UniServerModule</Form>
+            <DesignClass>TUniGUIServerModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="MainModule.pas">
+            <Form>UniMainModule</Form>
+            <DesignClass>TUniGUIMainModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Main.pas">
+            <Form>MainForm</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="LoginFrm.pas">
+            <Form>UniLoginForm1</Form>
+            <DesignClass>TUniLoginForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Interfaces\IQWeb.Server.DataServices.pas"/>
+        <DCCReference Include="Interfaces\IQWeb.Session.RegServices.pas"/>
+        <DCCReference Include="Interfaces\IQWeb.Session.FrameworkServices.pas"/>
+        <DCCReference Include="Interfaces\IQWeb.Session.ConnectionServices.pas"/>
+        <DCCReference Include="Registration\IQWeb.Server.Resources.pas"/>
+        <DCCReference Include="Registration\IQWeb.Server.Registration.pas"/>
+        <DCCReference Include="Registration\IQWeb.Session.Registration.pas"/>
+        <DCCReference Include="Implementations\IQWeb.Server.DataServices.FireDAC.pas"/>
+        <DCCReference Include="Implementations\IQWeb.Session.FrameworkServices.FireDAC.pas"/>
+        <DCCReference Include="Implementations\IQWeb.Session.RegServices.Default.pas"/>
+        <DCCReference Include="FrameWork\IQCore.Interfaces.pas"/>
+        <DCCReference Include="FrameWork\IQCore.Obj.pas"/>
+        <DCCReference Include="FrameWork\IQCore.Form.pas"/>
+        <DCCReference Include="FrameWork\IQCore.DataModule.pas"/>
+        <DCCReference Include="FrameWork\IQCore.Widget.pas"/>
+        <DCCReference Include="FrameWork\IQCore.DataSet.pas"/>
+        <DCCReference Include="FrameWork\IQCore.Field.pas"/>
+        <DCCReference Include="FrameWork\IQCore.PickDataSet.pas"/>
+        <DCCReference Include="FrameWork\IQCore.PickList.pas"/>
+        <DCCReference Include="FrameWork\IQCore.PickList.Item.pas"/>
+        <DCCReference Include="FrameWork\IQCore.PickTree.pas"/>
+        <DCCReference Include="FrameWork\IQCore.PickTree.Node.pas"/>
+        <DCCReference Include="Framework\IQCore.Module.pas"/>
+        <DCCReference Include="FrameWork\IQCore.DM.pas">
+            <Form>IQCore_DM</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Components\IQDialogs\PickListAdmin.pas">
+            <Form>PickListAdminForm</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Components\IQDialogs\PickListAdmin.DM.pas">
+            <Form>dmPickListAdmin</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Components\IQDialogs\PickTreeAdmin.pas">
+            <Form>PickTreeAdminForm</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Components\IQDialogs\PickTreeAdmin.DM.pas">
+            <Form>dmPickTreeAdmin</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Components\IQDialogs\ModulesAdmin.pas">
+            <Form>ModulesAdminForm</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Components\IQDialogs\ModulesAdmin.DM.pas">
+            <Form>dmModulesAdmin</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Components\IQDialogs\FormsAdmin.pas">
+            <Form>FormsAdminForm</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Components\IQDialogs\DataSetAdmin.pas">
+            <Form>DataSetAdminForm</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Components\IQDialogs\DataSetAdmin.DM.pas">
+            <Form>dmDataSetAdmin</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="modules\ShipViaMaintenance\ShipViaMaintenance.pas">
+            <Form>UniShipViaMaintenance</Form>
+            <DesignClass>TUniFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="DataAccessLayer\ShipViaMaintenance\ShipViaMaintenance_DM.pas">
+            <Form>SVM_DM</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Libraries\IQMS.Common.Encrypt.pas"/>
+        <DCCReference Include="Libraries\IQMS.Common.Login.pas"/>
+        <DCCReference Include="Libraries\IQMS.Common.StandardExceptions.pas"/>
+        <DCCReference Include="Libraries\IQMS.Common.Params.pas">
+            <Form>dummy place holder</Form>
+        </DCCReference>
+        <DCCReference Include="DataAccessLayer\Capacity\Cap_MainDataModule.Pas">
+            <Form>Cap_Main_DM</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="PromptModule.pas">
+            <Form>PromptModuleForm</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="LoadPromptModule.pas">
+            <Form>LoadPromptForm</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="FrameWrapperFrm.pas">
+            <Form>FrmFrameWrapper</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="TestReg.pas"/>
+        <DCCReference Include="TestRegForms.pas">
+            <Form>TestRegisteredForms</Form>
+            <DesignClass>TUniForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="_dLoginForm.pas">
+            <Form>dLoginForm</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TUniLoginForm</DesignClass>
+        </DCCReference>
+        <None Include="ModelSupport_IQWeb\IQWeb\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\Main\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\CapShare\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\LoginFrm\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\BigWebApp\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\ShipViaMaintenance_DM\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\FrameWrapperFrm\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQMS\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQMS\Common\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQMS\Common\Params\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQMS\Common\Login\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQMS\Common\StandardExceptions\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQMS\Common\Encrypt\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\Day_Part\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\ShipViaMaintenance\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\PromptModule\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\PickListAdmin\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\PickListAdmin\DM\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\umain\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\Lab_Dtl\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\PickTreeAdmin\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\PickTreeAdmin\DM\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\DataSetAdmin\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\DataSetAdmin\DM\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\MainModule\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\PickDataSet\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\DataModule\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\DM\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\Form\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\DataSet\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\Obj\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\Widget\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\Module\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\Interfaces\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\PickTree\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\PickTree\Node\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\PickList\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\PickList\Item\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\Field\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\Cap_MainDataModule\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\DayHrs\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\TestReg\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\Cap_Main\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\FormsAdmin\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Session\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Session\ConnectionServices\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Session\RegServices\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Session\RegServices\Default\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Session\Registration\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Session\FrameworkServices\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Session\FrameworkServices\FireDAC\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Server\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Server\Resources\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Server\Registration\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Server\DataServices\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Server\DataServices\FireDAC\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\capacity_rscstr\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\TestRegForms\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\ModulesAdmin\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\ModulesAdmin\DM\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\Lab_Shft\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\ServerModule\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\Lab_WO\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\Day_Shft\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\SelClass\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\LoadPromptModule\default.txvpck"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Session\RegServices\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\PickTree\Node\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\DataSet\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQMS\Common\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\Lab_Dtl\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\PickTree\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\Interfaces\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\DataModule\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\TestReg\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\DM\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\PickList\Item\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\Day_Shft\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\Main\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Session\Registration\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\ShipViaMaintenance_DM\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\capacity_rscstr\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Session\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\LoginFrm\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Session\ConnectionServices\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Session\RegServices\Default\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Server\Registration\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\PickTreeAdmin\DM\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\PromptModule\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\Obj\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\LoadPromptModule\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\PickListAdmin\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\TestRegForms\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Server\DataServices\FireDAC\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\Module\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\MainModule\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\DataSetAdmin\DM\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\Lab_WO\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\Cap_MainDataModule\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\SelClass\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQMS\Common\Params\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Server\DataServices\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\ModulesAdmin\DM\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\PickTreeAdmin\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Session\FrameworkServices\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\CapShare\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\FormsAdmin\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\Widget\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\ModulesAdmin\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\PickListAdmin\DM\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\Cap_Main\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\Form\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\PickList\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Session\FrameworkServices\FireDAC\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\PickDataSet\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Server\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\Lab_Shft\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQCore\Field\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\ShipViaMaintenance\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\ServerModule\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQMS\Common\Encrypt\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\DayHrs\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\FrameWrapperFrm\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\Day_Part\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\DataSetAdmin\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQMS\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQMS\Common\StandardExceptions\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\BigWebApp\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\umain\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQMS\Common\Login\default.txaPackage"/>
+        <None Include="ModelSupport_BigWebApp\IQWeb\Server\Resources\default.txaPackage"/>
+        <BuildConfiguration Include="Debug">
+            <Key>Cfg_2</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Base">
+            <Key>Base</Key>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Release">
+            <Key>Cfg_1</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Delphi.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Delphi.Personality>
+                <Source>
+                    <Source Name="MainSource">BigWebApp.dpr</Source>
+                </Source>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\19.0\Bpl\IQUniEditorsdcl.bpl">IQ Editors Designtime Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k250.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp250.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
+            </Delphi.Personality>
+            <Platforms>
+                <Platform value="Win32">True</Platform>
+            </Platforms>
+            <Deployment Version="3">
+                <DeployFile LocalName="%IQBIN%\WebIQ\BigWebApp.EXE" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>BigWebApp.dll</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="C:\BIN\WebIQ\IQWeb.EXE" Configuration="Debug" Class="ProjectOutput"/>
+                <DeployClass Name="AdditionalDebugSymbols">
+                    <Platform Name="OSX32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>0</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidClassesDexFile">
+                    <Platform Name="Android">
+                        <RemoteDir>classes</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidGDBServer">
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\armeabi-v7a</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidLibnativeArmeabiFile">
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\armeabi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidLibnativeMipsFile">
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\mips</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidServiceOutput">
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\armeabi-v7a</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidSplashImageDef">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidSplashStyles">
+                    <Platform Name="Android">
+                        <RemoteDir>res\values</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_DefaultAppIcon">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_LauncherIcon144">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-xxhdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_LauncherIcon36">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-ldpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_LauncherIcon48">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-mdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_LauncherIcon72">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-hdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_LauncherIcon96">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-xhdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_SplashImage426">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-small</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_SplashImage470">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-normal</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_SplashImage640">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-large</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_SplashImage960">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-xlarge</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="DebugSymbols">
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="DependencyFramework">
+                    <Platform Name="OSX32">
+                        <Operation>1</Operation>
+                        <Extensions>.framework</Extensions>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="DependencyModule">
+                    <Platform Name="OSX32">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                        <Extensions>.dll;.bpl</Extensions>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Required="true" Name="DependencyPackage">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                        <Extensions>.bpl</Extensions>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="File">
+                    <Platform Name="Android">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_Launch1024">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_Launch1536">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_Launch2048">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_Launch768">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_Launch320">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_Launch640">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_Launch640x1136">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectAndroidManifest">
+                    <Platform Name="Android">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectiOSDeviceDebug">
+                    <Platform Name="iOSDevice32">
+                        <RemoteDir>..\$(PROJECTNAME).app.dSYM\Contents\Resources\DWARF</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).app.dSYM\Contents\Resources\DWARF</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectiOSDeviceResourceRules"/>
+                <DeployClass Name="ProjectiOSEntitlements"/>
+                <DeployClass Name="ProjectiOSInfoPList"/>
+                <DeployClass Name="ProjectiOSResource">
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectOSXEntitlements"/>
+                <DeployClass Name="ProjectOSXInfoPList"/>
+                <DeployClass Name="ProjectOSXResource">
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\Resources</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Required="true" Name="ProjectOutput">
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\armeabi-v7a</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Linux64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectUWPManifest">
+                    <Platform Name="Win32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win64">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="UWP_DelphiLogo150">
+                    <Platform Name="Win32">
+                        <RemoteDir>Assets</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win64">
+                        <RemoteDir>Assets</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="UWP_DelphiLogo44">
+                    <Platform Name="Win32">
+                        <RemoteDir>Assets</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win64">
+                        <RemoteDir>Assets</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <ProjectRoot Platform="iOSDevice64" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="Linux64" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="iOSSimulator" Name="$(PROJECTNAME).app"/>
+            </Deployment>
+            <ModelSupport>True</ModelSupport>
+        </BorlandProject>
+        <ProjectFileVersion>12</ProjectFileVersion>
+    </ProjectExtensions>
+    <Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
+    <Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
+    <Import Project="$(MSBuildProjectName).deployproj" Condition="Exists('$(MSBuildProjectName).deployproj')"/>
+</Project>

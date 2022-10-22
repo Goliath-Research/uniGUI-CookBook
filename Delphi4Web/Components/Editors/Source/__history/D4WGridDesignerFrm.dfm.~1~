@@ -1,0 +1,357 @@
+object D4WGridDesigner: TD4WGridDesigner
+  Left = 0
+  Top = 0
+  ClientHeight = 628
+  ClientWidth = 281
+  Caption = 'Grid Designer'
+  Position = poDesigned
+  OldCreateOrder = False
+  OnClose = UniFormClose
+  BorderIcons = [biSystemMenu]
+  MonitoredKeys.Keys = <>
+  AlignmentControl = uniAlignmentClient
+  Layout = 'border'
+  OnBeforeShow = UniFormBeforeShow
+  OnCreate = UniFormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object UniToolBar1: TUniToolBar
+    Left = 0
+    Top = 0
+    Width = 281
+    Height = 29
+    Hint = ''
+    CreateOrder = 1
+    ShowHint = True
+    ParentShowHint = False
+    Images = ToolbarImages
+    BorderWidth = 1
+    LayoutConfig.Split = True
+    LayoutConfig.Region = 'north'
+    Anchors = [akLeft, akTop, akRight]
+    Align = alTop
+    TabOrder = 0
+    ParentColor = False
+    Color = clBtnFace
+    object UniToolButton1: TUniToolButton
+      Left = 0
+      Top = 0
+      Hint = 'New Form'
+      ShowHint = True
+      ImageIndex = 5
+      Caption = 'UniToolButton1'
+      ScreenMask.Enabled = True
+      ScreenMask.ShowMessage = False
+      ScreenMask.Color = clWhite
+      TabOrder = 1
+      OnClick = UniToolButton1Click
+    end
+    object UniToolButton2: TUniToolButton
+      Left = 23
+      Top = 0
+      Hint = 'New Panel'
+      ShowHint = True
+      ImageIndex = 1
+      Caption = 'UniToolButton2'
+      ScreenMask.Enabled = True
+      ScreenMask.ShowMessage = False
+      ScreenMask.Color = clWhite
+      TabOrder = 2
+      OnClick = UniToolButton2Click
+    end
+    object UniToolButton11: TUniToolButton
+      Left = 46
+      Top = 0
+      Hint = 'New Fieldset'
+      ShowHint = True
+      ImageIndex = 6
+      Caption = 'UniToolButton11'
+      TabOrder = 3
+      OnClick = UniToolButton11Click
+    end
+    object UniToolButton3: TUniToolButton
+      Left = 69
+      Top = 0
+      Hint = 'New Editor'
+      ShowHint = True
+      ImageIndex = 0
+      Caption = 'UniToolButton3'
+      ScreenMask.Enabled = True
+      ScreenMask.ShowMessage = False
+      ScreenMask.Color = clWhite
+      TabOrder = 4
+      OnClick = UniToolButton3Click
+    end
+    object UniToolButton4: TUniToolButton
+      Left = 92
+      Top = 0
+      Width = 8
+      Hint = ''
+      ShowHint = True
+      Style = tbsSeparator
+      Caption = 'UniToolButton4'
+      TabOrder = 5
+    end
+    object UniToolButton14: TUniToolButton
+      Left = 100
+      Top = 0
+      Hint = 'Manage Fields'
+      ShowHint = True
+      ImageIndex = 8
+      Caption = 'UniToolButton14'
+      TabOrder = 6
+      OnClick = UniToolButton14Click
+    end
+    object UniToolButton15: TUniToolButton
+      Left = 123
+      Top = 0
+      Width = 8
+      Hint = ''
+      ShowHint = True
+      Style = tbsSeparator
+      Caption = 'UniToolButton15'
+      TabOrder = 7
+    end
+    object UniToolButton6: TUniToolButton
+      Left = 131
+      Top = 0
+      Hint = 'Move Editor'
+      ShowHint = True
+      ImageIndex = 2
+      Caption = 'UniToolButton6'
+      ScreenMask.Enabled = True
+      ScreenMask.ShowMessage = False
+      ScreenMask.Color = clWhite
+      TabOrder = 8
+      OnClick = UniToolButton6Click
+    end
+    object UniToolButton7: TUniToolButton
+      Left = 154
+      Top = 0
+      Width = 8
+      Hint = ''
+      ShowHint = True
+      Style = tbsSeparator
+      Caption = 'UniToolButton7'
+      LayoutConfig.Region = 'west'
+      TabOrder = 9
+    end
+    object UniToolButton8: TUniToolButton
+      Left = 162
+      Top = 0
+      Hint = 'Delete Selected Editor'
+      ShowHint = True
+      ImageIndex = 3
+      Caption = 'UniToolButton8'
+      ScreenMask.Enabled = True
+      ScreenMask.ShowMessage = False
+      ScreenMask.Color = clWhite
+      LayoutConfig.Region = 'west'
+      TabOrder = 10
+      OnClick = UniToolButton8Click
+    end
+    object UniToolButton9: TUniToolButton
+      Left = 185
+      Top = 0
+      Width = 8
+      Hint = ''
+      ShowHint = True
+      Style = tbsSeparator
+      Caption = 'UniToolButton9'
+      LayoutConfig.Region = 'west'
+      TabOrder = 11
+    end
+    object UniToolButton10: TUniToolButton
+      Left = 193
+      Top = 0
+      Hint = 'Refresh Tree'
+      ShowHint = True
+      ImageIndex = 4
+      Caption = 'UniToolButton10'
+      LayoutConfig.Region = 'west'
+      TabOrder = 12
+      OnClick = UniToolButton10Click
+    end
+    object UniToolButton13: TUniToolButton
+      Left = 216
+      Top = 0
+      Hint = ''
+      ShowHint = True
+      ImageIndex = 7
+      Caption = 'UniToolButton13'
+      TabOrder = 13
+      OnClick = UniToolButton13Click
+    end
+  end
+  object UniPanel1: TUniPanel
+    Left = 0
+    Top = 29
+    Width = 281
+    Height = 28
+    Hint = ''
+    CreateOrder = 2
+    Align = alTop
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 4
+    BorderStyle = ubsNone
+    ShowCaption = False
+    Caption = 'UniPanel1'
+    Layout = 'hbox'
+    LayoutAttribs.Align = 'middle'
+    LayoutAttribs.Padding = '2'
+    LayoutConfig.Region = 'north'
+    object RegionCombo: TUniComboBox
+      Left = 3
+      Top = 3
+      Width = 145
+      Hint = ''
+      Enabled = False
+      Style = csDropDownList
+      Text = 'north'
+      Items.Strings = (
+        'north'
+        'west'
+        'east'
+        'south'
+        'center')
+      ItemIndex = 0
+      TabOrder = 1
+      FieldLabel = 'Region'
+      FieldLabelWidth = 40
+      FieldLabelSeparator = ' '
+      OnChange = RegionComboChange
+    end
+  end
+  object TreeView: TUniTreeView
+    Left = 0
+    Top = 57
+    Width = 281
+    Height = 300
+    Hint = ''
+    CreateOrder = 3
+    Items.FontData = {0100000000}
+    Images = ClassIcons
+    Align = alTop
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 1
+    Color = clWindow
+    LayoutConfig.Split = True
+    LayoutConfig.Region = 'north'
+    OnChange = TreeViewChange
+  end
+  object UniPropertyGrid1: TUniPropertyGrid
+    Left = 0
+    Top = 357
+    Width = 281
+    Height = 252
+    Hint = ''
+    CreateOrder = 4
+    Align = alClient
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    LayoutConfig.Split = True
+    LayoutConfig.Region = 'center'
+  end
+  object UniStatusBar1: TUniStatusBar
+    Left = 0
+    Top = 609
+    Width = 281
+    Height = 19
+    Hint = ''
+    Panels = <>
+    SizeGrip = False
+    Align = alBottom
+    Anchors = [akLeft, akRight, akBottom]
+    LayoutConfig.Region = 'south'
+    ParentColor = False
+    Color = clWindow
+  end
+  object ToolbarImages: TUniNativeImageList
+    Left = 48
+    Top = 96
+    Images = {
+      09000000FFFFFF1F041C01000089504E470D0A1A0A0000000D49484452000000
+      100000001008060000001FF3FF61000000097048597300000EC300000EC301C7
+      6FA864000000CE49444154388DC59321AE843014450F130C162CBAB67BE81AC0
+      7611740B0447B0682C166C1782AE2D16C9579F4C33CC646610F3546F73DFED69
+      F25EB4EF3B57EA76A91B88AAAABA841003B46DFB55B331E6F32F344D13E8A701
+      CBB2608C79B8F7DE073AFE3FCCF38CB51680B22C8317BDF768AD91523E041E04
+      799E53D7354A29A6693A0C4551A094621CC753D2F85EF47D8F732E30082158D7
+      956DDB4E030E826118104204F800CE39BCF76459F69A404A89B5F630A6690A40
+      D775244982D6FA75C099E19DF9F8FD28473FDFC63F20884659A1DE142B000000
+      0049454E44AE426082FFFFFF1F040701000089504E470D0A1A0A0000000D4948
+      4452000000100000001008060000001FF3FF61000000097048597300000EC300
+      000EC301C76FA864000000B949444154388DDD93B111C2301004F78D03872A81
+      0EAC12548A4AA003E94387EEC074224AF80E5C823A10019861888CC9D8F067EE
+      6EE6E64F5A6BFC42AFAA1188C092525A54F5E598521280CFDBBB4672CE791CC7
+      1442C039B72BB5D64A290533D30E58BE110338E70821002CE49CDB0FD0ED8EFD
+      4055018E1B6C745BD34791E71F1C7D063989487B367A04FD83124F2272F6DE5F
+      8661F84AE8BD679AA66B07C4520AB5D6DDE26D0B40EC81D5CC6E66B67B8DF33C
+      471E6B5CEFE2758F26989EF00F0000000049454E44AE426082FFFFFF1F04F600
+      000089504E470D0A1A0A0000000D49484452000000100000001008060000001F
+      F3FF61000000097048597300000EC300000EC301C76FA864000000A849444154
+      388DB593CD0DC3200C855FAA4CC1022CC310E90A5E007900B24219822D98036E
+      CC404F4454A5FC48E9778207B69FB1D80080885E000ECC61CFF37C7E28449443
+      0879444A291351AE63F7B21042C039D72DAD94FAD21E93B67FB2D79B568511F7
+      3A60664829E1BDEF06550F692FA1B03A91CB418C114208006B132909AC31E698
+      6CBB4FDDCE0822CAF74EA18699A1B5063337CFB5D67F6C21C638B45EEE6C0D07
+      4B5FFB0D1465E33ECA173AF80000000049454E44AE426082FFFFFF1F04960100
+      0089504E470D0A1A0A0000000D49484452000000100000001008060000001FF3
+      FF61000000097048597300000EC300000EC301C76FA864000001484944415438
+      8DA593BD4E02411485BF353616462A0A8D615B0A13601F00482C9140C1D65BD0
+      4BA63760A84779000BB0DC4684ED2C5C1E600B34613B83416362233CC158B010
+      7E22ACE12693DC7326E7E4FECC684A297689BD9DD4802684F87709524A6D96EF
+      8711E42D31CF3BCD9BA5BB5006ABA2350329E59C701C875C2EB7840F63C93FCD
+      C20C710C0C3756E038CE12B980DB80953E3B99F45E3FD34013D0D70C564B5EC0
+      4DDF34FAFE7D351285DAF7552701B86B061B6218B410036EA3F57C42DA5ED237
+      8D0C5001744D08A1B2D9EC5F06E383AFB78BE3A7D639500DB8F7C0F03A6E7B35
+      84106A31BADDEE2AFE715F3E8E06A55461504AA9E034945228A5426DA112ADE7
+      8BC003D0075AC0A56F1A05D8FE941BE591FB083C031340BF3BCDA8F2C8ED31DD
+      86AE6DFB8DBE690C839E8B71DB6B075C84E936DA615A8801AD9918206E7B63C0
+      02AC5F503E961B458A977D0000000049454E44AE426082FFFFFF1F044E010000
+      89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
+      61000000097048597300000EC300000EC301C76FA8640000010049444154388D
+      A5923172833010451F99345C81CABE0947704B072554B698910B8A242D054E2A
+      B9834E2E73837083F8083E426EA0148819C5968D66F22B69F5F566F557F04F45
+      F34208611EF886AEEB8A87242184F14908619AA6314288DE77EF29A4CDAAAA88
+      E338F74182004992DC853C8700EABA76B739709BC7BD0CACBE8D311B1F3CA483
+      218AA2426A954AAD5E6DED027C028725C0797F3AEEA4565F407A75F602AC9642
+      DC59630AFC30BD7D0D0CC00A16A6B03F1DCFC07686B5593958607E63F685B8D0
+      1D1010A2D4CA050D6D561652AB1CE883008EDE810F7BF930D7FE00AE3E8CAB0B
+      53165BA736026F91CFED4A6AD5334D63834D1E18DBAC1C017E0139108D089AEA
+      5AE80000000049454E44AE426082FFFFFF1F049900000089504E470D0A1A0A00
+      00000D49484452000000100000001008060000001FF3FF610000000970485973
+      00000EC300000EC301C76FA8640000004B49444154388D63FCFFFF3F03258089
+      22DD0C0C0C2C0C0C0C0C7ECD3BC972C6A65A77468A5D40B1010CFFFFFF67282A
+      2AFA4F2A80EAA1DC05A3060C0B0358608CE2E262B20C60A4343B0300717345E8
+      5FA9D0570000000049454E44AE426082FFFFFF1F04DA00000089504E470D0A1A
+      0A0000000D49484452000000100000001008060000001FF3FF61000000097048
+      597300000EC300000EC301C76FA8640000008C49444154388DAD53310E80200C
+      3C0C7F73F331309BA671E6336EBEAE2E62100BA2D8A4037077ED513022829E18
+      BAD800ECB46C9F5A58E7D1FCD241B7009C73F2360E0E4404B624CCCCEA3E115D
+      D6A7404A88A01CAC8A562CA0258B168E8A8F23AE0A6836724BD53B48CF8848C5
+      D81249EB42C3343DA4589999CF8C6101C07B7F2385109A3A30B5EFDC32851D7E
+      15A33D97CD77530000000049454E44AE426082FFFFFF1F041B01000089504E47
+      0D0A1A0A0000000D49484452000000100000001008060000001FF3FF61000000
+      097048597300000EC300000EC301C76FA864000000CD49444154388D63FCFFFF
+      3F032580055DE0DDC97AA24C14326F646460606060A2C87A9A182064DEC80873
+      1E31001E06DE759B12181818E63330307C6460607058EC4D8201E89AB736F95D
+      6060F083BB025FC0B2206966606060E067606038EF5DB709AE606B931F5EEF90
+      1C884CEC02A82ED8DAE4B7006A23CC15895B9BFC1660D3CC26A8C1C0A316C9F0
+      E5D672B818232C25A2792570B1F7D97C06060607640318993918B8143C19BE3D
+      D8CE206852C98862003A7877B2FE3D03038300564906444A243B29C3C0204CCA
+      A40200564F3D7F6040271F0000000049454E44AE426082FFFFFF1F0415010000
+      89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
+      61000000097048597300000EC300000EC301C76FA864000000C749444154388D
+      B593B10DC2301045BF9107600956A1B2588086960AE93C8791A868695800A7A2
+      09AC00256DE8D9E028C8A1D8B1134B88DFFD7FCFF69D132B66C62FD2A5E0F5FE
+      4C9EA4ADB5A32D38E714009C0EDB205FACE8D3C1633AFF86B3D7B9E7BB929AE4
+      3A05C57EB04644DC95F73EF06D1DCC1CB044C4975BC39392F9D7C75DF69E3400
+      54551584E28D31BDC531AB5B30005A9F3C59D8BAAE01004323F07EB95103F5F1
+      1164936E2731FBFFAF20CAFECA0060AD0D42B9A094625695BEC65C07C51BE4F4
+      0627A0BED08A0BC7820000000049454E44AE426082}
+  end
+  object ClassIcons: TUniNativeImageList
+    Left = 72
+    Top = 216
+  end
+end

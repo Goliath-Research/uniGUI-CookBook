@@ -1,0 +1,22 @@
+unit WC_7846;
+
+interface
+
+implementation
+
+uses
+  TestReg,
+  SysUtils,
+  uniGUIDialogs,
+  po_chk_release_received;
+
+procedure Test1;
+begin
+  DoShowModalPOChkReleaseReceived('test', '');
+end;
+
+initialization
+
+  TTestRepo.RegisterTest('WC-7846', 'Po', 'po_chk_release_received', 'Create', Test1);
+
+end.

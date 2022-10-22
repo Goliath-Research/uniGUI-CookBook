@@ -1,0 +1,105 @@
+unit IQWeb.Session.RegServices;
+
+interface
+
+uses
+  Spring.Collections,
+  Spring.Collections.Lists,
+  uniGUIFrame;
+
+type
+
+  // Categories are arbitrary groups of modules
+
+  IIQCategory = interface
+    ['{0766C255-19E6-41D9-B1F8-6C565A236899}']
+    function  GetName        : string;
+    function  GetIconFile    : string;
+    function  GetImageIndex  : integer;
+    procedure SetImageIndex  (aValue : integer);
+
+    property  Name           : string  read GetName;
+    property  IconFile       : string  read GetIconFile;
+    property  ImageIndex     : integer read GetImageIndex write SetImageIndex;
+  end;
+
+  // A loose interpretation of a module is in order.
+  // ===================================================================================
+  // 1)
+  // Originally, a module was a published form, represented in EIQ
+  // by an icon in the Launch Bar.
+  // 2)
+  // The first convenient upgrade is to consider any form we want to "disconnect"
+  // as a module (it could be published in the navigation tree or stay private,
+  // requiring code for showing it).
+  // 2.1)
+  // A form is considered disconnected if it can be created by the registration
+  // system just using its registered name, without explicitly using it or its type.
+  // 2.2)
+  // A disconnected form avoid explicit dependencies and enforce encapsulation as the
+  // only mean of communication with its instance is the set of interfaces it supports.
+  // 3)
+  // The most recent upgrade to the module is a .NET application embedded in an IFRAME
+  // with or without the option of requesting a specific record or the creation of a new
+  // record during activation.
+
+  IIQModule = interface
+    ['{85CE17E9-EF44-41D1-A7FF-39A74FE494DC}']
+    function  GetName        : string;
+    function  GetIconFile    : string;
+    function  GetImageIndex  : integer;
+    procedure SetImageIndex  (aValue : integer);
+    function  GetSingleton   : boolean;
+    function  GetInstance    : TUniFrame;
+
+    property  Name           : string      read GetName;
+    property  IconFile       : string      read GetIconFile;
+    property  ImageIndex     : integer     read GetImageIndex write SetImageIndex;
+    property  Singleton      : boolean     read GetSingleton;
+    property  Instance       : TUniFrame   read GetInstance;
+  end;
+
+  IIQCategories = IDictionary<string, IIQCategory>;
+  IIQModules    = IDictionary<string, IIQModule>;
+  IIQContainer  = IList<IIQModule>;
+  IIQContainers = IDictionary<IIQCategory, IIQContainer>;
+
+  // If a form can be the target of a Jump it should implement the interface
+  // IIQLocatable and its method LocateID(aID)
+  // Many forms in EnterpriseIQ will implement this interface, as some of the
+  // external applications written in .NET
+
+  IIQLocatable = interface
+    ['{73DA3609-9FEC-45A5-A1FB-F03148660D3B}']
+
+    procedure LocateID(aID : integer);
+  end;
+
+  // This registration system will be upgraded to allow several ways of
+  // registering categories and modules.
+  // Once registration is finished, it will act as the factory for the
+  // dynamic handling of any of the registered modules
+
+  IIQRegistration = interface
+    ['{814E302C-5C2E-43F5-9891-C3D2B44FD778}']
+    function GetCategories  : IIQCategories;
+    function GetModules     : IIQModules;
+    function GetContainers  : IIQContainers;
+
+    property Categories     : IIQCategories read GetCategories;
+    property Modules        : IIQModules    read GetModules;
+    property Containers     : IIQContainers read GetContainers;
+
+    function  GetCategory      (aCategoryName : string ) : IIQCategory;
+    function  GetModule        (aModuleName   : string ) : IIQModule;
+    function  CreateInstance   (aModuleName   : string ) : TUniFrame;
+    function  GetInstanceModule(aInstance     : TObject) : IIQModule;
+    procedure ReleaseInstance  (aInstance     : TObject);
+
+    procedure ShowModuleAsTab (aModuleName : string; aID : integer = -1);
+    procedure ShowModuleAsForm(aModuleName : string; aID : integer = -1);
+  end;
+
+implementation
+
+end.

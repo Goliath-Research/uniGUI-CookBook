@@ -1,0 +1,265 @@
+
+09/29/16 06:55:47    bds TIQComSrvList.Create
+09/29/16 06:55:47    bds TIQComSrvList.Create End
+09/29/16 15:21:43    bds TIQComSrvList.Create
+09/29/16 15:21:43    bds TIQComSrvList.Create End
+09/29/16 15:21:56    bds TIQComSrvList.Create
+09/29/16 15:21:56    bds TIQComSrvList.Create End
+09/29/16 15:22:42    bds TIQComSrvList.Create
+09/29/16 15:22:42    bds TIQComSrvList.Create End
+09/29/16 15:23:38    bds TIQComSrvList.Create
+09/29/16 15:23:38    bds TIQComSrvList.Create End
+09/29/16 15:27:14    bds TIQComSrvList.Create
+09/29/16 15:27:14    bds TIQComSrvList.Create End
+09/29/16 15:27:53    bds TIQComSrvList.Create
+09/29/16 15:27:53    bds TIQComSrvList.Create End
+09/29/16 17:32:59    bds finalization
+09/29/16 17:32:59    bds TIQComSrvList.Destroy
+09/29/16 17:32:59    bds TIQComSrvList.Clear
+09/29/16 17:32:59    bds TIQComSrvList.Clear End
+09/29/16 17:32:59    bds TIQComSrvList.Destroy End
+09/29/16 17:32:59    bds after IQComSrvList.Free
+09/30/16 08:20:52    bds TIQComSrvList.Create
+09/30/16 08:20:52    bds TIQComSrvList.Create End
+09/30/16 08:22:24    bds TIQComSrvList.Create
+09/30/16 08:22:24    bds TIQComSrvList.Create End
+09/30/16 08:51:09    bds TIQComSrvList.Create
+09/30/16 08:51:09    bds TIQComSrvList.Create End
+09/30/16 11:24:39    bds finalization
+09/30/16 11:24:39    bds TIQComSrvList.Destroy
+09/30/16 11:24:39    bds TIQComSrvList.Clear
+09/30/16 11:24:39    bds TIQComSrvList.Clear End
+09/30/16 11:24:39    bds TIQComSrvList.Destroy End
+09/30/16 11:24:39    bds after IQComSrvList.Free
+10/03/16 07:09:43    bds TIQComSrvList.Create
+10/03/16 07:09:43    bds TIQComSrvList.Create End
+10/03/16 08:17:40    bds TIQComSrvList.Create
+10/03/16 08:17:40    bds TIQComSrvList.Create End
+10/03/16 08:18:20    bds TIQComSrvList.Create
+10/03/16 08:18:20    bds TIQComSrvList.Create End
+10/03/16 08:19:23    bds TIQComSrvList.Create
+10/03/16 08:19:23    bds TIQComSrvList.Create End
+10/03/16 08:19:28    bds TIQComSrvList.Create
+10/03/16 08:19:28    bds TIQComSrvList.Create End
+10/03/16 08:20:10    bds TIQComSrvList.Create
+10/03/16 08:20:10    bds TIQComSrvList.Create End
+10/03/16 08:20:23    bds TIQComSrvList.Create
+10/03/16 08:20:23    bds TIQComSrvList.Create End
+10/03/16 08:21:00    bds TIQComSrvList.Create
+10/03/16 08:21:00    bds TIQComSrvList.Create End
+10/03/16 08:54:56    bds TIQComSrvList.Create
+10/03/16 08:54:56    bds TIQComSrvList.Create End
+10/03/16 08:55:03    bds TIQComSrvList.Create
+10/03/16 08:55:03    bds TIQComSrvList.Create End
+10/03/16 08:56:34    bds TIQComSrvList.Create
+10/03/16 08:56:34    bds TIQComSrvList.Create End
+10/03/16 09:31:19    bds TIQComSrvList.Create
+10/03/16 09:31:19    bds TIQComSrvList.Create End
+10/03/16 11:34:59    bds TIQComSrvList.Create
+10/03/16 11:34:59    bds TIQComSrvList.Create End
+10/03/16 11:35:06    bds TIQComSrvList.Create
+10/03/16 11:35:06    bds TIQComSrvList.Create End
+10/03/16 11:50:18    bds TIQComSrvList.Create
+10/03/16 11:50:18    bds TIQComSrvList.Create End
+10/03/16 11:50:23    bds TIQComSrvList.Create
+10/03/16 11:50:23    bds TIQComSrvList.Create End
+10/03/16 12:02:08    bds TIQComSrvList.Create
+10/03/16 12:02:08    bds TIQComSrvList.Create End
+10/03/16 12:02:14    bds TIQComSrvList.Create
+10/03/16 12:02:14    bds TIQComSrvList.Create End
+10/03/16 12:12:44    bds TIQComSrvList.Create
+10/03/16 12:12:44    bds TIQComSrvList.Create End
+10/03/16 12:12:50    bds TIQComSrvList.Create
+10/03/16 12:12:50    bds TIQComSrvList.Create End
+10/03/16 13:04:00    bds TIQComSrvList.Create
+10/03/16 13:04:00    bds TIQComSrvList.Create End
+10/03/16 13:04:05    bds TIQComSrvList.Create
+10/03/16 13:04:05    bds TIQComSrvList.Create End
+10/03/16 15:59:37    bds finalization
+10/03/16 15:59:37    bds TIQComSrvList.Destroy
+10/03/16 15:59:37    bds TIQComSrvList.Clear
+10/03/16 15:59:37    bds TIQComSrvList.Clear End
+10/03/16 15:59:37    bds TIQComSrvList.Destroy End
+10/03/16 15:59:37    bds after IQComSrvList.Free
+10/06/16 11:15:06    bds TIQComSrvList.Create
+10/06/16 11:15:06    bds TIQComSrvList.Create End
+10/06/16 12:06:03    bds TIQComSrvList.Create
+10/06/16 12:06:03    bds TIQComSrvList.Create End
+10/06/16 12:07:22    bds TIQComSrvList.Create
+10/06/16 12:07:22    bds TIQComSrvList.Create End
+10/06/16 16:22:10    bds finalization
+10/06/16 16:22:10    bds TIQComSrvList.Destroy
+10/06/16 16:22:10    bds TIQComSrvList.Clear
+10/06/16 16:22:10    bds TIQComSrvList.Clear End
+10/06/16 16:22:10    bds TIQComSrvList.Destroy End
+10/06/16 16:22:10    bds after IQComSrvList.Free
+10/10/16 06:49:43    bds TIQComSrvList.Create
+10/10/16 06:49:43    bds TIQComSrvList.Create End
+10/10/16 06:50:04    bds TIQComSrvList.Create
+10/10/16 06:50:04    bds TIQComSrvList.Create End
+10/10/16 06:50:34    bds TIQComSrvList.Create
+10/10/16 06:50:35    bds TIQComSrvList.Create End
+10/10/16 06:50:44    bds TIQComSrvList.Create
+10/10/16 06:50:44    bds TIQComSrvList.Create End
+10/10/16 17:00:13    bds finalization
+10/10/16 17:00:13    bds TIQComSrvList.Destroy
+10/10/16 17:00:13    bds TIQComSrvList.Clear
+10/10/16 17:00:13    bds TIQComSrvList.Clear End
+10/10/16 17:00:13    bds TIQComSrvList.Destroy End
+10/10/16 17:00:13    bds after IQComSrvList.Free
+10/11/16 07:02:34    bds TIQComSrvList.Create
+10/11/16 07:02:34    bds TIQComSrvList.Create End
+10/11/16 15:01:55    bds TIQComSrvList.Create
+10/11/16 15:01:55    bds TIQComSrvList.Create End
+10/11/16 15:02:00    bds TIQComSrvList.Create
+10/11/16 15:02:00    bds TIQComSrvList.Create End
+10/11/16 15:02:19    bds TIQComSrvList.Create
+10/11/16 15:02:19    bds TIQComSrvList.Create End
+10/12/16 06:52:26    bds TIQComSrvList.Create
+10/12/16 06:52:26    bds TIQComSrvList.Create End
+10/12/16 06:52:33    bds TIQComSrvList.Create
+10/12/16 06:52:33    bds TIQComSrvList.Create End
+10/12/16 06:53:09    bds TIQComSrvList.Create
+10/12/16 06:53:09    bds TIQComSrvList.Create End
+10/12/16 06:53:24    bds TIQComSrvList.Create
+10/12/16 06:53:24    bds TIQComSrvList.Create End
+10/12/16 07:37:09    bds TIQComSrvList.Create
+10/12/16 07:37:09    bds TIQComSrvList.Create End
+10/12/16 10:21:18    bds TIQComSrvList.Create
+10/12/16 10:21:18    bds TIQComSrvList.Create End
+10/12/16 10:24:14    bds TIQComSrvList.Create
+10/12/16 10:24:14    bds TIQComSrvList.Create End
+10/12/16 10:24:40    bds TIQComSrvList.Create
+10/12/16 10:24:40    bds TIQComSrvList.Create End
+10/12/16 11:38:06    bds TIQComSrvList.Create
+10/12/16 11:38:06    bds TIQComSrvList.Create End
+10/12/16 11:38:29    bds TIQComSrvList.Create
+10/12/16 11:38:29    bds TIQComSrvList.Create End
+10/12/16 13:27:29    bds TIQComSrvList.Create
+10/12/16 13:27:29    bds TIQComSrvList.Create End
+10/12/16 14:01:49    bds TIQComSrvList.Create
+10/12/16 14:01:49    bds TIQComSrvList.Create End
+10/13/16 06:57:13    bds TIQComSrvList.Create
+10/13/16 06:57:13    bds TIQComSrvList.Create End
+10/13/16 06:57:54    bds TIQComSrvList.Create
+10/13/16 06:57:54    bds TIQComSrvList.Create End
+10/13/16 06:58:03    bds TIQComSrvList.Create
+10/13/16 06:58:03    bds TIQComSrvList.Create End
+10/13/16 06:58:13    bds TIQComSrvList.Create
+10/13/16 06:58:13    bds TIQComSrvList.Create End
+10/13/16 07:05:11    bds TIQComSrvList.Create
+10/13/16 07:05:11    bds TIQComSrvList.Create End
+10/13/16 07:41:33    bds finalization
+10/13/16 07:41:33    bds TIQComSrvList.Destroy
+10/13/16 07:41:33    bds TIQComSrvList.Clear
+10/13/16 07:41:33    bds TIQComSrvList.Clear End
+10/13/16 07:41:33    bds TIQComSrvList.Destroy End
+10/13/16 07:41:33    bds after IQComSrvList.Free
+10/14/16 07:42:23    bds TIQComSrvList.Create
+10/14/16 07:42:23    bds TIQComSrvList.Create End
+10/14/16 07:42:58    bds TIQComSrvList.Create
+10/14/16 07:42:58    bds TIQComSrvList.Create End
+10/19/16 07:14:19    bds TIQComSrvList.Create
+10/19/16 07:14:19    bds TIQComSrvList.Create End
+10/19/16 07:14:36    bds TIQComSrvList.Create
+10/19/16 07:14:36    bds TIQComSrvList.Create End
+10/20/16 13:28:11    bds TIQComSrvList.Create
+10/20/16 13:28:11    bds TIQComSrvList.Create End
+10/20/16 13:28:23    bds TIQComSrvList.Create
+10/20/16 13:28:23    bds TIQComSrvList.Create End
+10/20/16 14:13:51    bds finalization
+10/20/16 14:13:51    bds TIQComSrvList.Destroy
+10/20/16 14:13:51    bds TIQComSrvList.Clear
+10/20/16 14:13:51    bds TIQComSrvList.Clear End
+10/20/16 14:13:51    bds TIQComSrvList.Destroy End
+10/20/16 14:13:51    bds after IQComSrvList.Free
+10/20/16 20:05:02    bds TIQComSrvList.Create
+10/20/16 20:05:02    bds TIQComSrvList.Create End
+10/20/16 20:06:23    bds TIQComSrvList.Create
+10/20/16 20:06:23    bds TIQComSrvList.Create End
+10/20/16 20:06:40    bds TIQComSrvList.Create
+10/20/16 20:06:40    bds TIQComSrvList.Create End
+10/20/16 20:08:29    bds TIQComSrvList.Create
+10/20/16 20:08:29    bds TIQComSrvList.Create End
+10/20/16 20:08:36    bds TIQComSrvList.Create
+10/20/16 20:08:36    bds TIQComSrvList.Create End
+10/20/16 20:09:02    bds finalization
+10/20/16 20:09:02    bds TIQComSrvList.Destroy
+10/20/16 20:09:02    bds TIQComSrvList.Clear
+10/20/16 20:09:02    bds TIQComSrvList.Clear End
+10/20/16 20:09:02    bds TIQComSrvList.Destroy End
+10/20/16 20:09:02    bds after IQComSrvList.Free
+10/24/16 09:25:55    bds finalization
+10/24/16 09:25:55    bds TIQComSrvList.Destroy
+10/24/16 09:25:55    bds TIQComSrvList.Clear
+10/24/16 09:25:55    bds TIQComSrvList.Clear End
+10/24/16 09:25:55    bds TIQComSrvList.Destroy End
+10/24/16 09:25:55    bds after IQComSrvList.Free
+10/24/16 10:56:18    bds TIQComSrvList.Create
+10/24/16 10:56:18    bds TIQComSrvList.Create End
+10/24/16 10:57:34    bds TIQComSrvList.Create
+10/24/16 10:57:34    bds TIQComSrvList.Create End
+10/24/16 10:57:39    bds TIQComSrvList.Create
+10/24/16 10:57:39    bds TIQComSrvList.Create End
+10/24/16 10:57:46    bds TIQComSrvList.Create
+10/24/16 10:57:46    bds TIQComSrvList.Create End
+10/25/16 11:47:13    bds finalization
+10/25/16 11:47:13    bds TIQComSrvList.Destroy
+10/25/16 11:47:13    bds TIQComSrvList.Clear
+10/25/16 11:47:13    bds TIQComSrvList.Clear End
+10/25/16 11:47:13    bds TIQComSrvList.Destroy End
+10/25/16 11:47:13    bds after IQComSrvList.Free
+10/25/16 14:52:46    bds TIQComSrvList.Create
+10/25/16 14:52:46    bds TIQComSrvList.Create End
+10/25/16 14:53:48    bds TIQComSrvList.Create
+10/25/16 14:53:48    bds TIQComSrvList.Create End
+10/25/16 14:53:58    bds TIQComSrvList.Create
+10/25/16 14:53:58    bds TIQComSrvList.Create End
+10/25/16 14:54:31    bds finalization
+10/25/16 14:54:31    bds TIQComSrvList.Destroy
+10/25/16 14:54:31    bds TIQComSrvList.Clear
+10/25/16 14:54:31    bds TIQComSrvList.Clear End
+10/25/16 14:54:31    bds TIQComSrvList.Destroy End
+10/25/16 14:54:31    bds after IQComSrvList.Free
+10/27/16 15:26:37    bds finalization
+10/27/16 15:26:37    bds TIQComSrvList.Destroy
+10/27/16 15:26:37    bds TIQComSrvList.Clear
+10/27/16 15:26:37    bds TIQComSrvList.Clear End
+10/27/16 15:26:37    bds TIQComSrvList.Destroy End
+10/27/16 15:26:37    bds after IQComSrvList.Free
+10/28/16 09:28:17    bds TIQComSrvList.Create
+10/28/16 09:28:17    bds TIQComSrvList.Create End
+10/28/16 11:56:33    bds finalization
+10/28/16 11:56:34    bds TIQComSrvList.Destroy
+10/28/16 11:56:34    bds TIQComSrvList.Clear
+10/28/16 11:56:34    bds TIQComSrvList.Clear End
+10/28/16 11:56:34    bds TIQComSrvList.Destroy End
+10/28/16 11:56:34    bds after IQComSrvList.Free
+11/07/16 11:00:06    bds TIQComSrvList.Create
+11/07/16 11:00:06    bds TIQComSrvList.Create End
+11/07/16 13:28:07    bds finalization
+11/07/16 13:28:07    bds TIQComSrvList.Destroy
+11/07/16 13:28:07    bds TIQComSrvList.Clear
+11/07/16 13:28:07    bds TIQComSrvList.Clear End
+11/07/16 13:28:07    bds TIQComSrvList.Destroy End
+11/07/16 13:28:07    bds after IQComSrvList.Free
+11/07/16 17:49:18    bds finalization
+11/07/16 17:49:18    bds TIQComSrvList.Destroy
+11/07/16 17:49:18    bds TIQComSrvList.Clear
+11/07/16 17:49:18    bds TIQComSrvList.Clear End
+11/07/16 17:49:18    bds TIQComSrvList.Destroy End
+11/07/16 17:49:18    bds after IQComSrvList.Free
+11/13/16 19:27:49    bds finalization
+11/13/16 19:27:49    bds TIQComSrvList.Destroy
+11/13/16 19:27:49    bds TIQComSrvList.Clear
+11/13/16 19:27:49    bds TIQComSrvList.Clear End
+11/13/16 19:27:49    bds TIQComSrvList.Destroy End
+11/13/16 19:27:49    bds after IQComSrvList.Free
+11/15/16 10:51:51    bds TIQComSrvList.Create
+11/15/16 10:51:51    bds TIQComSrvList.Create End
+11/15/16 15:15:56    bds finalization
+11/15/16 15:15:56    bds TIQComSrvList.Destroy
+11/15/16 15:15:56    bds TIQComSrvList.Clear
+11/15/16 15:15:56    bds TIQComSrvList.Clear End
+11/15/16 15:15:56    bds TIQComSrvList.Destroy End
+11/15/16 15:15:56    bds after IQComSrvList.Free

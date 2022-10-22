@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FDBS Version="15">
+	<Manager UpdatesRegistry="True">
+		<TableList>
+			<Table Name="tblItems" SourceName="Table" TabID="0" EnforceConstraints="False" MinimumCapacity="50" CheckNotNull="False">
+				<ColumnList>
+					<Column Name="OrderID" SourceName="OrderID" SourceID="1" DataType="Int32" Searchable="True" AllowNull="True" Base="True" OAllowNull="True" OInUpdate="True" OInWhere="True" OInKey="True" OriginColName="OrderID"/>
+					<Column Name="ProductID" SourceName="ProductID" SourceID="2" DataType="Int32" Searchable="True" AllowNull="True" Base="True" OAllowNull="True" OInUpdate="True" OInWhere="True" OInKey="True" OriginColName="ProductID"/>
+					<Column Name="Quantity" SourceName="Quantity" SourceID="3" DataType="Int32" Searchable="True" AllowNull="True" Base="True" OAllowNull="True" OInUpdate="True" OInWhere="True" OriginColName="Quantity"/>
+				</ColumnList>
+				<ConstraintList/>
+				<ViewList/>
+				<RowList>
+					<Row RowID="0">
+						<Original OrderID="2" ProductID="4" Quantity="1"/>
+					</Row>
+					<Row RowID="1">
+						<Original OrderID="2" ProductID="3" Quantity="1"/>
+					</Row>
+					<Row RowID="2">
+						<Original OrderID="2" ProductID="2" Quantity="1"/>
+					</Row>
+					<Row RowID="3">
+						<Original OrderID="2" ProductID="1" Quantity="1"/>
+					</Row>
+					<Row RowID="4">
+						<Original OrderID="2" ProductID="8" Quantity="1"/>
+					</Row>
+				</RowList>
+			</Table>
+		</TableList>
+		<RelationList/>
+		<UpdatesJournal SavePoint="5">
+			<Changes/>
+		</UpdatesJournal>
+	</Manager>
+</FDBS>

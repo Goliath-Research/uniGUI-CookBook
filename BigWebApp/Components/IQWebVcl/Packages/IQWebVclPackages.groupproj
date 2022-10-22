@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{A9299284-9FFB-4C87-8775-682FEE15E6C4}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="IQWebVcl_Design.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="IQWebVcl.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="IQWebVcl_Design">
+        <MSBuild Projects="IQWebVcl_Design.dproj"/>
+    </Target>
+    <Target Name="IQWebVcl_Design:Clean">
+        <MSBuild Projects="IQWebVcl_Design.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IQWebVcl_Design:Make">
+        <MSBuild Projects="IQWebVcl_Design.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="IQWebVcl">
+        <MSBuild Projects="IQWebVcl.dproj"/>
+    </Target>
+    <Target Name="IQWebVcl:Clean">
+        <MSBuild Projects="IQWebVcl.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IQWebVcl:Make">
+        <MSBuild Projects="IQWebVcl.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="IQWebVcl_Design;IQWebVcl"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="IQWebVcl_Design:Clean;IQWebVcl:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="IQWebVcl_Design:Make;IQWebVcl:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

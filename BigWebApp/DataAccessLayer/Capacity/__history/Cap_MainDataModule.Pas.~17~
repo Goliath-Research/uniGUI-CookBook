@@ -1,0 +1,394 @@
+unit Cap_MainDataModule;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.ExtCtrls,
+  Vcl.StdCtrls, Vcl.ComCtrls, Vcl.Grids, Vcl.DBGrids, Mask, Vcl.DBCtrls,
+  Vcl.Buttons, Data.DB, VclTee.TeeGDIPlus, VCLTee.TeEngine,
+  VCLTee.Series, VCLTee.TeeProcs, VCLTee.Chart, VCLTee.DBChart,
+  FireDAC.Comp.Client, FireDAC.Comp.DataSet, FireDAC.Stan.Intf, IQMS.Data.Lib,
+  FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.Stan.Def, FireDAC.Stan.Pool,
+  FireDAC.Stan.Async, FireDAC.Stan.Param, FireDAC.Phys, FireDAC.Phys.Intf,
+  FireDAC.DatS,FireDAC.DApt, FireDAC.DApt.Intf, FireDAC.UI.Intf, MainModule,
+  IQMS.WebComponents.DataControllerList, System.Actions, Vcl.ActnList,
+  System.ImageList, Vcl.ImgList,
+  IQCore.Interfaces,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIClasses,
+  uniGUIFrame,
+  uniBasicGrid,
+  uniDBGrid, uniGUIBaseClasses, uniImageList;
+
+type
+  TCap_Main_DM = class(TDataModule, IIQDataModuleFrameEventHandler)
+    MainMenu1: TMainMenu;
+    File1: TMenuItem;
+    Exit1: TMenuItem;
+    Options1: TMenuItem;
+    MaterialPlanning1: TMenuItem;
+    Reports1: TMenuItem;
+    Help1: TMenuItem;
+    Contents1: TMenuItem;
+    About1: TMenuItem;
+    DailyPartProjection1: TMenuItem;
+    N4: TMenuItem;
+    Recalculate1: TMenuItem;
+    Print1: TMenuItem;
+    PrintSetup1: TMenuItem;
+    PrinterSetupDialog1: TPrinterSetupDialog;
+    PopupMenu1: TPopupMenu;
+    Details1: TMenuItem;
+    SrcWorkCenterType: TDataSource;
+    QryWorkCenterType: TFDQuery;
+    QryWorkCenterTypeCNTR_TYPE: TStringField;
+    SrcV_Hrs_Week_Tot: TDataSource;
+    QryV_Hrs_Week_Tot: TFDQuery;
+    QryV_Hrs_Week_TotCNTR_TYPE: TStringField;
+    QryV_Hrs_Week_TotWEEK_START: TDateTimeField;
+    QryV_Hrs_Week_TotWEEK: TBCDField;
+    QryV_Hrs_Week_TotHRS_WEEK_REQ: TFMTBCDField;
+    QryV_Hrs_Week_TotHRS_WEEK_AVAIL: TFMTBCDField;
+    QryV_Hrs_Week_TotUSED_PERCENT: TFMTBCDField;
+    SrcV_Hrs_Day_Tot: TDataSource;
+    QryV_Hrs_Day_Tot: TFDQuery;
+    QryV_Hrs_Day_TotCNTR_TYPE: TStringField;
+    QryV_Hrs_Day_TotPROD_DATE: TDateTimeField;
+    QryV_Hrs_Day_TotHRS_DAY_REQ: TFMTBCDField;
+    QryV_Hrs_Day_TotWEEK_START: TDateTimeField;
+    QryV_Hrs_Day_TotWEEK: TBCDField;
+    QryV_Hrs_Day_TotWEEK_DAY: TStringField;
+    QryV_Hrs_Day_TotAVAIL_HRS: TFMTBCDField;
+    QryV_Hrs_Day_TotUSED_PERCENT: TFMTBCDField;
+    SrcV_Hrs_Day: TDataSource;
+    QryV_Hrs_Day: TFDQuery;
+    QryV_Hrs_DayDAY_HRS_ID: TBCDField;
+    QryV_Hrs_DayWORKORDER_ID: TBCDField;
+    QryV_Hrs_DayPROD_DATE: TDateTimeField;
+    QryV_Hrs_DayPROD_HRS: TFMTBCDField;
+    QryV_Hrs_DayCNTR_SCHED_ID: TFMTBCDField;
+    QryV_Hrs_DayEQNO: TStringField;
+    QryV_Hrs_DayWORK_CENTER_ID: TFMTBCDField;
+    QryV_Hrs_DayCNTR_TYPE: TStringField;
+    QryV_Hrs_DayCUSTNO: TStringField;
+    QryV_Hrs_DayLATE: TStringField;
+    N2: TMenuItem;
+    JumptoWorkOrder1: TMenuItem;
+    HoursShift1: TMenuItem;
+    QryWorkCenterTypeMFGCELL_ID: TBCDField;
+    QryWorkCenterTypeMFGCELL: TStringField;
+    QryWorkCenterTypeMFGCELL_DESCRIP: TStringField;
+    QryWorkCenterTypeMFGTYPE: TStringField;
+    QryV_Hrs_Week_TotMFGCELL_ID: TBCDField;
+    QryV_Hrs_Day_TotMFGCELL_ID: TBCDField;
+    QryV_Hrs_DayOPDESC: TStringField;
+    IQDataControllerLinkList1: TIQDataControllerLinkList;
+    MnuActionList: TActionList;
+    actmnuFileRecalculate: TAction;
+    actMnuFileExit: TAction;
+    actMnuOptionsMaterialPlanning: TAction;
+    actMnuOptionsDailyPartsProjection: TAction;
+    actMnuReportsPrint: TAction;
+    actMnuReportsPrintSetup: TAction;
+    actMnuHelpContents: TAction;
+    actMnuHelpAbout: TAction;
+    TlbActionList: TActionList;
+    actToolbarSearch: TAction;
+    tlbUniImageList: TUniImageList;
+    tlbImageListAdapter: TUniImageListAdapter;
+    procedure DailyPartProjection1Click(Sender: TObject);
+    procedure Recalculate1Click(Sender: TObject);
+    procedure Exit1Click(Sender: TObject);
+//  procedure Print1Click(Sender: TObject);
+//  procedure About1Click(Sender: TObject);
+    procedure PrintSetup1Click(Sender: TObject);
+    procedure GridDayDblClick(Sender: TObject);
+    procedure MaterialPlanning1Click(Sender: TObject);
+    procedure GridDayDrawColumnCell(Sender: TObject; ACol, ARow: Integer; Column: TUniDBGridColumn; Attribs: TUniCellAttribs);
+    procedure JumptoWorkOrder1Click(Sender: TObject);
+    procedure SrcV_Hrs_Week_TotDataChange(Sender: TObject; Field: TField);
+    procedure SrcWorkCenterTypeDataChange(Sender: TObject; Field: TField);
+    procedure HoursShift1Click(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure Contents1Click(Sender: TObject);
+    procedure actToolbarSearchExecute(Sender: TObject);
+  private
+    { Private declarations }
+  //  procedure IQRefreshDataSets( var Msg: TMessage ); message iq_RefreshDataSets;
+  //  procedure IQAfterShowMessage( var Msg: TMessage ); message iq_AfterShowMessage;
+
+    procedure InsertMainMenu(aMnuActionList : TActionList; aUniFrame : TUniFrame);
+  public
+    { Public declarations }
+    Stable:Boolean;
+  //FDailyParts:TFrmDPartsProj;
+
+    procedure DoOnFrameCreate(Sender: TObject);
+    procedure DoOnFrameDestroy(Sender: TObject);
+
+    procedure RefreshGraph;
+  end;
+
+procedure DoCapacity;
+
+function Cap_Main_DM : TCap_Main_DM;
+
+implementation
+
+{$R *.DFM}
+
+uses
+  System.Generics.Defaults,
+  UniGUIVars, uniGUIMainModule, uniMainMenu, System.Character, IQUniEditor, IQModuleFormDesigner,
+  capacity_rscstr,
+//  CapShare,
+  Day_Part,
+  Day_Shft,
+  DayHrs,
+//  iqctrl,
+//  IQCursor,
+//  IQHelpHk,
+  IQMS.Common.DataLib,
+  IQMS.Common.IQRegFrm,
+  Mat_Req;
+
+
+function Cap_Main_DM : TCap_Main_DM;
+begin
+  Result := UniMainModule.GetModuleInstance(TCap_Main_DM) as TCap_Main_DM;
+end;
+
+procedure TCap_Main_DM.InsertMainMenu(aMnuActionList: TActionList;
+  aUniFrame: TUniFrame);
+var
+  menu      : TUniMainMenu;
+  category  : string;
+  caption   : string;
+  action    : TContainedAction;
+  index     : integer;
+  MenuPath  : TStringList;
+  MenuItem  : TUniMenuItem;
+  PreMnuItm : TUniMenuItem;
+  MnuItmIdx : integer;
+
+  function CategoryLength(aCategory : string) : integer;
+  begin
+    aCategory := StringReplace(aCategory, '\', '', [rfReplaceAll]);
+    aCategory := StringReplace(aCategory, '&', '', [rfReplaceAll]);
+
+    Result := Length(aCategory);
+  end;
+
+begin
+  menu := TUniMainMenu.Create(aUniFrame);
+  for index := 0 to aMnuActionList.ActionCount - 1 do
+  begin
+    action    := aMnuActionList.Actions[index];
+    category  := StringReplace(action.Category, '&', '', [rfReplaceAll]);
+    if category <> '' then
+    begin
+      // After our automated conversion from TMainMenu to TActionList, each
+      // category must start with '\'
+
+      if category[1] <> '\' then
+        continue;
+
+      Delete(category, 1, 1);
+
+      MenuPath := TStringList.Create;
+      try
+        MenuPath.Delimiter     := '\';
+        MenuPath.DelimitedText := category;
+
+        // Follow the path by finding each menu item in the list
+
+        PreMnuItm := menu.Items;
+        for MnuItmIdx := 0 to MenuPath.Count - 1 do
+        begin
+          caption  := MenuPath.Strings[MnuItmIdx];
+          MenuItem := menu.Items.Find(caption);
+          if MenuItem = nil then
+          begin
+            MenuItem := TUniMenuItem.Create(menu);
+            MenuItem.Caption := caption;
+            PreMnuItm.Add(MenuItem);
+          end;
+          PreMnuItm := MenuItem;
+        end;
+
+        MenuItem := TUniMenuItem.Create(menu);
+        MenuItem.Caption := action.Caption;
+        MenuItem.Action  := action;
+        PreMnuItm.Add(MenuItem);
+      finally
+        MenuPath.Free;
+      end;
+    end;
+  end;
+end;
+
+procedure TCap_Main_DM.DoOnFrameCreate(Sender: TObject);
+var
+  RunTimeFrame : TUniFrame;
+  comp : TComponent;
+
+  function FindComponent(aComponent : TComponent; aPredicate : TPredicate<TComponent>) : TComponent;
+  var
+    i : integer;
+    c : TComponent;
+  begin
+    Result := nil;
+    for i := 0 to aComponent.ComponentCount - 1 do
+    begin
+      c := aComponent.Components[i];
+
+      if aPredicate(c) then
+        Result := c;
+      if not Assigned(Result) then
+        Result := FindComponent(c, aPredicate);
+
+      if Assigned(Result) then
+        Exit;
+    end;
+  end;
+
+begin
+  if Sender is TUniFrame then
+    RunTimeFrame := Sender as TUniFrame
+  else
+    raise Exception.Create('TUniFrame is required');
+
+  InsertMainMenu(MnuActionList, RunTimeFrame);
+
+  comp :=
+    FindComponent
+    (
+      RunTimeFrame,
+      function(comp : TComponent) : boolean
+      begin
+        Result := (comp is TUniDBGrid) and (TUniDBGrid(comp).DataSource = SrcV_Hrs_Day);
+      end
+    );
+
+  if Assigned(comp) then
+    TUniDBGrid(comp).OnDrawColumnCell := GridDayDrawColumnCell;
+
+ // IQRegFormRead( self, [self, pnlTotalWeek, pnlWeek ]);
+ // IQSetTablesActiveEx( TRUE, self, capacity_rscstr.cTXT0000003 {'Accessing Capacity Planning.  Please wait.'});
+
+ // FDailyParts := nil;
+ // PostMessage( Handle, iq_AfterShowMessage, 0, 0 );
+ // GridDay.Cursor:= crJump;
+ IQSetTablesActive(true, Self);
+end;
+
+procedure TCap_Main_DM.DoOnFrameDestroy(Sender: TObject);
+begin
+  IQSetTablesActive(false, Self);
+  IQRegFormWrite( self, [self, pnlTotalWeek, pnlWeek ]);
+end;
+
+procedure DoCapacity;
+begin
+  // TFrmCapacity.Create(Application).Show;
+  // IQSetTablesActive(True, self);
+end;
+
+procedure TCap_Main_DM.DailyPartProjection1Click(Sender: TObject);
+begin
+ //  if FDailyParts  = nil then
+ //    DoDailyPartsProj(self); {Day_Proj.pas}
+end;
+
+procedure TCap_Main_DM.Recalculate1Click(Sender: TObject);
+begin
+  DoDayHrs( FALSE ); {DayHrs.pas}
+end;
+
+procedure TCap_Main_DM.Exit1Click(Sender: TObject);
+begin
+//  Close;
+end;
+
+procedure TCap_Main_DM.PrintSetup1Click(Sender: TObject);
+begin
+  PrinterSetupDialog1.Execute;
+end;
+
+procedure TCap_Main_DM.RefreshGraph;
+begin
+{
+  try
+    GraphWindow1.GraphInWindow.InvalidateData;
+    GraphWindow1.GraphInWindow.Display(FALSE);
+  except on E:Exception do
+    Application.ShowException(E)
+  end;
+}
+end;
+
+procedure TCap_Main_DM.GridDayDblClick(Sender: TObject);
+begin
+  DoShowDayParts( QryV_Hrs_Day.FieldByName('DAY_HRS_ID').asFloat);   {in Day_Part.pas}
+end;
+
+procedure TCap_Main_DM.GridDayDrawColumnCell(Sender: TObject; ACol,
+  ARow: Integer; Column: TUniDBGridColumn; Attribs: TUniCellAttribs);
+begin
+  if QryV_Hrs_DayLATE.Value = 'Y' then
+  begin
+    Attribs.Font.Color := clWhite;
+    Attribs.Color      := clRed;
+  end;
+end;
+
+procedure TCap_Main_DM.MaterialPlanning1Click(Sender: TObject);
+begin
+ // DoRawMaterialRequired( self, 0 ); {Mat_Req.pas}
+end;
+
+procedure TCap_Main_DM.JumptoWorkOrder1Click(Sender: TObject);
+begin
+ // IQJumpWO.Execute;
+end;
+
+procedure TCap_Main_DM.SrcV_Hrs_Week_TotDataChange(Sender: TObject;
+  Field: TField);
+begin
+ // chartDaysTot.RefreshData;
+end;
+
+procedure TCap_Main_DM.SrcWorkCenterTypeDataChange(Sender: TObject;
+  Field: TField);
+begin
+ // chartWeekTot.RefreshData;
+end;
+
+procedure TCap_Main_DM.HoursShift1Click(Sender: TObject);
+begin
+  DoProjectedHrsShift( SrcV_Hrs_Day );  {Day_Shft.pas}
+end;
+
+procedure TCap_Main_DM.FormActivate(Sender: TObject);
+begin
+ //    IQHelp.AssignHTMLFile( iqchmMFG{CHM}, iqhtmSCHED{HTM} );  {IQHelpHk.pas}
+end;
+
+procedure TCap_Main_DM.actToolbarSearchExecute(Sender: TObject);
+begin
+//
+end;
+
+procedure TCap_Main_DM.Contents1Click(Sender: TObject);
+begin
+// IQHelp.HelpContext( self.HelpContext ); {IQHelpHk.pas}
+end;
+
+initialization
+  RegisterModuleClass(TCap_Main_DM);
+  IQRegisterClass(RegisteredDataModules, 'Cap_Main_DM', TCap_Main_DM);
+
+end.
+

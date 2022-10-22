@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database Database="D4W" Name="D4wDataModel" EntityContextName="D4wDataContext" xmlns:ed="http://devart.com/schemas/EntityDeveloper/1.0" ed:Guid="5056b421-5b85-4de1-953f-0368292b70d2" xmlns="http://schemas.devart.com/entitydac/mapping">
+  <Connection Mode="ConnectionString" ConnectionString="Data Source=TPDAVID;Initial Catalog=D4W;Integrated Security=True;Persist Security Info=True" Provider="System.Data.SqlClient" />
+  <Table Name="Meta.DataModules" Member="Datamodules">
+    <Type Name="Datamodule" ed:Guid="63aa652a-2bd5-482a-8eb6-e6bd9f1fab19">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="609d0fa9-d692-47f2-b401-bc7715ff1e1e" />
+      <Column Name="Name" Type="String" DbType="VARCHAR(128) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="128" ed:ValidateMaxLength="128" ed:ValidateRequired="true" ed:Guid="4dc15386-fe2e-425d-be01-2145c622f56e" />
+      <Column Name="Shared" Type="Boolean" DbType="BIT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="8b554e11-d883-4749-ba3b-ac57079f5d2d" />
+      <Column Name="DFMID" Member="Dfmid" Type="Integer" DbType="INT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="f203e5d5-ab01-4042-844b-cc8557faf4f6" />
+      <Column Name="FormID" Member="Formid" Type="Integer" DbType="INT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="26b53624-6aa8-4633-8d04-932d4fd9ff00" />
+      <Association Name="Dfm_Datamodule" ed:AssociationGuid="f68ada27-a411-4b5a-aa2e-64924edaaf1d" Member="Dfm" ed:Guid="7a299a59-e6eb-4d4e-b984-e28369aca7eb" ThisKey="Dfmid" OtherKey="Id" Type="Dfm" DeleteRule="NoAction" DeleteOnNull="true" IsForeignKey="true" />
+      <Association Name="Form_Datamodule" ed:AssociationGuid="0509b08b-0674-483e-9e86-60f6087ca6b3" Member="Form" ed:Guid="9ee7e33a-b508-43c9-9967-45b76bc376f9" ThisKey="Formid" OtherKey="Id" Type="Form" DeleteRule="Cascade" Cascade="true" DeleteOnNull="true" IsForeignKey="true" />
+      <Association Name="Datamodule_Dataset" ed:AssociationGuid="f2acd1c8-ff5f-4012-988c-efc71449f07c" Member="Datasets" ed:Guid="f1a3085d-bcd1-4801-94d4-2a1559d3216a" ThisKey="Id" OtherKey="Datamoduleid" Type="Dataset" />
+    </Type>
+  </Table>
+  <Table Name="Meta.DataSets" Member="Datasets">
+    <Type Name="Dataset" ed:Guid="ba0d106c-1e32-48ba-8f7e-6197661c04a8">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="30045e90-50b3-4e07-bc02-c59319d9ed54" />
+      <Column Name="Name" Type="String" DbType="VARCHAR(128) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="128" ed:ValidateMaxLength="128" ed:ValidateRequired="true" ed:Guid="6dbaf0c3-d163-47ca-b896-610fec01130c" />
+      <Column Name="DataSetID" Member="Datasetid" Type="Integer" DbType="INT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="97206fbf-17ad-4182-b331-4cba3cb98750" />
+      <Column Name="TableName" Member="Tablename" Type="String" DbType="VARCHAR(64)" CanBeNull="true" UpdateCheck="Never" MaxLength="64" ed:ValidateMaxLength="64" ed:ValidateRequired="false" ed:Guid="1c0b9067-0e20-425b-a1b5-cbe5a1070452" />
+      <Column Name="SQLQuery" Member="Sqlquery" Type="String" DbType="VARCHAR(1024)" CanBeNull="true" UpdateCheck="Never" MaxLength="1024" ed:ValidateMaxLength="1024" ed:ValidateRequired="false" ed:Guid="270e15d1-836f-4c14-aa68-075d67d46044" />
+      <Column Name="DataModuleID" Member="Datamoduleid" Type="Integer" DbType="INT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="86a64a42-db61-403b-83e6-aacc9891cf45" />
+      <Association Name="Datamodule_Dataset" ed:AssociationGuid="f2acd1c8-ff5f-4012-988c-efc71449f07c" Member="Datamodule" ed:Guid="522e4a7e-aa32-4831-ab9b-2369e6782d05" ThisKey="Datamoduleid" OtherKey="Id" Type="Datamodule" DeleteRule="Cascade" Cascade="true" DeleteOnNull="true" IsForeignKey="true" />
+      <Association Name="Dataset_Dataset" ed:AssociationGuid="6a1e4df5-c0d9-431a-93e2-d0fc5b99660c" Member="Datasets_Datasetid" ed:Guid="4339807c-0aae-4163-984b-0eb69e4616d8" ThisKey="Id" OtherKey="Datasetid" Type="Dataset" />
+      <Association Name="Dataset_Dataset" ed:AssociationGuid="6a1e4df5-c0d9-431a-93e2-d0fc5b99660c" Member="Dataset_Datasetid" ed:Guid="ad51887b-7f9b-4df6-bb93-dfba670b0bc9" ThisKey="Datasetid" OtherKey="Id" Type="Dataset" DeleteRule="NoAction" IsForeignKey="true" />
+      <Association Name="Dataset_Field" ed:AssociationGuid="8195326a-b5a2-408e-95a1-6adc90d2d439" Member="Fields" ed:Guid="21c2ab80-5f16-4191-a0a3-19010e5d828b" ThisKey="Id" OtherKey="Datasetid" Type="Field" />
+    </Type>
+  </Table>
+  <Table Name="Meta.DFMs" Member="Dfms">
+    <Type Name="Dfm" ed:Guid="5703036c-5495-46d5-a146-174e0c70cfc5">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="c25693b4-c854-44ad-b619-14fc85808728" />
+      <Column Name="Name" Type="String" DbType="VARCHAR(128) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="128" ed:ValidateMaxLength="128" ed:ValidateRequired="true" ed:Guid="e5b27edd-db8a-4bf4-bf42-ac1967583ce2" />
+      <Column Name="DFM" Member="Dfm" Type="String" DbType="VARCHAR(MAX) NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="db49dd9e-6559-4087-9d98-bf1f2358ba58" />
+      <Association Name="Dfm_Datamodule" ed:AssociationGuid="f68ada27-a411-4b5a-aa2e-64924edaaf1d" Member="Datamodules" ed:Guid="3f3f0821-73ea-44d3-854f-9485be60e44b" ThisKey="Id" OtherKey="Dfmid" Type="Datamodule" />
+      <Association Name="Dfm_Formview" ed:AssociationGuid="3ab4073b-8254-410c-98b3-a482bc58a65f" Member="Formviews" ed:Guid="c9701de2-75c2-4a06-b1c1-6db121b12138" ThisKey="Id" OtherKey="Dfmid" Type="Formview" />
+    </Type>
+  </Table>
+  <Table Name="Meta.Fields" Member="Fields">
+    <Type Name="Field" ed:Guid="bf21b798-d9d4-4a4e-b993-5c0a164dabf7">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="e0261789-e93d-493c-b798-36e280147272" />
+      <Column Name="Name" Type="String" DbType="VARCHAR(128) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="128" ed:ValidateMaxLength="128" ed:ValidateRequired="true" ed:Guid="2c2c447b-eaf2-46f1-bee4-9de8bbec0b17" />
+      <Column Name="DisplayLabel" Member="Displaylabel" Type="String" DbType="VARCHAR(50)" CanBeNull="true" UpdateCheck="Never" MaxLength="50" ed:ValidateMaxLength="50" ed:ValidateRequired="false" ed:Guid="e907ceaf-8597-4bd9-9530-a0a1d8d1bcde" />
+      <Column Name="DisplayWidth" Member="Displaywidth" Type="Integer" DbType="INT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="1d164c50-6242-402b-b251-d6164f19118e" />
+      <Column Name="Size" Type="Integer" DbType="INT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="aba60269-b37f-45da-be8d-8348bd01f9d8" />
+      <Column Name="Precission" Type="Integer" DbType="INT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="7b1a3641-060b-4423-bf12-d4f7e96c4163" />
+      <Column Name="DataType" Member="Datatype" Type="Integer" DbType="INT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="6657c214-567f-4341-916e-bb4ddd77e1c3" />
+      <Column Name="FieldTypeID" Member="Fieldtypeid" Type="Integer" DbType="INT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="87defaae-0e08-4116-b0f1-f028b7f3da84" />
+      <Column Name="EditorID" Member="Editorid" Type="Integer" DbType="INT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="bcc139f9-4f0d-4b3c-bf32-e895f7f8f9bc" />
+      <Column Name="DataSetID" Member="Datasetid" Type="Integer" DbType="INT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="7d7e9fca-5c37-44df-aa5e-087132a971c9" />
+      <Association Name="Dataset_Field" ed:AssociationGuid="8195326a-b5a2-408e-95a1-6adc90d2d439" Member="Dataset" ed:Guid="684c7a7e-54b6-4306-8624-65c3a1674fc4" ThisKey="Datasetid" OtherKey="Id" Type="Dataset" DeleteRule="Cascade" Cascade="true" DeleteOnNull="true" IsForeignKey="true" />
+      <Association Name="Fieldtype_Field" ed:AssociationGuid="6dfd41e8-7c37-4561-b88b-c3660d6bfd3b" Member="Fieldtype" ed:Guid="5e62921d-d23a-45f4-9248-a98bfc25d7f2" ThisKey="Fieldtypeid" OtherKey="Id" Type="Fieldtype" DeleteRule="NoAction" DeleteOnNull="true" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="Meta.FieldTypes" Member="Fieldtypes">
+    <Type Name="Fieldtype" ed:Guid="aef35009-8b9d-44a2-9887-5f1f40dbcaed">
+      <Column Name="ID" Member="Id" Type="Integer" DbType="INT NOT NULL" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="e0e085b2-8020-4484-97ac-858ffb5314b1" />
+      <Column Name="Name" Type="String" DbType="VARCHAR(128) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="128" ed:ValidateMaxLength="128" ed:ValidateRequired="true" ed:Guid="38ade41d-6987-4b55-acf9-1efce4784eca" />
+      <Column Name="Custom" Type="Boolean" DbType="BIT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="d155b229-2b31-4f2f-b459-cfa08ba3c9f5" />
+      <Association Name="Fieldtype_Field" ed:AssociationGuid="6dfd41e8-7c37-4561-b88b-c3660d6bfd3b" Member="Fields" ed:Guid="705dc3dc-380a-4154-ac4b-2c62c485bb04" ThisKey="Id" OtherKey="Fieldtypeid" Type="Field" />
+      <Type Name="Choice" ed:Guid="3ab77105-e8fb-46f0-b0a8-47b673a547ff" ed:InheritanceGuid="19d7a179-2e93-4ab8-95b7-18502762a74b" TableName="Meta.Choices">
+        <InheritanceColumn ThisName="ID" BaseName="ID" />
+        <Column Name="Multiple" Type="Boolean" DbType="BIT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="5e16d6cf-d79e-464c-b679-69a71be6c9c9" />
+        <Column Name="ListID" Member="Listid" Type="Integer" DbType="INT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="ecd2cd7f-af13-4700-b6d0-d643c3840520" />
+        <Association Name="List_Choice" ed:AssociationGuid="c4f4e87c-d638-4e23-8e36-4c3b3b003e2e" Member="List" ed:Guid="a0be199b-7bf0-4a8c-a84f-fc979af22df2" ThisKey="Listid" OtherKey="Id" Type="List" DeleteRule="Cascade" Cascade="true" DeleteOnNull="true" IsForeignKey="true" />
+      </Type>
+      <Type Name="Tree" ed:Guid="b2f9a9ba-c92f-4799-9e2a-ae9199a27a85" ed:InheritanceGuid="9c85fe7a-319b-4595-b6b5-611bb439bf9d" TableName="Meta.Trees">
+        <InheritanceColumn ThisName="ID" BaseName="ID" />
+        <Column Name="Terminal" Type="Boolean" DbType="BIT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="81708021-86bd-41aa-88fe-b5e2bcb19ca5" />
+        <Column Name="Level" Type="Integer" DbType="INT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="5d7b5ef3-4b25-4118-a9fd-f19eea27fb11" />
+        <Column Name="Multiple" Type="Boolean" DbType="BIT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="ebb45ed3-e0f9-4210-82cc-26580c163e5c" />
+        <Column Name="Siblings" Type="Boolean" DbType="BIT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="1476c0a0-d720-4cf7-8fbb-d7b52dc98531" />
+        <Column Name="Overlapping" Type="Boolean" DbType="BIT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="6deec27f-3d3e-48fa-811c-e95dfddc336e" />
+        <Column Name="TreeNodeID" Member="Treenodeid" Type="Integer" DbType="INT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="5ad08b9a-aee4-45c5-b3b3-d20950b749df" />
+        <Association Name="Treenode_Tree" ed:AssociationGuid="0865515f-b85a-47e5-be15-8a6eec3cf3dd" Member="Treenode" ed:Guid="c59c126f-a6d1-4281-9763-9057eec80690" ThisKey="Treenodeid" OtherKey="Id" Type="Treenode" DeleteRule="NoAction" IsForeignKey="true" />
+      </Type>
+    </Type>
+  </Table>
+  <Table Name="Meta.Forms" Member="Forms">
+    <Type Name="Form" ed:Guid="80047743-4c36-4ecf-86a1-09b56d239c9c">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="f61842af-5882-4271-97e8-6b5a3ee5df28" />
+      <Column Name="Name" Type="String" DbType="VARCHAR(128) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="128" ed:ValidateMaxLength="128" ed:ValidateRequired="true" ed:Guid="b198982b-27a6-4104-9521-db2dd3df0c3b" />
+      <Column Name="ParentID" Member="Parentid" Type="Integer" DbType="INT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="5a9af3d3-1192-4892-854b-a9ad9b534eb2" />
+      <Column Name="ModuleID" Member="Moduleid" Type="Integer" DbType="INT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="2a318033-37ab-4790-ad2f-b300d8a7f743" />
+      <Association Name="Form_Datamodule" ed:AssociationGuid="0509b08b-0674-483e-9e86-60f6087ca6b3" Member="Datamodules" ed:Guid="e7f07122-da8a-4fc7-99b2-62c98fd578b5" ThisKey="Id" OtherKey="Formid" Type="Datamodule" />
+      <Association Name="Form_Form" ed:AssociationGuid="224d4536-0411-4ff3-8005-6b11eb6f7d4b" Member="Forms_Parentid" ed:Guid="f9a394bb-3c97-4c69-ba76-4b923b31bdbe" ThisKey="Id" OtherKey="Parentid" Type="Form" />
+      <Association Name="Form_Form" ed:AssociationGuid="224d4536-0411-4ff3-8005-6b11eb6f7d4b" Member="Form_Parentid" ed:Guid="b503b038-52aa-43bf-b42b-5fd38694a574" ThisKey="Parentid" OtherKey="Id" Type="Form" DeleteRule="NoAction" IsForeignKey="true" />
+      <Association Name="Module_Form" ed:AssociationGuid="ab2b9d3f-53a5-4b3d-814a-c3419b609b6d" Member="Module" ed:Guid="dc4383fa-be80-4b1c-8df0-baedff18c387" ThisKey="Moduleid" OtherKey="Id" Type="Module" DeleteRule="Cascade" Cascade="true" DeleteOnNull="true" IsForeignKey="true" />
+      <Association Name="Form_Formview" ed:AssociationGuid="10a8672e-c8d3-4743-8b38-989854ef7fc6" Member="Formviews" ed:Guid="e213ff88-ba81-407f-b685-f07d264710a6" ThisKey="Id" OtherKey="Formid" Type="Formview" />
+    </Type>
+  </Table>
+  <Table Name="Meta.FormViews" Member="Formviews">
+    <Type Name="Formview" ed:Guid="07bc424b-3cab-4cce-a740-5781a2d5b5d7">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="b702b401-3f66-45a9-a70a-5701054fdc87" />
+      <Column Name="Name" Type="String" DbType="VARCHAR(128) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="128" ed:ValidateMaxLength="128" ed:ValidateRequired="true" ed:Guid="0bf07a31-7563-4394-81dd-3d8c21c8e000" />
+      <Column Name="ResponsiveTarget" Member="Responsivetarget" Type="Integer" DbType="INT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="2f1c3341-1029-49cc-b266-bdc81574aacd" />
+      <Column Name="FormID" Member="Formid" Type="Integer" DbType="INT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="da42e01f-d806-44ea-a34e-f22af4bc31f9" />
+      <Column Name="DFMID" Member="Dfmid" Type="Integer" DbType="INT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="75660f7a-ddf7-44c3-813a-1f915983608b" />
+      <Association Name="Dfm_Formview" ed:AssociationGuid="3ab4073b-8254-410c-98b3-a482bc58a65f" Member="Dfm" ed:Guid="14e85470-afb6-4995-9cc3-4f2d2ad71a72" ThisKey="Dfmid" OtherKey="Id" Type="Dfm" DeleteRule="NoAction" DeleteOnNull="true" IsForeignKey="true" />
+      <Association Name="Form_Formview" ed:AssociationGuid="10a8672e-c8d3-4743-8b38-989854ef7fc6" Member="Form" ed:Guid="89d9d059-e767-4c10-ba0b-3fcb10d65c9d" ThisKey="Formid" OtherKey="Id" Type="Form" DeleteRule="Cascade" Cascade="true" DeleteOnNull="true" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="Meta.ListItems" Member="Listitems">
+    <Type Name="Listitem" ed:Guid="d77c8f1a-a737-423a-9c81-0675d5945353">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="89a480b2-4912-4778-a599-dce906df7bfe" />
+      <Column Name="Text" Type="String" DbType="VARCHAR(50) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="50" ed:ValidateMaxLength="50" ed:ValidateRequired="true" ed:Guid="21fc2407-bd37-4701-998a-c093232dce3e" />
+      <Column Name="Seq" Type="Integer" DbType="INT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="8cef05ca-f097-465f-8ea5-46817011edfd" />
+      <Column Name="ListID" Member="Listid" Type="Integer" DbType="INT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="9d1bdafb-52e6-47a6-b9d1-761965d44bee" />
+      <Association Name="List_Listitem" ed:AssociationGuid="debf33ab-3272-44b9-923a-4f99ec330021" Member="List" ed:Guid="abdbdab4-2771-44a3-9d26-1e537368efcc" ThisKey="Listid" OtherKey="Id" Type="List" DeleteRule="Cascade" Cascade="true" DeleteOnNull="true" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="Meta.Lists" Member="Lists">
+    <Type Name="List" ed:Guid="41075a3b-d58c-4773-b46d-0336cb174030">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="fab69c35-67e1-47bb-b2f4-ecbc0f0d466e" />
+      <Column Name="Name" Type="String" DbType="VARCHAR(128) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="128" ed:ValidateMaxLength="128" ed:ValidateRequired="true" ed:Guid="69afb981-7fbd-4db4-a449-e63a0a94e555" />
+      <Association Name="List_Choice" ed:AssociationGuid="c4f4e87c-d638-4e23-8e36-4c3b3b003e2e" Member="Choices" ed:Guid="6b023fa2-7619-426f-9627-8850990ec551" ThisKey="Id" OtherKey="Listid" Type="Choice" />
+      <Association Name="List_Listitem" ed:AssociationGuid="debf33ab-3272-44b9-923a-4f99ec330021" Member="Listitems" ed:Guid="415b5013-8419-4af0-ac83-9f0871857c81" ThisKey="Id" OtherKey="Listid" Type="Listitem" />
+    </Type>
+  </Table>
+  <Table Name="Meta.Modules" Member="Modules">
+    <Type Name="Module" ed:Guid="19a0737b-e152-4bce-94b6-2b2b67853822">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="b0e3add8-a5aa-4581-9b61-0e715fdb7d01" />
+      <Column Name="Name" Type="String" DbType="VARCHAR(128) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="128" ed:ValidateMaxLength="128" ed:ValidateRequired="true" ed:Guid="ad8b29ad-dd61-4265-83a9-8a4564aaf572" />
+      <Association Name="Module_Form" ed:AssociationGuid="ab2b9d3f-53a5-4b3d-814a-c3419b609b6d" Member="Forms" ed:Guid="c0a3ce79-afef-4ff7-b909-0cbb0fb7c418" ThisKey="Id" OtherKey="Moduleid" Type="Form" />
+    </Type>
+  </Table>
+  <Table Name="Meta.TreeNodes" Member="Treenodes">
+    <Type Name="Treenode" ed:Guid="ef968f45-d896-47da-9f3f-01c201ecabce">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="5fa31483-3158-4354-a83b-e83069a03431" />
+      <Column Name="Text" Type="String" DbType="VARCHAR(50) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="50" ed:ValidateMaxLength="50" ed:ValidateRequired="true" ed:Guid="5ecaf81f-4710-4772-a06f-a2ba2cbb8fbb" />
+      <Column Name="Seq" Type="Integer" DbType="INT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="dc4dbf5e-8ec6-4f0f-a3b7-d6d52ad3dce4" />
+      <Column Name="ParentID" Member="Parentid" Type="Integer" DbType="INT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="bfdda3ab-3fdc-440c-a6fb-47faf8f257b9" />
+      <Association Name="Treenode_Treenode" ed:AssociationGuid="dee577e7-262a-4d6b-a332-282cbc9a5e45" Member="Treenodes_Parentid" ed:Guid="e6b8725e-1d0e-4fa8-84b2-40587a492dc1" ThisKey="Id" OtherKey="Parentid" Type="Treenode" />
+      <Association Name="Treenode_Treenode" ed:AssociationGuid="dee577e7-262a-4d6b-a332-282cbc9a5e45" Member="Treenode_Parentid" ed:Guid="1edb4668-bc36-42e9-b03f-33896861fb70" ThisKey="Parentid" OtherKey="Id" Type="Treenode" DeleteRule="NoAction" IsForeignKey="true" />
+      <Association Name="Treenode_Tree" ed:AssociationGuid="0865515f-b85a-47e5-be15-8a6eec3cf3dd" Member="Trees" ed:Guid="60270fa5-f7ae-4dfb-affb-06c9e6a8fe19" ThisKey="Id" OtherKey="Treenodeid" Type="Tree" />
+    </Type>
+  </Table>
+  <Table Name="RBAC.Groups" Member="Groups">
+    <Type Name="Group" ed:Guid="781132f3-ad72-49ed-9208-3ee498e48308">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="7a998320-7dd3-4cb6-a465-233d7b6c2e62" />
+      <Column Name="Name" Type="String" DbType="VARCHAR(50) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="50" ed:ValidateMaxLength="50" ed:ValidateRequired="true" ed:Guid="92508eaf-d19f-4749-92e1-c29b88cebcfe" />
+      <Column Name="GroupID" Member="Groupid" Type="Integer" DbType="INT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="2a05be83-901b-4792-ac26-a0f3318137d7" />
+      <Association Name="Group_Group" ed:AssociationGuid="c77072b6-c7ff-4105-a904-64a8ac73237f" Member="Groups_Groupid" ed:Guid="e3c61396-aac8-4e54-ac6f-436e8afccbba" ThisKey="Id" OtherKey="Groupid" Type="Group" />
+      <Association Name="Group_Group" ed:AssociationGuid="c77072b6-c7ff-4105-a904-64a8ac73237f" Member="Group_Groupid" ed:Guid="39c4be66-dbe8-43ea-b636-8d66d8a4fb3e" ThisKey="Groupid" OtherKey="Id" Type="Group" DeleteRule="NoAction" IsForeignKey="true" />
+      <Association Name="Role_Group" ed:AssociationGuid="351944c9-6944-4562-addd-97b6b0b211bd" Member="Roles" ed:Guid="53095861-39a6-4831-99e4-2466d37afa35" ThisKey="Id" OtherKey="Id" Type="Role" LinkTableName="RBAC.Group_Roles" LinkThisKey="GroupID" LinkOtherKey="RoleID" IsForeignKey="true" Cardinality="Many" />
+      <Association Name="User_Group" ed:AssociationGuid="983fdc61-c079-49d5-959f-b837aed7aadb" Member="Users" ed:Guid="72fc5f69-30d9-40db-990b-525914603b47" ThisKey="Id" OtherKey="Id" Type="User" LinkTableName="RBAC.GroupMembers" LinkThisKey="GroupID" LinkOtherKey="UserID" IsForeignKey="true" Cardinality="Many" />
+    </Type>
+  </Table>
+  <Table Name="RBAC.Objects" Member="Object1s">
+    <Type Name="Object1" ed:Guid="45a56426-c30a-41d9-bf06-5b9bb608510e">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="122970ad-b58f-4abf-a6f9-90e3c1158b61" />
+      <Column Name="Name" Type="String" DbType="VARCHAR(50) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="50" ed:ValidateMaxLength="50" ed:ValidateRequired="true" ed:Guid="9b591136-ec1f-496b-b68f-8f380123e505" />
+      <Column Name="ObjectTypeID" Member="Objecttypeid" Type="Integer" DbType="INT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="a630fc60-45f2-4e9f-8223-b16953d09e53" />
+      <Association Name="Objecttype_Object1" ed:AssociationGuid="b02686f1-8bee-4e3c-b64d-d3f69ba10515" Member="Objecttype" ed:Guid="acaf9a14-84b8-402a-a6c0-9fbdbb625248" ThisKey="Objecttypeid" OtherKey="Id" Type="Objecttype" DeleteRule="Cascade" Cascade="true" DeleteOnNull="true" IsForeignKey="true" />
+      <Association Name="Object1_Permission" ed:AssociationGuid="706ae9ef-149b-4438-b2c2-f62c0d60e4fb" Member="Permissions" ed:Guid="d7e84827-29ad-454c-bf3a-6808bc55bcc4" ThisKey="Id" OtherKey="Objectid" Type="Permission" />
+    </Type>
+  </Table>
+  <Table Name="RBAC.ObjectTypes" Member="Objecttypes">
+    <Type Name="Objecttype" ed:Guid="2fd394aa-f0b4-41f7-9fab-dabc03e13c6d">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="252e412c-6de4-40a2-9356-2fc15e292267" />
+      <Column Name="Name" Type="String" DbType="VARCHAR(50) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="50" ed:ValidateMaxLength="50" ed:ValidateRequired="true" ed:Guid="3745ced6-c695-455a-8c73-2602f60b6935" />
+      <Association Name="Objecttype_Object1" ed:AssociationGuid="b02686f1-8bee-4e3c-b64d-d3f69ba10515" Member="Object1s" ed:Guid="ebe012cf-46b7-4ca8-9513-3b5527cb665d" ThisKey="Id" OtherKey="Objecttypeid" Type="Object1" />
+      <Association Name="Objecttype_Operation" ed:AssociationGuid="fc20fb51-32c7-4511-b7c9-800859576aeb" Member="Operations" ed:Guid="f6bfd5e6-e344-4085-96f5-6dd912408f15" ThisKey="Id" OtherKey="Objecttypeid" Type="Operation" />
+    </Type>
+  </Table>
+  <Table Name="RBAC.Operations" Member="Operations">
+    <Type Name="Operation" ed:Guid="2b159adb-3adb-4430-bf8c-77e5f830cb51">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="9a2c9ad5-a3fb-444d-bbb9-1501264a8fb5" />
+      <Column Name="Name" Type="String" DbType="VARCHAR(50) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="50" ed:ValidateMaxLength="50" ed:ValidateRequired="true" ed:Guid="37f7aaee-1dad-46ae-91f6-6d8d1d6b30b5" />
+      <Column Name="ObjectTypeID" Member="Objecttypeid" Type="Integer" DbType="INT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="6f265f44-bdea-46ed-afa4-1f4a246bd7d9" />
+      <Association Name="Objecttype_Operation" ed:AssociationGuid="fc20fb51-32c7-4511-b7c9-800859576aeb" Member="Objecttype" ed:Guid="6720b906-27fd-477a-a308-48ead83a1863" ThisKey="Objecttypeid" OtherKey="Id" Type="Objecttype" DeleteRule="Cascade" Cascade="true" DeleteOnNull="true" IsForeignKey="true" />
+      <Association Name="Operation_Permission" ed:AssociationGuid="f4fb02a3-1c71-458b-b8b3-2dd27091df62" Member="Permissions" ed:Guid="506d2733-0e65-4f00-becc-08dcb9eb2034" ThisKey="Id" OtherKey="Operationid" Type="Permission" />
+    </Type>
+  </Table>
+  <Table Name="RBAC.Permissions" Member="Permissions">
+    <Type Name="Permission" ed:Guid="92a7fb41-8df5-4a3b-8d48-64e760df0c82">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="07d9a47b-34f6-4a81-9b6a-f71fbabb34a5" />
+      <Column Name="Name" Type="String" DbType="VARCHAR(50) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="50" ed:ValidateMaxLength="50" ed:ValidateRequired="true" ed:Guid="30005c94-89ec-43e3-93ba-3498fc6e8907" />
+      <Column Name="ObjectID" Member="Objectid" Type="Integer" DbType="INT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="a8069e25-d7c1-4d8e-98fa-a1d88217abfb" />
+      <Column Name="OperationID" Member="Operationid" Type="Integer" DbType="INT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="1fbe992f-cc9f-450f-904f-b78b5dc03987" />
+      <Association Name="Object1_Permission" ed:AssociationGuid="706ae9ef-149b-4438-b2c2-f62c0d60e4fb" Member="Object1" ed:Guid="9bbf29cd-9049-44fa-ba06-93808aa754f3" ThisKey="Objectid" OtherKey="Id" Type="Object1" DeleteRule="Cascade" Cascade="true" DeleteOnNull="true" IsForeignKey="true" />
+      <Association Name="Operation_Permission" ed:AssociationGuid="f4fb02a3-1c71-458b-b8b3-2dd27091df62" Member="Operation" ed:Guid="5ab9b6b8-3301-421f-8537-03b85b449d5a" ThisKey="Operationid" OtherKey="Id" Type="Operation" DeleteRule="NoAction" IsForeignKey="true" />
+      <Association Name="Permission_Role" ed:AssociationGuid="ff4def1f-9475-460e-92eb-09ec2fb8a402" Member="Roles" ed:Guid="01068893-46c0-40af-80bb-8f45ac052aca" ThisKey="Id" OtherKey="Id" Type="Role" LinkTableName="RBAC.Role_Permissions" LinkThisKey="PermissionID" LinkOtherKey="RoleID" Cardinality="Many" />
+    </Type>
+  </Table>
+  <Table Name="RBAC.Roles" Member="Roles">
+    <Type Name="Role" ed:Guid="c4310c5d-0ad2-454f-a0f8-277058a1ef61">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="8264ff23-dc86-40f8-8503-2c3c49c6676d" />
+      <Column Name="Name" Type="String" DbType="VARCHAR(50) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="50" ed:ValidateMaxLength="50" ed:ValidateRequired="true" ed:Guid="9442d8a5-e296-42ae-80f6-2d6de591ddeb" />
+      <Column Name="RoleID" Member="Roleid" Type="Integer" DbType="INT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="ed66a956-719a-4651-9fcb-8ba03d28f122" />
+      <Association Name="Role_Role" ed:AssociationGuid="717570df-2f4c-45e6-98ea-48e4b039811f" Member="Roles_Roleid" ed:Guid="c9a09b6e-bb2f-4c42-855c-ed2f7764f1ef" ThisKey="Id" OtherKey="Roleid" Type="Role" />
+      <Association Name="Role_Role" ed:AssociationGuid="717570df-2f4c-45e6-98ea-48e4b039811f" Member="Role_Roleid" ed:Guid="e93f6d65-5504-4c2c-8af9-b523b712002a" ThisKey="Roleid" OtherKey="Id" Type="Role" DeleteRule="NoAction" IsForeignKey="true" />
+      <Association Name="Role_Group" ed:AssociationGuid="351944c9-6944-4562-addd-97b6b0b211bd" Member="Groups" ed:Guid="ba3698b0-8c24-460c-9625-238ff2b0b4b0" ThisKey="Id" OtherKey="Id" Type="Group" LinkTableName="RBAC.Group_Roles" LinkThisKey="RoleID" LinkOtherKey="GroupID" Cardinality="Many" />
+      <Association Name="Permission_Role" ed:AssociationGuid="ff4def1f-9475-460e-92eb-09ec2fb8a402" Member="Permissions" ed:Guid="ad598517-45a1-4b03-ac4f-370c4405aa24" ThisKey="Id" OtherKey="Id" Type="Permission" LinkTableName="RBAC.Role_Permissions" LinkThisKey="RoleID" LinkOtherKey="PermissionID" IsForeignKey="true" Cardinality="Many" />
+      <Association Name="Role_Session" ed:AssociationGuid="9ea6e956-f0d7-4851-94a9-5fac170b7512" Member="Sessions" ed:Guid="281470cd-5c75-48db-980f-2e9e603fa187" ThisKey="Id" OtherKey="Id" Type="Session" LinkTableName="RBAC.Session_Roles" LinkThisKey="RoleID" LinkOtherKey="SessionID" Cardinality="Many" />
+    </Type>
+  </Table>
+  <Table Name="RBAC.Sessions" Member="Sessions">
+    <Type Name="Session" ed:Guid="44d5cba0-5759-4367-872c-f6b0abef577d">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="aeb8a8c6-c428-496a-8def-7682b586e2b2" />
+      <Column Name="Name" Type="String" DbType="VARCHAR(50) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="50" ed:ValidateMaxLength="50" ed:ValidateRequired="true" ed:Guid="7a03247c-3859-43f0-b264-11dc3df84599" />
+      <Column Name="UserID" Member="Userid" Type="Integer" DbType="INT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="f46c2f91-ec6c-457c-820a-3b9caf130ce9" />
+      <Column Name="Created" Type="DateTime" DbType="DATETIME" CanBeNull="true" UpdateCheck="Never" DefaultValue="getdate()" ed:ValidateRequired="false" ed:Guid="bfe73c97-dc84-42d3-99f0-7ca33bdfac1e" />
+      <Association Name="User_Session" ed:AssociationGuid="dedfd8e9-a66e-429f-a01c-c371a5d84fb5" Member="User" ed:Guid="8ab62553-acfb-4ce1-97cb-49564f8db343" ThisKey="Userid" OtherKey="Id" Type="User" DeleteRule="Cascade" Cascade="true" DeleteOnNull="true" IsForeignKey="true" />
+      <Association Name="Role_Session" ed:AssociationGuid="9ea6e956-f0d7-4851-94a9-5fac170b7512" Member="Roles" ed:Guid="6b2b09ee-fd19-4d85-88f3-fc2b417b0ffe" ThisKey="Id" OtherKey="Id" Type="Role" LinkTableName="RBAC.Session_Roles" LinkThisKey="SessionID" LinkOtherKey="RoleID" IsForeignKey="true" Cardinality="Many" />
+    </Type>
+  </Table>
+  <Table Name="RBAC.Users" Member="Users">
+    <Type Name="User" ed:Guid="075cfddf-9e21-4b73-a72a-1c289268640a">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="858114f2-bd76-4523-a0c7-71566a9be5c4" />
+      <Column Name="Name" Type="String" DbType="VARCHAR(50) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="50" ed:ValidateMaxLength="50" ed:ValidateRequired="true" ed:Guid="23fef6eb-be44-4624-9ed7-ddb1e1002999" />
+      <Association Name="User_Session" ed:AssociationGuid="dedfd8e9-a66e-429f-a01c-c371a5d84fb5" Member="Sessions" ed:Guid="50bf38c2-3acd-42a1-a7f9-80f292619a60" ThisKey="Id" OtherKey="Userid" Type="Session" />
+      <Association Name="User_Request" ed:AssociationGuid="a7fd9359-a5f7-4e11-9d63-cb2e63505601" Member="Requests" ed:Guid="50737d9f-6ddd-42ef-ba33-c8b904942687" ThisKey="Id" OtherKey="Userid" Type="Request" />
+      <Association Name="User_Group" ed:AssociationGuid="983fdc61-c079-49d5-959f-b837aed7aadb" Member="Groups" ed:Guid="cdf5294b-7aa4-45d6-9ccb-b26bbdcf93bc" ThisKey="Id" OtherKey="Id" Type="Group" LinkTableName="RBAC.GroupMembers" LinkThisKey="UserID" LinkOtherKey="GroupID" Cardinality="Many" />
+    </Type>
+  </Table>
+  <Table Name="WfE.Cases" Member="Case1s">
+    <Type Name="Case1" ed:Guid="2a7171f8-c6e7-4baf-bb43-6ee1468740de">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="81e071c0-2df4-42fa-9de7-be71a06fe021" />
+      <Column Name="Name" Type="String" DbType="VARCHAR(50) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="50" ed:ValidateMaxLength="50" ed:ValidateRequired="true" ed:Guid="9a64d3a6-38d7-4197-b7e1-c752b8c8776e" />
+      <Column Name="CaseTypeID" Member="Casetypeid" Type="Integer" DbType="INT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="2dbf4881-4e72-4732-998b-995e44c44271" />
+      <Association Name="Casetype_Case1" ed:AssociationGuid="bad4049e-5591-4f0a-b8c9-77f179ff6ee8" Member="Casetype" ed:Guid="0a7c05f6-f69b-40d4-8512-7137e13349f6" ThisKey="Casetypeid" OtherKey="Id" Type="Casetype" DeleteRule="Cascade" Cascade="true" DeleteOnNull="true" IsForeignKey="true" />
+      <Association Name="Case1_Task" ed:AssociationGuid="d3f4883b-2255-43bd-957f-21ea6a2614b3" Member="Tasks" ed:Guid="cd93550a-9449-4ad5-9f93-1666bc41aff5" ThisKey="Id" OtherKey="Id" Type="Task" LinkTableName="WfE.WorkItems" LinkThisKey="CaseID" LinkOtherKey="TaskID" Cardinality="Many" />
+    </Type>
+  </Table>
+  <Table Name="WfE.CaseTypes" Member="Casetypes">
+    <Type Name="Casetype" ed:Guid="43d5be14-2f0f-4e26-917c-6ecf8304d04f">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="4adc550e-0f26-4ba8-9afc-afe188af353a" />
+      <Column Name="Name" Type="String" DbType="VARCHAR(50) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="50" ed:ValidateMaxLength="50" ed:ValidateRequired="true" ed:Guid="51a574ab-27c7-4138-8d13-1a4fbfd4a305" />
+      <Column Name="ProcessID" Member="Processid" Type="Integer" DbType="INT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="d3aaf486-1885-421b-8601-c46eda28ef0a" />
+      <Association Name="Casetype_Case1" ed:AssociationGuid="bad4049e-5591-4f0a-b8c9-77f179ff6ee8" Member="Case1s" ed:Guid="1f4393f0-8bc6-4db8-a223-a2da1e4fd2e5" ThisKey="Id" OtherKey="Casetypeid" Type="Case1" />
+      <Association Name="Process_Casetype" ed:AssociationGuid="23fc264d-fb17-4c0e-9a67-dbb7de77ca77" Member="Process" ed:Guid="cba771a8-e65e-48da-b023-be96c6a81fdc" ThisKey="Processid" OtherKey="Id" Type="Process" DeleteRule="SetNULL" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="WfE.Processes" Member="Processes">
+    <Type Name="Process" ed:Guid="fdb47a29-30ae-46c6-93be-a1b83fc22667">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="3fd6c03f-2c89-43ec-8205-543177418aa7" />
+      <Column Name="Name" Type="String" DbType="VARCHAR(50) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="50" ed:ValidateMaxLength="50" ed:ValidateRequired="true" ed:Guid="7b5265c7-037e-4f70-b645-9f2e5bc64bd9" />
+      <Column Name="ProcessID" Member="Processid" Type="Integer" DbType="INT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="05d6a260-199e-495b-a580-c96e48741bf0" />
+      <Association Name="Process_Casetype" ed:AssociationGuid="23fc264d-fb17-4c0e-9a67-dbb7de77ca77" Member="Casetypes" ed:Guid="38fc2aef-b51f-4e04-bd94-9f94cb218938" ThisKey="Id" OtherKey="Processid" Type="Casetype" />
+      <Association Name="Process_Process" ed:AssociationGuid="5909a277-cc5b-4f32-bfb8-e577872393cc" Member="Processes_Processid" ed:Guid="1005f5a6-b1b1-4282-bcb5-cc2f6aefdcb4" ThisKey="Id" OtherKey="Processid" Type="Process" />
+      <Association Name="Process_Process" ed:AssociationGuid="5909a277-cc5b-4f32-bfb8-e577872393cc" Member="Process_Processid" ed:Guid="fb7e46fe-a2e6-4d8f-859e-a9c001c5cff5" ThisKey="Processid" OtherKey="Id" Type="Process" DeleteRule="NoAction" IsForeignKey="true" />
+      <Association Name="Process_Request" ed:AssociationGuid="b803a472-1769-46df-8c9d-09a45fe00c7f" Member="Requests" ed:Guid="e844984a-4319-47fa-9ea3-44a2c0134b67" ThisKey="Id" OtherKey="Processid" Type="Request" />
+      <Association Name="Process_Task" ed:AssociationGuid="5bf95a14-a543-42db-b69b-a325830a4a6b" Member="Tasks" ed:Guid="5a37381e-38f2-4c93-be2f-38e3a5dbf6a7" ThisKey="Id" OtherKey="Processid" Type="Task" />
+    </Type>
+  </Table>
+  <Table Name="WfE.Requests" Member="Requests">
+    <Type Name="Request" ed:Guid="64b76796-6dd1-47cc-8dd8-4c2842ca40d0">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="41ffb1ac-698f-4528-85b5-a5c83c6cc338" />
+      <Column Name="Title" Type="String" DbType="VARCHAR(50) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="50" ed:ValidateMaxLength="50" ed:ValidateRequired="true" ed:Guid="61867293-64ca-4cb5-a5a8-c9f3507a0a01" />
+      <Column Name="UserID" Member="Userid" Type="Integer" DbType="INT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="363253bd-e6b7-4512-830f-8ca51f1ba54a" />
+      <Column Name="ProcessID" Member="Processid" Type="Integer" DbType="INT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="64fe4c30-5937-4a1c-a654-2fd02ced64be" />
+      <Column Name="StateID" Member="Stateid" Type="Integer" DbType="INT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="f4d7992a-07ad-4d09-9c9e-0021cadc2a6a" />
+      <Association Name="Process_Request" ed:AssociationGuid="b803a472-1769-46df-8c9d-09a45fe00c7f" Member="Process" ed:Guid="c67fe66c-d3dc-479d-9207-fe81bfc7415a" ThisKey="Processid" OtherKey="Id" Type="Process" DeleteRule="Cascade" Cascade="true" DeleteOnNull="true" IsForeignKey="true" />
+      <Association Name="User_Request" ed:AssociationGuid="a7fd9359-a5f7-4e11-9d63-cb2e63505601" Member="User" ed:Guid="24212fb3-c8b4-40c8-aa94-6bc14f69a938" ThisKey="Userid" OtherKey="Id" Type="User" DeleteRule="Cascade" Cascade="true" DeleteOnNull="true" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="WfE.Tasks" Member="Tasks">
+    <Type Name="Task" ed:Guid="d4a81449-47e4-47f0-a527-661f3ee8f585">
+      <Column Name="ID" Member="Id" Type="Integer" AutoSync="OnInsert" DbType="INT NOT NULL IDENTITY" IsPrimaryKey="true" CanBeNull="false" ed:ValidateRequired="true" ed:Guid="965fa580-9a7b-4429-9a4c-b821853ba33c" />
+      <Column Name="Name" Type="String" DbType="VARCHAR(50) NOT NULL" CanBeNull="false" UpdateCheck="Never" MaxLength="50" ed:ValidateMaxLength="50" ed:ValidateRequired="true" ed:Guid="3337a180-5657-4885-acad-9e05676e9ead" />
+      <Column Name="ProcessID" Member="Processid" Type="Integer" DbType="INT NOT NULL" CanBeNull="false" UpdateCheck="Never" ed:ValidateRequired="true" ed:Guid="c9a2fb90-7f34-47e2-bad3-acf8db678b94" />
+      <Association Name="Process_Task" ed:AssociationGuid="5bf95a14-a543-42db-b69b-a325830a4a6b" Member="Process" ed:Guid="1b377841-0577-4112-913f-c13408abce76" ThisKey="Processid" OtherKey="Id" Type="Process" DeleteRule="Cascade" Cascade="true" DeleteOnNull="true" IsForeignKey="true" />
+      <Association Name="Case1_Task" ed:AssociationGuid="d3f4883b-2255-43bd-957f-21ea6a2614b3" Member="Case1s" ed:Guid="dade8f2f-d1d8-4ea0-8be4-b72982622cb4" ThisKey="Id" OtherKey="Id" Type="Case1" LinkTableName="WfE.WorkItems" LinkThisKey="TaskID" LinkOtherKey="CaseID" IsForeignKey="true" Cardinality="Many" />
+    </Type>
+  </Table>
+  <Type Name="SpgettreeResult" ed:Guid="a8092076-39d9-4790-9f67-31dc7b180656">
+    <Column Name="ID" Member="Id" Type="Integer" DbType="INT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="161db664-8baf-438f-ab43-06188ef4cc32" />
+    <Column Name="Text" Type="String" DbType="VARCHAR(MAX)" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="383ce5ad-5f27-437e-b5e1-f1751f71a300" />
+    <Column Name="Level" Type="Integer" DbType="INT" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="06970c82-27f6-4707-b093-2a819c5d19b4" />
+  </Type>
+  <Function Name="Meta.spGetTree" Method="Spgettree" ed:Guid="78d2ca64-8870-477a-ade8-5aa7a024d40c">
+    <Parameter Name="RootID" Type="Integer" DbType="INT" Precision="10" Scale="0" />
+    <ElementType Type="SpgettreeResult" />
+  </Function>
+  <Function Name="RBAC.spGroupDelete" Method="Spgroupdelete" ed:Guid="d186395e-9aac-4f18-9e77-20ac4cf320fa">
+    <Parameter Name="GroupID" Type="Integer" DbType="INT" Precision="10" Scale="0" />
+    <Return Type="(None)" />
+  </Function>
+  <Function Name="RBAC.spRoleDelete" Method="Sproledelete" ed:Guid="eaedf048-6467-40f9-bf3e-5a83e13b1016">
+    <Parameter Name="RoleID" Type="Integer" DbType="INT" Precision="10" Scale="0" />
+    <Return Type="(None)" />
+  </Function>
+</Database>

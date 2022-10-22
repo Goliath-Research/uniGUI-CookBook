@@ -1,0 +1,569 @@
+unit IQMS.WebVcl.Blob;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics,
+  Vcl.Controls, Forms, Dialogs, uniGUITypes, uniGUIAbstractClasses,
+  uniGUIClasses, uniGUIFrame, StdCtrls, UITypes,
+  ComCtrls, ExtCtrls, Menus, Data.DB, DBCtrls,
+  Datasnap.Provider, Datasnap.DBClient, Data.FMTBcd, Data.SqlExpr,
+  Vcl.Printers, Winapi.RichEdit, FireDAC.Comp.Client,
+  FireDAC.Comp.DataSet, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async,
+  FireDAC.Stan.Param, FireDAC.Phys, FireDAC.Phys.Intf, FireDAC.DatS,
+  FireDAC.DApt, FireDAC.DApt.Intf, FireDAC.UI.Intf,uniHTMLMemo,uniDBMemo,uniImage,
+  uniDBImage, IQMS.Common.BMP;
+
+type
+  TIQWebBlob = class(TUniFrame)
+  private
+    { Private declarations }
+    FDataLink: TFieldDataLink;
+
+    FRichEdit: TUniDbHTMLMemo;
+
+    FImage: TUniDBImage;
+    FRichEditColor: TColor;
+    FRichEditVisible: Boolean;
+
+    FRichEditReadOnly: Boolean;
+    FRichEditFont: TFont;
+    FRichEditWordWrap: Boolean;
+    FRichEditWantTabs: Boolean;
+    FRichEditWantReturns: Boolean;
+    FRichEditScrollBars: TScrollStyle;
+
+
+    FConnectionName: string;
+    FTransaction: TFDTransaction;
+
+    function  GetDataField: string;
+    procedure SetDataField( AValue: string );
+    function  GetDataSource : TDataSource;
+    procedure SetDataSource( AValue: TDataSource );
+    procedure DataChange( Sender: TObject );
+
+    function  GetREColor: TColor;
+    procedure SetREColor(Value: TColor);
+
+    function  GetREVisible: Boolean;
+    function  GetIMVisible: Boolean;
+    procedure SetREVisible(Value: Boolean);
+    procedure SetIMVisible(Value: Boolean);
+
+    function  GetREReadOnly: Boolean;
+    procedure SetREReadOnly(Value: Boolean);
+
+    function  GetREFont: TFont;
+    procedure SetREFont(Value: TFont);
+
+    function  GetREWordWrap: Boolean;
+    function  GetREWantReturns: Boolean;
+    function  GetREWantTabs: Boolean;
+
+    procedure SetREWordWrap(Value: Boolean);
+    procedure SetREWantReturns(Value: Boolean);
+    procedure SetREWantTabs(Value: Boolean);
+
+    function  GetREScrollBars: TScrollStyle;
+    procedure SetREScrollBars(Value: TScrollStyle);
+
+
+    function  GetIMStretch: Boolean;
+    procedure SetIMStretch(Value: Boolean);
+
+
+    procedure DisplayRichEdit;
+    procedure DisplayImage;
+
+    function  GetIsImage: Boolean;
+  protected
+    { Protected declarations }
+  public
+    { Public declarations }
+    constructor Create( AOwner: TComponent ); override;
+    destructor Destroy; override;
+    procedure Print(const Caption: string);
+
+    class function GetBlob(AColumnName, ATableName: String; AID: Real;
+      var AMemoryStream: TMemoryStream; AConnectionName: string = 'IQFD'): Boolean;
+    class procedure SaveBlob( AColumnName, ATableName: String; AID: Real;
+      AMemoryStream: TMemoryStream; AConnectionName: string = 'IQFD');
+    class function StreamToVarArray(Stream: TStream): OleVariant;
+
+    // property ConnectionName: string read FConnectionName write FConnectionName;
+    property Transaction: TFDTransaction read FTransaction write FTransaction;
+    property IsImage: Boolean read GetIsImage;
+
+  published
+    { Published declarations }
+    property Align;
+
+    property DataField: string                 read GetDataField     write SetDataField;
+    property DataSource: TDataSource           read GetDataSource    write SetDataSource;
+
+    property RichEditColor: TColor            read GetREColor       write SetREColor;
+    property RichEditVisible: Boolean         read GetREVisible     write SetREVisible;
+    property ImageVisible: Boolean            read GetIMVisible     write SetIMVisible;
+    property RichEditReadOnly: Boolean        read GetREReadOnly    write SetREReadOnly;
+    property RichEditFont: TFont              read GetREFont        write SetREFont;
+
+    property RichEditWordWrap: Boolean        read GetREWordWrap    write SetREWordWrap;
+    property RichEditWantReturns: Boolean     read GetREWantReturns write SetREWantReturns;
+    property RichEditWantTabs: Boolean        read GetREWantTabs    write SetREWantTabs;
+    property RichEditScrollBars: TScrollStyle read GetREScrollBars  write SetREScrollBars;
+
+    property ImageStretch: Boolean            read GetIMStretch     write SetIMStretch;
+  end;
+implementation
+
+{$R *.dfm}
+
+
+{ TIQWebBlob }
+
+constructor TIQWebBlob.Create( AOwner: TComponent );
+begin
+  inherited Create( AOwner );
+ // BevelOuter := bvNone;
+  FConnectionName:='IQFD';
+  FDataLink := TFieldDataLink.Create;
+  FDataLink.OnDataChange := DataChange;
+
+
+  FRichEditFont := TFont.Create;
+
+  FRichEdit := TUniDBHTMLMemo.Create( self );  // TRichEdit.Create( self );
+  with FRichEdit do
+  begin
+    Parent    := self;
+//    WordWrap  := TRUE;
+    ScrollBars := ssBoth;
+    ReadOnly  := TRUE;
+    Align     := alClient;
+    Name      := 'DBRichEdit';
+//    AutoURLDetect := TRUE;
+    Text := '';
+  end;
+
+  FImage := TUniDBImage.Create( self );
+  with FImage do
+  begin
+    Parent       := self;
+    Align        := alClient;
+    ImageStretch := FALSE;
+    Name         := 'DBImage';
+    Center       := TRUE;
+    Enabled      := FALSE;  { Feb 18, 99. Getting DataSet not in edit mode when trying togo to another record}
+  end;
+end;
+
+destructor TIQWebBlob.Destroy;
+begin
+  if Assigned(FDataLink) then
+   begin
+     FDataLink.OnDataChange := NIL;
+     FreeAndNil(FDataLink);
+   end;
+  if Assigned(FRichEdit) then FreeAndNil(FRichEdit);
+  if Assigned(FImage) then FreeAndNil(FImage);
+  FRichEditFont.Free;
+  inherited Destroy;
+end;
+
+{Color}
+function TIQWebBlob.GetREColor: TColor;
+begin
+  Result := FRichEditColor;
+end;
+
+procedure TIQWebBlob.SetREColor(Value: TColor);
+begin
+  FRichEditColor := Value;
+end;
+
+{Visible}
+function TIQWebBlob.GetREVisible: Boolean;
+begin
+  Result := FRichEditVisible;
+end;
+
+function TIQWebBlob.GetIMVisible: Boolean;
+begin
+  Result := FImage.Visible;
+end;
+
+procedure TIQWebBlob.SetREVisible(Value: Boolean);
+begin
+  FRichEditVisible := Value;
+end;
+
+procedure TIQWebBlob.SetIMVisible(Value: Boolean);
+begin
+  FImage.Visible := Value;
+end;
+
+{ReadOnly}
+function TIQWebBlob.GetREReadOnly: Boolean;
+begin
+  Result := FRichEditReadOnly;
+end;
+
+procedure TIQWebBlob.SetREReadOnly(Value: Boolean);
+begin
+  FRichEditReadOnly := Value;
+end;
+
+{font}
+function TIQWebBlob.GetREFont: TFont;
+begin
+  Result := FRichEditFont;
+end;
+
+procedure TIQWebBlob.SetREFont(Value: TFont);
+begin
+  FRichEditFont.Assign(Value);
+end;
+
+{WordWrap}
+function TIQWebBlob.GetREWordWrap: Boolean;
+begin
+  Result := FRichEditWordWrap;
+end;
+
+procedure TIQWebBlob.SetREWordWrap(Value: Boolean);
+begin
+  FRichEditWordWrap := Value;
+end;
+
+{WantTabs}
+function TIQWebBlob.GetREWantTabs: Boolean;
+begin
+  Result := FRichEditWantTabs;
+end;
+
+procedure TIQWebBlob.SetREWantTabs(Value: Boolean);
+begin
+  FRichEditWantTabs := Value;
+end;
+
+{WantReturns}
+function TIQWebBlob.GetREWantReturns: Boolean;
+begin
+  Result := FRichEditWantReturns;
+end;
+
+procedure TIQWebBlob.SetREWantReturns(Value: Boolean);
+begin
+  FRichEditWantReturns := Value;
+end;
+
+{ScrollBars}
+function TIQWebBlob.GetREScrollBars: TScrollStyle;
+begin
+  Result := FRichEditScrollBars;
+end;
+
+procedure TIQWebBlob.SetREScrollBars(Value: TScrollStyle);
+begin
+  FRichEditScrollBars := Value;
+end;
+
+{AutoDisplay}
+{Strech}
+function TIQWebBlob.GetIMStretch: Boolean;
+begin
+  Result := FImage.Stretch;
+end;
+
+procedure TIQWebBlob.SetIMStretch(Value: Boolean);
+begin
+  FImage.Stretch := Value;
+end;
+
+{DataLinks}
+function TIQWebBlob.GetDataField: string;
+begin
+  Result := FDataLink.FieldName;
+end;
+
+procedure TIQWebBlob.SetDataField( AValue: string );
+begin
+  if AValue <> FDataLink.FieldName then
+    FDataLink.FieldName := AValue;
+end;
+
+function TIQWebBlob.GetDataSource : TDataSource;
+begin
+  Result := FDataLink.DataSource;
+end;
+
+procedure TIQWebBlob.SetDataSource( AValue: TDataSource );
+begin
+  if FDataLink.DataSource <> AValue then
+  begin
+    FImage.DataSource   := AValue;
+     FDataLink.DataSource := AValue;
+  end;
+end;
+
+{DataChange}
+procedure TIQWebBlob.DataChange( Sender: TObject );
+begin
+  if FDataLink.Field = nil then Exit;
+  {determine if Blob field is BMP Image or not}
+  if FieldIsImage(TBlobField(FDataLink.Field)) then  // in IQBMP
+     DisplayImage
+  else
+     DisplayRichEdit;
+end;
+
+{Display RichEdit}
+procedure TIQWebBlob.DisplayRichEdit;
+var
+  AMemoryStream: TMemoryStream;
+  AID: Real;
+  AIQDocsIDField: TField;
+begin
+  FImage.Visible    := False;
+  FRichEditVisible := True;
+
+
+  if Assigned(DataSource) and
+    Assigned(DataSource.DataSet) and
+    Assigned(DataSource.DataSet.DataSource) and
+    Assigned(DataSource.DataSet.DataSource.DataSet) and
+    (DataSource.DataSet.DataSource.DataSet.FindField('IQ_DOCS_ID') <> nil) then
+     AIQDocsIDField := DataSource.DataSet.DataSource.DataSet.FieldByName('IQ_DOCS_ID')
+  else if Assigned(DataSource) and
+    Assigned(DataSource.DataSet) and
+    (DataSource.DataSet.FindField('IQ_DOCS_ID') <> nil) then
+    AIQDocsIDField := DataSource.DataSet.FieldByName('IQ_DOCS_ID')
+  else
+    AIQDocsIDField := nil;
+
+//
+  if not Assigned(FDataLink) or
+     not Assigned(FDataLink.Field) or
+     not Assigned(AIQDocsIDField) then
+    FRichEdit.Lines.Clear
+  else
+    try
+      // 03/22/2012 Do not assign RTF text by assigning the
+      // dataset field: Lines.Assign( FDataLink.Field ). Doing so causes
+      // an anomoly in the text.
+
+      FRichEdit.Lines.Clear;
+
+      AID := AIQDocsIDField.AsFloat;
+      //if AID = 0 then
+      //  FRichEdit.Lines.Clear
+      //else
+        try
+          AMemoryStream := TMemoryStream.Create;
+          if GetBlob('DOC_BLOB', // column name
+            'IQ_DOCS', // table name
+            AID, AMemoryStream,
+            FConnectionName) then
+            FRichEdit.Lines.LoadFromStream(AMemoryStream);
+        finally
+          if Assigned(AMemoryStream) then
+            FreeAndNil(AMemoryStream);
+        end;
+    except
+      FRichEdit.Lines.Clear;
+    end;
+  FRichEdit.Invalidate;
+end;
+
+class function TIQWebBlob.GetBlob( AColumnName, ATableName: String; AID: Real;
+  var AMemoryStream: TMemoryStream; AConnectionName: string ): Boolean;
+var
+  ABlobSize  : Integer;
+//  ABytesArray: array of byte;
+  AConnection: TFDConnection;
+  ACursor: Integer;
+begin
+
+  // Initialization
+  Result := False;
+
+  AConnection := FDManager.FindConnection(AConnectionName) as TFDConnection;
+//  if not Assigned(AConnection) then
+//    AConnection := IQMS.Common.DBDM.SQLConnection; //db_dm.FDConnection;
+
+  // Hide the SQL Cursor
+  ACursor := Screen.Cursors[crSQLWait];
+  Screen.Cursors[crSQLWait] := Screen.Cursors[crArrow];
+  Screen.Cursor := crArrow;
+  try
+     // Build the query
+     with TFDQuery.Create(NIL) do
+     try
+        Connection := AConnection;
+        //if Assigned(FTransaction) then
+        //  Transaction := FTransaction;
+
+        SQL.Add(Format('SELECT %s',[AColumnName]));
+        SQL.Add(Format('  FROM %s', [ATableName]));
+        SQL.Add(Format(' WHERE id = %d',[Trunc(AID)]));
+        Open;
+        // Get the BLOB data and fill the memory stream.
+        if (Fields[0] is TBlobField) then
+           begin
+             (Fields[0] as TBlobField).SaveToStream(AMemoryStream);
+             ABlobSize := AMemoryStream.Size;
+             if ABlobSize > 0 then
+                begin
+//                  Removed by Phillip 7/8/11. Seems to serve no purpose and
+//                  doubles the size of the memory stream.
+//                  SetLength( ABytesArray, ABlobSize );
+//                  AMemoryStream.WriteBuffer(ABytesArray[0], ABlobSize);
+                  AMemoryStream.Position := 0;
+                  Result := True;
+                end;
+           end;
+     finally
+        Free;
+     end;
+  finally
+     // Restore the cursor
+     Screen.Cursor := crArrow; // necessary, or SQL wait will appear again
+     Screen.Cursors[crSQLWait] := ACursor;
+  end;
+end;
+
+class function TIQWebBlob.StreamToVarArray(Stream: TStream): OleVariant;
+var
+  p: Pointer;
+begin
+  Result := VarArrayCreate([0, Stream.Size - 1], varByte);
+  p := VarArrayLock(Result);
+  try
+    Stream.Position := 0;  //start from beginning of stream
+    Stream.Read(p^, Stream.Size);
+  finally
+    VarArrayUnlock(Result);
+  end;
+end;
+
+class procedure TIQWebBlob.SaveBlob(AColumnName, ATableName: String; AID: Real;
+ AMemoryStream: TMemoryStream; AConnectionName: string);
+var
+  // Note:  We create a temporary TFDConnection, rather than use an
+  //        existing one because we want to ensure we use a unique
+  //        connection and transaction.
+  AConnection: TFDConnection;
+  AHasTransaction: Boolean;
+begin
+  AHasTransaction := False;
+  AConnection := FDManager.FindConnection(AConnectionName) as TFDConnection;
+//  if not Assigned(AConnection) then
+//    AConnection := IQMS.Common.DBDM.SQLConnection; //db_dm.FDConnection;
+  try
+     // Note:  Transactions are required when writing BLOB data.  If we do
+     // not use a transaction, then we will get the dreaded error:
+     // "ORA-22990: LOB locators cannot span transactions"
+
+     AHasTransaction := AConnection.InTransaction;
+
+     // Begin the transaction.
+     if not AHasTransaction then
+       AConnection.StartTransaction;
+
+     // Build and execute the query
+     with TFDQuery.Create(NIL) do
+     try
+        // Build command text
+        Connection := AConnection;
+        SQL.Add(Format('UPDATE %s',[ATableName]));
+        SQL.Add(Format('SET %s = : IMG',[AColumnName]));
+        SQL.Add(Format('WHERE id = %.0f', [AID]));
+        Params[0].DataType := ftBlob;
+        Params[0].LoadFromStream(AMemoryStream, ftOraBlob, -1);
+        // Execute the command
+        ExecSQL();
+     finally
+        Free;
+     end;
+
+     // Commit the transaction
+     if not AHasTransaction then
+       AConnection.Commit;
+  finally
+     // Check the transaction state and roll back, if necessary.
+     if not AHasTransaction and AConnection.InTransaction then
+        AConnection.Rollback;
+  end;
+end;
+
+procedure TIQWebBlob.DisplayImage;
+var
+ // BlobStream: TFDBlobStream;
+  FDataField: TBlobField;
+  AMemoryStream  : TMemoryStream;
+  AIQDocsIDField: TField;
+begin
+  FRichEdit.Visible := False;
+  FImage.Visible    := True;
+
+  with DataSource.DataSet do
+    FDataField:= FindField( DataField ) as TBlobField;
+
+  if Assigned(DataSource) and
+    Assigned(DataSource.DataSet) and
+    Assigned(DataSource.DataSet.DataSource) and
+    Assigned(DataSource.DataSet.DataSource.DataSet) and
+    (DataSource.DataSet.DataSource.DataSet.FindField('IQ_DOCS_ID') <> nil) then
+     AIQDocsIDField := DataSource.DataSet.DataSource.DataSet.FieldByName('IQ_DOCS_ID')
+  else if Assigned(DataSource) and
+    Assigned(DataSource.DataSet) and
+    (DataSource.DataSet.FindField('IQ_DOCS_ID') <> nil) then
+    AIQDocsIDField := DataSource.DataSet.FieldByName('IQ_DOCS_ID')
+  else
+    AIQDocsIDField := nil;
+
+  if Assigned( FDataField ) and Assigned(AIQDocsIDField) then
+  begin
+    AMemoryStream:= TMemoryStream.Create;
+    try
+      if not GetBlob( 'DOC_BLOB', // column name
+                      'IQ_DOCS',  // table name
+                      AIQDocsIDField.AsFloat,
+                      AMemoryStream,
+                      FConnectionName ) then
+      EXIT;
+
+      FImage.Picture.Bitmap.LoadFromStream( AMemoryStream );
+    finally
+      FreeAndNil( AMemoryStream );
+    end;
+  end;
+end;
+
+
+procedure TIQWebBlob.Print(const Caption: string);
+begin
+//  if FieldIsImage(TBlobField(FDataLink.Field)) then    // in IQBMP
+//    PrintImage(TBlobField(FDataLink.Field), Caption)   // in IQBMP
+//  else
+//  begin
+//    if not IsWinNT4 then                       {in IQMisc}
+//      FRichEdit.Print(Caption)
+//    else IQPrintWWdbRichEdit(FRichEdit, Caption);  {in IQMisc}
+//  end;
+end;
+
+function TIQWebBlob.GetIsImage: Boolean;
+begin
+  Result := False;
+
+  if FDataLink.Field = nil then
+    Exit;
+
+  Result := FieldIsImage(TBlobField(FDataLink.Field));
+end;
+
+
+end.

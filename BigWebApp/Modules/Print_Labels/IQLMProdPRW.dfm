@@ -1,0 +1,174 @@
+inherited FrmLM_ProdPRW: TFrmLM_ProdPRW
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited PageControl1: TUniPageControl
+    ActivePage = TabDimInv
+    ExplicitHeight = 399
+    inherited TabSheet1: TUniTabSheet
+      inherited Panel8: TUniPanel
+        inherited Label15: TUniLabel
+          Top = 149
+          ExplicitTop = 149
+        end
+        inherited Label16: TUniLabel
+          Top = 149
+          ExplicitTop = 149
+        end
+        inherited Label17: TUniLabel
+          Left = 558
+          ExplicitLeft = 558
+        end
+        inherited sbtnPopulateLabelsQty: TUniSpeedButton
+          Left = 532
+          Top = 48
+          ExplicitLeft = 532
+          ExplicitTop = 48
+        end
+        object sbtnCalcWeightVolume: TUniSpeedButton [24]
+          Left = 532
+          Top = 118
+          Width = 22
+          Height = 22
+          Hint = 'Calculate Labels Total Weight and Volume'
+          ShowHint = True
+          ParentShowHint = False
+          Glyph.Data = {
+            36060000424D3606000000000000360000002800000020000000100000000100
+            1800000000000006000000000000000000000000000000000000FF00FFFF00FF
+            CDB6A88068608060507058407058407050407050406050406050306050307050
+            40B89A83FF00FFFF00FFFF00FFFF00FFB5B5B568686860606056565656565650
+            50505050504E4E4E4C4C4C4C4C4C505050989898FF00FFFF00FFFF00FFFF00FF
+            877766D0C0B0D0B8B0D0B0A0C0B0A0C0A8A0C0A8A0C0A090C0A090B0A090B098
+            90775E46FF00FFFF00FFFF00FFFF00FF757575BEBEBEB8B8B8AFAFAFAEAEAEA8
+            A8A8A8A8A8A0A0A0A0A0A09E9E9E9999995C5C5CFF00FFFF00FFFF00FFFF00FF
+            967E66F0E0D0D0C0B0D0B8B0D0B0B0C0B0A0C0A8A0C0A8A0C0A090C0A090B0A0
+            90775E46FF00FFFF00FFFF00FFFF00FF7B7B7BDEDEDEBEBEBEB8B8B8B3B3B3AE
+            AEAEA8A8A8A8A8A8A0A0A0A0A0A09E9E9E5C5C5CFF00FFFF00FFFF00FFFF00FF
+            967E75F0E0D0C08870B07050D0B8B0C08870B07050C0B0A0C08870B07050C0A0
+            90775E46FF00FFFF00FFFF00FFFF00FF7E7E7EDEDEDE898989717171B8B8B889
+            8989717171AEAEAE898989717171A0A0A05C5C5CFF00FFFF00FFFF00FFFF00FF
+            968675F0E0E0FFC8B0C08870D0C0B0F0C8B0C08870C0B0A0F0C8B0C08070C0A8
+            90775E46FF00FFFF00FFFF00FFFF00FF848484E2E2E2C8C8C8898989BEBEBEC7
+            C7C7898989AEAEAEC7C7C7838383A5A5A55C5C5CFF00FFFF00FFFF00FFFF00FF
+            968D85F0E8E0E0D0C0D0C8C0D0C0C0D0C0B0D0B8B0D0B8B0C0B0A0C0B0A0C0A8
+            A0776655FF00FFFF00FFFF00FFFF00FF8C8C8CE7E7E7CECECEC7C7C7C2C2C2BE
+            BEBEB8B8B8B8B8B8AEAEAEAEAEAEA8A8A8646464FF00FFFF00FFFF00FFFF00FF
+            A58D85FFE8E0C09070B07050E0C8C0C09080B07050D0B8B0C09070B07050C0B0
+            A0866655FF00FFFF00FFFF00FFFF00FF8D8D8DE9E9E98E8E8E717171C9C9C991
+            9191717171B8B8B88E8E8E717171AEAEAE666666FF00FFFF00FFFF00FFFF00FF
+            A59585FFF0F0FFC8B0C08870E0D0C0F0C8B0C08870D0C0B0F0C8B0C08870D0B0
+            A0866D55FF00FFFF00FFFF00FFFF00FF939393F2F2F2C8C8C8898989CECECEC7
+            C7C7898989BEBEBEC7C7C7898989AFAFAF6B6B6BFF00FFFF00FFFF00FFFF00FF
+            A59C94FFF0F0E0E0E0E0D8D0E0D0D0E0D0D0E0C8C0D0C8C0D0C0B0D0C0B0D0B8
+            B0866D55FF00FFFF00FFFF00FFFF00FF9B9B9BF2F2F2E0E0E0D7D7D7D2D2D2D2
+            D2D2C9C9C9C7C7C7BEBEBEBEBEBEB8B8B86B6B6BFF00FFFF00FFFF00FFFF00FF
+            B4A494FFF8F09080D04030A0E0D8D09080D04030A0E0C8C09080D04030A0D0C0
+            B0867564FF00FFFF00FFFF00FFFF00FFA2A2A2F7F7F7979797595959D7D7D797
+            9797595959C9C9C9979797595959BEBEBE737373FF00FFFF00FFFF00FFFF00FF
+            B4A4A3FFF8F0C0C0E09080D0E0E0E0C0C0E09080D0E0D0D0C0C0E09080D0D0C0
+            C0957564FF00FFFF00FFFF00FFFF00FFA6A6A6F7F7F7C8C8C8979797E0E0E0C8
+            C8C8979797D2D2D2C8C8C8979797C2C2C2757575FF00FFFF00FFFF00FFFF00FF
+            B4ABA3FFF8FFFFE0D0FFD0B0FFD0B0FFC090F0B890D0A080D0A080D0B0A0D0C8
+            C0957C73FF00FFFF00FFFF00FFFF00FFAAAAAAFAFAFAE0E0E0CECECECECECEBD
+            BDBDB6B6B69E9E9E9E9E9EAFAFAFC7C7C77C7C7CFF00FFFF00FFFF00FFFF00FF
+            B4ABA3FFFFFFFF9860FFA060FFA060FFA060FFA060FFA060FFA060B06850C0A8
+            90958473FF00FFFF00FFFF00FFFF00FFAAAAAAFFFFFF9A9A9A9F9F9F9F9F9F9F
+            9F9F9F9F9F9F9F9F9F9F9F6B6B6BA5A5A5828282FF00FFFF00FFFF00FFFF00FF
+            B4B3A3FFFFFFE07840F0D8D0F0D8D0F0C8B0E0B0A0E0A080E08050A05830D0A0
+            90958473FF00FFFF00FFFF00FFFF00FFB0B0B0FFFFFF7B7B7BD9D9D9D9D9D9C7
+            C7C7B1B1B1A0A0A08282825A5A5AA1A1A1828282FF00FFFF00FFFF00FFFF00FF
+            DAC7C0BEB3A9F0B8A0D09070D08860D08050D07040D06830C06030D08060A088
+            80C6A891FF00FFFF00FFFF00FFFF00FFC7C7C7B2B2B2B8B8B890909088888880
+            80807373736C6C6C646464838383888888A6A6A6FF00FFFF00FFFF00FFFF00FF
+            FF00FFCCC4B3B0A8A0B0A8A0B0A090B09890B09890A09890A09080A08880C9AE
+            98FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC1C1C1A7A7A7A7A7A79E9E9E99
+            99999999999797978E8E8E888888ACACACFF00FFFF00FFFF00FF}
+          Caption = ''
+          ParentColor = False
+          Color = clWindow
+          OnClick = sbtnCalcWeightVolumeClick
+        end
+        inherited editVolume: TUniEdit
+          Height = 21
+          Color = clWindow
+          ReadOnly = False
+          ExplicitHeight = 21
+        end
+        inherited editWeight: TUniEdit
+          Top = 146
+          ExplicitTop = 146
+        end
+      end
+    end
+    inherited TabDimInv: TUniTabSheet
+      inherited gridDimInv: TIQUniGridControl
+        Columns = <
+          item
+            Width = 64
+            CheckBoxField.FieldValues = 'true;false'
+          end
+          item
+            Width = 64
+            CheckBoxField.FieldValues = 'true;false'
+          end>
+        Marker = 0
+      end
+    end
+    inherited TabSheet2: TUniTabSheet
+      inherited sbUserDefined: TUniScrollBox
+        ScrollHeight = 252
+        inherited PnlUserDefined: TUniPanel
+          inherited PnlClient01: TUniPanel
+            inherited PnlClient02: TUniPanel
+              inherited dbeCUSER1: TUniEdit
+                Width = 320
+                ExplicitWidth = 320
+              end
+              inherited dbeCUSER2: TUniEdit
+                Width = 320
+                ExplicitWidth = 320
+              end
+              inherited dbeCUSER3: TUniEdit
+                Width = 320
+                ExplicitWidth = 320
+              end
+              inherited dbeCUSER4: TUniEdit
+                Width = 320
+                ExplicitWidth = 320
+              end
+              inherited dbeCUSER5: TUniEdit
+                Width = 320
+                ExplicitWidth = 320
+              end
+              inherited dbeCUSER6: TUniEdit
+                Width = 320
+                ExplicitWidth = 320
+              end
+              inherited dbeCUSER7: TUniEdit
+                Width = 320
+                ExplicitWidth = 320
+              end
+              inherited dbeCUSER8: TUniEdit
+                Width = 320
+                ExplicitWidth = 320
+              end
+              inherited dbeCUSER9: TUniEdit
+                Width = 320
+                ExplicitWidth = 320
+              end
+              inherited dbeCUSER10: TUniEdit
+                Width = 320
+                ExplicitWidth = 320
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+  inherited SR: TIQWebSecurityRegister
+    ForceAccessItems.Strings = (
+      'FrmLM_ProdPRW')
+    SecurityCode = 'FRMLM_PRODPRW'
+  end
+end

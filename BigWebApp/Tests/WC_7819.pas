@@ -1,0 +1,26 @@
+unit WC_7819;
+
+interface
+
+implementation
+
+uses
+  TestReg,
+  SysUtils,
+  StrUtils,
+  uniGUIDialogs,
+  POConf;
+
+procedure Test1;
+var
+  r : boolean;
+begin
+  r := DoShowModalPOReceivedReleasesConfirm('test','');
+  ShowMessage(IfThen(r, 'Ok', 'Cancelled'));
+end;
+
+initialization
+
+  TTestRepo.RegisterTest('WC-7819', 'Po', 'POConf', 'DoShowModalPOReceivedReleasesConfirm', Test1);
+
+end.

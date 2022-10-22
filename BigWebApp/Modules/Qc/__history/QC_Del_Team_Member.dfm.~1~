@@ -1,0 +1,544 @@
+object FrmDeleteTeamMember: TFrmDeleteTeamMember
+  Left = 149
+  Top = 175
+  HelpContext = 15488
+  ClientHeight = 540
+  ClientWidth = 871
+  Caption = 'Team Member Workflow Responsibilities'
+  OnShow = UniFormShow
+  OldCreateOrder = False
+  OnClose = FormClose
+  OnActivate = FormActivate
+  Menu = MainMenu1
+  MonitoredKeys.Keys = <>
+  PixelsPerInch = 96
+  TextHeight = 13
+  object wwDBGrid1: TIQUniGridControl
+    Left = 0
+    Top = 116
+    Width = 871
+    Height = 375
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
+    Layout = 'border'
+    ParentAlignmentControl = False
+    AlignmentControl = uniAlignmentClient
+    Align = alClient
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    TabOrder = 0
+    IQComponents.Grid.Left = 0
+    IQComponents.Grid.Top = 29
+    IQComponents.Grid.Width = 654
+    IQComponents.Grid.Height = 289
+    IQComponents.Grid.Hint = ''
+    IQComponents.Grid.DataSource = SrcReferences
+    IQComponents.Grid.LoadMask.Message = 'Loading data...'
+    IQComponents.Grid.Align = alClient
+    IQComponents.Grid.Anchors = [akLeft, akTop, akRight, akBottom]
+    IQComponents.Grid.TabOrder = 0
+    IQComponents.Navigator.Left = 410
+    IQComponents.Navigator.Top = 0
+    IQComponents.Navigator.Width = 241
+    IQComponents.Navigator.Height = 25
+    IQComponents.Navigator.Hint = ''
+    IQComponents.Navigator.ShowHint = True
+    IQComponents.Navigator.DataSource = SrcReferences
+    IQComponents.Navigator.VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbPost, nbCancel]
+    IQComponents.Navigator.LayoutConfig.Region = 'east'
+    IQComponents.Navigator.TabOrder = 3
+    IQComponents.HiddenPanel.Left = 654
+    IQComponents.HiddenPanel.Top = 29
+    IQComponents.HiddenPanel.Width = 209
+    IQComponents.HiddenPanel.Height = 289
+    IQComponents.HiddenPanel.Hint = ''
+    IQComponents.HiddenPanel.Visible = True
+    IQComponents.HiddenPanel.Align = alRight
+    IQComponents.HiddenPanel.Anchors = [akTop, akRight, akBottom]
+    IQComponents.FormTab.Hint = ''
+    IQComponents.FormTab.ImageIndex = 1
+    IQComponents.FormTab.Caption = 'Form'
+    IQComponents.FormTab.Layout = 'border'
+    DataSource = SrcReferences
+    Columns = <
+      item
+        FieldName = 'SOURCE_DESCRIP'
+        Title.Caption = 'Module Description'
+        Width = 64
+        ReadOnly = True
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'SOURCE_TYPE'
+        Title.Caption = 'Kind'
+        Width = 64
+        ReadOnly = True
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'HEADER'
+        Title.Caption = 'Header'
+        Width = 64
+        ReadOnly = True
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'ELEMENT'
+        Title.Caption = 'Element'
+        Width = 64
+        ReadOnly = True
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'Action_Disp'
+        Title.Caption = 'Action'
+        Width = 64
+        ReadOnly = True
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'AUTHORIZATION_TYPE'
+        Title.Caption = 'Type'
+        Width = 64
+        ReadOnly = True
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'DESIGNATION'
+        Title.Caption = 'Responsibility ~Designation'
+        Width = 64
+        ReadOnly = True
+        CheckBoxField.FieldValues = 'true;false'
+      end>
+    ExplicitLeft = 9
+    ExplicitTop = 115
+    Marker = 0
+  end
+  object Panel3: TUniPanel
+    Left = 0
+    Top = 491
+    Width = 871
+    Height = 49
+    Hint = ''
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
+    Align = alBottom
+    Anchors = [akLeft, akRight, akBottom]
+    TabOrder = 1
+    Caption = ''
+    DesignSize = (
+      871
+      49)
+    object btnOK: TUniButton
+      Left = 652
+      Top = 10
+      Width = 93
+      Height = 31
+      Hint = ''
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Caption = 'OK'
+      Anchors = [akTop, akRight]
+      TabOrder = 1
+      OnClick = btnOKClick
+    end
+    object btnCancel: TUniButton
+      Left = 763
+      Top = 10
+      Width = 92
+      Height = 31
+      Hint = ''
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Caption = 'Cancel'
+      Cancel = True
+      ModalResult = 2
+      Anchors = [akTop, akRight]
+      TabOrder = 2
+    end
+  end
+  object PnlActiveWarning: TUniPanel
+    Left = 0
+    Top = 0
+    Width = 871
+    Height = 81
+    Hint = ''
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
+    Align = alTop
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 2
+    Caption = ''
+    DesignSize = (
+      871
+      81)
+    object shpActiveWarning: TUniPanel
+      Left = 1
+      Top = 4
+      Width = 869
+      Height = 77
+      Hint = ''
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Align = alClient
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      TabOrder = 1
+      Caption = ''
+    end
+    object Bevel8: TUniPanel
+      Left = 1
+      Top = 1
+      Width = 869
+      Height = 4
+      Hint = ''
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Align = alTop
+      Anchors = [akLeft, akTop, akRight]
+      TabOrder = 2
+      Caption = ''
+    end
+    object lblNoteWarning: TUniLabel
+      Left = 30
+      Top = 6
+      Width = 841
+      Height = 22
+      Hint = ''
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      AutoSize = False
+      Caption = 
+        'About to change the following team member Workflow responsibilit' +
+        'ies:'
+      Anchors = [akLeft, akTop, akRight]
+      TabOrder = 3
+    end
+    object imgActiveWarning: TUniImage
+      Left = 4
+      Top = 6
+      Width = 19
+      Height = 20
+      Hint = ''
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Picture.Data = {
+        07544269746D6170F6000000424DF60000000000000076000000280000001000
+        0000100000000100040000000000800000000000000000000000100000000000
+        0000000000000000800000800000008080008000000080008000808000008080
+        8000C0C0C0000000FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFF
+        FF00DDDDDDDDDDDDDDDDDDD00000000000DDDD7777777777770DD7BBBBBBBBBB
+        B70DD7BBBB803BBBB0DDD7BBBB308BBBB0DDDD7BBBBBBBBB0DDDDD7BBBB0BBBB
+        0DDDDDD7BBB0BBB0DDDDDDD7BB303BB0DDDDDDDD7B303B0DDDDDDDDD7B303B0D
+        DDDDDDDDD7B0B0DDDDDDDDDDD7BBB0DDDDDDDDDDDD7B0DDDDDDDDDDDDDD70DDD
+        DDDD}
+      Transparent = True
+    end
+    object lblNoteUserName: TUniLabel
+      Left = 30
+      Top = 25
+      Width = 841
+      Height = 22
+      Hint = ''
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      AutoSize = False
+      Caption = 'Name'
+      Anchors = [akLeft, akTop, akRight]
+      TabOrder = 5
+    end
+    object lblNoteInstruction: TUniLabel
+      Left = 30
+      Top = 54
+      Width = 825
+      Height = 16
+      Hint = ''
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      AutoSize = False
+      Caption = 
+        'Select actions to be executed for all records in the reference l' +
+        'ist below'
+      Anchors = [akLeft, akTop, akRight]
+      TabOrder = 6
+    end
+  end
+  object wwDBComboDlgAction: TUniEdit
+    Left = 108
+    Top = 378
+    Width = 149
+    Height = 21
+    Hint = ''
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
+    Text = ''
+    TabOrder = 3
+  end
+  object Panel2: TUniPanel
+    Left = 0
+    Top = 81
+    Width = 871
+    Height = 35
+    Hint = ''
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
+    ShowHint = True
+    ParentShowHint = False
+    Align = alTop
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 4
+    Caption = ''
+    ExplicitLeft = 1
+    ExplicitTop = 78
+    DesignSize = (
+      871
+      35)
+    object Shape2: TUniPanel
+      Left = 638
+      Top = 13
+      Width = 12
+      Height = 14
+      Hint = 'Delete'
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      ShowHint = True
+      Anchors = [akTop, akRight]
+      TabOrder = 1
+      Caption = ''
+    end
+    object Shape4: TUniPanel
+      Left = 618
+      Top = 12
+      Width = 12
+      Height = 14
+      Hint = 'Replace'
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      ShowHint = True
+      Anchors = [akTop, akRight]
+      TabOrder = 2
+      Caption = ''
+    end
+    object Shape1: TUniPanel
+      Left = 598
+      Top = 13
+      Width = 12
+      Height = 14
+      Hint = 'No Action'
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      ShowHint = True
+      Anchors = [akTop, akRight]
+      TabOrder = 3
+      Caption = ''
+    end
+  end
+  object MainMenu1: TUniMainMenu
+    Left = 391
+    Top = 12
+    object File1: TUniMenuItem
+      Caption = 'File'
+      object Exit1: TUniMenuItem
+        Caption = 'Exit'
+        OnClick = Exit1Click
+      end
+    end
+    object Help1: TUniMenuItem
+      Caption = 'Help'
+      object Contents1: TUniMenuItem
+        Caption = 'Contents'
+        OnClick = Contents1Click
+      end
+      object About1: TUniMenuItem
+        Caption = 'About'
+        OnClick = About1Click
+      end
+    end
+  end
+  object IQAbout1: TIQWebAbout
+    ModuleName = 'FrmDeleteTeamMember'
+    Version = 'DEV.176554'
+    ChangeListNumber = '$Change: 190257 $'
+    BuildVersion = '176554'
+    Left = 420
+    Top = 12
+  end
+  object SrcReferences: TDataSource
+    DataSet = QryReferences
+    Left = 23
+    Top = 289
+  end
+  object QryReferences: TFDQuery
+    BeforeInsert = QryReferencesBeforeInsert
+    OnCalcFields = QryReferencesCalcFields
+    CachedUpdates = True
+    OnUpdateRecord = QryReferencesUpdateRecord
+    Connection = UniMainModule.FDConnection1
+    SQL.Strings = (
+      '-- this SQL gets built on-fly'
+      
+        'select '#39'Template'#39'                                    as source_t' +
+        'ype,      '
+      
+        '       '#39'Advanced Product Quality Planning Templates'#39' as source_d' +
+        'escrip,'
+      
+        '       t.id                                          as source_i' +
+        'd,                        '
+      
+        '       '#39'TEAM_MEMBER_TEMPLATE'#39'                        as source_t' +
+        'able,        '
+      
+        '       h.name                                        as header, ' +
+        '                                         '
+      '       e.descrip                                     as element,'
+      
+        '       '#39'APQP'#39'                                        as module_n' +
+        'ame,'
+      '       '#39'D'#39'                                           as action,'
+      
+        '       0                                             as new_team' +
+        '_member_id,'
+      
+        '       t.type                                        as authoriz' +
+        'ation_type,'
+      
+        '       substrB(iqeval.substrW63Max(qc_team.responsibility_design' +
+        'ation( t.team_member_id, t.delegate_team_member_id, 999), 1, 20)' +
+        ', 1, 20) as designation'
+      '  from team_member_template t,                          '
+      
+        '       apqp_type_element e,                                     ' +
+        '  '
+      '       apqp_type h                                             '
+      ' where t.team_member_id = 999'
+      '   and t.source = '#39'APQP_TYPE_ELEMENT'#39'                          '
+      '   and t.source_id = e.id                           '
+      '   and e.apqp_type_id = h.id                               ')
+    Left = 26
+    Top = 305
+    object QryReferencesSOURCE_DESCRIP: TStringField
+      DisplayLabel = 'Module Description'
+      DisplayWidth = 29
+      FieldName = 'SOURCE_DESCRIP'
+      ReadOnly = True
+      FixedChar = True
+      Size = 43
+    end
+    object QryReferencesSOURCE_TYPE: TStringField
+      DisplayLabel = 'Kind'
+      DisplayWidth = 9
+      FieldName = 'SOURCE_TYPE'
+      ReadOnly = True
+      FixedChar = True
+      Size = 8
+    end
+    object QryReferencesHEADER: TStringField
+      DisplayLabel = 'Header'
+      DisplayWidth = 14
+      FieldName = 'HEADER'
+      ReadOnly = True
+      Size = 10
+    end
+    object QryReferencesELEMENT: TStringField
+      DisplayLabel = 'Element'
+      DisplayWidth = 30
+      FieldName = 'ELEMENT'
+      ReadOnly = True
+      Size = 100
+    end
+    object QryReferencesAction_Disp: TStringField
+      DisplayLabel = 'Action'
+      DisplayWidth = 15
+      FieldKind = fkCalculated
+      FieldName = 'Action_Disp'
+      ReadOnly = True
+      Calculated = True
+    end
+    object QryReferencesAUTHORIZATION_TYPE: TStringField
+      DisplayLabel = 'Type'
+      DisplayWidth = 10
+      FieldName = 'AUTHORIZATION_TYPE'
+      ReadOnly = True
+      Size = 10
+    end
+    object QryReferencesDESIGNATION: TStringField
+      DisplayLabel = 'Responsibility ~Designation'
+      DisplayWidth = 14
+      FieldName = 'DESIGNATION'
+      ReadOnly = True
+    end
+    object QryReferencesACTION: TStringField
+      DisplayLabel = 'Action'
+      DisplayWidth = 11
+      FieldName = 'ACTION'
+      Visible = False
+      FixedChar = True
+      Size = 1
+    end
+    object QryReferencesSOURCE_ID: TBCDField
+      DisplayWidth = 10
+      FieldName = 'SOURCE_ID'
+      ReadOnly = True
+      Visible = False
+      Size = 0
+    end
+    object QryReferencesSOURCE_TABLE: TStringField
+      DisplayWidth = 20
+      FieldName = 'SOURCE_TABLE'
+      ReadOnly = True
+      Visible = False
+      FixedChar = True
+    end
+    object QryReferencesNEW_TEAM_MEMBER_ID: TFMTBCDField
+      DisplayWidth = 10
+      FieldName = 'NEW_TEAM_MEMBER_ID'
+      Visible = False
+      Size = 38
+    end
+    object QryReferencesMODULE_NAME: TStringField
+      FieldName = 'MODULE_NAME'
+      Visible = False
+      FixedChar = True
+      Size = 4
+    end
+  end
+  object PopupMenu1: TUniPopupMenu
+    Left = 280
+    Top = 162
+    object AssignAction1: TUniMenuItem
+      Caption = 'Assign Action'
+      OnClick = AssignAction1Click
+    end
+  end
+end

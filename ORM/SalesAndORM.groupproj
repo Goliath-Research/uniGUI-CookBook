@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{7D9179F2-93A7-4CEC-990E-BBF4E63447C1}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="None\SalesNoORM.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Marshmallow\SalesMarshmallow.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="SalesNoORM">
+        <MSBuild Projects="None\SalesNoORM.dproj"/>
+    </Target>
+    <Target Name="SalesNoORM:Clean">
+        <MSBuild Projects="None\SalesNoORM.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SalesNoORM:Make">
+        <MSBuild Projects="None\SalesNoORM.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="SalesMarshmallow">
+        <MSBuild Projects="Marshmallow\SalesMarshmallow.dproj"/>
+    </Target>
+    <Target Name="SalesMarshmallow:Clean">
+        <MSBuild Projects="Marshmallow\SalesMarshmallow.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SalesMarshmallow:Make">
+        <MSBuild Projects="Marshmallow\SalesMarshmallow.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="SalesNoORM;SalesMarshmallow"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="SalesNoORM:Clean;SalesMarshmallow:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="SalesNoORM:Make;SalesMarshmallow:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

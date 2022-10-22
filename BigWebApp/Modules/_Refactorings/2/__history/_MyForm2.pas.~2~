@@ -1,0 +1,57 @@
+unit _MyForm2;
+
+interface
+
+uses
+  System.Classes,
+  Vcl.Controls,
+  Vcl.Forms,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniLabel,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniEdit,
+  uniButton,
+  _MyForm2Intf;
+
+type
+
+  TMyForm2 = class(TUniForm, IMyForm)
+    edtSomeText: TUniEdit;
+    btnOk: TUniButton;
+    btnCancel: TUniButton;
+    lblSomeText: TUniLabel;
+  private
+    function GetSomeText: string;
+    procedure SetSomeText(const Value: string);
+    { Private declarations }
+  public
+    { Public declarations }
+
+    property SomeText : string read GetSomeText write SetSomeText;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  Spring.Container;
+
+{ TMyForm }
+
+function TMyForm2.GetSomeText: string;
+begin
+  Result := edtSomeText.Text;
+end;
+
+procedure TMyForm2.SetSomeText(const Value: string);
+begin
+  edtSomeText.Text := Value;
+end;
+
+//  GlobalContainer.RegisterType<TMyForm2>.Implements<IMyForm>.AsTransient;
+end.

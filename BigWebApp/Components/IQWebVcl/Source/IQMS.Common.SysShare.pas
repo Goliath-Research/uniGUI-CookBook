@@ -1,0 +1,131 @@
+unit IQMS.Common.SysShare;
+
+interface
+
+uses
+  Classes,
+  SysUtils,
+  IQMS.WebVcl.SecurityManager,
+  IQMS.Common.DataLib;
+
+
+function Get_Default_Company_ID:Real;
+function Is_Whs_Division: Boolean;
+function GetDivision_Caption: string;
+function CheckReplaceDivisionCaption( S: string; ALookFor: string = 'Division' ): string;
+procedure CheckReplaceDivisionOfWWSelected( ASelected: TStrings; ALookFor: string = 'Division' );
+function CheckReplaceEmailCaption( AText: string ): string;
+
+implementation
+
+uses
+  IQMS.Common.StringUtils,
+  IQMS.Common.iqwin32Rscstr;
+
+function Get_Default_Company_ID:Real;
+var
+  AEPlantId:Real;
+begin
+  if SecurityManager.EPlant_ID = 'NULL' then
+    AEPlantId := 0
+  else
+    AEPlantId := StrToFloat(SecurityManager.EPlant_ID);
+
+  if AEPlantId <> 0 then
+  begin
+    Result := SelectValueFmtAsFloat('select id from company where eplant_id = %f and NVL(ship_default, ''N'') = ''Y''', [AEPlantId]);
+    if Result = 0 then
+    begin
+      Result := SelectValueFmtAsFloat('select id from company where eplant_id = %f', [AEPlantId]);
+      if Result = 0 then
+      begin
+        Result := SelectValueAsFloat('select id from company where NVL(eplant_id, 0) = 0');
+        if Result = 0 then
+          Result := SelectValueAsFloat('select id from company');
+      end;
+    end;
+  end
+  else
+  begin
+    Result := SelectValueAsFloat('select id from company where NVL(eplant_id, 0) = 0 and NVL(ship_default, ''N'') = ''Y''');
+    if Result = 0 then
+    begin
+      Result := SelectValueAsFloat('select id from company where NVL(eplant_id, 0) = 0');
+      if Result = 0 then
+        Result := SelectValueAsFloat('select id from company');
+    end;
+  end;
+end;
+
+function Is_Whs_Division: Boolean;
+begin
+  Result:= SelectValueAsString('select is_whs_division from params') = 'Y';
+end;
+
+function GetDivision_Caption: string;
+begin
+  if Is_Whs_Division then
+     Result:= cTXT0000001 // 'Warehouse'
+  else
+     Result:= cTXT0000002; // 'Division'
+end;
+
+function CheckReplaceDivisionCaption( S: string; ALookFor: string = 'Division' ): string;
+begin
+  Result:= StrTran( S, ALookFor, GetDivision_Caption );
+end;
+
+
+{special handling of WW Selected property. 04-18-2006 - wwdbgrid must NOT store settings in the TFields in order for this to work}
+procedure CheckReplaceDivisionOfWWSelected( ASelected: TStrings; ALookFor: string = 'Division' );
+var
+  I            : Integer;
+  ALookForUpper: string;
+  J            : Integer;
+  S            : string;
+begin
+  S:= '';
+  ALookForUpper:= UpperCase( ALookFor );
+
+  for I:= 0 to ASelected.Count - 1 do
+  begin
+    { 'DIVISION_NAME'#9'14'#9'Division'}
+    if Pos( ALookForUpper, UpperCase( ASelected[ I ])) > 0 then
+    begin
+      {reconstruct new str}
+      for J:= 1 to NumToken( ASelected[ I ], #9 ) do
+         if J = 3 then
+           S:= S + GetDivision_Caption + #9               {replace display label}
+         else
+           S:= S + GetToken( ASelected[ I ], #9, J ) + #9;
+
+      ASelected[ I ]:= Copy(S, 1, Length(S)-1);           {get rid of the last #}
+    end;
+  end;
+end;
+
+function CheckReplaceEmailCaption( AText: string ): string;
+var
+  I, J: Integer;
+  AList: TStringList;
+  S: string;
+begin
+  Result:= '';
+  AList:= TStringList.Create;
+  try
+    IQMS.Common.StringUtils.Tokenize( AText, [' ','~'], AList);
+    for I:= 0 to AList.Count - 1 do
+    begin
+      S:= AList[ I ];
+      J:= Pos( 'EMAIL', UpperCase(S));
+      if J > 0 then
+         S:= Copy(S, 1, J - 1) + cTXT0000008 {'Email'} + Copy( S, J+5, 255 );
+      Result:= Result + S;
+    end;
+  finally
+    AList.Free;
+  end;
+end;
+
+
+end.

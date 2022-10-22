@@ -1,0 +1,86 @@
+unit BRExc;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Forms,
+  Vcl.Menus,
+  FireDAC.Comp.Client,
+  FireDAC.Comp.DataSet,
+  FireDAC.Phys,
+  MainModule,
+  Vcl.Controls,
+  uniMainMenu,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniMemo,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication;
+
+type
+  TFrmViewExceptions = class(TUniForm)
+    MainMenu1: TUniMainMenu;
+    File1: TUniMenuItem;
+    Exit1: TUniMenuItem;
+    Memo: TUniMemo;
+    procedure Exit1Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure UniFormCreate(Sender: TObject);
+  private
+    { Private declarations }
+	  procedure SetFilename(AFileName : String);
+  public
+	  property FileName : string write SetFilename;
+    { Public declarations }
+  end;
+
+procedure DoViewExceptions(AFileName:String);
+
+implementation
+
+uses
+  IQMS.Common.RegFrm;
+
+{$R *.DFM}
+
+procedure DoViewExceptions(AFileName:String);
+var
+  FrmViewExceptions: TFrmViewExceptions;
+begin
+  FrmViewExceptions:=TFrmViewExceptions.Create(uniGUIApplication.UniApplication);
+  with FrmViewExceptions do
+  begin
+    FileName:=AFileName;
+    ShowModal;
+  end;
+end;
+
+procedure TFrmViewExceptions.Exit1Click(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TFrmViewExceptions.UniFormCreate(Sender: TObject);
+begin
+  IQRegFormRead( self, [self]);
+end;
+
+procedure TFrmViewExceptions.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  IQRegFormWrite( self, [self]);
+end;
+
+procedure TFrmViewExceptions.SetFilename(AFileName: String);
+begin
+  if FileExists(AFileName) then
+    Memo.Lines.LoadFromFile(AFileName);
+  Caption := Caption + Format(': %s', [AFileName]);
+end;
+
+end.

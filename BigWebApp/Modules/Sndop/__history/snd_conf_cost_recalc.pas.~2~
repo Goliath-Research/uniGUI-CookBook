@@ -1,0 +1,52 @@
+unit snd_conf_cost_recalc;
+
+interface
+
+uses
+  Winapi.Windows,
+  Vcl.Forms,
+  IQMS.Common.ConfBas,
+  FireDAC.Comp.Client,
+  FireDAC.Phys,
+  MainModule,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniPanel,
+  uniButton,
+  IQMS.WebVcl.SecurityRegister,
+  uniCheckBox,
+  uniLabel,
+  System.Classes,
+  Vcl.Controls;
+
+type
+  TFrmSndOpConfirmCostRecalc = class(TIQDialogCheckBox)
+    Panel3: TUniPanel;
+    btnYes: TUniButton;
+    btnAbort: TUniButton;
+    procedure btnYesClick(Sender: TObject);
+  public
+    { Public declarations }
+    procedure AssignText( S: string ); override;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+{ TFrmSndOpConfirmCostRecalc }
+
+procedure TFrmSndOpConfirmCostRecalc.AssignText(S: string);
+begin
+  inherited;
+  lblConfBasMsgText.Caption:= S;
+end;
+
+procedure TFrmSndOpConfirmCostRecalc.btnYesClick(Sender: TObject);
+begin
+  inherited; {nothing}
+  FResult:= TUniButton(Sender).Tag;
+  Close;
+end;
+
+end.

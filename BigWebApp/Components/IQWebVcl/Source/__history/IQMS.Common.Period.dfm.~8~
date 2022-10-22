@@ -1,0 +1,397 @@
+object FrmPeriod: TFrmPeriod
+  Left = 183
+  Top = 235
+  HelpContext = 1004972
+  ClientHeight = 319
+  ClientWidth = 456
+  Caption = 'Assign Period'
+  OldCreateOrder = True
+  OnClose = FormClose
+  OnActivate = FormActivate
+  MonitoredKeys.Keys = <>
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Splitter1: TUniSplitter
+    Left = 0
+    Top = 145
+    Width = 456
+    Height = 3
+    Cursor = crVSplit
+    Hint = ''
+    Align = alTop
+    ParentColor = False
+    Color = clBtnFace
+  end
+  object Panel3: TUniPanel
+    Left = 0
+    Top = 280
+    Width = 456
+    Height = 39
+    Hint = ''
+    Align = alBottom
+    Anchors = [akLeft, akRight, akBottom]
+    TabOrder = 0
+    Caption = ''
+    object Panel4: TUniPanel
+      Left = 247
+      Top = 1
+      Width = 209
+      Height = 37
+      Hint = ''
+      Align = alRight
+      Anchors = [akTop, akRight, akBottom]
+      TabOrder = 0
+      Caption = ''
+      object Button1: TUniButton
+        Left = 1
+        Top = 8
+        Width = 97
+        Height = 25
+        Hint = ''
+        Caption = '&OK'
+        ModalResult = 1
+        TabOrder = 1
+      end
+      object Button2: TUniButton
+        Left = 104
+        Top = 8
+        Width = 97
+        Height = 25
+        Hint = ''
+        Caption = '&Cancel'
+        ModalResult = 2
+        TabOrder = 2
+      end
+    end
+  end
+  object Panel2: TUniPanel
+    Left = 0
+    Top = 148
+    Width = 456
+    Height = 132
+    Hint = ''
+    Align = alClient
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    TabOrder = 1
+    Caption = ''
+    object Bevel2: TUniPanel
+      Left = 1
+      Top = 24
+      Width = 454
+      Height = 3
+      Hint = ''
+      Align = alTop
+      Anchors = [akLeft, akTop, akRight]
+      TabOrder = 3
+      Caption = ''
+      ExplicitTop = 47
+    end
+    object GridPeriod: TUniDBGrid
+      Left = 1
+      Top = 27
+      Width = 454
+      Height = 105
+      Hint = ''
+      DataSource = SrcGlPeriods
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgTabs, dgCancelOnExit]
+      ReadOnly = True
+      LoadMask.Message = 'Loading data...'
+      Align = alClient
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      TabOrder = 0
+      ParentColor = False
+      Color = clBtnFace
+      Columns = <
+        item
+          FieldName = 'PERIOD'
+          Title.Caption = 'Description'
+          Width = 175
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'START_DATE'
+          Title.Caption = 'Start Date'
+          Width = 112
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'END_DATE'
+          Title.Caption = 'End Date'
+          Width = 112
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'AP_STATUS'
+          Title.Caption = 'AP Status'
+          Width = 64
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'AR_STATUS'
+          Title.Caption = 'AR Status'
+          Width = 64
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'GL_STATUS'
+          Title.Caption = 'GL Status'
+          Width = 64
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'INV_STATUS'
+          Title.Caption = 'INV Status'
+          Width = 64
+          CheckBoxField.FieldValues = 'true;false'
+        end>
+    end
+    object Panel8: TUniPanel
+      Tag = 1999
+      Left = 1
+      Top = 1
+      Width = 454
+      Height = 24
+      Hint = ''
+      Align = alTop
+      Anchors = [akLeft, akTop, akRight]
+      ParentFont = False
+      Font.Color = clWhite
+      TabOrder = 1
+      Caption = 'GL Period'
+      Color = clBtnShadow
+    end
+  end
+  object PnlTop: TUniPanel
+    Left = 0
+    Top = 0
+    Width = 456
+    Height = 145
+    Hint = ''
+    Align = alTop
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 2
+    Caption = ''
+    object GridYear: TUniDBGrid
+      Left = 1
+      Top = 24
+      Width = 454
+      Height = 121
+      Hint = ''
+      DataSource = SrcGlYear
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgTabs, dgCancelOnExit]
+      ReadOnly = True
+      WebOptions.Paged = False
+      WebOptions.FetchAll = True
+      LoadMask.Message = 'Loading data...'
+      Align = alClient
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      TabOrder = 0
+      ParentColor = False
+      Color = clBtnFace
+      Columns = <
+        item
+          FieldName = 'DESCRIP'
+          Title.Caption = 'Description'
+          Width = 244
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'START_DATE'
+          Title.Caption = 'Start Date'
+          Width = 78
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'END_DATE'
+          Title.Caption = 'End Date'
+          Width = 78
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'EPLANT_ID'
+          Title.Caption = 'EPlant ID'
+          Width = 64
+          CheckBoxField.FieldValues = 'true;false'
+        end>
+    end
+    object Panel6: TUniPanel
+      Tag = 1999
+      Left = 1
+      Top = 1
+      Width = 454
+      Height = 24
+      Hint = ''
+      Align = alTop
+      Anchors = [akLeft, akTop, akRight]
+      ParentFont = False
+      Font.Color = clWhite
+      TabOrder = 1
+      Caption = 'GL Year'
+      Color = clBtnShadow
+    end
+  end
+  object SrcGlYear: TDataSource
+    DataSet = TblGLYear
+    Left = 24
+    Top = 40
+  end
+  object SrcGlPeriods: TDataSource
+    DataSet = QryPeriod
+    Left = 32
+    Top = 80
+  end
+  object TblGLYear: TFDTable
+    Filtered = True
+    OnFilterRecord = TblGLYearFilterRecord
+    IndexFieldNames = 'ID'
+    ConnectionName = 'IQFD'
+    UpdateOptions.UpdateTableName = 'GLYEAR'
+    TableName = 'GLYEAR'
+    Left = 32
+    Top = 48
+    object TblGLYearID: TBCDField
+      FieldName = 'ID'
+      Required = True
+      Size = 0
+    end
+    object TblGLYearDESCRIP: TStringField
+      FieldName = 'DESCRIP'
+      Required = True
+      Size = 25
+    end
+    object TblGLYearSTART_DATE: TDateTimeField
+      FieldName = 'START_DATE'
+      Required = True
+    end
+    object TblGLYearEND_DATE: TDateTimeField
+      FieldName = 'END_DATE'
+      Required = True
+    end
+    object TblGLYearECODE: TStringField
+      FieldName = 'ECODE'
+      Size = 10
+    end
+    object TblGLYearEID: TBCDField
+      FieldName = 'EID'
+      Size = 0
+    end
+    object TblGLYearEDATE_TIME: TDateTimeField
+      FieldName = 'EDATE_TIME'
+    end
+    object TblGLYearECOPY: TStringField
+      FieldName = 'ECOPY'
+      FixedChar = True
+      Size = 1
+    end
+    object TblGLYearPOSTED_IN_FRX: TStringField
+      FieldName = 'POSTED_IN_FRX'
+      FixedChar = True
+      Size = 1
+    end
+    object TblGLYearFRL_FISCAL_YEAR: TBCDField
+      FieldName = 'FRL_FISCAL_YEAR'
+      Size = 0
+    end
+    object TblGLYearEPLANT_ID: TBCDField
+      FieldName = 'EPLANT_ID'
+      Size = 0
+    end
+  end
+  object QryPeriod: TFDQuery
+    MasterSource = SrcGlYear
+    MasterFields = 'ID'
+    ConnectionName = 'IQFD'
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select * from glperiods'
+      'where glyear_id = :ID'
+      'order by period')
+    Left = 48
+    Top = 96
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftBCD
+        ParamType = ptInput
+        Size = 8
+      end>
+    object QryPeriodID: TBCDField
+      FieldName = 'ID'
+      Origin = 'IQ.GLPERIODS.ID'
+      Size = 0
+    end
+    object QryPeriodGLYEAR_ID: TBCDField
+      FieldName = 'GLYEAR_ID'
+      Origin = 'IQ.GLPERIODS.GLYEAR_ID'
+      Size = 0
+    end
+    object QryPeriodPERIOD: TBCDField
+      FieldName = 'PERIOD'
+      Origin = 'IQ.GLPERIODS.PERIOD'
+      Size = 0
+    end
+    object QryPeriodSTART_DATE: TDateTimeField
+      FieldName = 'START_DATE'
+      Origin = 'IQ.GLPERIODS.START_DATE'
+    end
+    object QryPeriodEND_DATE: TDateTimeField
+      FieldName = 'END_DATE'
+      Origin = 'IQ.GLPERIODS.END_DATE'
+    end
+    object QryPeriodSTATUS: TStringField
+      FieldName = 'STATUS'
+      Origin = 'IQ.GLPERIODS.STATUS'
+      Size = 2
+    end
+    object QryPeriodAP_STATUS: TStringField
+      FieldName = 'AP_STATUS'
+      Origin = 'IQ.GLPERIODS.AP_STATUS'
+      Size = 10
+    end
+    object QryPeriodAR_STATUS: TStringField
+      FieldName = 'AR_STATUS'
+      Origin = 'IQ.GLPERIODS.AR_STATUS'
+      Size = 10
+    end
+    object QryPeriodGL_STATUS: TStringField
+      FieldName = 'GL_STATUS'
+      Origin = 'IQ.GLPERIODS.GL_STATUS'
+      Size = 10
+    end
+    object QryPeriodECODE: TStringField
+      FieldName = 'ECODE'
+      Origin = 'IQ.GLPERIODS.ECODE'
+      Size = 10
+    end
+    object QryPeriodEID: TBCDField
+      FieldName = 'EID'
+      Origin = 'IQ.GLPERIODS.EID'
+      Size = 0
+    end
+    object QryPeriodEDATE_TIME: TDateTimeField
+      FieldName = 'EDATE_TIME'
+      Origin = 'IQ.GLPERIODS.EDATE_TIME'
+    end
+    object QryPeriodECOPY: TStringField
+      FieldName = 'ECOPY'
+      Origin = 'IQ.GLPERIODS.ECOPY'
+      FixedChar = True
+      Size = 1
+    end
+    object QryPeriodPOSTED_IN_FRX: TStringField
+      FieldName = 'POSTED_IN_FRX'
+      Origin = 'IQ.GLPERIODS.POSTED_IN_FRX'
+      FixedChar = True
+      Size = 1
+    end
+    object QryPeriodINV_STATUS: TStringField
+      FieldName = 'INV_STATUS'
+      Origin = 'INV_STATUS'
+      Size = 10
+    end
+  end
+end

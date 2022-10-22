@@ -1,0 +1,653 @@
+object FrmSndOpAssy1OverheadUpdate: TFrmSndOpAssy1OverheadUpdate
+  Left = 314
+  Top = 195
+  ClientHeight = 389
+  ClientWidth = 1104
+  Caption = 'Update ASSY1 Standard Overhead Cost'
+  OnShow = FormShow
+  OldCreateOrder = False
+  OnClose = FormClose
+  Menu = MainMenu1
+  MonitoredKeys.Keys = <>
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel2: TUniPanel
+    Left = 0
+    Top = 0
+    Width = 1104
+    Height = 389
+    Hint = ''
+    Align = alClient
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    TabOrder = 0
+    Caption = 'Panel2'
+    object Splitter1: TUniSplitter
+      Left = 529
+      Top = 0
+      Width = 4
+      Height = 389
+      Hint = ''
+      Align = alLeft
+      ParentColor = False
+      Color = clBtnFace
+    end
+    object Panel3: TUniPanel
+      Left = 1
+      Top = 1
+      Width = 529
+      Height = 387
+      Hint = ''
+      Align = alLeft
+      Anchors = [akLeft, akTop, akBottom]
+      TabOrder = 0
+      Caption = ''
+      object IQSearchCenterType: TIQUniGridControl
+        Left = 1
+        Top = 1
+        Width = 527
+        Height = 385
+        Layout = 'border'
+        ParentAlignmentControl = False
+        AlignmentControl = uniAlignmentClient
+        Align = alClient
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        TabOrder = 0
+        IQComponents.Grid.Left = 0
+        IQComponents.Grid.Top = 29
+        IQComponents.Grid.Width = 310
+        IQComponents.Grid.Height = 299
+        IQComponents.Grid.Hint = ''
+        IQComponents.Grid.DataSource = SrcWork_Center
+        IQComponents.Grid.LoadMask.Message = 'Loading data...'
+        IQComponents.Grid.Align = alClient
+        IQComponents.Grid.Anchors = [akLeft, akTop, akRight, akBottom]
+        IQComponents.Grid.TabOrder = 0
+        IQComponents.Navigator.Left = 410
+        IQComponents.Navigator.Top = 0
+        IQComponents.Navigator.Width = 241
+        IQComponents.Navigator.Height = 25
+        IQComponents.Navigator.Hint = ''
+        IQComponents.Navigator.ShowHint = True
+        IQComponents.Navigator.DataSource = SrcWork_Center
+        IQComponents.Navigator.LayoutConfig.Region = 'east'
+        IQComponents.Navigator.TabOrder = 3
+        IQComponents.HiddenPanel.Left = 310
+        IQComponents.HiddenPanel.Top = 29
+        IQComponents.HiddenPanel.Width = 209
+        IQComponents.HiddenPanel.Height = 299
+        IQComponents.HiddenPanel.Hint = ''
+        IQComponents.HiddenPanel.Visible = True
+        IQComponents.HiddenPanel.Align = alRight
+        IQComponents.HiddenPanel.Anchors = [akTop, akRight, akBottom]
+        IQComponents.FormTab.Hint = ''
+        IQComponents.FormTab.ImageIndex = 1
+        IQComponents.FormTab.Caption = 'Form'
+        IQComponents.FormTab.Layout = 'border'
+        IQComponents.FormTab.ExplicitLeft = 0
+        IQComponents.FormTab.ExplicitTop = 0
+        IQComponents.FormTab.ExplicitWidth = 256
+        IQComponents.FormTab.ExplicitHeight = 128
+        DataSource = SrcWork_Center
+        Columns = <
+          item
+            FieldName = 'CNTR_TYPE'
+            Title.Caption = 'Center Type'
+            Width = 106
+            CheckBoxField.FieldValues = 'true;false'
+          end
+          item
+            FieldName = 'MFGCELL'
+            Title.Caption = 'MfgCell'
+            Width = 64
+            CheckBoxField.FieldValues = 'true;false'
+          end
+          item
+            FieldName = 'MFG_TYPE'
+            Title.Caption = 'Mfg Type'
+            Width = 64
+            CheckBoxField.FieldValues = 'true;false'
+          end
+          item
+            FieldName = 'EPLANT_ID'
+            Title.Caption = 'EPlant ID'
+            Width = 64
+            CheckBoxField.FieldValues = 'true;false'
+          end
+          item
+            FieldName = 'CNTR_COST'
+            Title.Caption = 'Variable'
+            Width = 64
+            CheckBoxField.FieldValues = 'true;false'
+          end
+          item
+            FieldName = 'FIXED_CNTR_COST'
+            Title.Caption = 'Fixed'
+            Width = 64
+            CheckBoxField.FieldValues = 'true;false'
+          end>
+        Marker = 0
+      end
+    end
+    object Panel4: TUniPanel
+      Left = 533
+      Top = 1
+      Width = 571
+      Height = 387
+      Hint = ''
+      Align = alClient
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      TabOrder = 1
+      Caption = 'Panel4'
+      object Splitter2: TUniSplitter
+        Left = 0
+        Top = 312
+        Width = 571
+        Height = 5
+        Cursor = crVSplit
+        Hint = ''
+        Align = alBottom
+        ParentColor = False
+        Color = clBtnFace
+      end
+      object Panel5: TUniPanel
+        Left = 1
+        Top = 317
+        Width = 569
+        Height = 70
+        Hint = ''
+        Constraints.MinHeight = 70
+        Align = alBottom
+        Anchors = [akLeft, akRight, akBottom]
+        TabOrder = 0
+        Caption = ''
+        ExplicitTop = 319
+        object GroupBox1: TUniGroupBox
+          Left = 1
+          Top = 1
+          Width = 567
+          Height = 68
+          Hint = ''
+          Caption = ' Enter New Center Rate '
+          Align = alClient
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          TabOrder = 0
+          object Label2: TUniLabel
+            Left = 39
+            Top = 21
+            Width = 100
+            Height = 13
+            Hint = ''
+            Caption = 'Variable Center Rate'
+            TabOrder = 3
+          end
+          object Label1: TUniLabel
+            Left = 39
+            Top = 46
+            Width = 88
+            Height = 13
+            Hint = ''
+            Caption = 'Fixed Center Rate'
+            TabOrder = 4
+          end
+          object Edit1: TUniEdit
+            Left = 154
+            Top = 17
+            Width = 141
+            Height = 21
+            Hint = ''
+            Text = ''
+            TabOrder = 0
+          end
+          object btnApply: TUniButton
+            Left = 314
+            Top = 17
+            Width = 90
+            Height = 25
+            Hint = ''
+            Caption = 'Apply'
+            TabOrder = 5
+            OnClick = btnApplyClick
+          end
+          object Edit2: TUniEdit
+            Left = 154
+            Top = 42
+            Width = 141
+            Height = 21
+            Hint = ''
+            Text = ''
+            TabOrder = 1
+          end
+        end
+      end
+      object Panel1: TUniPanel
+        Left = 1
+        Top = 1
+        Width = 569
+        Height = 312
+        Hint = ''
+        Align = alClient
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        TabOrder = 1
+        Caption = ''
+        object IQSearchProcess: TIQUniGridControl
+          Left = 1
+          Top = 1
+          Width = 567
+          Height = 310
+          Layout = 'border'
+          ParentAlignmentControl = False
+          AlignmentControl = uniAlignmentClient
+          Align = alClient
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          TabOrder = 0
+          IQComponents.Grid.Left = 0
+          IQComponents.Grid.Top = 29
+          IQComponents.Grid.Width = 350
+          IQComponents.Grid.Height = 224
+          IQComponents.Grid.Hint = ''
+          IQComponents.Grid.DataSource = SrcProcess
+          IQComponents.Grid.LoadMask.Message = 'Loading data...'
+          IQComponents.Grid.Align = alClient
+          IQComponents.Grid.Anchors = [akLeft, akTop, akRight, akBottom]
+          IQComponents.Grid.TabOrder = 0
+          IQComponents.Navigator.Left = 410
+          IQComponents.Navigator.Top = 0
+          IQComponents.Navigator.Width = 241
+          IQComponents.Navigator.Height = 25
+          IQComponents.Navigator.Hint = ''
+          IQComponents.Navigator.ShowHint = True
+          IQComponents.Navigator.DataSource = SrcProcess
+          IQComponents.Navigator.LayoutConfig.Region = 'east'
+          IQComponents.Navigator.TabOrder = 3
+          IQComponents.HiddenPanel.Left = 350
+          IQComponents.HiddenPanel.Top = 29
+          IQComponents.HiddenPanel.Width = 209
+          IQComponents.HiddenPanel.Height = 224
+          IQComponents.HiddenPanel.Hint = ''
+          IQComponents.HiddenPanel.Visible = True
+          IQComponents.HiddenPanel.Align = alRight
+          IQComponents.HiddenPanel.Anchors = [akTop, akRight, akBottom]
+          IQComponents.FormTab.Hint = ''
+          IQComponents.FormTab.ImageIndex = 1
+          IQComponents.FormTab.Caption = 'Form'
+          IQComponents.FormTab.Layout = 'border'
+          IQComponents.FormTab.ExplicitLeft = 0
+          IQComponents.FormTab.ExplicitTop = 0
+          IQComponents.FormTab.ExplicitWidth = 256
+          IQComponents.FormTab.ExplicitHeight = 128
+          DataSource = SrcProcess
+          Columns = <
+            item
+              FieldName = 'OPNO'
+              Title.Caption = 'Process'
+              Width = 94
+              CheckBoxField.FieldValues = 'true;false'
+            end
+            item
+              FieldName = 'OPDESC'
+              Title.Caption = 'Process Description'
+              Width = 64
+              CheckBoxField.FieldValues = 'true;false'
+            end
+            item
+              FieldName = 'ASSY1_OH_RATE'
+              Title.Caption = 'Center Rate'
+              Width = 64
+              CheckBoxField.FieldValues = 'true;false'
+            end
+            item
+              FieldName = 'STD_COST_OH'
+              Title.Caption = 'Overhead Cost'
+              Width = 64
+              CheckBoxField.FieldValues = 'true;false'
+            end
+            item
+              FieldName = 'FIXED_ASSY1_OH_RATE'
+              Title.Caption = 'Center Rate'
+              Width = 64
+              CheckBoxField.FieldValues = 'true;false'
+            end
+            item
+              FieldName = 'FIXED_STD_COST_OH'
+              Title.Caption = 'Overhead Cost'
+              Width = 64
+              CheckBoxField.FieldValues = 'true;false'
+            end
+            item
+              FieldName = 'MULTIPLES'
+              Title.Caption = 'Multiples'
+              Width = 64
+              CheckBoxField.FieldValues = 'true;false'
+            end
+            item
+              FieldName = 'UOM'
+              Title.Caption = 'UOM'
+              Width = 64
+              CheckBoxField.FieldValues = 'true;false'
+            end
+            item
+              FieldName = 'CYCLETM_DISP'
+              Title.Caption = 'Cycle Time'
+              Width = 64
+              CheckBoxField.FieldValues = 'true;false'
+            end
+            item
+              FieldName = 'SCRAP_DISP'
+              Title.Caption = 'Yield %'
+              Width = 64
+              CheckBoxField.FieldValues = 'true;false'
+            end
+            item
+              FieldName = 'EPLANT_ID'
+              Title.Caption = 'EPlant ID'
+              Width = 64
+              CheckBoxField.FieldValues = 'true;false'
+            end>
+          Marker = 0
+        end
+      end
+    end
+  end
+  object SrcWork_Center: TDataSource
+    DataSet = QryWork_Center
+    Left = 21
+    Top = 161
+  end
+  object QryWork_Center: TFDQuery
+    AfterScroll = QryWork_CenterAfterScroll
+    Filtered = True
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select distinct '
+      '       w.cntr_type, '
+      '       w.mfg_type,'
+      '       w.eplant_id,'
+      '       w.mfgcell_id,'
+      '       m.mfgcell,'
+      '       c.id as cntr_type_id,'
+      
+        '       ( select sum(std_cost) from cntr_type_elements e where e.' +
+        'cntr_type_id = c.id ) as cntr_cost,'
+      
+        '       ( select sum(fixed_std_cost) from cntr_type_elements e wh' +
+        'ere e.cntr_type_id = c.id ) as fixed_cntr_cost'
+      '  from work_center w,'
+      '       mfgcell m,'
+      '       cntr_type c'
+      ' where mfg.lookup_mfgtype(w.mfg_type) in ('#39'ASSY1'#39', '#39'ASSY2'#39')'
+      '   and misc.eplant_filter( w.eplant_id  ) = 1'
+      '   and w.mfgcell_id = m.id(+)'
+      '   and rtrim(w.cntr_type) = rtrim(c.name(+))'
+      '   and nvl(w.eplant_id,0) = nvl(c.eplant_id(+), 0)'
+      ''
+      ''
+      ''
+      ''
+      ''
+      ''
+      '')
+    Left = 21
+    Top = 181
+    object QryWork_CenterCNTR_TYPE: TStringField
+      DisplayLabel = 'Center Type'
+      DisplayWidth = 17
+      FieldName = 'CNTR_TYPE'
+      Origin = 'W.CNTR_TYPE'
+    end
+    object QryWork_CenterMFGCELL: TStringField
+      DisplayLabel = 'MfgCell'
+      DisplayWidth = 15
+      FieldName = 'MFGCELL'
+      Origin = 'm.mfgcell'
+      FixedChar = True
+      Size = 15
+    end
+    object QryWork_CenterMFG_TYPE: TStringField
+      DisplayLabel = 'Mfg Type'
+      DisplayWidth = 10
+      FieldName = 'MFG_TYPE'
+      Origin = 'W.MFG_TYPE'
+      Size = 10
+    end
+    object QryWork_CenterEPLANT_ID: TBCDField
+      DisplayLabel = 'EPlant ID'
+      DisplayWidth = 10
+      FieldName = 'EPLANT_ID'
+      Origin = 'W.EPLANT_ID'
+      Size = 0
+    end
+    object QryWork_CenterCNTR_COST: TFMTBCDField
+      DisplayLabel = 'Variable'
+      DisplayWidth = 10
+      FieldName = 'CNTR_COST'
+      Size = 38
+    end
+    object QryWork_CenterFIXED_CNTR_COST: TFMTBCDField
+      DisplayLabel = 'Fixed Overhead Center Cost'
+      DisplayWidth = 10
+      FieldName = 'FIXED_CNTR_COST'
+      Size = 38
+    end
+    object QryWork_CenterMFGCELL_ID: TBCDField
+      DisplayLabel = 'MfgCell ID'
+      DisplayWidth = 10
+      FieldName = 'MFGCELL_ID'
+      Origin = 'W.MFGCELL_ID'
+      Visible = False
+      Size = 0
+    end
+    object QryWork_CenterCNTR_TYPE_ID: TBCDField
+      FieldName = 'CNTR_TYPE_ID'
+      Visible = False
+      Size = 0
+    end
+  end
+  object SrcProcess: TDataSource
+    DataSet = QryProcess
+    Left = 64
+    Top = 163
+  end
+  object QryProcess: TFDQuery
+    MasterSource = SrcWork_Center
+    MasterFields = 'CNTR_TYPE'
+    FetchOptions.AssignedValues = [evCache]
+    FetchOptions.Cache = [fiBlobs, fiMeta]
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select id,'
+      '       opno,'
+      '       opdesc,'
+      '       assy1_oh_rate,'
+      '       std_cost_oh,'
+      '       multiples,'
+      '       uom,'
+      '       cycletm_disp,'
+      '       scrap_disp,'
+      '       eplant_id,'
+      '       fixed_assy1_oh_rate,'
+      '       fixed_std_cost_oh'
+      '  from sndop     '
+      ' where misc.eplant_filter( eplant_id ) = 1'
+      '   and op_class = '#39'AS'#39
+      '   and rtrim(cntr_type) = rtrim(:cntr_type)'
+      '   and nvl(pk_hide, '#39'N'#39') <> '#39'Y'#39
+      ''
+      '')
+    Left = 65
+    Top = 179
+    ParamData = <
+      item
+        Name = 'CNTR_TYPE'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 21
+        Value = '05-27-2011 ASSY1'
+      end>
+    object QryProcessOPNO: TStringField
+      DisplayLabel = 'Process'
+      DisplayWidth = 15
+      FieldName = 'OPNO'
+      Origin = 'opno'
+      Size = 15
+    end
+    object QryProcessOPDESC: TStringField
+      DisplayLabel = 'Process Description'
+      DisplayWidth = 30
+      FieldName = 'OPDESC'
+      Origin = 'OPDESC'
+      Size = 60
+    end
+    object QryProcessASSY1_OH_RATE: TFMTBCDField
+      DisplayLabel = 'Center Rate'
+      DisplayWidth = 13
+      FieldName = 'ASSY1_OH_RATE'
+      Origin = 'ASSY1_OH_RATE'
+      Size = 6
+    end
+    object QryProcessSTD_COST_OH: TFMTBCDField
+      DisplayLabel = 'Overhead Cost'
+      DisplayWidth = 14
+      FieldName = 'STD_COST_OH'
+      Origin = 'std_cost_oh'
+      DisplayFormat = '#########.######'
+      Size = 6
+    end
+    object QryProcessFIXED_ASSY1_OH_RATE: TFMTBCDField
+      DisplayLabel = 'Center Rate'
+      DisplayWidth = 10
+      FieldName = 'FIXED_ASSY1_OH_RATE'
+      Size = 6
+    end
+    object QryProcessFIXED_STD_COST_OH: TFMTBCDField
+      DisplayLabel = 'Overhead Cost'
+      DisplayWidth = 10
+      FieldName = 'FIXED_STD_COST_OH'
+      Size = 6
+    end
+    object QryProcessMULTIPLES: TBCDField
+      DisplayLabel = 'Multiples'
+      DisplayWidth = 10
+      FieldName = 'MULTIPLES'
+      Origin = 'MULTIPLES'
+      Size = 0
+    end
+    object QryProcessUOM: TStringField
+      DisplayWidth = 10
+      FieldName = 'UOM'
+      Origin = 'UOM'
+      Size = 10
+    end
+    object QryProcessCYCLETM_DISP: TBCDField
+      DisplayLabel = 'Cycle Time'
+      DisplayWidth = 10
+      FieldName = 'CYCLETM_DISP'
+      Origin = 'CYCLETM_DISP'
+    end
+    object QryProcessSCRAP_DISP: TBCDField
+      DisplayLabel = 'Yield %'
+      DisplayWidth = 10
+      FieldName = 'SCRAP_DISP'
+      Origin = 'SCRAP_DISP'
+    end
+    object QryProcessEPLANT_ID: TBCDField
+      DisplayLabel = 'EPlant ID'
+      DisplayWidth = 10
+      FieldName = 'EPLANT_ID'
+      Origin = 'EPLANT_ID'
+      Size = 0
+    end
+    object QryProcessID: TBCDField
+      DisplayWidth = 10
+      FieldName = 'ID'
+      Visible = False
+      Size = 0
+    end
+  end
+  object procOverheadCostLaborBased: TFDStoredProc
+    StoredProcName = 'IQMS.APPDEF_SNDOP.GET_STD_OVERHEAD_LABOR_BASED'
+    Left = 102
+    Top = 163
+    ParamData = <
+      item
+        Name = 'v_sndop_id'
+        DataType = ftFMTBcd
+        ParamType = ptInput
+      end
+      item
+        Name = 'v_overhead_rate'
+        DataType = ftFMTBcd
+        ParamType = ptInputOutput
+      end
+      item
+        Name = 'v_overhead_hrs'
+        DataType = ftFMTBcd
+        ParamType = ptInputOutput
+      end
+      item
+        Name = 'v_mfgtype'
+        DataType = ftString
+        ParamType = ptInput
+      end
+      item
+        Name = 'v_is_fixed'
+        DataType = ftFMTBcd
+        ParamType = ptInput
+      end>
+  end
+  object MainMenu1: TUniMainMenu
+    Left = 24
+    Top = 240
+    object File1: TUniMenuItem
+      Caption = 'File'
+      object Exit1: TUniMenuItem
+        Caption = 'Exit'
+        OnClick = Exit1Click
+      end
+    end
+    object Help1: TUniMenuItem
+      Caption = 'Help'
+      object About1: TUniMenuItem
+        Caption = 'About'
+        OnClick = About1Click
+      end
+    end
+  end
+  object IQAbout1: TIQWebAbout
+    ModuleName = 'FrmSndOpAssy1OverheadUpdate'
+    Version = 'DEV.176554'
+    ChangeListNumber = '$Change: 191144 $'
+    BuildVersion = '176554'
+    Left = 56
+    Top = 240
+  end
+  object popmProcess: TUniPopupMenu
+    Left = 257
+    Top = 160
+    object JumpToProcess1: TUniMenuItem
+      Caption = 'Jump To Process'
+      OnClick = JumpToProcess1Click
+    end
+  end
+  object popmCenterType: TUniPopupMenu
+    Left = 212
+    Top = 160
+    object JumpToMasterCenterType1: TUniMenuItem
+      Caption = 'Jump To Master Center Type'
+      OnClick = JumpToMasterCenterType1Click
+    end
+  end
+  object SecurityRegister1: TIQWebSecurityRegister
+    SecurityItems.Strings = (
+      'btnApply')
+    SecurityCode = 'FRMSNDOPASSY1OVERHEADUPDATE'
+    Left = 170
+    Top = 244
+  end
+end

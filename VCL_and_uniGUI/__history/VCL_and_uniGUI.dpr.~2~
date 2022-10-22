@@ -1,0 +1,19 @@
+program VCL_and_uniGUI;
+
+uses
+  Forms,
+  ServerModule in 'ServerModule.pas' {UniServerModule: TUniGUIServerModule},
+  MainModule in 'MainModule.pas' {UniMainModule: TUniGUIMainModule},
+  Main in 'Main.pas' {MainForm: TUniForm},
+  Services in 'Services.pas',
+  Registration in 'Registration.pas',
+  _MyFormWeb in '_MyFormWeb.pas' {MyForm: TUniForm};
+
+{$R *.res}
+
+begin
+  ReportMemoryLeaksOnShutdown := True;
+  Application.Initialize;
+  TUniServerModule.Create(Application);
+  Application.Run;
+end.

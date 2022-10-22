@@ -1,0 +1,89 @@
+unit crm_recur_open;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  Vcl.Forms,
+  Vcl.Buttons,
+  iqusrmsg,
+  Vcl.Graphics,
+  Vcl.Controls,
+  System.Classes,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniLabel,
+  uniRadioButton,
+  uniPanel,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniButton,
+  uniBitBtn, uniImage;
+
+type
+  TFrmCRMOpenRecurrencePrompt = class(TUniForm)
+    PnlClient: TUniPanel;
+    PnlButtons: TUniPanel;
+    PnlButtonsInner: TUniPanel;
+    btnOk: TUniBitBtn;
+    btnCancel: TUniBitBtn;
+    PnlImageCarrier: TUniPanel;
+    PnlTextCarrier: TUniPanel;
+    Image1: TUniImage;
+    lblPrompt: TUniLabel;
+    Bevel1: TUniPanel;
+    PnlOptionCarrier: TUniPanel;
+    rbThis: TUniRadioButton;
+    rbAll: TUniRadioButton;
+    procedure UniFormShow(Sender: TObject);
+  private
+    { Private declarations }
+    procedure IQAfterShowMessage(var Msg: TMessage);
+      message iq_AfterShowMessage;
+  public
+    { Public declarations }
+    function SelectedIndex: Integer;
+  end;
+
+function FrmCRMOpenRecurrencePrompt: TFrmCRMOpenRecurrencePrompt;
+
+implementation
+
+{$R *.DFM}
+
+uses
+  MainModule;
+
+function FrmCRMOpenRecurrencePrompt: TFrmCRMOpenRecurrencePrompt;
+begin
+  Result := TFrmCRMOpenRecurrencePrompt(UniMainModule.GetFormInstance(TFrmCRMOpenRecurrencePrompt));
+end;
+
+procedure TFrmCRMOpenRecurrencePrompt.IQAfterShowMessage(
+  var Msg: TMessage);
+begin
+  lblPrompt.AutoSize := FALSE;
+  lblPrompt.AutoSize := TRUE;
+  lblPrompt.Update;
+end;
+
+function TFrmCRMOpenRecurrencePrompt.SelectedIndex: Integer;
+begin
+  if rbThis.Checked then
+    Result := 0
+  else
+    Result := 1;
+end;
+
+procedure TFrmCRMOpenRecurrencePrompt.UniFormShow(Sender: TObject);
+var
+Msg: TMessage;
+begin
+  // after show will repaint the form size
+//  PostMessage(Handle, iq_AfterShowMessage, 0, 0);
+end;
+
+end.

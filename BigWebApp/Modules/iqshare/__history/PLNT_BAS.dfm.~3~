@@ -1,0 +1,211 @@
+object FrmChangeEPlantBase: TFrmChangeEPlantBase
+  Left = 252
+  Top = 171
+  ClientHeight = 154
+  ClientWidth = 304
+  Caption = 'Select Enterprise Plant'
+  OnShow = FormShow
+  BorderStyle = bsSizeToolWin
+  Constraints.MinHeight = 185
+  Constraints.MinWidth = 320
+  OldCreateOrder = True
+  OnClose = FormClose
+  MonitoredKeys.Keys = <>
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object StatusBar1: TUniStatusBar
+    Left = 0
+    Top = 135
+    Width = 304
+    Height = 19
+    Hint = ''
+    Panels = <
+      item
+        Text = 'User: '
+        Width = 130
+      end
+      item
+        Text = 'Default: '
+        Width = 50
+      end>
+    SizeGrip = False
+    Align = alBottom
+    Anchors = [akLeft, akRight, akBottom]
+    ParentColor = False
+    Color = clWindow
+  end
+  object PnlButtons: TUniPanel
+    Left = 0
+    Top = 102
+    Width = 304
+    Height = 33
+    Hint = ''
+    Align = alBottom
+    Anchors = [akLeft, akRight, akBottom]
+    TabOrder = 1
+    Caption = ''
+    object PnlButtonsInner: TUniPanel
+      Left = 88
+      Top = 1
+      Width = 216
+      Height = 31
+      Hint = ''
+      Align = alRight
+      Anchors = [akTop, akRight, akBottom]
+      TabOrder = 0
+      Caption = ''
+      object btnOK: TUniButton
+        Left = 8
+        Top = 1
+        Width = 97
+        Height = 25
+        Hint = ''
+        Caption = 'OK'
+        TabOrder = 1
+        OnClick = btnOKClick
+      end
+      object btnCancel: TUniButton
+        Left = 112
+        Top = 1
+        Width = 97
+        Height = 25
+        Hint = ''
+        Caption = 'Cancel'
+        Cancel = True
+        ModalResult = 2
+        TabOrder = 2
+      end
+    end
+  end
+  object PnlMain: TUniPanel
+    Left = 0
+    Top = 0
+    Width = 304
+    Height = 102
+    Hint = ''
+    Align = alClient
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    TabOrder = 2
+    Caption = ''
+    DesignSize = (
+      304
+      102)
+    object Bevel1: TUniPanel
+      Left = 1
+      Top = 1
+      Width = 302
+      Height = 100
+      Hint = ''
+      Align = alClient
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      TabOrder = 4
+      Caption = ''
+    end
+    object rbtnAll: TUniRadioButton
+      Left = 14
+      Top = 12
+      Width = 80
+      Height = 17
+      Hint = ''
+      Caption = 'View All'
+      TabOrder = 0
+      OnClick = rbtnAllClick
+    end
+    object rbtnOne: TUniRadioButton
+      Left = 14
+      Top = 34
+      Width = 80
+      Height = 17
+      Hint = ''
+      Caption = 'One Plant'
+      TabOrder = 1
+      OnClick = rbtnAllClick
+    end
+    object wwcombPlant: TUniDBLookupComboBox
+      Left = 42
+      Top = 57
+      Width = 244
+      Height = 21
+      Hint = ''
+      ListField = 'PLANT_ID;PLANT_NAME;COMPANY_NAME'
+      ListSource = SrcEPlant
+      KeyField = 'PLANT_ID'
+      ListFieldIndex = 0
+      Anchors = [akLeft, akTop, akRight]
+      TabOrder = 2
+      Color = clWindow
+    end
+  end
+  object QryEPlant: TFDQuery
+    Active = True
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select c.code as ecode,'
+      '       c.company as company_name,'
+      '       p.id as plant_id,'
+      '       p.name as plant_name'
+      '  from ecompany c,'
+      '       eplant p,'
+      
+        '       ( select count(*) rec_count from s_user_eplants where use' +
+        'r_name = misc.GetUserName ) x'
+      ' where c.id = p.ecompany_id'
+      '   and nvl(p.inactive, '#39'N'#39') <> '#39'Y'#39
+      '   and ( x.rec_count = 0'
+      '         or'
+      '         exists'
+      
+        '            (select 1 from s_user_eplants where user_name = misc' +
+        '.GetUserName and p.id = eplant_id )'
+      '         or'
+      '         exists'
+      
+        '            (select 1 from s_user_general where user_name = misc' +
+        '.GetUserName and eplant_id = p.id ))'
+      ' order by p.name')
+    Left = 130
+    Top = 2
+    object QryEPlantPLANT_NAME: TStringField
+      DisplayLabel = 'Plant Name'
+      DisplayWidth = 15
+      FieldName = 'PLANT_NAME'
+      Origin = 'EPLANT.NAME'
+      Size = 30
+    end
+    object QryEPlantCOMPANY_NAME: TStringField
+      DisplayLabel = 'Company'
+      DisplayWidth = 10
+      FieldName = 'COMPANY_NAME'
+      Origin = 'ECOMPANY.COMPANY'
+      Size = 60
+    end
+    object QryEPlantPLANT_ID: TBCDField
+      DisplayLabel = 'Plant ID'
+      DisplayWidth = 5
+      FieldName = 'PLANT_ID'
+      Origin = 'EPLANT.ID'
+      Size = 0
+    end
+  end
+  object SR: TIQWebSecurityRegister
+    ForceAccessItems.Strings = (
+      'FrmChangeEPlantBase')
+    SecurityItems.Strings = (
+      'rbtnAll'
+      'rbtnOne'
+      'btnOK')
+    SecurityCode = 'FRMCHANGEEPLANTBASE'
+    Left = 226
+    Top = 2
+  end
+  object SrcEPlant: TDataSource
+    DataSet = QryEPlant
+    Left = 178
+    Top = 2
+  end
+end

@@ -1,0 +1,187 @@
+unit ven_rfq_pick_dist;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniLabel,
+  uniPanel,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniButton,
+  uniDBNavigator,
+  IQUniGrid,
+  uniGUIFrame,
+  uniSplitter,
+  uniDBGrid,
+  FireDAC.Comp.Client, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
+  Vcl.Controls, Vcl.ExtCtrls, Vcl.Forms, Data.DB;
+
+type
+  TFrmVendorRFQPickDist = class(TUniForm)
+    Panel2: TUniPanel;
+    Splitter1: TUniSplitter;
+    IQSearch1: TIQUniGridControl;
+    Panel3: TUniPanel;
+    pnlLegend: TUniPanel;
+    Shape8: TShape;
+    Panel1: TUniPanel;
+    Panel4: TUniPanel;
+    wwDBGrid1: TIQUniGridControl;
+    Panel5: TUniPanel;
+    Panel6: TUniPanel;
+    btnOK: TUniButton;
+    btnCancel: TUniButton;
+    SrcVendors: TDataSource;
+    QryVendors: TFDQuery;
+    QryVendorsVENDORNO: TStringField;
+    QryVendorsCOMPANY: TStringField;
+    QryVendorsCITY: TStringField;
+    QryVendorsSTATE: TStringField;
+    QryVendorsZIP: TStringField;
+    QryVendorsADDR1: TStringField;
+    QryVendorsADDR2: TStringField;
+    QryVendorsADDR3: TStringField;
+    QryVendorsID: TBCDField;
+    QryVendorsSTATUS_ID: TStringField;
+    QryVendorsAKA_COUNT: TFMTBCDField;
+    SrcVendorOEMDist: TDataSource;
+    QryVendorOEMDist: TFDQuery;
+    QryVendorOEMDistVENDORNO: TStringField;
+    QryVendorOEMDistCOMPANY: TStringField;
+    QryVendorOEMDistCITY: TStringField;
+    QryVendorOEMDistSTATE: TStringField;
+    QryVendorOEMDistZIP: TStringField;
+    QryVendorOEMDistADDR1: TStringField;
+    QryVendorOEMDistADDR2: TStringField;
+    QryVendorOEMDistADDR3: TStringField;
+    QryVendorOEMDistCUSER1: TStringField;
+    QryVendorOEMDistQA_RATING: TStringField;
+    QryVendorOEMDistVEN_RATING: TStringField;
+    QryVendorOEMDistSTATUS_ID: TStringField;
+    QryVendorOEMDistFED_TAX_ID: TStringField;
+    QryVendorOEMDistIS_OEM: TStringField;
+    QryVendorOEMDistID: TBCDField;
+    QryVendorOEMDistOEM_VENDOR_ID: TBCDField;
+    QryVendorOEMDistDIST_VENDOR_ID: TBCDField;
+    NavDist: TUniDBNavigator;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure QryVendorsBeforeOpen(DataSet: TDataSet);
+//    procedure IQSearch1CalcCellColors(Sender: TObject; Field: TField;
+//      State: TGridDrawState; Highlight: Boolean; AFont: TFont;
+//      ABrush: TBrush);
+    procedure btnOKClick(Sender: TObject);
+    procedure UniFormCreate(Sender: TObject);
+    procedure UniFormShow(Sender: TObject);
+    procedure IQSearch1DBGridDrawColumnCell(Sender: TObject; ACol,
+      ARow: Integer; Column: TUniDBGridColumn; Attribs: TUniCellAttribs);
+  private
+    { Private declarations }
+    FArinvt_ID: Real;
+
+    function GetOEM_Vendor_ID: Real;
+    procedure SetArinvt_ID(const Value: Real);
+  public
+    { Public declarations }
+
+    class function DoShowModal(AArinvt_ID: Real; var AOEM_Vendor_ID: Real ): Boolean;
+
+    property Arinvt_ID     : Real write SetArinvt_ID;
+    property OEM_Vendor_ID : Real read GetOEM_Vendor_ID;
+
+  end;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  IQMS.Common.DataLib;
+  //IQRegFrm,
+  //IQMisc;
+
+{ TFrmVendorRFQPickDist }
+
+class function TFrmVendorRFQPickDist.DoShowModal(AArinvt_ID: Real; var AOEM_Vendor_ID: Real): Boolean;
+var
+  frm : TFrmVendorRFQPickDist;
+begin
+
+  frm := TFrmVendorRFQPickDist.Create(uniGUIApplication.UniApplication);
+  frm.Arinvt_ID := AArinvt_ID;
+
+  Result := frm.ShowModal = mrOK;
+  if Result then
+     AOEM_Vendor_ID := frm.OEM_Vendor_ID;
+
+end;
+
+procedure TFrmVendorRFQPickDist.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  //IQRegFormWrite( self, [ self, wwDBGrid1 ]);
+end;
+
+function TFrmVendorRFQPickDist.GetOEM_Vendor_ID: Real;
+begin
+ Result := QryVendorsID.asFloat;
+end;
+
+procedure TFrmVendorRFQPickDist.IQSearch1DBGridDrawColumnCell(Sender: TObject;
+  ACol, ARow: Integer; Column: TUniDBGridColumn; Attribs: TUniCellAttribs);
+begin
+  if QryVendorsAKA_COUNT.asFloat > 0 then
+  begin
+    Attribs.Font.Color := clAqua;
+    //Attribs.Color      := clAqua;
+  end;
+end;
+
+procedure TFrmVendorRFQPickDist.QryVendorsBeforeOpen(DataSet: TDataSet);
+begin
+  AssignQueryParamValue(DataSet, 'arinvt_id', FArinvt_ID);
+end;
+
+procedure TFrmVendorRFQPickDist.SetArinvt_ID(const Value: Real);
+begin
+  FArinvt_ID := Value;
+end;
+
+procedure TFrmVendorRFQPickDist.UniFormCreate(Sender: TObject);
+begin
+  //IQRegFormRead( self, [ self, wwDBGrid1 ]);
+end;
+
+procedure TFrmVendorRFQPickDist.UniFormShow(Sender: TObject);
+begin
+  IQSetTablesActive(TRUE, self);
+end;
+
+//procedure TFrmVendorRFQPickDist.IQSearch1CalcCellColors(Sender: TObject;
+//  Field: TField; State: TGridDrawState; Highlight: Boolean; AFont: TFont;
+//  ABrush: TBrush);
+//begin
+//  if QryVendorsAKA_COUNT.asFloat > 0 then
+//  begin
+//    if Highlight then
+//       AFont.Color:= clAqua
+//    else
+//       ABrush.Color:= clAqua;
+//  end;
+//end;
+
+procedure TFrmVendorRFQPickDist.btnOKClick(Sender: TObject);
+begin
+  //IQAssert( not(QryVendorOEMDist.Eof and QryVendorOEMDist.Bof), 'No distributors found - operation aborted.' );
+
+  ModalResult:= mrOK;
+end;
+
+end.

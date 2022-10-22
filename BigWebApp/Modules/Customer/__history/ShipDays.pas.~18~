@@ -1,0 +1,136 @@
+unit ShipDays;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  Vcl.Forms,
+  Vcl.Buttons,
+  Vcl.ExtCtrls,
+  Vcl.DBCtrls,
+  Vcl.StdCtrls,
+  Data.DB,
+  Vcl.Controls, uniDBNavigator, uniBitBtn, uniSpeedButton, uniGUIClasses,
+  uniCheckBox, uniDBCheckBox, uniButton, uniGUIBaseClasses, uniPanel, uniGUIForm, uniGUIApplication;
+
+type
+  TFrmShipmentDays = class(TUniForm)
+    btnOK: TUniButton;
+    Cancel: TUniButton;
+    chkSun: TUniDBCheckBox;
+    chkMon: TUniDBCheckBox;
+    chkTue: TUniDBCheckBox;
+    chkWed: TUniDBCheckBox;
+    chkThu: TUniDBCheckBox;
+    chkFri: TUniDBCheckBox;
+    chkSat: TUniDBCheckBox;
+    Panel1: TUniPanel;
+    DBNavigator1: TUniDBNavigator;
+    Bevel1: TUniPanel;
+    DataSource1: TDataSource;
+    sbtnChkAll: TUniSpeedButton;
+    sbtnUnchAll: TUniSpeedButton;
+    procedure CancelClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnOKClick(Sender: TObject);
+    procedure sbtnChkAllClick(Sender: TObject);
+    procedure AssignYN( AValue: string );
+    procedure sbtnUnchAllClick(Sender: TObject);
+    procedure UniFormCreate(Sender: TObject);
+  private
+    { Private declarations }
+    procedure SetTblShip_To(const Value: TDataSet);
+  public
+    { Public declarations }
+    property TblShip_To: TDataSet write SetTblShip_To;
+  end;
+
+procedure DoModalReceivingDays  (ATblRecvDays: TDataSet);
+function  DoModalReceivingDaysEx(ATblRecvDays: TDataSet): boolean;
+
+implementation
+
+{$R *.DFM}
+
+uses
+  IQMS.Common.RegFrm;
+
+procedure DoModalReceivingDays(ATblRecvDays: TDataSet);
+begin
+  with TFrmShipmentDays.Create(uniGUIApplication.UniApplication) do
+  begin
+    TblShip_To:= ATblRecvDays;
+    ShowModal;
+  end;
+end;
+
+function DoModalReceivingDaysEx(ATblRecvDays: TDataSet): boolean;
+begin
+  with TFrmShipmentDays.Create(uniGUIApplication.UniApplication) do
+  begin
+    TblShip_To:= ATblRecvDays;
+    Result := ShowModal = mrOk;
+  end;
+end;
+
+{ TFrmShipmentDays }
+
+procedure TFrmShipmentDays.UniFormCreate(Sender: TObject);
+begin
+  IQRegFormRead( self, [ self ]);
+end;
+
+procedure TFrmShipmentDays.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  IQRegFormWrite(self, [ self ]);
+end;
+
+procedure TFrmShipmentDays.SetTblShip_To(const Value: TDataSet);
+begin
+  DataSource1.DataSet := Value;
+end;
+
+procedure TFrmShipmentDays.btnOKClick(Sender: TObject);
+begin
+  if Assigned( DataSource1.DataSet ) then
+     DataSource1.DataSet.CheckBrowseMode;
+end;
+
+procedure TFrmShipmentDays.CancelClick(Sender: TObject);
+begin
+  if Assigned( DataSource1.DataSet ) and ( DataSource1.DataSet.State in [ dsEdit, dsInsert ]) then
+     DataSource1.DataSet.Cancel;
+end;
+
+procedure TFrmShipmentDays.sbtnChkAllClick(Sender: TObject);
+begin
+  AssignYN( 'Y' );
+end;
+
+procedure TFrmShipmentDays.sbtnUnchAllClick(Sender: TObject);
+begin
+  AssignYN( 'N' );
+end;
+
+procedure TFrmShipmentDays.AssignYN( AValue: string );
+begin
+  if Assigned( DataSource1.DataSet ) then
+    with DataSource1.DataSet do
+    begin
+      Edit;
+      FieldByName('sun_ship').asString:= AValue;
+      FieldByName('mon_ship').asString:= AValue;
+      FieldByName('tue_ship').asString:= AValue;
+      FieldByName('wed_ship').asString:= AValue;
+      FieldByName('thu_ship').asString:= AValue;
+      FieldByName('fri_ship').asString:= AValue;
+      FieldByName('sat_ship').asString:= AValue;
+    end;
+end;
+
+end.
+
+
+

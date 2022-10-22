@@ -1,0 +1,25 @@
+unit WC_7966;
+
+interface
+
+implementation
+
+uses
+  TestReg,
+  SysUtils,
+  uniGUIDialogs,
+  ProdProp;
+
+procedure Test1;
+var
+  aProperties : ProdProp.TProperties;
+begin
+  if DoProdProp(aProperties) then
+    ShowMessage('Label Reporting: ' + IfThen(aProperties.LaborReporting, 'true', 'false'));
+end;
+
+initialization
+
+  TTestRepo.RegisterTest('WC-5153', 'Prod', 'ProdProp', Test1);
+
+end.

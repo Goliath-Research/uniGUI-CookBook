@@ -1,0 +1,20 @@
+unit IQMS.Common.DataServices;
+
+interface
+
+uses
+  IQWeb.Server.DataServices;
+
+  function GetDataServices : IIQDataServices;
+
+implementation
+
+uses
+  Spring.Services;
+
+function GetDataServices : IIQDataServices;
+begin
+  Result := ServiceLocator.GetService<IIQDataServices>('FireDAC-Oracle');
+end;
+
+end.

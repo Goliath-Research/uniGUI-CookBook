@@ -1,0 +1,74 @@
+unit BadRepl;
+
+interface
+
+uses
+  System.Classes,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.Menus,
+  Mainmodule,
+  uniMainMenu,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniMultiItem,
+  uniListBox,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication, Vcl.Controls;
+
+type
+  TFrmBadReplicat = class(TUniForm)
+    MainMenu1: TUniMainMenu;
+    File1: TUniMenuItem;
+    SavetoFile1: TUniMenuItem;
+    N1: TUniMenuItem;
+    Exit1: TUniMenuItem;
+    ListBox1: TUniListBox;
+    SaveDialog1: TSaveDialog;
+    procedure Exit1Click(Sender: TObject);
+    procedure SavetoFile1Click(Sender: TObject);
+  private
+    { Private declarations }
+
+    procedure SetNonReplicatedAccounts(aValue : TStrings);
+  public
+    { Public declarations }
+
+    property NonReplicatedAccounts : TStrings write SetNonReplicatedAccounts;
+  end;
+
+procedure DoShowNonReplicatedAccounts( AStringList: TStringList );
+
+implementation
+{$R *.DFM}
+
+
+procedure DoShowNonReplicatedAccounts( AStringList: TStringList );
+var
+  aFrmBadReplicat : TFrmBadReplicat;
+begin
+  aFrmBadReplicat := UniMainModule.GetFormInstance(TFrmBadReplicat) as TFrmBadReplicat;
+  aFrmBadReplicat.NonReplicatedAccounts := AStringList;
+  aFrmBadReplicat.ShowModal;
+end;
+
+procedure TFrmBadReplicat.Exit1Click(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TFrmBadReplicat.SavetoFile1Click(Sender: TObject);
+begin
+  with SaveDialog1 do
+    if Execute then
+      ListBox1.Items.SaveToFile( FileName );
+end;
+
+procedure TFrmBadReplicat.SetNonReplicatedAccounts(aValue: TStrings);
+begin
+  ListBox1.Items.Assign(aValue);
+end;
+
+end.

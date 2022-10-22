@@ -1,0 +1,83 @@
+unit WC_9466;
+
+interface
+
+implementation
+
+uses
+  TestReg,
+  System.UITypes,
+  System.Variants,
+  Data.DB,
+  Spring.Services,
+  Spring.Collections,
+  IQWeb.Server.DataServices,
+  PickListDlg,
+  uniGUIApplication,
+  SysUtils,
+  uniGUIDialogs;
+
+procedure Test1;
+var
+  Qry : TDataSet;
+  Src : TDataSource;
+  IDS : IIQDataServices;
+  ID  : integer;
+begin
+  IDS := ServiceLocator.GetService<IIQDataServices>('FireDAC-Oracle');
+
+  Qry := IDS.GetQuery('select ID, Name from eplant');
+  Src.DataSet := Qry;
+
+  DoSinglePickList
+  (
+    procedure (aResult : TModalResult; aID : integer)
+    begin
+      if aResult = mrOK then
+        ID := aID
+      else
+        ID := 0;
+    end
+  );
+
+  ShowMessage('ID = ' + IntToStr(ID));
+end;
+
+procedure Test2;
+var
+  Qry : TDataSet;
+  Src : TDataSource;
+  IDS : IIQDataServices;
+  lst : IList<integer>;
+  ID  : integer;
+  str : string;
+begin
+  IDS := ServiceLocator.GetService<IIQDataServices>('FireDAC-Oracle');
+
+  Qry := IDS.GetQuery('select ID, Name from eplant');
+  Src.DataSet := Qry;
+
+  DoMultiplePickList
+  (
+    procedure (aResult : TModalResult; aIDs: IList<integer>)
+    begin
+      if aResult = mrOK then
+        lst := aIDs
+      else
+        lst := nil;
+    end
+  );
+
+  str := '';
+  for ID in lst do
+    str := str + IntToStr(ID) + ' ';
+
+  ShowMessage('IDs = ' + str);
+end;
+
+initialization
+
+  TTestRepo.RegisterTest('WC-9466', 'IQWebVcl', 'TPickListForm', 'DoSinglePickList'  , Test1, 1);
+  TTestRepo.RegisterTest('WC-9466', 'IQWebVcl', 'TPickListForm', 'DoMultiplePickList', Test2, 2);
+
+end.

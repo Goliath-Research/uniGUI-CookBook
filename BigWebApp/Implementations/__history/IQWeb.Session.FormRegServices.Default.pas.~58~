@@ -1,0 +1,197 @@
+unit IQWeb.Session.FormRegServices.Default;
+
+interface
+
+uses
+  TypInfo,
+  Classes,
+  Vcl.Controls,
+  Vcl.ComCtrls,
+  Spring,
+  Spring.Collections,
+  Spring.Collections.Lists,
+  Spring.Container,
+  Spring.Services,
+  IQWeb.Session.FormRegServices;
+
+type
+
+  { TIQModule }
+
+  TIQModule = class(TInterfacedObject, IIQModule)
+  strict private
+    class var
+      FSequence : integer;
+  private
+    FClass      : TClass;
+    FName       : string;
+    FSingleton  : boolean;
+
+    function  GetName       : string;
+    function  GetSingleton  : boolean;
+    function  GetInstance   : TControl;
+    function  GetIsFrame    : boolean;
+    function  GetIsForm     : boolean;
+    function  GetSequence   : integer;
+  public
+    constructor Create(aClass : TClass; aName : string; aSingleton : boolean = true);
+  end;
+
+  { TIQRegistration }
+
+  TIQSessionRegistration = class(TInterfacedObject, IIQSessionRegistration)
+  private
+    FModules  : IIQModules;
+
+    function GetModules     : IIQModules;
+  public
+    constructor Create;
+
+    procedure RegisterModule  (aModuleClass : TClass);
+
+    function  GetModule       (aModuleName   : string ) : IIQModule;
+
+    function  CreateInstance  (aModuleName   : string ) : TControl;
+    procedure ReleaseInstance (aInstance     : TObject);
+
+    procedure ShowModuleAsTab (aModuleName   : string; aID : integer = -1);
+    procedure ShowModuleAsForm(aModuleName   : string; aID : integer = -1);
+  end;
+
+implementation
+
+uses
+  System.SysUtils,
+  Spring.Container.Common,
+  uniGUIApplication,
+  uniGUIForm,
+  uniGUIFrame,
+  Main,
+  MainModule;
+
+{ TIQModule }
+
+constructor TIQModule.Create(aClass : TClass; aName : string; aSingleton : boolean = true);
+var
+  Reg : IRegistration;
+  TypeInfo : PTypeInfo;
+begin
+  inherited Create();
+
+  FClass      := aClass;
+  FName       := aName;
+  FSingleton  := aSingleton;
+
+  TypeInfo := PTypeInfo(aClass.ClassInfo);
+
+  if FClass.InheritsFrom(TUniFrame) then
+    Reg :=
+      UniMainModule.UserContainer.
+        RegisterType(TypeInfo).
+        Implements(TypeInfo).
+        InjectConstructor([UniMainModule.UserMainForm])
+  else
+    if FClass.InheritsFrom(TUniForm) then
+      Reg :=
+        UniMainModule.UserContainer.
+          RegisterType(TypeInfo).
+          Implements(TypeInfo).
+          InjectConstructor([uniGUIApplication.UniApplication])
+    else
+      raise Exception.Create('Trying to register unsupported module: ' + aClass.ClassName);
+
+  if FSingleton then
+    Reg.AsSingleton
+  else
+    Reg.AsTransient;
+end;
+
+function TIQModule.GetName: string;
+begin
+  Result := FName;
+end;
+
+function TIQModule.GetSequence: integer;
+begin
+  Inc(FSequence);
+  Result := FSequence;
+end;
+
+function TIQModule.GetSingleton: boolean;
+begin
+  Result := FSingleton;
+end;
+
+function TIQModule.GetInstance: TControl;
+begin
+  Result := UniMainModule.UserContainer.Resolve(FClass.ClassInfo).AsObject as TControl;
+end;
+
+function TIQModule.GetIsForm: boolean;
+begin
+  Result := FClass.InheritsFrom(TUniForm);
+end;
+
+function TIQModule.GetIsFrame: boolean;
+begin
+  Result := FClass.InheritsFrom(TUniFrame);
+end;
+
+{ TIQRegistration }
+
+constructor TIQSessionRegistration.Create;
+begin
+  FModules := TCollections.CreateDictionary<string, IIQModule>;
+end;
+
+function TIQSessionRegistration.CreateInstance(aModuleName : string) : TControl;
+var
+  aModule : IIQModule;
+begin
+  if UniMainModule.UserIQRegVar.Modules.TryGetValue(aModuleName, aModule) then
+    Result := aModule.Instance
+  else
+    Result := nil;
+end;
+
+function TIQSessionRegistration.GetModule(aModuleName: string): IIQModule;
+begin
+  GetModules.TryGetValue(aModuleName, Result);
+end;
+
+function TIQSessionRegistration.GetModules: IIQModules;
+begin
+  Result := FModules;
+end;
+
+procedure TIQSessionRegistration.RegisterModule(aModuleClass: TClass);
+begin
+
+end;
+
+procedure TIQSessionRegistration.ReleaseInstance(aInstance: TObject);
+begin
+  // Usually we don't need to release an instance as its lifetime
+  // is automatically managed by the Spring4D container.
+  // We are manually removing the TUniFrame to avoid an A/V when both
+  // UniGUI and Spring4D try to release the same instance.
+  UniMainModule.UserContainer.Release(aInstance);
+end;
+
+procedure TIQSessionRegistration.ShowModuleAsForm(aModuleName : string; aID : integer = -1);
+begin
+
+end;
+
+procedure TIQSessionRegistration.ShowModuleAsTab(aModuleName : string; aID : integer = -1);
+var
+  aModule : IIQModule;
+begin
+  aModule := GetModule(aModuleName);
+  if not Assigned(aModule) then
+    raise Exception.Create(Format('Module <%s> not available!', [aModuleName]));
+
+//  MainForm.ShowModuleAsTab(aModule, aID);
+end;
+
+end.

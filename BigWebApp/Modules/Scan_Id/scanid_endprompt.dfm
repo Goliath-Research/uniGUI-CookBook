@@ -1,0 +1,80 @@
+object FrmEndPrompt: TFrmEndPrompt
+  Left = 364
+  Top = 330
+  ClientHeight = 101
+  ClientWidth = 298
+  Caption = ''
+  OldCreateOrder = False
+  MonitoredKeys.Keys = <>
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TUniPanel
+    Left = 0
+    Top = 0
+    Width = 298
+    Height = 67
+    Hint = ''
+    Align = alClient
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    TabOrder = 0
+    Caption = ''
+    object rgOptions: TUniRadioGroup
+      Left = 1
+      Top = 1
+      Width = 296
+      Height = 65
+      Hint = ''
+      Items.Strings = (
+        'Print Partial Pallet'
+        'Discard Current Scans')
+      ItemIndex = 0
+      Align = alClient
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      Caption = ' Options '
+      TabOrder = 0
+    end
+  end
+  object Panel2: TUniPanel
+    Left = 0
+    Top = 67
+    Width = 298
+    Height = 34
+    Hint = ''
+    Align = alBottom
+    Anchors = [akLeft, akRight, akBottom]
+    TabOrder = 1
+    Caption = ''
+    object Panel3: TUniPanel
+      Left = 88
+      Top = 1
+      Width = 210
+      Height = 32
+      Hint = ''
+      Align = alRight
+      Anchors = [akTop, akRight, akBottom]
+      TabOrder = 0
+      Caption = ''
+      object btnOk: TUniBitBtn
+        Left = 4
+        Top = 3
+        Width = 97
+        Height = 25
+        Hint = ''
+        Caption = '&OK'
+        ModalResult = 1
+        TabOrder = 0
+      end
+      object btnCancel: TUniBitBtn
+        Left = 106
+        Top = 3
+        Width = 97
+        Height = 25
+        Hint = ''
+        Caption = 'Cancel'
+        Cancel = True
+        ModalResult = 2
+        TabOrder = 1
+      end
+    end
+  end
+end

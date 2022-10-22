@@ -1,0 +1,41 @@
+unit po_chk_release_received;
+
+interface
+
+uses
+  Winapi.Windows,
+  Vcl.Forms,
+  IQMS.Common.Confbas,
+  FireDAC.Comp.Client,
+  FireDAC.Phys,
+  MainModule,
+  IQMS.WebVcl.SecurityRegister,
+  Vcl.Controls,
+  System.Classes,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniPanel,
+  uniButton, uniCheckBox, uniLabel;
+
+type
+  TFrmPOChkReleaseReceived = class(TIQDialogCheckBox)
+    Panel3: TUniPanel;
+    btnYes: TUniButton;
+    btnAbort: TUniButton;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure AssignText( S: string ); override;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure TFrmPOChkReleaseReceived.AssignText(S: string);
+begin
+  lblConfBasMsgText.Caption:= S;
+end;
+
+end.

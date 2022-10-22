@@ -1,0 +1,585 @@
+unit QC_Del_Team_Member;
+
+interface
+
+uses
+  Windows,
+  Messages,
+  SysUtils,
+  Variants,
+  Classes,
+  Graphics,
+  Controls,
+  Forms,
+  Dialogs,
+  ExtCtrls,
+  StdCtrls,
+  DBCtrls,
+  Grids,
+  Wwdbigrd,
+  Wwdbgrid,
+  Menus,
+  IQMS.WebVcl.About,
+  DB,
+  Wwdatsrc,
+  IQMS.Common.UserMessages,
+  Mask,
+  wwdbedit,
+  Wwdotdot,
+  Wwdbcomb,
+  FireDAC.Comp.Client,
+  FireDAC.Comp.DataSet,
+  FireDAC.Stan.Intf,
+  FireDAC.Phys,
+  MainModule,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Stan.Async,
+  FireDAC.DApt,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniEdit,
+  uniPanel,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniButton,
+  uniDBNavigator,
+  //Vcl.Menus,
+  uniMainMenu,
+  uniLabel, uniImage, IQUniGrid, uniGUIFrame;
+
+type
+  TFrmDeleteTeamMember = class(TUniForm)
+    wwDBGrid1: TIQUniGridControl;
+    Panel3: TUniPanel;
+    btnOK: TUniButton;
+    btnCancel: TUniButton;
+    PnlActiveWarning: TUniPanel;
+    shpActiveWarning: TUniPanel;
+    Bevel8: TUniPanel;
+    lblNoteWarning: TUniLabel;
+    imgActiveWarning: TUniImage;
+    lblNoteUserName: TUniLabel;
+    lblNoteInstruction: TUniLabel;
+    MainMenu1: TUniMainMenu;
+    File1: TUniMenuItem;
+    Exit1: TUniMenuItem;
+    Help1: TUniMenuItem;
+    About1: TUniMenuItem;
+    IQAbout1: TIQWebAbout;
+    SrcReferences: TDataSource;
+    QryReferences: TFDQuery;
+    QryReferencesSOURCE_TYPE: TStringField;
+    QryReferencesSOURCE_ID: TBCDField;
+    QryReferencesSOURCE_TABLE: TStringField;
+    QryReferencesSOURCE_DESCRIP: TStringField;
+    QryReferencesHEADER: TStringField;
+    QryReferencesELEMENT: TStringField;
+    QryReferencesACTION: TStringField;
+    QryReferencesNEW_TEAM_MEMBER_ID: TFMTBCDField;
+    wwDBComboDlgAction: TUniEdit;
+    QryReferencesAction_Disp: TStringField;
+    QryReferencesMODULE_NAME: TStringField;
+    PopupMenu1: TUniPopupMenu;
+    AssignAction1: TUniMenuItem;
+    QryReferencesAUTHORIZATION_TYPE: TStringField;
+    Contents1: TUniMenuItem;
+    QryReferencesDESIGNATION: TStringField;
+    Panel2: TUniPanel;
+    Shape2: TUniPanel;
+    Shape4: TUniPanel;
+    Shape1: TUniPanel;
+    procedure Exit1Click(Sender: TObject);
+    procedure About1Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnOKClick(Sender: TObject);
+    procedure QryReferencesUpdateRecord(ASender: TDataSet;
+      ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
+    procedure QryReferencesBeforeInsert(DataSet: TDataSet);
+    procedure QryReferencesCalcFields(DataSet: TDataSet);
+    procedure wwDBComboDlgActionCustomDlg(Sender: TObject);
+    procedure wwDBGrid1CalcCellColors(Sender: TObject; Field: TField;
+      State: TGridDrawState; Highlight: Boolean; AFont: TFont;
+      ABrush: TBrush);
+    procedure AssignAction1Click(Sender: TObject);
+    procedure Contents1Click(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure UniFormShow(Sender: TObject);
+  private
+    FTeam_Member_ID: Real;
+    FHasNoAction: Boolean;
+    procedure StartUp;
+    procedure IQNotify( var Msg: TMessage ); message iq_Notify;
+    procedure CollectData;
+    procedure ApplySelectedAction;
+    procedure AssignAction(AAction: string; ANew_Team_Member_ID: Real);
+    procedure SetTeam_Member_ID(const Value: Real);
+    { Private declarations }
+  public
+    { Public declarations }
+    property HasNoAction: Boolean read FHasNoAction write FHasNoAction;
+    //constructor Create( AOwner: TComponent; ATeam_Member_ID: Real );
+    property Team_Member_ID : Real write SetTeam_Member_ID;
+    class function DoExecute( ATeam_Member_ID: Real ): Boolean;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  IQMS.Common.DataLib,
+  IQMS.Common.RegFrm,
+  qc_del_collect,
+  IQMS.Common.Dialogs,
+  QC_Del_Action,
+  PanelMsg,
+  IQMS.Common.HelpHook,
+  qc_rscstr;
+
+
+{ TFrmDeleteTeamMember }
+
+class function TFrmDeleteTeamMember.DoExecute( ATeam_Member_ID: Real ): Boolean;
+var
+  LFrmDeleteTeamMember : TFrmDeleteTeamMember;
+begin
+  LFrmDeleteTeamMember := TFrmDeleteTeamMember.create(UniGUIApplication.UniApplication);
+  with LFrmDeleteTeamMember do
+  begin
+    Team_Member_ID:= ATeam_Member_ID;
+    Result:= (ShowModal = mrOK) and (HasNoAction = FALSE);
+  end;
+end;
+
+{constructor TFrmDeleteTeamMember.Create(AOwner: TComponent; ATeam_Member_ID: Real);
+begin
+  FTeam_Member_ID:= ATeam_Member_ID;
+
+  inherited Create(AOwner);
+  IQRegFormRead( self, [ self, wwDBGrid1 ]);
+
+  StartUp;
+end;       }
+
+procedure TFrmDeleteTeamMember.FormClose(Sender: TObject;  var Action: TCloseAction);
+begin
+  IQRegFormWrite( self, [ self, wwDBGrid1 ]);
+end;
+
+procedure TFrmDeleteTeamMember.Exit1Click(Sender: TObject);
+begin
+  ModalResult:= mrCancel;
+end;
+
+procedure TFrmDeleteTeamMember.About1Click(Sender: TObject);
+begin
+  IQAbout1.Execute;
+end;
+
+procedure TFrmDeleteTeamMember.QryReferencesUpdateRecord(ASender: TDataSet;
+  ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
+begin
+  AAction := eaApplied;   // To allow Remove/Replace action update
+end;
+
+procedure TFrmDeleteTeamMember.QryReferencesBeforeInsert(DataSet: TDataSet);
+begin
+  ABORT;
+end;
+
+procedure TFrmDeleteTeamMember.SetTeam_Member_ID(const Value: Real);
+begin
+  FTeam_Member_ID := Value;
+end;
+
+procedure TFrmDeleteTeamMember.StartUp;
+begin
+  lblNoteUserName.Caption:= SelectValueFmtAsString('select name from team_member where id = %f', [ FTeam_Member_ID ]);
+  AdjustControlsWidthBasedOnParent(PnlActiveWarning, [ lblNoteInstruction ], 0);
+
+  QryReferences.Close;
+  PostMessage( Handle, iq_Notify, 0, 0);    {IQMS.Common.UserMessages.pas}
+end;
+
+procedure TFrmDeleteTeamMember.UniFormShow(Sender: TObject);
+begin
+  IQRegFormRead( self, [ self, wwDBGrid1 ]);
+  StartUp;
+end;
+
+procedure TFrmDeleteTeamMember.IQNotify(var Msg: TMessage);
+begin
+  {Collect team memeber reference from different modules. Within a module it can come from a template and/or workflow}
+  CollectData;
+end;
+
+procedure TFrmDeleteTeamMember.CollectData;
+begin
+  {Prepapre to build SQL statement}
+  QryReferences.Close;
+  QryReferences.SQL.Clear;
+
+  {APQP}
+  TQC_CollectReferenceStandard.Execute( rmAPQP, FTeam_Member_ID, QryReferences.SQL );    {qc_del_collect.pas}
+
+  {PROC_PQ}
+  TQC_CollectReferenceStandard.Execute( rmPROC_PQ, FTeam_Member_ID, QryReferences.SQL );
+
+  {PPAP}
+  TQC_CollectReferenceStandard.Execute( rmPPAP, FTeam_Member_ID, QryReferences.SQL );
+
+  {PROD_PQ}
+  TQC_CollectReferenceStandard.Execute( rmPROD_PQ, FTeam_Member_ID, QryReferences.SQL );
+
+  {CAR}
+  TQC_CollectReferenceStandard.Execute( rmCAR, FTeam_Member_ID, QryReferences.SQL );
+
+  {CAPA}
+  TQC_CollectReferenceStandard.Execute( rmCAPA, FTeam_Member_ID, QryReferences.SQL );
+
+  {ECO}
+  TQC_CollectReferenceStandard.Execute( rmECO, FTeam_Member_ID, QryReferences.SQL );
+
+  {DEV}
+  TQC_CollectReferenceExtended.Execute( rmDEV, FTeam_Member_ID, QryReferences.SQL );
+
+  {MRB}
+  TQC_CollectReferenceExtended.Execute( rmMRB, FTeam_Member_ID, QryReferences.SQL );
+
+  {CRM}
+  TQC_CollectReferenceExtended.Execute( rmCRM, FTeam_Member_ID, QryReferences.SQL );
+
+  {PLM}
+  TQC_CollectReferenceExtended.Execute( rmPLM, FTeam_Member_ID, QryReferences.SQL );
+
+  {DHR}
+  TQC_CollectReferenceExtended.Execute( rmDHR, FTeam_Member_ID, QryReferences.SQL );
+
+  {DOC}
+  TQC_CollectReferenceExternalDoc.Execute( rmDOC, FTeam_Member_ID, QryReferences.SQL );
+
+  {DOC TEMPLATE Based}
+  TQC_CollectReferenceExternalDocTemplateBased.Execute( rmDOC_TEMPLATE, FTeam_Member_ID, QryReferences.SQL );
+
+  {LIB TEAM}
+  TQC_CollectReferenceLibTeam.Execute( rmLIB_TEAM, FTeam_Member_ID, QryReferences.SQL );
+
+  {PO}
+  TQC_CollectReferenceExtended.Execute( rmPO, FTeam_Member_ID, QryReferences.SQL );
+
+  {AUDIT}
+  TQC_CollectReferenceExtended.Execute( rmAUDIT, FTeam_Member_ID, QryReferences.SQL );
+
+  {EMP}
+  TQC_CollectReferenceExtended.Execute( rmEMP, FTeam_Member_ID, QryReferences.SQL );
+
+  {EMP}
+  TQC_CollectReferenceExtended.Execute( rmAPP, FTeam_Member_ID, QryReferences.SQL );
+
+  {Finally - open the query!}
+  QryReferences.Open;
+  if QryReferences.Eof then
+  begin
+    //qc_rscstr.cTXT000176 = 'No cross references found for this team member in any template or Workflow.';
+    IQConfirm(qc_rscstr.cTXT000176);
+    ModalResult:= mrOK;
+  end;
+end;
+
+procedure TFrmDeleteTeamMember.QryReferencesCalcFields(DataSet: TDataSet);
+begin
+  if QryReferencesACTION.asString = 'D' then
+     QryReferencesAction_Disp.asString:= 'Delete'
+  else if QryReferencesACTION.asString = 'R' then
+     QryReferencesAction_Disp.asString:= 'Replace'
+  else if QryReferencesACTION.asString = 'N' then
+     QryReferencesAction_Disp.asString:= 'No Action'
+  else
+     // QryReferencesAction_Disp.asString:= 'No Action'
+     QryReferencesAction_Disp.asString:= 'To Replace'
+end;
+
+procedure TFrmDeleteTeamMember.AssignAction(AAction: string; ANew_Team_Member_ID: Real);
+begin
+  with QryReferences do
+  begin
+    if (QryReferencesSOURCE_TYPE.asString = 'External Document') and  (AAction = 'D') then
+    begin
+       IQWarning('You have selected to delete the external document associated with the deleted team member.'#13#13+
+                 'The only supported action is to replace document associated team member with another one.' );
+       AAction:= 'N';
+    end;
+
+    Edit;
+    QryReferencesACTION.asString           := AAction;
+    QryReferencesNEW_TEAM_MEMBER_ID.asFloat:= ANew_Team_Member_ID;
+    Post;
+  end;
+end;
+
+procedure TFrmDeleteTeamMember.wwDBGrid1CalcCellColors(Sender: TObject;
+  Field: TField; State: TGridDrawState; Highlight: Boolean; AFont: TFont;
+  ABrush: TBrush);
+begin
+  if Highlight then
+     EXIT;
+
+  if Field <> QryReferencesAction_Disp then
+     EXIT;
+
+  if QryReferencesACTION.asString = 'D' then
+     AFont.Color:= clRed
+  else if QryReferencesACTION.asString = 'R' then
+     AFont.Color:= clBlue
+  else
+     AFont.Color:= clGreen
+end;
+
+procedure TFrmDeleteTeamMember.btnOKClick(Sender: TObject);
+begin
+  if not IQConfirmYN('Are you sure you want to execute actions?') then
+     EXIT;
+  ApplySelectedAction;
+  ModalResult:= mrOK;
+end;
+
+procedure TFrmDeleteTeamMember.ApplySelectedAction;
+var
+  hMsg: TPanelMesg;
+
+  {-----------------------------------------------------------------------------}
+  function _column_exists( ATableName, AColumnName: string ): Boolean;
+  begin
+    Result:= SelectValueFmtAsFloat('select 1 from user_tab_columns where table_name = upper(''%s'') and column_name = upper(''%s'')',
+                       [ ATableName, AColumnName ]) = 1;
+  end;
+
+  {-----------------------------------------------------------------------------}
+  procedure DeleteTeamMemberReference;
+  var
+    AUpdateSQL: string;
+    procedure _check_add_to_update( AColumnName: string );
+    begin
+      if _column_exists( QryReferencesSOURCE_TABLE.asString, AColumnName ) then
+         AUpdateSQL:= Format('%s, %s = null ', [ AUpdateSQL, AColumnName ]);
+    end;
+  begin
+    if CompareText( QryReferencesDESIGNATION.asString, 'Delegate') = 0 then
+       begin
+         AUpdateSQL:= 'delegate_team_member_id = null';
+         _check_add_to_update( 'delegate_name' );
+         _check_add_to_update( 'delegate_threshold' );
+         _check_add_to_update( 'delegate_email' );
+         _check_add_to_update( 'delegate_email_sent' );
+         _check_add_to_update( 'backup_delegate_team_member_id' );
+
+         ExecuteCommandFmt('update %s       '+          // 'apqp_responsibility'
+                   '       set %s   '+          // delegate_team_member_id = null, delegate_name = null, delegate_threshold = null'+
+                   ' where id = %f  ',
+                   [ QryReferencesSOURCE_TABLE.asString,
+                     AUpdateSQL,
+                     QryReferencesSOURCE_ID.asFloat ])
+       end
+    else
+       ExecuteCommandFmt('delete from %s where id = %f',
+                 [ QryReferencesSOURCE_TABLE.asString,
+                   QryReferencesSOURCE_ID.asFloat ]);
+  end;
+
+
+  {-----------------------------------------------------------------------------}
+  function WorkflowFieldsExists( ATableName: string ): Boolean;
+  begin
+    {every workflow table such as apqp_responsibility has these 2 columns - check if are processing table like that}
+    Result:= SelectValueFmtAsFloat('select count(*) from user_tab_columns where table_name = ''%s'' and column_name in (''EMAIL_SENT'', ''SIGNOFF_DATE'')', [ ATableName ]) = 2;
+  end;
+
+
+  {-----------------------------------------------------------------------------}
+  procedure CheckPendingWorkflowReset( ATableName: string; AID: Real );
+  begin
+    {if email was sent but not approved/rejected - reset that workflow record}
+    ExecuteCommandFmt( 'update %s set email_sent = null where id = %f and email_sent is not null and signoff_date is null',
+               [ ATableName, AID ]);
+  end;
+
+
+  {-----------------------------------------------------------------------------}
+  procedure CheckAddColumn( ATableName, AColumnName: string; var AUpdateList, ASelectList: string );
+  begin
+    if _column_exists( ATableName, AColumnName ) then
+    begin
+      AUpdateList:= Format('%s, %s', [ AUpdateList, AColumnName ]);
+      ASelectList:= Format('%s, %s', [ ASelectList, AColumnName ]);
+    end;
+  end;
+
+  {-----------------------------------------------------------------------------}
+  procedure CheckAddDelegateColumn( ATableName, ADelegateColumnName, AColumnName: string; var AUpdateList, ASelectList: string );
+  begin
+    if _column_exists( ATableName, ADelegateColumnName ) then
+    begin
+      AUpdateList:= Format('%s, %s', [ AUpdateList, ADelegateColumnName ]);  //  'delegate_name, delegate_email'
+      ASelectList:= Format('%s, %s', [ ASelectList, AColumnName ]);          //  'name, email'
+    end;
+  end;
+
+
+  {-----------------------------------------------------------------------------}
+  procedure ReplaceTeamMemberReference;
+  var
+    AUpdateList, ASelectList: string;
+  begin
+    if QryReferencesNEW_TEAM_MEMBER_ID.asFloat = 0 then EXIT;  {s/n happen}
+
+    if CompareText( QryReferencesDESIGNATION.asString, 'Delegate') = 0 then
+       begin
+         AUpdateList:= 'delegate_team_member_id';
+         ASelectList:= 'id';
+         CheckAddDelegateColumn( QryReferencesSOURCE_TABLE.asString, 'DELEGATE_NAME',  'NAME',  AUpdateList, ASelectList );
+         CheckAddDelegateColumn( QryReferencesSOURCE_TABLE.asString, 'DELEGATE_EMAIL', 'EMAIL', AUpdateList, ASelectList );
+       end
+    else
+       begin
+         AUpdateList:= 'team_member_id';
+         ASelectList:= 'id';
+         CheckAddColumn( QryReferencesSOURCE_TABLE.asString, 'NAME',  AUpdateList, ASelectList );
+         CheckAddColumn( QryReferencesSOURCE_TABLE.asString, 'TITLE', AUpdateList, ASelectList );
+         CheckAddColumn( QryReferencesSOURCE_TABLE.asString, 'EMAIL', AUpdateList, ASelectList );
+       end;
+
+    ExecuteCommandFmt('update %s                                           '+
+           // '   set (team_member_id, name, title, email) = (select id, name, title, email     '+
+              '   set ( %s ) = ( select %s                         '+
+              '                    from team_member where id = %f) '+
+              ' where id = %f',
+              [ QryReferencesSOURCE_TABLE.asString,
+                AUpdateList,                                {name, title, email}
+                ASelectList,                                {name, title, email}
+                QryReferencesNEW_TEAM_MEMBER_ID.asFloat,
+                QryReferencesSOURCE_ID.asFloat ]);
+
+    if WorkflowFieldsExists( QryReferencesSOURCE_TABLE.asString ) then
+       CheckPendingWorkflowReset( QryReferencesSOURCE_TABLE.asString, QryReferencesSOURCE_ID.asFloat );
+  end;
+
+{ MAIN ------------------------------------------------------------------------}
+begin
+
+  HasNoAction:= FALSE;
+  hMsg:= hPleaseWait( '' );
+  try
+    QryReferences.First;
+    while not QryReferences.Eof do
+    begin
+      Application.ProcessMessages;
+
+      if QryReferencesACTION.asString = 'D' then
+         DeleteTeamMemberReference
+
+      else if QryReferencesACTION.asString = 'R' then
+         ReplaceTeamMemberReference
+
+      else if (QryReferencesACTION.asString = 'N') or (QryReferencesACTION.asString = '') then
+         HasNoAction:= TRUE;
+
+      QryReferences.Next;
+    end;
+  finally
+    hMsg.Free;
+  end;
+end;
+
+
+procedure TFrmDeleteTeamMember.AssignAction1Click(Sender: TObject);
+var
+  AAction            : char;
+  ANew_Team_Member_ID: Real;
+  I                  : Integer;
+  ASourceType        : string;
+
+  function _ExternalDocumentOwnerSelected: Boolean;
+  var
+    I: Integer;
+  begin
+  { TODO -oysingh -cWebConvert : Property SelectedList not defined }
+  {
+     for I:= 0 to wwDBGrid1.SelectedList.Count - 1 do
+     begin
+       wwDBGrid1.DataSource.DataSet.GotoBookmark( wwDBGrid1.SelectedList.Items[ I ]);
+       if QryReferencesSOURCE_TYPE.asString = 'External Document Owner' then
+       begin
+         Result:= TRUE;
+         EXIT;
+       end;
+     end;
+     Result:= FALSE;     }
+  end;
+
+begin
+  { TODO -oysingh -cWebConvert : Property SelectedList not defined }
+ { if wwDBGrid1.SelectedList.Count = 0 then
+     EXIT;
+
+  if wwDBGrid1.SelectedList.Count = 1 then
+  begin
+    wwDBComboDlgActionCustomDlg( nil );
+    EXIT;
+  end;   }
+
+  AAction:=' ';
+  ASourceType:= '';
+  ANew_Team_Member_ID:= 0;
+  if _ExternalDocumentOwnerSelected() then
+     ASourceType:= 'External Document Owner';
+
+  if not GetQCActionAndTeamMemberID( 'X', ASourceType, FTeam_Member_ID, AAction, ANew_Team_Member_ID ) then {QC_Del_Action.pas}
+     EXIT;
+  { TODO -oysingh -cWebConvert : Property SelectedList not defined }
+  {if wwDBGrid1.SelectedList.Count > 0 then
+     for I:= 0 to wwDBGrid1.SelectedList.Count - 1 do
+     begin
+       wwDBGrid1.DataSource.DataSet.GotoBookmark( wwDBGrid1.SelectedList.Items[ I ]);
+       AssignAction( AAction, ANew_Team_Member_ID );
+     end
+  else
+     AssignAction( AAction, ANew_Team_Member_ID );  }
+end;
+
+procedure TFrmDeleteTeamMember.Contents1Click(Sender: TObject);
+begin
+  if Assigned( IQHelp ) then
+     IQHelp.HelpContext( self.HelpContext );
+end;
+
+procedure TFrmDeleteTeamMember.wwDBComboDlgActionCustomDlg(Sender: TObject);
+var
+  AAction            : char;
+  ANew_Team_Member_ID: Real;
+  aReferencesACTION : String;
+begin
+  aReferencesACTION:= QryReferencesACTION.asString;
+  AAction            := aReferencesACTION[1];
+  ANew_Team_Member_ID:= QryReferencesNEW_TEAM_MEMBER_ID.asFloat;
+
+  if GetQCActionAndTeamMemberID( QryReferencesMODULE_NAME.asString, QryReferencesSOURCE_TYPE.asString, FTeam_Member_ID, AAction, ANew_Team_Member_ID ) then {QC_Del_Action.pas}
+     AssignAction( AAction, ANew_Team_Member_ID);
+end;
+
+
+procedure TFrmDeleteTeamMember.FormActivate(Sender: TObject);
+begin
+  if Assigned( IQHelp ) then
+     IQHelp.AssignHTMLFile( iqchmQuality{CHM}, iqhtmQuality{HTM} );  {IQMS.Common.HelpHook.pas}
+end;
+
+end.
+
+

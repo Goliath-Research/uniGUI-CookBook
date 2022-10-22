@@ -1,0 +1,372 @@
+unit IQMS.Common.Login;
+
+interface
+
+uses
+  Classes,
+  SysUtils,
+  DB,
+  FireDAC.Comp.Client;
+
+type
+  TWrongUserNameOrPassword = class(Exception)
+  end;
+
+  TSameUserLoggedIn = class(Exception)
+  end;
+
+  TMaxFailedLoginAttemptExceeded = class(Exception)
+  end;
+
+  TNewUserWithExpiredTempPassword = class(Exception)
+  end;
+
+  TPasswordChangeRequired = class(Exception)
+  end;
+
+  TInvalidLogin = class(Exception)
+  end;
+
+  TPasswordAboutToExpire = class(Exception)
+  end;
+
+  ILogin = interface
+    ['{8A042701-E4A7-455F-BFBC-7EEEC7547FCA}']
+
+    function Login(aConnection : TFDConnection; aUserName, aPassword : string) : boolean;
+  end;
+
+  TLogin = class(TInterfacedObject, ILogin)
+  private
+    FConnection : TFDConnection;
+
+    function  TryLogin                        (aUserName, aPassword : string) : boolean;
+    function  GetTrackLogin                   : boolean;
+    function  GetPreventSameLogin             : boolean;
+    function  GetNewUserExpirePassword        : boolean;
+    procedure SetNewUserExpirePassword        (aExpirePassword : boolean);
+    function  GetForcePasswordChange          (aUserName: string): boolean;
+    procedure SetForcePasswordChange          (aUserName: string; aPasswordChange: boolean);
+    function  GetIQMSPassword                 : string;
+    procedure SetIQMSPassword                 (aPassword: string);
+    function  GetNewUser                      (aUserName: string): boolean;
+    procedure SetNewUser                      (aUserName: string; aNewUser : boolean);
+    function  GetNewUserPasswordExpired       (aUserName: string): boolean;
+    function  GetPasswordGraceTime            (aUserName: string): double;
+    function  GetIsPasswordAboutToExpire      (aUserName: string; var aMsg : string): boolean;
+    function  GetPreventSameLoginUserSpecific (aUserName: string): string;
+    procedure RecordTooManyFailedLoginAttempts(aUserName: string);
+    procedure AssociateCurrentSessionWithUser (aUserName: string);
+    function  IsUserAlreadyLoggedIn           (aUserName: string): boolean;
+
+    property  NewUserExpirePassword                   : boolean read GetNewUserExpirePassword   write SetNewUserExpirePassword;
+    property  IQMSPassword                            : string  read GetIQMSPassword            write SetIQMSPassword;
+    property  NewUser            [aUserName : string] : boolean read GetNewUser                 write SetNewUser;
+    property  PasswordGraceTime  [aUserName : string] : double  read GetPasswordGraceTime;
+    property  ForcePasswordChange[aUserName : string] : boolean read GetForcePasswordChange     write SetForcePasswordChange;
+  public
+    function Login(aConnection : TFDConnection; aUserName, aPassword : string) : boolean;
+  end;
+
+implementation
+
+uses
+  StrUtils,
+  Variants,
+  IQMS.Common.StringUtils,
+  IQMS.Common.ResStrings;
+
+const
+  CRLF = #13#10;
+
+{ TLogin }
+
+function TLogin.Login(aConnection: TFDConnection; aUserName, aPassword: string): boolean;
+begin
+  if CompareText(aUserName, 'RTBOX') = 0 then
+    raise TInvalidLogin.Create(IQMS.Common.ResStrings.cTXT0000056);
+
+  FConnection := aConnection;
+
+  if TryLogin(aUserName, aPassword) then
+  begin
+
+//    CheckDenySameUserLogin( UserName );
+//    CheckNewUserWithExpiredTempPassword( UserName );
+//
+//    SaveUserNameToRegistry;
+//    SavePasswordToIQOrder2(DataBaseUser, IQMSpassword );
+//
+    if GetTrackLogin then
+      AssociateCurrentSessionWithUser(aUserName);  {associate iqms session with UserName}
+  end;
+
+end;
+
+function TLogin.TryLogin(aUserName, aPassword: string) : boolean;
+var
+  cUserName : string;
+  cPassword : string;
+begin
+  Result := false;
+
+  cUserName := FConnection.Params.UserName;
+  cPassword := FConnection.Params.Password;
+  FConnection.Connected := false;
+
+  FConnection.Params.UserName := aUserName;
+  FConnection.Params.Password := aPassword;
+  try
+    try
+      FConnection.Connected := true;
+
+      Result := true;
+
+      FConnection.Connected := false;
+    except
+      raise TWrongUserNameOrPassword.Create(IQMS.Common.ResourceStrings.cTXT0000056);
+    end;
+  finally
+    FConnection.Params.UserName := cUserName;
+    FConnection.Params.Password := cPassword;
+    FConnection.Connected := true;
+  end;
+end;
+
+function TLogin.GetTrackLogin: Boolean;
+begin
+  try
+    Result := FConnection.ExecSQLScalar( 'select sec_track_login from params') = 'Y';
+  except
+    Result := false;
+  end;
+end;
+
+function TLogin.GetPreventSameLogin: Boolean;
+begin
+  try
+    Result := FConnection.ExecSQLScalar('select sec_prevent_same_user_login from params') = 'Y';
+  except
+    Result := false;
+  end;
+end;
+
+function TLogin.GetForcePasswordChange(aUserName: string): boolean;
+const
+  SqlQuery =
+    'select                           ' + CRLF +
+    '  force_password_change          ' + CRLF +
+    'from s_user_general              ' + CRLF +
+    'where upper(user_name) = ''%s''';
+begin
+  try
+    Result := FConnection.ExecSQLScalar(SqlQuery, [ UpperCase(aUserName) ]) = 'Y';
+  except
+    Result := false;
+  end;
+end;
+
+procedure TLogin.SetForcePasswordChange(aUserName: string; aPasswordChange: boolean);
+const
+  SqlCmd =
+    'update s_user_general            ' + CRLF +
+    'set                              ' + CRLF +
+    '  force_password_change = ''%s'' ' + CRLF +
+    'where upper(user_name) = ''%s''';
+begin
+  FConnection.ExecSQL(Format(SqlCmd, [IfThen(aPasswordChange, 'Y', 'N'), UpperCase(aUserName)]));
+end;
+
+function TLogin.GetNewUserExpirePassword: boolean;
+begin
+  Result := FConnection.ExecSQLScalar('select sec_new_user_expire_pwd from params') = 'Y';
+end;
+
+procedure TLogin.SetNewUserExpirePassword(aExpirePassword: boolean);
+begin
+  FConnection.ExecSQL(Format('update params set sec_new_user_expire_pwd = ''%s''', [IfThen(aExpirePassword, 'Y', 'N')]));
+end;
+
+function TLogin.GetIQMSPassword: string;
+begin
+  Result := FConnection.ExecSQLScalar('select iqms_log from iqms.iqorder2');
+
+  Result := CharXOR(Result);
+end;
+
+procedure TLogin.SetIQMSPassword(aPassword: string);
+begin
+  FConnection.ExecSQL('update iqms.iqorder2 set iqms_log = ''%s''', [CharXOR(aPassword)]);
+end;
+
+function TLogin.GetNewUser(aUserName: string): boolean;
+begin
+  Result := FConnection.ExecSQLScalar('select is_new_user from s_user_general where upper(user_name) = ''%s''', [UpperCase(aUserName)]) = 'Y';
+end;
+
+procedure TLogin.SetNewUser(aUserName: string; aNewUser: boolean);
+begin
+  FConnection.ExecSQL('update s_user_general set is_new_user = ''%s'' where upper(user_name) = ''%s''', [IfThen(aNewUser, 'Y', 'N'), UpperCase(aUserName)]);
+end;
+
+function TLogin.GetNewUserPasswordExpired(aUserName: string): boolean;
+const
+  SqlQuery =
+    'select count(*)                      ' + CRLF +
+    'from s_user_general                  ' + CRLF +
+    'where                                ' + CRLF +
+    '  upper(user_name) = ''%s'' and      ' + CRLF +
+    '  is_new_user = ''Y'' and            ' + CRLF +
+    '  new_user_timestamp + 1 < sysdate';
+begin
+  Result := FConnection.ExecSQLScalar(SqlQuery, [UpperCase(aUserName)]) > 0;
+end;
+
+function TLogin.GetPasswordGraceTime(aUserName: string): double;
+const
+  SqlQuery =
+    'select                                                                       ' + CRLF +
+    '  p.limit                                                                    ' + CRLF +
+    'from dba_users u  inner join dba_profiles p on u.profile = p.profile         ' + CRLF +
+    'where                                                                        ' + CRLF +
+    '  u.username = ''%s'' and                                                    ' + CRLF +
+    '  p.resource_name = ''PASSWORD_GRACE_TIME'' and resource_type = ''PASSWORD''';
+var
+  limit : string;
+begin
+  aUserName := UpperCase(aUserName);
+
+  limit := FConnection.ExecSQLScalar(Format(SqlQuery, [aUserName]));
+
+  if limit = 'UNLIMITED' then
+    Result := -1    // Unlimited
+  else
+    if limit = 'DEFAULT' then
+      if aUserName = 'IQMS' then
+        Result := -1
+      else
+        Result := GetPasswordGraceTime('IQMS')
+    else
+      try
+        Result := StrToFloat(limit);
+      except
+        Result := 0;
+      end;
+end;
+
+function TLogin.GetIsPasswordAboutToExpire(aUserName: string; var aMsg : string): boolean;
+var
+  ExpiryDate : Variant;
+  AccountStatus : string;
+begin
+  Result := false;
+
+  aUserName := UpperCase(aUserName);
+
+  ExpiryDate := FConnection.ExecSQLScalar('select expiry_date from dba_users where username = ''%s''', [aUserName]);
+  if not VarIsNull(ExpiryDate) then
+  begin
+    AccountStatus := FConnection.ExecSQLScalar('select account_status from dba_users where username = ''%s''', [aUserName]);
+
+    if AccountStatus = 'EXPIRED(GRACE)' then
+    begin
+      Result := true;
+
+      if GetPasswordGraceTime(aUserName) = -1 then
+        aMsg := IQMS.Common.ResourceStrings.cTXT0000401
+      else
+        aMsg := Format( IQMS.Common.ResourceStrings.cTXT0000402, [trunc(ExpiryDate - Date())]);
+    end;
+  end;
+end;
+
+function TLogin.GetPreventSameLoginUserSpecific(aUserName: string): string;
+const
+  SqlQuery =
+    'select                           ' + CRLF +
+    '  sec_prevent_same_user_login    ' + CRLF +
+    'from s_user_general              ' + CRLF +
+    'where upper(user_name) = ''%s''';
+begin
+  Result := 'D';  // Default
+  try
+    Result := FConnection.ExecSQLScalar(Format(SqlQuery, [UpperCase(aUserName)]));
+  except
+  end;
+end;
+
+procedure TLogin.RecordTooManyFailedLoginAttempts(aUserName: string);
+const
+  SqlCmd =
+    'insert into s_user_login(userid, timestamp, auto_locked_out, program, sid, serial, process)' + CRLF +
+    '  select                                                                                   ' + CRLF +
+    '    ''%s'' as userid,                                                                      ' + CRLF +
+    '    sysdate as timestamp,                                                                  ' + CRLF +
+    '    sysdate as auto_locked_out,                                                            ' + CRLF +
+    '    program,                                                                               ' + CRLF +
+    '    sid,                                                                                   ' + CRLF +
+    '    serial# as serial,                                                                     ' + CRLF +
+    '    process                                                                                ' + CRLF +
+    '  from v$session                                                                           ' + CRLF +
+    '  where audsid = sys_context(''userenv'',''SESSIONID'')';
+
+begin
+  FConnection.ExecSQL(Format(SqlCmd, [UpperCase(aUserName)]));
+end;
+
+procedure TLogin.AssociateCurrentSessionWithUser(aUserName: string);
+const
+  SqlCmd =
+    'insert into s_user_login(userid, timestamp, logged_in, program, sid, serial, process)' + CRLF +
+    '  select                                                                             ' + CRLF +
+    '    ''%s'' as userid,                                                                ' + CRLF +
+    '    sysdate as timestamp,                                                            ' + CRLF +
+    '    logon_time as logged_in,                                                         ' + CRLF +
+    '    program,                                                                         ' + CRLF +
+    '    sid,                                                                             ' + CRLF +
+    '    serial# as serial,                                                               ' + CRLF +
+    '    process                                                                          ' + CRLF +
+    '  from v$session                                                                     ' + CRLF +
+    '  where audsid = sys_context(''userenv'',''SESSIONID'')';
+
+begin
+  FConnection.ExecSQL(Format(SqlCmd, [UpperCase(aUserName)]));
+end;
+
+function TLogin.IsUserAlreadyLoggedIn(aUserName: string): boolean;
+const
+  SqlQuery =
+    'with SessionInfo as                                      ' + CRLF +
+    '(                                                        ' + CRLF +
+    '  select                                                 ' + CRLF +
+    '    sid,                                                 ' + CRLF +
+    '    serial#,                                             ' + CRLF +
+    '    process,                                             ' + CRLF +
+    '    program                                              ' + CRLF +
+    '  from v$session                                         ' + CRLF +
+    '  where audsid=sys_context(''userenv'',''SESSIONID'')    ' + CRLF +
+    ')                                                        ' + CRLF +
+    'select count(*)                                          ' + CRLF +
+    'from                                                     ' + CRLF +
+    '  v$session v                                            ' + CRLF +
+    '    inner join s_user_login s on                         ' + CRLF +
+    '          v.sid = s.sid                                  ' + CRLF +
+    '      and v.serial# = s.serial                           ' + CRLF +
+    '      and v.process = s.process                          ' + CRLF +
+    '      and upper(v.program) = upper(s.program)            ' + CRLF +
+    '      and s.logged_out is null                           ' + CRLF +
+    '    inner join SessionInfo i on                          ' + CRLF +
+    '          v.sid <> i.sid                                 ' + CRLF +
+    '      and v.serial# <> i.serial#                         ' + CRLF +
+    '      and v.process <> i.process                         ' + CRLF +
+    '      and upper(v.program) = upper(i.program)            ' + CRLF +
+    'where                                                    ' + CRLF +
+    '      rtrim(upper(v.username)) = ''IQMS''                ' + CRLF +
+    '  and v.type   = ''USER''                                ' + CRLF +
+    '  and v.status <> ''KILLED''                             ' + CRLF +
+    '  and s.userid = ''%s''';
+begin
+  Result := FConnection.ExecSQLScalar(Format(SqlQuery, [UpperCase(aUserName)])) > 0;
+end;
+
+end.

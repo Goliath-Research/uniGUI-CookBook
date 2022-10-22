@@ -1,0 +1,497 @@
+unit IQMS.WebVcl.DocumentsCoordinator;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, ComCtrls,
+  Forms, Dialogs, Math, uniGUIForm;
+
+
+type
+  TIQAttachedDocumentsCoordinator = class( TComponent )
+  private
+    FInternalDocumentsExists: Boolean;
+    FExternalDocumentsExists: Boolean;
+    FEmailCorrespondenceExists: Boolean;
+    FPictureGalleryExists: Boolean;
+    FDocumentExistsIndicatorImageList: TImageList;
+    FParentForm: TUniForm;
+
+    FDocumentsTabSheet: TTabSheet;
+    FPictureGalleryTabSheet: TTabSheet;
+
+    // page control with 3 tabs - internal, external and email
+    FParentPageControl: TPageControl;
+    FParentPageControlOriginalOnChange: TNotifyEvent;           // original on change
+
+    // page control with Documents tabsheet where all the above FParentPageControl is
+    FDocumentsPageControl: TPageControl;
+    FPictureGalleryPageControl: TPageControl;
+    FDocumentsPageControlOriginalOnChange: TNotifyEvent;  // original on change
+
+    FParentPageControlOriginalOnChangeAssigned: Boolean;
+
+    procedure RestoreActivePage;
+    procedure StoreActivePage;
+    function FindParentForm(AControl: TWinControl): TUniForm;
+    procedure LocalOnParentFormChange( Sender: TObject );
+    procedure CheckRefreshExternalDocuments;
+    procedure LocalOnDocumentsPageControlChange(Sender: TObject);
+  protected
+    procedure Notification(AComponent: TComponent; Operation: TOperation); override;
+  public
+    constructor Create( AOwner: TComponent; AImageList: TImageList = nil ); reintroduce; virtual;
+    destructor Destroy; override;
+
+    /// <summary> Register standard document components to allow
+    /// the page icon to display on the TTabSheet.
+    /// </summary>
+    procedure RegisterDocuments( ADocumentsTabSheet: TTabSheet;
+      const ADocumentsHandlers: array of TComponent );
+
+    /// <summary> Similar to RegisterDocuments, prepares to show page icon
+    /// for a TIQWebPictureGallery on its own TPageControl.
+    /// </summary>
+    procedure RegisterPictureGallery(ATabSheet: TTabSheet; APictureGallery: TComponent);
+
+    procedure UpdateDocumentsExistsIndicator( Sender: TComponent; AExists: Boolean );
+    procedure UpdateImageExistsIndicator(APictureGallery: TComponent; AExists: Boolean );
+    procedure AssignPageIcon(ATabSheet: TTabSheet; AShowIcon: Boolean);
+    procedure ClearPageIcons(APageControl: TPageControl);
+
+    property DocumentExistsIndicatorImageList: TImageList read FDocumentExistsIndicatorImageList write FDocumentExistsIndicatorImageList;
+    property DocumentsTabSheet: TTabSheet read FDocumentsTabSheet write FDocumentsTabSheet;
+    property PictureGalleryTabSheet: TTabSheet read FPictureGalleryTabSheet write FPictureGalleryTabSheet;
+    property ImageList: TImageList read FDocumentExistsIndicatorImageList;
+    class procedure SetDocumentsActive( Value: Boolean; const ADocuments: array of TComponent );
+    class function FindParentTabSheetOf(AControl: TWinControl): TTabSheet;
+    class function FindParentControlPage(AControl: TWinControl): TPageControl;
+    class function IsExtDocTabSelected(AWinControl: TWinControl): Boolean;
+ end;
+
+// Add the default "page" icon to the image list.  Returns index of image list item.
+//function LoadPageIcon(AImageList: TImageList): Integer;
+//procedure AssignPageIcon(ATabSheet: TTabSheet; AImageIndex: Integer;
+//  AShowIcon: Boolean);
+
+implementation
+
+uses
+  IQMS.WebVcl.DocumentsExternal,
+  IQMS.WebVcl.Documents,
+  IQMS.WebVcl.EmailCorrespondence,
+  IQMS.WebVcl.PictureGallery,
+  IQMS.Common.Numbers,
+  IQMS.Common.Controls,
+  IQMS.Common.RegFrm,
+  IQMS.Common.DataLib;
+
+{function LoadPageIcon(AImageList: TImageList): Integer;
+var
+  Image: TBitmap;
+begin
+  if Assigned(AImageList) then
+    begin
+      Image:= TBitmap.Create;
+      try
+        Image.LoadFromResourceName(HInstance, 'PAGE');
+        AImageList.AddMasked( Image, clFuchsia );
+      finally
+        FreeAndNil(Image);
+      end;
+    end;
+end;
+
+procedure AssignPageIcon(ATabSheet: TTabSheet; AImageIndex: Integer;
+  AShowIcon: Boolean);
+begin
+  if Assigned(ATabSheet) then
+    begin
+      if AShowIcon then
+        ATabSheet.ImageIndex := AImageIndex
+      else
+        ATabSheet.ImageIndex := -1;
+    end;
+end;}
+
+constructor TIQAttachedDocumentsCoordinator.Create( AOwner: TComponent; AImageList: TImageList = nil );
+var
+  Image: TBitmap;
+begin                              
+  inherited Create(AOwner);
+
+  FParentPageControlOriginalOnChange := nil;
+  FDocumentsPageControlOriginalOnChange:= nil;
+  FParentPageControlOriginalOnChangeAssigned := False;
+
+  {Image list with document image }
+  FDocumentExistsIndicatorImageList:= AImageList;
+  if FDocumentExistsIndicatorImageList = nil then
+  begin
+    FDocumentExistsIndicatorImageList:= TImageList.Create(self);
+    with FDocumentExistsIndicatorImageList do
+    begin
+      Image:= TBitmap.Create;
+      try
+        Image.LoadFromResourceName(HInstance, 'PAGE');
+        Height:= Image.Height;
+        Width := Image.Width;
+        AddMasked( Image, clFuchsia );
+      finally
+        Image.Free;
+      end;
+    end;
+  end;
+end;
+
+destructor TIQAttachedDocumentsCoordinator.Destroy;
+begin
+  if Assigned(FParentPageControl) and Assigned(FParentPageControlOriginalOnChange) then
+  try
+     FParentPageControl.OnChange:= FParentPageControlOriginalOnChange;
+  except
+     {walk away}
+  end;
+
+  if Assigned(FDocumentsPageControl) and Assigned(FDocumentsPageControlOriginalOnChange) then
+  try
+     FDocumentsPageControl.OnChange:= FDocumentsPageControlOriginalOnChange;
+  except
+     {walk away}
+  end;
+  
+  inherited;
+end;
+
+procedure TIQAttachedDocumentsCoordinator.RegisterDocuments( ADocumentsTabSheet: TTabSheet; const ADocumentsHandlers: array of TComponent );
+var
+  I: Integer;
+  AEmailTabSheet: TTabSheet;
+begin
+  // what tabsheet are we going to control
+  DocumentsTabSheet:= ADocumentsTabSheet;
+
+  if Assigned(DocumentsTabSheet) then
+     FDocumentsPageControl:= DocumentsTabSheet.PageControl;
+
+  // assign imagelist
+
+  if Assigned(DocumentsTabSheet) and
+    (DocumentsTabSheet.PageControl.Images = nil) then
+    with DocumentsTabSheet.PageControl do
+    begin
+      Images:= DocumentExistsIndicatorImageList;
+      ClearPageIcons(DocumentsTabSheet.PageControl);
+    end;
+
+  // assign children a pointer back to me
+  // 05-05-2014 find page control the tabsheets are sitting on
+  for I:= 0 to  High(ADocumentsHandlers) do
+  begin                       
+    if ADocumentsHandlers[ I ] is TIQWebExtDoc then
+       begin
+         TIQWebExtDoc(ADocumentsHandlers[ I ]).AttachedDocumentsCoordinator:= self;
+         TIQWebExtDoc(ADocumentsHandlers[ I ]).Active:= TRUE;
+         if FParentPageControl = nil then
+            FParentPageControl:= FindParentControlPage( TIQWebExtDoc(ADocumentsHandlers[ I ]));
+       end
+
+    else if ADocumentsHandlers[ I ] is TIQWebDocs then
+       begin
+         TIQWebDocs(ADocumentsHandlers[ I ]).AttachedDocumentsCoordinator:= self;
+         TIQWebDocs(ADocumentsHandlers[ I ]).Active:= TRUE;
+         if FParentPageControl = nil then
+            FParentPageControl:= FindParentControlPage( TIQWebDocs(ADocumentsHandlers[ I ]));
+       end                                                
+    
+    else if ADocumentsHandlers[ I ] is TIQWebEMailCorrespondence then
+       begin
+         TIQWebEMailCorrespondence(ADocumentsHandlers[ I ]).AttachedDocumentsCoordinator:= self;
+         TIQWebEMailCorrespondence(ADocumentsHandlers[ I ]).Active:= TRUE;
+
+         // 03-16-2012 - fix the Email caption of the tab
+         AEmailTabSheet:= FindParentTabSheetOf( TIQWebEMailCorrespondence(ADocumentsHandlers[ I ]));
+         if AEmailTabSheet <> nil then
+            AEmailTabSheet.Caption:= SysUtils.StringReplace( AEmailTabSheet.Caption, 'email', 'Email', [rfReplaceAll, rfIgnoreCase]);
+
+         if FParentPageControl = nil then
+            FParentPageControl:= FindParentControlPage( TIQWebEMailCorrespondence(ADocumentsHandlers[ I ]));
+       end;
+  end;
+
+  // Replace PageControl.OnChange to be able to write to the registry
+  FParentForm:= FindParentForm( FParentPageControl );
+  // 10/16/2014 Do not assigne the OnChange event more than once, or
+  // a stack overflow can occur.
+  // EIQ-4574 SPC - call stack, AV and RPC failure accessing documents CRM # 1096001 LSI
+  if Assigned(FParentPageControl) and Assigned(FParentForm) and
+    not FParentPageControlOriginalOnChangeAssigned then
+  begin
+     FParentPageControlOriginalOnChange := FParentPageControl.OnChange;
+     FParentPageControl.OnChange:= LocalOnParentFormChange;
+     FParentPageControlOriginalOnChangeAssigned := True;
+
+     if Assigned(FDocumentsPageControl) then
+     begin
+       FDocumentsPageControlOriginalOnChange:= FDocumentsPageControl.OnChange;
+       FDocumentsPageControl.OnChange:= LocalOnDocumentsPageControlChange;
+     end;
+  end;
+
+  RestoreActivePage;
+end;
+
+
+procedure TIQAttachedDocumentsCoordinator.RegisterPictureGallery(
+  ATabSheet: TTabSheet; APictureGallery: TComponent);
+begin
+  if not (APictureGallery is TIQWebPictureGallery) then
+    Exit;
+
+  // what tabsheet are we going to control
+  FPictureGalleryTabSheet := ATabSheet;
+
+  if Assigned(FPictureGalleryTabSheet) then
+     FPictureGalleryPageControl:= PictureGalleryTabSheet.PageControl;
+
+  // assign imagelist
+  if Assigned(FPictureGalleryTabSheet) and
+    (FPictureGalleryPageControl.Images = nil) then
+    with FPictureGalleryPageControl do
+    begin
+      Images:= DocumentExistsIndicatorImageList;
+      ClearPageIcons(FPictureGalleryPageControl);
+    end;
+
+  TIQWebPictureGallery(APictureGallery).AttachedDocumentsCoordinator:= self;
+  TIQWebPictureGallery(APictureGallery).Active:= TRUE;
+end;
+
+class function TIQAttachedDocumentsCoordinator.FindParentTabSheetOf( AControl: TWinControl ): TTabSheet;
+begin
+  while AControl <> nil do
+  begin
+    if AControl is TTabSheet then
+    begin
+       Result:= AControl as TTabSheet;
+       EXIT;
+    end;
+    AControl:= AControl.Parent;
+  end;
+
+  Result:= nil;
+end;
+
+
+class function TIQAttachedDocumentsCoordinator.FindParentControlPage( AControl: TWinControl ): TPageControl;
+begin
+  while AControl <> nil do
+  begin
+    if AControl is TPageControl then
+    begin
+       Result:= AControl as TPageControl;
+       EXIT;
+    end;
+    AControl:= AControl.Parent;
+  end;
+
+  Result:= nil;
+end;
+
+function TIQAttachedDocumentsCoordinator.FindParentForm( AControl: TWinControl ): TUniForm;
+begin
+  while AControl <> nil do
+  begin
+    if AControl is TUniForm then
+    begin
+       Result:= AControl as TUniForm;
+       EXIT;
+    end;
+    AControl:= AControl.Parent;
+  end;
+
+  Result:= nil;
+end;
+
+
+procedure TIQAttachedDocumentsCoordinator.RestoreActivePage;
+begin 
+  if FParentPageControl = nil then
+     EXIT;
+
+  if FParentForm = nil then
+     EXIT;
+     
+  IQRegFormRead( FParentForm, [ FParentPageControl ]);
+end;
+
+
+procedure TIQAttachedDocumentsCoordinator.StoreActivePage;
+begin 
+  if FParentPageControl = nil then
+     EXIT;
+
+  if FParentForm = nil then
+     EXIT;
+     
+  IQRegFormWrite( FParentForm, [ FParentPageControl ]);
+end;
+
+
+procedure TIQAttachedDocumentsCoordinator.LocalOnParentFormChange(Sender: TObject);
+begin
+  if Assigned(FParentPageControlOriginalOnChange) then
+     FParentPageControlOriginalOnChange( Sender );
+     
+  StoreActivePage;
+  
+  // 12-10-2014 refresh external documents on pagecontrol change to surface files exists indication
+  CheckRefreshExternalDocuments;
+end;
+
+
+procedure TIQAttachedDocumentsCoordinator.LocalOnDocumentsPageControlChange( Sender: TObject );
+begin
+  if Assigned(FDocumentsPageControlOriginalOnChange) then
+     FDocumentsPageControlOriginalOnChange( Sender );
+     
+  CheckRefreshExternalDocuments;
+end;
+
+
+procedure TIQAttachedDocumentsCoordinator.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent is TTabSheet) and
+    Assigned(DocumentsTabSheet) and (DocumentsTabSheet = AComponent) then
+    DocumentsTabSheet:= NIL;
+end;
+
+
+procedure TIQAttachedDocumentsCoordinator.UpdateDocumentsExistsIndicator( Sender: TComponent; AExists: Boolean );
+begin
+  if not (Assigned(DocumentsTabSheet) and Assigned(DocumentsTabSheet.PageControl)) then
+     EXIT;
+     
+  if Sender is TIQWebExtDoc then FExternalDocumentsExists:= AExists
+  else if Sender is TIQWebDocs then FInternalDocumentsExists:= AExists
+  else if Sender is  TIQWebEMailCorrespondence then FEmailCorrespondenceExists:= AExists
+  else EXIT;
+
+  if DocumentsTabSheet.PageControl.Images <> FDocumentExistsIndicatorImageList then
+     EXIT;
+
+  DocumentsTabSheet.ImageIndex:= IfThen( FInternalDocumentsExists or
+    FExternalDocumentsExists or FEmailCorrespondenceExists, 0, -1);
+
+end;
+
+procedure TIQAttachedDocumentsCoordinator.UpdateImageExistsIndicator(
+  APictureGallery: TComponent; AExists: Boolean);
+begin
+  if (APictureGallery is TIQWebPictureGallery) and Assigned(APictureGallery) and
+    Assigned(PictureGalleryTabSheet) then
+    FPictureGalleryTabSheet.ImageIndex:= IfThen(AExists, 0, -1);
+end;
+
+procedure TIQAttachedDocumentsCoordinator.AssignPageIcon(ATabSheet: TTabSheet;
+  AShowIcon: Boolean);
+begin
+  if Assigned(ATabSheet) then
+    begin
+      if ATabSheet.PageControl.Images <> DocumentExistsIndicatorImageList then
+        ATabSheet.PageControl.Images := DocumentExistsIndicatorImageList;
+      if AShowIcon then
+        ATabSheet.ImageIndex := 0
+      else
+        ATabSheet.ImageIndex := -1;
+    end;
+end;
+
+procedure TIQAttachedDocumentsCoordinator.ClearPageIcons(
+  APageControl: TPageControl);
+var
+  i: Integer;
+begin
+  if Assigned(APageControl) then
+    begin
+      for i := 0 to APageControl.PageCount - 1 do
+        APageControl.Pages[i].ImageIndex := -1;
+    end;
+end;
+
+class procedure TIQAttachedDocumentsCoordinator.SetDocumentsActive( Value: Boolean; const ADocuments: array of TComponent );
+var
+  I: Integer;
+begin
+  for I:= 0 to  High(ADocuments) do
+  begin                       
+    if ADocuments[ I ] is TIQWebExtDoc then
+       TIQWebExtDoc(ADocuments[ I ]).Active:= TRUE
+
+    else if ADocuments[ I ] is TIQWebDocs then
+       TIQWebDocs(ADocuments[ I ]).Active:= TRUE
+    
+    else if ADocuments[ I ] is TIQWebEMailCorrespondence then
+       TIQWebEMailCorrespondence(ADocuments[ I ]).Active:= TRUE
+
+    else if ADocuments[ I ] is TIQWebPictureGallery then
+       TIQWebPictureGallery(ADocuments[ I ]).Active:= TRUE
+  end;
+end;
+
+
+class function TIQAttachedDocumentsCoordinator.IsExtDocTabSelected( AWinControl: TWinControl ): Boolean;
+var
+  ATabSheet: TTabSheet;
+  APageControl: TPageControl;
+begin
+  Result      := TRUE;
+  
+  // start with self and work your way up making sure every page control has its active page set to reveal our ExtDoc
+  repeat
+    ATabSheet:= FindParentTabSheetOf( AWinControl.Parent );
+    if ATabSheet = nil then
+       EXIT;
+  
+    APageControl:= FindParentControlPage( AWinControl.Parent );
+    if APageControl = nil then
+       EXIT;
+
+    Result:= APageControl.ActivePage = ATabSheet;
+    if not Result then
+       EXIT;
+
+    AWinControl:= APageControl;
+  until FALSE;
+end;
+
+
+procedure TIQAttachedDocumentsCoordinator.CheckRefreshExternalDocuments;
+
+  procedure _FindRefreshExternalDocumentsOn( AWinControl: TWinControl );
+  var
+    I: Integer;
+    AThisControl: TWinControl;
+  begin
+    for I:= 0 to AWinControl.ControlCount - 1 do 
+      if AWinControl.Controls[ I ] is TWinControl then
+      begin
+        AThisControl:= AWinControl.Controls[ I ] as TWinControl;
+        if AThisControl is TIQWebExtDoc then
+           begin
+             if IsExtDocTabSelected( AThisControl ) then
+                TIQWebExtDoc( AThisControl ).Refresh;
+           end
+        else   
+          _FindRefreshExternalDocumentsOn( AThisControl );
+      end;
+  end;
+  
+begin
+  if Assigned(DocumentsTabSheet) then
+     _FindRefreshExternalDocumentsOn( DocumentsTabSheet );
+end;
+
+end.
+

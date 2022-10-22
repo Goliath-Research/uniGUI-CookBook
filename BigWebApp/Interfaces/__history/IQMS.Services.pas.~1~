@@ -1,0 +1,55 @@
+unit IQMS.Services;
+
+interface
+
+uses
+  Classes,
+//  IQMS.Dialogs,
+  IQMS.DatabaseConnections;
+
+type
+
+  { IIQServices }
+  // It is just a facade providing easy access to useful global services
+
+  IIQServices = interface
+  ['{E333CDC7-7070-4D84-BE26-0831EFE4D92D}']
+
+//    function Dialogs: IIQDialogs;
+    function DatabaseConnections: IIQDatabaseConnections;
+  end;
+
+  TIQServices = class(TInterfacedObject, IIQServices)
+  private
+//    FDialogs: IIQDialogs;
+    FDatabaseConnections: IIQDatabaseConnections;
+
+//    function Dialogs: IIQDialogs;
+    function DatabaseConnections: IIQDatabaseConnections;
+  public
+    constructor Create; virtual;
+  end;
+
+implementation
+
+uses
+  Spring.Services;
+
+constructor TIQServices.Create;
+begin
+//  FDialogs := ServiceLocator.GetService<IIQDialogs>;
+  FDatabaseConnections := ServiceLocator.GetService<IIQDatabaseConnections>;
+end;
+
+//function TIQServices.Dialogs: IIQDialogs;
+//begin
+//  Result := FDialogs;
+//end;
+
+function TIQServices.DatabaseConnections: IIQDatabaseConnections;
+begin
+  Result := FDatabaseConnections;
+end;
+
+
+end.

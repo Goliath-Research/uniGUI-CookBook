@@ -1,0 +1,620 @@
+unit ArPrepTax;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Forms,
+  Data.DB,
+  Vcl.Wwdatsrc,
+  IQMS.WebVcl.Search,
+  FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client,
+  Vcl.Buttons,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Stan.Async,
+  FireDAC.DApt,
+  Vcl.Controls,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniButton,
+  uniBitBtn,
+  uniSpeedButton,
+  uniPanel,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniPageControl, IQUniGrid, uniGUIFrame;
+
+type
+  TFrmArPrepostTax = class(TUniForm)
+    Src: TDataSource;
+    QryARTaxCode: TFDQuery;
+    QryARAllTaxes: TFDQuery;
+    QryARTaxCodeDESCRIP: TStringField;
+    QryARTaxCodeTAX_RATE: TFMTBCDField;
+    QryARTaxCodeAMOUNT: TFMTBCDField;
+    QryARAllTaxesDESCRIP: TStringField;
+    QryARAllTaxesTAX_RATE: TFMTBCDField;
+    QryARAllTaxesAMOUNT: TFMTBCDField;
+    QryARPostTaxCode: TFDQuery;
+    QryARPostTaxCodeDESCRIP: TStringField;
+    QryARPostTaxCodeTAX_RATE: TFMTBCDField;
+    QryARPostTaxCodeAMOUNT: TFMTBCDField;
+    QryARPostAllTaxes: TFDQuery;
+    QryARPostAllTaxesDESCRIP: TStringField;
+    QryARPostAllTaxesTAX_RATE: TFMTBCDField;
+    QryARPostAllTaxesAMOUNT: TFMTBCDField;
+    QryARVoidTaxCode: TFDQuery;
+    QryARVoidAllTaxes: TFDQuery;
+    QryARVoidTaxCodeDESCRIP: TStringField;
+    QryARVoidTaxCodeTAX_RATE: TFMTBCDField;
+    QryARVoidTaxCodeAMOUNT: TFMTBCDField;
+    QryARVoidAllTaxesDESCRIP: TStringField;
+    QryARVoidAllTaxesTAX_RATE: TFMTBCDField;
+    QryARVoidAllTaxesAMOUNT: TFMTBCDField;
+    QryApPrepostTax: TFDQuery;
+    QryApPrepostTaxDESCRIP: TStringField;
+    QryApPrepostTaxTAX_RATE: TFMTBCDField;
+    QryApPrepostTaxAMOUNT: TFMTBCDField;
+    QryApInvoiceTax: TFDQuery;
+    QryApInvoiceTaxDESCRIP: TStringField;
+    QryApInvoiceTaxTAX_RATE: TFMTBCDField;
+    QryApInvoiceTaxAMOUNT: TFMTBCDField;
+    QryApVoidTax: TFDQuery;
+    QryApVoidTaxDESCRIP: TStringField;
+    QryApVoidTaxTAX_RATE: TFMTBCDField;
+    QryApVoidTaxAMOUNT: TFMTBCDField;
+    QryOeTaxCode: TFDQuery;
+    QryOeAllTaxes: TFDQuery;
+    QryOeAllTaxesDESCRIP: TStringField;
+    QryOeAllTaxesTAX_RATE: TFMTBCDField;
+    QryOeAllTaxesAMOUNT: TFMTBCDField;
+    QryOeHistTaxCode: TFDQuery;
+    QryOeHistAllTaxes: TFDQuery;
+    QryOeHistTaxCodeDESCRIP: TStringField;
+    QryOeHistTaxCodeTAX_RATE: TFMTBCDField;
+    QryOeHistTaxCodeAMOUNT: TFMTBCDField;
+    QryOeHistAllTaxesDESCRIP: TStringField;
+    QryOeHistAllTaxesTAX_RATE: TFMTBCDField;
+    QryOeHistAllTaxesAMOUNT: TFMTBCDField;
+    QryPOTaxCode: TFDQuery;
+    QryPOTaxCodeDESCRIP: TStringField;
+    QryPOTaxCodeTAX_RATE: TFMTBCDField;
+    QryPOTaxCodeAMOUNT: TFMTBCDField;
+    QryPOHistTaxCode: TFDQuery;
+    QryPOHistTaxCodeDESCRIP: TStringField;
+    QryPOHistTaxCodeTAX_RATE: TFMTBCDField;
+    QryPOHistTaxCodeAMOUNT: TFMTBCDField;
+    QryApPrepostUseTax: TFDQuery;
+    StringField1: TStringField;
+    FloatField1: TFMTBCDField;
+    FloatField2: TFMTBCDField;
+    QryApInvoiceUseTax: TFDQuery;
+    StringField2: TStringField;
+    FloatField3: TFMTBCDField;
+    FloatField4: TFMTBCDField;
+    QryApVoidUseTax: TFDQuery;
+    StringField3: TStringField;
+    FloatField5: TFMTBCDField;
+    FloatField6: TFMTBCDField;
+    PageControl1: TUniPageControl;
+    TabSheet1: TUniTabSheet;
+    TabSheet2: TUniTabSheet;
+    IQSearch1: TIQUniGridControl;
+    IQSearch2: TIQUniGridControl;
+    pnlTop: TUniPanel;
+    sbtnRecalcTaxes: TUniSpeedButton;
+    QryOeAllTaxesEPLANT_ID: TBCDField;
+    QryARAllTaxesEPLANT_ID: TBCDField;
+    QryARTaxCodeEPLANT_ID: TBCDField;
+    QryApPrepostTaxEPLANT_ID: TBCDField;
+    QryPOTaxCodeEPLANT_ID: TBCDField;
+    qryQuoteAllTaxes: TFDQuery;
+    qryQuoteAllTaxesDESCRIP: TStringField;
+    qryQuoteAllTaxesTAX_RATE: TFMTBCDField;
+    qryQuoteAllTaxesAMOUNT: TFMTBCDField;
+    qryQuoteAllTaxesEPLANT_ID: TBCDField;
+    qryQuoteTaxes: TFDQuery;
+    StringField4: TStringField;
+    FloatField7: TFMTBCDField;
+    FloatField8: TFMTBCDField;
+    FloatField9: TBCDField;
+    QryOeTaxCodeDESCRIP: TStringField;
+    QryOeTaxCodeTAX_RATE: TFMTBCDField;
+    QryOeTaxCodeAMOUNT: TFMTBCDField;
+    QryOeTaxCodeEPLANT_ID: TBCDField;
+    PnlCarrier: TUniPanel;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure sbtnRecalcTaxesClick(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+    FSource: string;
+    FSourceID: Real;
+    FEplantId: Real;
+
+    procedure GetTaxes(ASource: string; ASourceId: Real);
+  public
+    { Public declarations }
+    procedure DoCreate(APrepostDtlId, ArPrepostId: Real);
+    procedure DoCreateARPost(ADtlId, AId: Real);
+    procedure DoCreateARVoid(ADtlId, AId: Real);
+
+    procedure DoCreateAPPrepost(ADtlId, AId: Real);
+    procedure DoCreateAPInvoice(ADtlId, AId: Real);
+    procedure DoCreateAPVoid(ADtlId, AId: Real);
+    procedure DoCreateOE(ADtlId, AId: Real);
+    procedure DoCreateOEHist(ADtlId, AId: Real);
+    procedure DoCreatePO(ADtlId, AId: Real);
+    procedure DoCreatePOHist(ADtlId, AId: Real);
+
+    procedure DoCreateAPPrepostUse(ADtlId, AId: Real);
+    procedure DoCreateAPInvoiceUse(ADtlId, AId: Real);
+    procedure DoCreateAPVoidUse(ADtlId, AId: Real);
+    procedure DoCreateQuote(ADtlId, AId: Real);
+
+  end;
+
+procedure DoARTaxBreakDown(APrepostDtlId, ArPrepostId: Real);
+procedure DoARPostTaxBreakDown(ADtlId, AId: Real);
+procedure DoARVoidTaxBreakDown(ADtlId, AId: Real);
+procedure DoAPPrepostTaxBreakDown(ADtlId, AId: Real);
+procedure DoAPInvoiceTaxBreakDown(ADtlId, AId: Real);
+procedure DoAPVoidTaxBreakDown(ADtlId, AId: Real);
+procedure DoOETaxBreakDown(ADtlId, AId: Real);
+procedure DoOEHistTaxBreakDown(ADtlId, AId: Real);
+procedure DoPOTaxBreakDown(ADtlId, AId: Real);
+procedure DoPOHistTaxBreakDown(ADtlId, AId: Real);
+
+procedure DoAPPrepostUseTaxBreakDown(ADtlId, AId: Real);
+procedure DoAPInvoiceUseTaxBreakDown(ADtlId, AId: Real);
+procedure DoAPVoidUseTaxBreakDown(ADtlId, AId: Real);
+procedure DoQuoteTaxBreakDown(ADtlId, AId: Real);
+
+implementation
+
+{$R *.dfm}
+
+
+uses
+  ar_rscstr,
+  IQMS.Common.Controls,
+  IQMS.Common.DataLib,
+  IQMS.Common.RegFrm,
+  IQMS.Common.StringUtils,
+  { TODO -oathite -cWebConvert : Need to convert Avalara
+  Avalara,}
+  IQMS.Common.PanelMsg;
+
+procedure DoPOHistTaxBreakDown(ADtlId, AId: Real);
+var
+  LFrmArPrepostTax : TFrmArPrepostTax;
+begin
+  LFrmArPrepostTax := TFrmArPrepostTax.Create(uniGUIApplication.UniApplication);
+  LFrmArPrepostTax.DoCreatePOHist(ADtlId, AId);
+  LFrmArPrepostTax.ShowModal;
+end;
+
+procedure DoPOTaxBreakDown(ADtlId, AId: Real);
+var
+  LFrmArPrepostTax : TFrmArPrepostTax;
+begin
+  LFrmArPrepostTax := TFrmArPrepostTax.Create(uniGUIApplication.UniApplication);
+  LFrmArPrepostTax.DoCreatePO(ADtlId, AId);
+  LFrmArPrepostTax.ShowModal;
+end;
+
+procedure DoOEHistTaxBreakDown(ADtlId, AId: Real);
+var
+  LFrmArPrepostTax : TFrmArPrepostTax;
+begin
+  LFrmArPrepostTax := TFrmArPrepostTax.Create(uniGUIApplication.UniApplication);
+  LFrmArPrepostTax.DoCreateOEHist(ADtlId, AId);
+  LFrmArPrepostTax.ShowModal;
+end;
+
+procedure DoOETaxBreakDown(ADtlId, AId: Real);
+var
+  LFrmArPrepostTax : TFrmArPrepostTax;
+begin
+  LFrmArPrepostTax := TFrmArPrepostTax.Create(uniGUIApplication.UniApplication);
+  LFrmArPrepostTax.DoCreateOE(ADtlId, AId);
+  LFrmArPrepostTax.ShowModal;
+end;
+
+procedure DoAPPrepostTaxBreakDown(ADtlId, AId: Real);
+var
+  LFrmArPrepostTax : TFrmArPrepostTax;
+begin
+  LFrmArPrepostTax := TFrmArPrepostTax.Create(uniGUIApplication.UniApplication);
+  LFrmArPrepostTax.DoCreateAPPrepost(ADtlId, AId);
+  LFrmArPrepostTax.ShowModal;
+end;
+
+procedure DoAPInvoiceTaxBreakDown(ADtlId, AId: Real);
+var
+  LFrmArPrepostTax : TFrmArPrepostTax;
+begin
+  LFrmArPrepostTax := TFrmArPrepostTax.Create(uniGUIApplication.UniApplication);
+  LFrmArPrepostTax.DoCreateAPInvoice(ADtlId, AId);
+  LFrmArPrepostTax.ShowModal;
+end;
+
+procedure DoAPVoidTaxBreakDown(ADtlId, AId: Real);
+var
+  LFrmArPrepostTax : TFrmArPrepostTax;
+begin
+  LFrmArPrepostTax := TFrmArPrepostTax.Create(uniGUIApplication.UniApplication);
+  LFrmArPrepostTax.DoCreateAPVoid(ADtlId, AId);
+  LFrmArPrepostTax.ShowModal;
+end;
+
+procedure DoAPPrepostUseTaxBreakDown(ADtlId, AId: Real);
+var
+  LFrmArPrepostTax : TFrmArPrepostTax;
+begin
+  LFrmArPrepostTax := TFrmArPrepostTax.Create(uniGUIApplication.UniApplication);
+  LFrmArPrepostTax.DoCreateAPPrepostUse(ADtlId, AId);
+  LFrmArPrepostTax.ShowModal;
+end;
+
+procedure DoAPInvoiceUseTaxBreakDown(ADtlId, AId: Real);
+var
+  LFrmArPrepostTax : TFrmArPrepostTax;
+begin
+  LFrmArPrepostTax := TFrmArPrepostTax.Create(uniGUIApplication.UniApplication);
+  LFrmArPrepostTax.DoCreateAPInvoiceUse(ADtlId, AId);
+  LFrmArPrepostTax.ShowModal;
+end;
+
+procedure DoAPVoidUseTaxBreakDown(ADtlId, AId: Real);
+var
+  LFrmArPrepostTax : TFrmArPrepostTax;
+begin
+  LFrmArPrepostTax := TFrmArPrepostTax.Create(uniGUIApplication.UniApplication);
+  LFrmArPrepostTax.DoCreateAPVoidUse(ADtlId, AId);
+  LFrmArPrepostTax.ShowModal;
+end;
+
+procedure DoARTaxBreakDown(APrepostDtlId, ArPrepostId: Real);
+var
+  LFrmArPrepostTax : TFrmArPrepostTax;
+begin
+  LFrmArPrepostTax := TFrmArPrepostTax.Create(uniGUIApplication.UniApplication);
+  LFrmArPrepostTax.DoCreate(APrepostDtlId, ArPrepostId);
+  LFrmArPrepostTax.ShowModal;
+end;
+
+procedure DoARPostTaxBreakDown(ADtlId, AId: Real);
+var
+  LFrmArPrepostTax : TFrmArPrepostTax;
+begin
+  LFrmArPrepostTax := TFrmArPrepostTax.Create(uniGUIApplication.UniApplication);
+  LFrmArPrepostTax.DoCreateARPost( ADtlId, AId );
+  LFrmArPrepostTax.ShowModal;
+end;
+
+procedure DoARVoidTaxBreakDown(ADtlId, AId: Real);
+var
+  LFrmArPrepostTax : TFrmArPrepostTax;
+begin
+  LFrmArPrepostTax := TFrmArPrepostTax.Create(uniGUIApplication.UniApplication);
+  LFrmArPrepostTax.DoCreateARVoid(ADtlId, AId);
+  LFrmArPrepostTax.ShowModal;
+end;
+
+procedure DoQuoteTaxBreakDown(ADtlId, AId: Real);
+var
+  LFrmArPrepostTax : TFrmArPrepostTax;
+begin
+  LFrmArPrepostTax := TFrmArPrepostTax.Create(uniGUIApplication.UniApplication);
+  LFrmArPrepostTax.DoCreateQuote(ADtlId, AId);
+  LFrmArPrepostTax.ShowModal;
+end;
+
+{ TFrmArPrepostTax }
+
+procedure TFrmArPrepostTax.DoCreatePOHist(ADtlId, AId: Real);
+begin
+  PageControl1.ActivePage := TabSheet1;
+
+  QryPOHistTaxCode.ParamByName('Aid').Value := AId;
+  Src.DataSet := QryPOHistTaxCode;
+  QryPOHistTaxCode.Open;
+
+  IQSearch1.DataSource.DataSet.Close;
+  IQSearch1.DataSource.DataSet.Open;
+end;
+
+procedure TFrmArPrepostTax.DoCreateQuote(ADtlId, AId: Real);
+begin
+  PageControl1.ActivePage := TabSheet1;
+
+  FSource := 'CRM_QUOTE';
+  FSourceID := AId;
+
+  if ADtlId = 0 then
+  begin
+    qryQuoteAllTaxes.ParamByName('Aid').Value := AId;
+    Src.DataSet := qryQuoteAllTaxes;
+    qryQuoteAllTaxes.Open;
+  end
+  else
+  begin
+    qryQuoteTaxes.ParamByName('Aid').Value := ADtlId;
+    Src.DataSet := qryQuoteTaxes;
+    qryQuoteTaxes.Open;
+  end;
+  IQSearch1.DataSource.DataSet.Close;
+  IQSearch1.DataSource.DataSet.Open;
+end;
+
+procedure TFrmArPrepostTax.DoCreate(APrepostDtlId, ArPrepostId: Real);
+begin
+  PageControl1.ActivePage := TabSheet1;
+
+  FSource := 'ARPREPOST';
+  FSourceID := ArPrepostId;
+  if APrepostDtlId = 0 then
+  begin
+    QryARAllTaxes.ParamByName('ArpreposId').Value := ArPrepostId;
+    Src.DataSet := QryARAllTaxes;
+    QryARAllTaxes.Open;
+  end
+  else
+  begin
+    QryARTaxCode.ParamByName('Arprepostdetailid').Value := APrepostDtlId;
+    Src.DataSet := QryARTaxCode;
+    QryARTaxCode.Open;
+  end;
+  IQSearch1.DataSource.DataSet.Close;
+  IQSearch1.DataSource.DataSet.Open;
+end;
+
+procedure TFrmArPrepostTax.DoCreatePO(ADtlId, AId: Real);
+begin
+  PageControl1.ActivePage := TabSheet2;
+
+  FSource := 'PO';
+  FSourceID := AId;
+
+  QryPOTaxCode.ParamByName('AId').Value := AId;
+  Src.DataSet := QryPOTaxCode;
+  QryPOTaxCode.Open;
+
+  IQSearch2.DataSource.DataSet.Close;
+  IQSearch2.DataSource.DataSet.Open;
+end;
+
+procedure TFrmArPrepostTax.DoCreateOEHist(ADtlId, AId: Real);
+begin
+  PageControl1.ActivePage := TabSheet1;
+
+  if ADtlId = 0 then
+  begin
+    QryOeHistAllTaxes.ParamByName('AId').Value := AId;
+    Src.DataSet := QryOeHistAllTaxes;
+    QryOeHistAllTaxes.Open;
+  end
+  else
+  begin
+    QryOeHistTaxCode.ParamByName('Adetailid').Value := ADtlId;
+    Src.DataSet := QryOeHistTaxCode;
+    QryOeHistTaxCode.Open;
+  end;
+  IQSearch1.DataSource.DataSet.Close;
+  IQSearch1.DataSource.DataSet.Open;
+end;
+
+procedure TFrmArPrepostTax.DoCreateOE(ADtlId, AId: Real);
+begin
+  PageControl1.ActivePage := TabSheet1;
+
+  FSource := 'ORDERS';
+  FSourceID := AId;
+
+  if ADtlId = 0 then
+  begin
+    QryOeAllTaxes.ParamByName('AId').Value := AId;
+    Src.DataSet := QryOeAllTaxes;
+    QryOeAllTaxes.Open;
+  end
+  else
+  begin
+    QryOeTaxCode.ParamByName('Adetailid').Value := ADtlId;
+    Src.DataSet := QryOeTaxCode;
+    QryOeTaxCode.Open;
+  end;
+  IQSearch1.DataSource.DataSet.Close;
+  IQSearch1.DataSource.DataSet.Open;
+end;
+
+procedure TFrmArPrepostTax.DoCreateAPPrepost(  ADtlId, AId: Real);
+begin
+  PageControl1.ActivePage := TabSheet1;
+
+  FSource := 'APPREPOST';
+  FSourceID := AId;
+
+  QryApPrepostTax.ParamByName('AId').Value := AId;
+  Src.DataSet := QryApPrepostTax;
+  QryApPrepostTax.Open;
+  IQSearch1.DataSource.DataSet.Close;
+  IQSearch1.DataSource.DataSet.Open;
+end;
+
+procedure TFrmArPrepostTax.DoCreateAPInvoice(ADtlId, AId: Real);
+begin
+  PageControl1.ActivePage := TabSheet1;
+
+  QryApInvoiceTax.ParamByName('AId').Value := AId;
+  Src.DataSet := QryApInvoiceTax;
+  QryApInvoiceTax.Open;
+  IQSearch1.DataSource.DataSet.Close;
+  IQSearch1.DataSource.DataSet.Open;
+end;
+
+procedure TFrmArPrepostTax.DoCreateAPVoid(ADtlId, AId: Real);
+begin
+  PageControl1.ActivePage := TabSheet1;
+
+  QryApVoidTax.ParamByName('AId').Value := AId;
+  Src.DataSet := QryApVoidTax;
+  QryApVoidTax.Open;
+  IQSearch1.DataSource.DataSet.Close;
+  IQSearch1.DataSource.DataSet.Open;
+end;
+
+procedure TFrmArPrepostTax.DoCreateAPPrepostUse(ADtlId, AId: Real);
+begin
+  PageControl1.ActivePage := TabSheet1;
+
+  QryApPrepostUseTax.ParamByName('AId').Value := AId;
+  Src.DataSet := QryApPrepostUseTax;
+  QryApPrepostUseTax.Open;
+  IQSearch1.DataSource.DataSet.Close;
+  IQSearch1.DataSource.DataSet.Open;
+end;
+
+procedure TFrmArPrepostTax.DoCreateAPInvoiceUse(ADtlId, AId: Real);
+begin
+  PageControl1.ActivePage := TabSheet1;
+
+  QryApInvoiceUseTax.ParamByName('AId').Value := AId;
+  Src.DataSet := QryApInvoiceUseTax;
+  QryApInvoiceUseTax.Open;
+  IQSearch1.DataSource.DataSet.Close;
+  IQSearch1.DataSource.DataSet.Open;
+end;
+
+procedure TFrmArPrepostTax.DoCreateAPVoidUse(ADtlId, AId: Real);
+begin
+  PageControl1.ActivePage := TabSheet1;
+
+  QryApVoidUseTax.ParamByName('AId').Value := AId;
+  Src.DataSet := QryApVoidUseTax;
+  QryApVoidUseTax.Open;
+  IQSearch1.DataSource.DataSet.Close;
+  IQSearch1.DataSource.DataSet.Open;
+end;
+
+procedure TFrmArPrepostTax.DoCreateARPost(ADtlId, AId: Real);
+begin
+  PageControl1.ActivePage := TabSheet1;
+
+  if ADtlId = 0 then
+  begin
+    QryARPostAllTaxes.ParamByName('ArInvoiceId').Value := AId;
+    Src.DataSet := QryARPostAllTaxes;
+    QryARPostAllTaxes.Open;
+    //      GetTaxes('ARINVOICE', AId);
+  end
+  else
+  begin
+    QryARPostTaxCode.ParamByName('Arinvoicedetailid').Value := ADtlId;
+    Src.DataSet := QryARPostTaxCode;
+    QryARPostTaxCode.Open;
+  end;
+  IQSearch1.DataSource.DataSet.Close;
+  IQSearch1.DataSource.DataSet.Open;
+end;
+
+procedure TFrmArPrepostTax.DoCreateARVoid(ADtlId, AId: Real);
+begin
+  PageControl1.ActivePage := TabSheet1;
+
+  if ADtlId = 0 then
+  begin
+    QryARVoidAllTaxes.ParamByName('AId').Value := AId;
+    Src.DataSet := QryARVoidAllTaxes;
+    QryARVoidAllTaxes.Open;
+  end
+  else
+  begin
+    QryARVoidTaxCode.ParamByName('Adetailid').Value := ADtlId;
+    Src.DataSet := QryARVoidTaxCode;
+    QryARVoidTaxCode.Open;
+  end;
+  IQSearch1.DataSource.DataSet.Close;
+  IQSearch1.DataSource.DataSet.Open;
+end;
+
+procedure TFrmArPrepostTax.FormCreate(Sender: TObject);
+begin
+  IQMS.Common.Controls.AdjustPageControlToParent(PageControl1);
+end;
+
+procedure TFrmArPrepostTax.FormShow(Sender: TObject);
+begin
+  IQRegFormRead(self, [self]);
+end;
+
+procedure TFrmArPrepostTax.FormActivate(Sender: TObject);
+begin
+  if IQMS.Common.StringUtils.StrInList(FSource, ['ORDERS', 'ARPREPOST', 'APPREPOST', 'PO',
+    'CRM_QUOTE']) then
+  begin
+    if (Src.DataSet.RecordCount > 0) then
+      FEplantId := Src.DataSet.FieldByName('EPLANT_ID').AsFloat
+    else
+      FEplantId := SelectValueFmtAsFloat(
+        'select eplant_id from %s where id = %.0f',
+        [FSource, FSourceID]);
+    { TODO -oathite -cWebConvert : Need to convert Avalara
+    sbtnRecalcTaxes.Visible := Avalara.AvalaraEnabled(FEplantId); }
+  end
+  else
+    sbtnRecalcTaxes.Visible := false;
+end;
+
+procedure TFrmArPrepostTax.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  IQRegFormWrite(self, [self]);
+end;
+
+procedure TFrmArPrepostTax.GetTaxes(ASource: string; ASourceId: Real);
+var
+  hMsg: TPanelMesg;
+  ATaxCodesId: Real;
+begin
+  { TODO -oathite -cWebConvert : Need to convert Avalara
+  if Avalara.AvalaraEnabled(FEplantId) then
+  begin
+    // ar_rscstr.cTXT0000098 = 'Calculating Taxes.  Please wait...';
+    hMsg := hPleaseWait(ar_rscstr.cTXT0000098);
+    try
+      with TAvalaraGetTax.Create(self) do
+        try
+          begin
+            GetTax(ASource, ASourceId);
+
+            ReOpen(Src.DataSet);
+          end;
+        finally
+          Free;
+        end;
+    finally
+      if Assigned(hMsg) then
+        FreeAndNil(hMsg);
+    end;
+  end; }
+end;
+
+procedure TFrmArPrepostTax.sbtnRecalcTaxesClick(Sender: TObject);
+begin
+  GetTaxes(FSource, FSourceID);
+end;
+
+end.

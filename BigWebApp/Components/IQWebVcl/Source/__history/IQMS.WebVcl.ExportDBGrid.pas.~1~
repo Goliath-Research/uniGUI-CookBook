@@ -1,0 +1,396 @@
+unit IQMS.WebVcl.ExportDBGrid;
+
+interface
+
+uses
+  Classes,
+  SysUtils,
+  Messages,
+  Graphics,
+  Controls,
+  Grids,
+  DBGrids,
+  Wwdbigrd,
+  Wwdbgrid,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniBasicGrid,
+  uniDBGrid,  IQUniGrid,
+  DB;
+
+type
+  { TListCargo }
+  TListCargo = class
+   FieldName: String;
+   Caption: String;
+   constructor Create(AFieldName, ACaption: String);
+  end;
+
+  { TExportDBGrid }
+  TExportDBGrid = class( TComponent )
+  private
+    FFileName: string;
+    FDBGrid: TUniCustomDBGrid;
+    FVisibleFields: TStringList;
+    FDoNotConvertDateToAbsoluteString:boolean;
+    function GetColumnCount: Integer;
+    function GetColumnCaption(I: Integer): string;
+    function GetColumnFieldName(I: Integer): string;
+    function GetDataSet: TDataSet;
+    function FixCaptionStr(const ACaption: String): String;
+    procedure UpdateVisibleFields;
+  public
+    constructor Create( AOwner: TComponent; AFileName: string; ADBGrid: TUniCustomDBGrid );
+    destructor Destroy; override;
+    
+    procedure ToExcel;
+    procedure ToXML;
+
+    property DataSet: TDataSet read GetDataSet;
+    property DoNotConvertDateToAbsoluteString: boolean read FDoNotConvertDateToAbsoluteString write FDoNotConvertDateToAbsoluteString;
+end;
+
+implementation
+
+uses
+  IQMS.Common.StringUtils,
+  IQMS.Common.Miscellaneous,
+  Windows,
+  ComObj,
+  Variants,
+  IQMS.WebVcl.ResourceStrings,
+  IQMS.Common.Controls;
+
+
+{ TListCargo }
+
+constructor TListCargo.Create(AFieldName, ACaption: String);
+begin
+  FieldName := AFieldName;
+  Caption := ACaption;
+end;
+
+{ TExportDBGrid }
+
+constructor TExportDBGrid.Create( AOwner: TComponent; AFileName: string; ADBGrid: TUniCustomDBGrid  );
+begin
+  inherited Create(AOwner);
+  FVisibleFields := TStringList.Create;
+  FFileName:= AFileName;
+  FDBGrid  :=  ADBGrid;
+end;
+
+destructor TExportDBGrid.Destroy;
+begin
+  if Assigned(FVisibleFields) then
+     begin
+       IQMS.Common.Controls.ClearStringListOfObjects(FVisibleFields);
+       FreeAndNil(FVisibleFields);
+     end;
+  inherited Destroy;
+end;
+
+function TExportDBGrid.GetDataSet: TDataSet;
+begin
+  Result:= nil;
+  
+  if not Assigned(FDBGrid) then
+     EXIT
+  else if FDBGrid is TUniDBGrid then with TUniDBGrid(FDBGrid) do
+     begin
+       if Assigned(DataSource) then
+          Result:= DataSource.DataSet
+     end
+//  else if FDBGrid is TIQUniGridControl then with TIQUniGridControl(FDBGrid) do
+//     begin
+//       if Assigned(DataSource) then
+//          Result:= DataSource.DataSet
+//     end
+end;
+
+procedure TExportDBGrid.UpdateVisibleFields;
+var
+   i: Integer;
+
+   procedure _Add(AFieldName, ACaption: String);
+   begin
+     FVisibleFields.AddObject(AFieldName,
+      TListCargo.Create(AFieldName, FixCaptionStr(ACaption)));
+   end;
+
+begin
+  FVisibleFields.Clear;
+
+  if Assigned(FDBGrid) and (FDBGrid is TUniDBGrid) then
+     with TUniDBGrid(FDBGrid) do
+     begin
+       for i := 0 to Columns.Count - 1 do
+        if Columns[i].Visible then
+           _Add(Columns[i].FieldName, Columns[i].Title.Caption);
+     end;
+
+//  else if Assigned(FDBGrid) and (FDBGrid is TIQUniGridControl) then
+//    with TIQUniGridControl(FDBGrid) do
+//     begin
+//       for i := 0 to Selected.Count - 1 do
+//         _Add(Columns[i].FieldName, Columns[i].DisplayLabel);
+//     end;
+
+  if (FVisibleFields.Count = 0) and Assigned(DataSet) then
+     begin
+       for i := 0 to DataSet.FieldCount - 1 do
+        if DataSet.Fields[i].Visible then
+           _Add(DataSet.Fields[i].FieldName, DataSet.Fields[i].DisplayLabel);
+     end;
+     
+  if (FVisibleFields.IndexOf('ID') = -1) and (DataSet.FindField('ID') <> nil) then
+     _Add( 'ID', 'ID' );
+end;
+
+function TExportDBGrid.GetColumnCaption(I: Integer): string;
+begin
+  Result := '';
+  if (i > -1) and (i < FVisibleFields.Count) then
+     Result := TListCargo(FVisibleFields.Objects[i]).Caption;
+end;
+
+function TExportDBGrid.GetColumnCount: Integer;
+begin
+  Result := FVisibleFields.Count;
+end;
+
+function TExportDBGrid.GetColumnFieldName(I: Integer): string;
+begin
+  Result := '';
+  if (i > -1) and (i < FVisibleFields.Count) then
+     Result := FVisibleFields.Strings[I];
+end;
+
+function TExportDBGrid.FixCaptionStr(const ACaption: String): String;
+begin
+  Result := ACaption;
+  Result := IQMS.Common.StringUtils.StrTran(Result, '~', '');
+  Result := IQMS.Common.StringUtils.StrTran(Result, #13, ' ');
+  Result := IQMS.Common.StringUtils.StrTran(Result, '  ', ' ');
+  Result := Trim(Result);
+end;
+
+procedure TExportDBGrid.ToExcel;
+var
+  Excel    : Variant;
+  WorkBook : Variant;
+  DataSheet: Variant;
+      
+  procedure CreateOLEObjects;
+  begin
+    Excel:= CreateOLEObject('Excel.Application');
+    try
+      WorkBook      := Excel.Workbooks.Add;
+      DataSheet     := WorkBook.Worksheets.Add;
+      DataSheet.Name:= IQMS.WebVcl.ResourceStrings.cTXT0000025; // 'Data'
+    except
+      Excel.Quit;
+      raise;
+    end;
+  end;
+
+  procedure ExportData;
+  var
+    I           : integer;
+    EndOfDataRow: Integer;
+    AColumnRange: string;
+    ARangeEnd   : string;
+    ADate       : string;
+    ANumberValue: Real;
+  begin
+    EndOfDataRow := 1;
+    // write the data labels
+    for I:= 0 to GetColumnCount - 1 do
+        DataSheet.Cells[ EndOfDataRow, I+1 ].Value:= GetColumnCaption( I );
+    // populate
+    DataSet.First;
+    EndOfDataRow:= EndOfDataRow + 1;
+    while not DataSet.Eof do
+    begin
+      for I:= 0 to GetColumnCount - 1 do
+        if DataSet.FindField( GetColumnFieldName( I )) <> nil then
+        begin
+          if DataSet.FieldByName( GetColumnFieldName( I )).DataType = ftString then
+          begin
+            DataSheet.Cells[ EndOfDataRow, I+1 ].NumberFormat := AnsiChar('@');   // @ - format numbers to text. 03-26-2013 Note we typcasted to AnsiChar to avoid 64 to pop up in the cell (ascii of @)
+            DataSheet.Cells[ EndOfDataRow, I+1 ].Formula := DataSet.FieldByName( GetColumnFieldName( I )).asString;
+          end
+          else if DataSet.FieldByName( GetColumnFieldName( I )).DataType = ftDateTime then
+          begin
+            if FDoNotConvertDateToAbsoluteString then
+              ADate  := FormatDateTime(FormatSettings.ShortDateFormat, DataSet.FieldByName( GetColumnFieldName( I )).asDateTime)
+            else
+              ADate  := #39 + FormatDateTime(FormatSettings.ShortDateFormat, DataSet.FieldByName( GetColumnFieldName( I )).asDateTime);
+            if DataSet.FieldByName( GetColumnFieldName( I )).asDateTime = 0 then
+              ADate := '';
+            DataSheet.Cells[ EndOfDataRow, I+1 ].Value := ADate;
+          end                                                                                      
+          else if DataSet.FieldByName( GetColumnFieldName( I )).DataType in [ftInteger, ftLargeInt] then
+          begin
+             DataSheet.Cells[ EndOfDataRow, I+1 ].NumberFormat := AnsiString('#');
+             DataSheet.Cells[ EndOfDataRow, I+1 ].Value := DataSet.FieldByName( GetColumnFieldName( I )).AsLargeInt;
+          end
+          else if DataSet.FieldByName( GetColumnFieldName( I )).DataType in [ftFloat, ftBCD, ftFmtBCD] then
+          begin
+            ANumberValue := DataSet.FieldByName( GetColumnFieldName( I )).AsFloat;
+            if Abs(Frac(ANumberValue)) > 0 then
+            begin
+              DataSheet.Cells[ EndOfDataRow, I+1 ].NumberFormat := AnsiString('#' + FormatSettings.DecimalSeparator + '######');
+              DataSheet.Cells[ EndOfDataRow, I+1 ].Value := ANumberValue;
+            end
+            else
+            begin
+              DataSheet.Cells[ EndOfDataRow, I+1 ].NumberFormat := AnsiString('#');
+              DataSheet.Cells[ EndOfDataRow, I+1 ].Value := Trunc(ANumberValue);
+            end;
+          end
+          else
+             DataSheet.Cells[ EndOfDataRow, I+1 ].Value:= DataSet.FieldByName( GetColumnFieldName( I )).asString;
+        end;
+      EndOfDataRow:= EndOfDataRow + 1;
+      DataSet.Next;
+    end;
+
+    // figure range end. Could be just Z or if past 26 chars AA, AB AC etc.
+    if (GetColumnCount - 1) div 26 > 0 then
+       ARangeEnd:= Chr(Ord('A') + (GetColumnCount - 1) div 26 - 1)   // first letter
+                   +
+                   Chr(Ord('A') + (GetColumnCount - 1) mod 26)       // secnd letter
+    else
+       ARangeEnd:= Chr(Ord('A') + (GetColumnCount - 1) mod 26);      // one letter deal
+
+    // auto fit
+    AColumnRange:= Format('A:%s', [ ARangeEnd ]);
+    DataSheet.Columns[AColumnRange].AutoFit;
+  end;
+  
+begin
+  // create
+  CreateOLEObjects;
+  try
+    // Build fields
+    UpdateVisibleFields;
+    
+    // export
+    ExportData;  
+      
+    // make it visible  
+    Excel.WindowState:= 1; 
+    Excel.Visible:= True;
+
+    // save file
+    SysUtils.DeleteFile( FFileName );
+    DataSheet.SaveAs( FFileName );
+  finally
+    Excel:= NULL;
+  end;
+end;
+
+
+procedure TExportDBGrid.ToXML;
+var
+  XMLDoc: OleVariant; 
+  Root, Child, Child1 : OleVariant;  // IXMLDomElement;
+  ARowNum: Integer;
+
+  procedure AddRow;
+  var
+    I: Integer;
+  begin
+    {Row_1, Row_2 etc tag}
+    Child:= XMLDoc.CreateElement(Format('Row_%d', [ ARowNum ])); 
+    Root.AppendChild( Child ); 
+  
+    for I:= 0 to GetColumnCount - 1 do
+      if DataSet.FindField( GetColumnFieldName( I )) <> nil then
+      begin
+        // Field name 
+        Child1:= XMLDoc.CreateElement( GetColumnFieldName( I )); 
+        Child.AppendChild( Child1 ); 
+
+        // Data
+        // case TFieldType(Ord(table.Fields[i].DataType)) of 
+        //      ftString: 
+        Child1.AppendChild( XMLDoc.CreateTextNode( DataSet.FieldByName( GetColumnFieldName( I )).asString )); 
+      end;
+  end;
+  
+  procedure CreateXMLDocument;
+  begin
+    Root:= XMLDoc.CreateElement('DataSet'); 
+    XMLDoc.AppendChild( Root ); 
+    
+    ARowNum:= 1;
+    DataSet.First;
+    while not DataSet.Eof do 
+    begin
+      AddRow();
+      ARowNum:= ARowNum + 1;
+      DataSet.Next; 
+    end; 
+  end; 
+
+  procedure SaveToFile;
+  var
+    AErrorCode: Integer;
+  begin
+    AErrorCode:= XMLDoc.Save( FFileName );
+    if AErrorCode > 0 then
+       raise Exception.CreateFmt('Error encountered saving XMLDom document to ''%s''. Error Code = %d', [ FFileName, AErrorCode ]);
+  end; 
+  
+begin
+  XMLDoc:= CreateOleObject('microsoft.xmldom');
+  try
+    UpdateVisibleFields;
+    CreateXMLDocument;
+    SaveToFile;
+  finally
+    XMLDoc:= NULL;
+  end;
+end;
+
+
+end.
+
+{function TExportDBGrid.GetColumnCaption(I: Integer): string;
+begin
+  if not Assigned(FDBGrid) then
+     Result:= ''
+  else if FDBGrid is TDBGrid then with TDBGrid(FDBGrid) do
+     Result:= Columns[ I ].Title.Caption
+  else if FDBGrid is TwwDBGrid then with TwwDBGrid(FDBGrid) do
+     Result:= FixCaptionStr(ColumnByName( Columns[ I ].FieldName ).DisplayLabel)
+  else
+     Result:= ''
+end; }
+
+{function TExportDBGrid.GetColumnCount: Integer;
+begin
+  if not Assigned(FDBGrid) then
+     Result:= 0
+  else if FDBGrid is TDBGrid then with TDBGrid(FDBGrid) do
+     Result:= Columns.Count
+  else if FDBGrid is TwwDBGrid then with TwwDBGrid(FDBGrid) do
+     Result:= Selected.Count
+  else
+     Result:= 0
+end;}
+
+{function TExportDBGrid.GetColumnFieldName(I: Integer): string;
+begin
+  if not Assigned(FDBGrid) then
+     Result:= ''
+  else if FDBGrid is TDBGrid then with TDBGrid(FDBGrid) do
+     Result:= Columns[ I ].FieldName
+  else if FDBGrid is TwwDBGrid then with TwwDBGrid(FDBGrid) do
+     Result:= Columns[ I ].FieldName
+  else
+     Result:= ''
+end;}
+

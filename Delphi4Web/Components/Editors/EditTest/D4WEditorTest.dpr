@@ -1,0 +1,96 @@
+{$define UNIGUI_VCL} // Comment out this line to turn this project into an ISAPI module'
+
+{$ifndef UNIGUI_VCL}
+library
+{$else}
+program
+{$endif}
+  D4WEditorTest;
+
+uses
+  uniGUIISAPI,
+  Forms,
+  ServerModule in 'ServerModule.pas' {UniServerModule: TUniGUIServerModule},
+  MainModule in 'MainModule.pas' {UniMainModule: TUniGUIMainModule},
+  Main in 'Main.pas' {MainForm: TUniForm},
+  D4W.DataControllerList in '..\Source\D4W.DataControllerList.pas',
+  D4W.DataServices in '..\Source\D4W.DataServices.pas',
+  D4W.HyperGrid in '..\Source\D4W.HyperGrid.pas' {D4WHyperGrid: TUniFrame},
+  D4W.MenuToActionList in '..\Source\D4W.MenuToActionList.pas',
+  D4W.MenuToActionListEditor in '..\Source\D4W.MenuToActionListEditor.pas',
+  D4WDlgMemo in '..\Source\D4WDlgMemo.pas' {D4WDlgMemoForm: TUniForm},
+  D4WDlgPickDataSet in '..\Source\D4WDlgPickDataSet.pas' {D4WDlgPickDataSetForm: TUniForm},
+  D4WDlgSample in '..\Source\D4WDlgSample.pas' {D4WDialogA: TUniForm},
+  D4WEditor in '..\Source\D4WEditor.pas',
+  D4WEditorDlg in '..\Source\D4WEditorDlg.pas',
+  D4WEditorDlgMemo in '..\Source\D4WEditorDlgMemo.pas',
+  D4WEditorDlgPickDataSet in '..\Source\D4WEditorDlgPickDataSet.pas',
+  D4WEditorDlgSample in '..\Source\D4WEditorDlgSample.pas',
+  D4WEditorFieldsDlg in '..\Source\D4WEditorFieldsDlg.pas' {D4WFieldSelect: TUniForm},
+  D4WEditorReg in '..\Source\D4WEditorReg.pas',
+  D4WEditorRegDlg in '..\Source\D4WEditorRegDlg.pas',
+  D4WEditorRegEditors in '..\Source\D4WEditorRegEditors.pas',
+  D4WEditorsDesigner in '..\Source\D4WEditorsDesigner.pas' {D4WEditorsDesignDlg},
+  D4WEditorTypeDlg in '..\Source\D4WEditorTypeDlg.pas' {D4WEditorDialogForm},
+  D4WEditorUtils in '..\Source\D4WEditorUtils.pas',
+  D4WGridDesignerFrm in '..\Source\D4WGridDesignerFrm.pas' {D4WGridDesigner: TUniForm},
+  D4WGridDesignerSelectFrm in '..\Source\D4WGridDesignerSelectFrm.pas' {D4WDesignerSelectForm: TUniForm},
+  D4WHyperGridEditors in '..\Source\D4WHyperGridEditors.pas',
+  D4WModuleFormDesigner in '..\Source\D4WModuleFormDesigner.pas' {D4WModuleFrmDsgnr: TUniFrame},
+  D4WModuleFrame in '..\Source\D4WModuleFrame.pas',
+  D4WStream in '..\Source\D4WStream.pas',
+  ActionEditors in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\ActionEditors.pas',
+  BCCStrs in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\BCCStrs.pas',
+  BRCCStrs in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\BRCCStrs.pas',
+  CLANGStrs in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\CLANGStrs.pas',
+  CodeTemplateAPI in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\CodeTemplateAPI.pas',
+  CommonOptionStrs in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\CommonOptionStrs.pas',
+  CPPCOMMONStrs in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\CPPCOMMONStrs.pas',
+  DataExplorerAPI in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\DataExplorerAPI.pas',
+  DCCStrs in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\DCCStrs.pas',
+  DeploymentAPI in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\DeploymentAPI.pas',
+  DesignConst in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\DesignConst.pas',
+  DesignEditors in 'c:\program files (x86)\embarcadero\studio\19.0\source\ToolsAPI\DesignEditors.pas',
+  DesignerTypes in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\DesignerTypes.pas',
+  DesignIntf in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\DesignIntf.pas',
+  DesignMenus in 'c:\program files (x86)\embarcadero\studio\19.0\source\ToolsAPI\DesignMenus.pas',
+  DesignWindows in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\DesignWindows.pas',
+  EditIntf in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\EditIntf.pas',
+  ExptIntf in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\ExptIntf.pas',
+  FileHistoryAPI in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\FileHistoryAPI.pas',
+  FileIntf in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\FileIntf.pas',
+  ILinkStrs in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\ILinkStrs.pas',
+  IStreams in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\IStreams.pas',
+  PaletteAPI in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\PaletteAPI.pas',
+  PlatformAPI in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\PlatformAPI.pas',
+  PlatformConst in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\PlatformConst.pas',
+  PropertyCategories in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\PropertyCategories.pas',
+  PropInspAPI in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\PropInspAPI.pas',
+  StructureViewAPI in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\StructureViewAPI.pas',
+  TasmStrs in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\TasmStrs.pas',
+  TlibStrs in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\TlibStrs.pas',
+  ToolIntf in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\ToolIntf.pas',
+  ToolWnds in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\ToolWnds.pas' {ToolbarDesignWindow},
+  TreeIntf in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\TreeIntf.pas',
+  VCLEditors in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\VCLEditors.pas',
+  VCLSprigs in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\VCLSprigs.pas',
+  VirtIntf in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\VirtIntf.pas',
+  VisualizationServicesAPI in 'C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\VisualizationServicesAPI.pas';
+
+{$R *.res}
+
+{$ifndef UNIGUI_VCL}
+exports
+  GetExtensionVersion,
+  HttpExtensionProc,
+  TerminateExtension;
+{$endif}
+
+begin
+{$ifdef UNIGUI_VCL}
+  ReportMemoryLeaksOnShutdown := True;
+  Application.Initialize;
+  TUniServerModule.Create(Application);
+  Application.Run;
+{$endif}
+end.

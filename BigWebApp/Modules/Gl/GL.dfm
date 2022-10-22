@@ -1,0 +1,1537 @@
+object FrmGLMain: TFrmGLMain
+  Left = 304
+  Top = 175
+  HelpContext = 1095676
+  ClientHeight = 517
+  ClientWidth = 630
+  Caption = 'Chart of Accounts'
+  OnShow = UniFormShow
+  OldCreateOrder = True
+  OnClose = FormClose
+  OnActivate = FormActivate
+  Menu = MainMenu1
+  MonitoredKeys.Keys = <>
+  Font.Name = 'MS Sans Serif'
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Splitter2: TUniSplitter
+    Left = 0
+    Top = 319
+    Width = 630
+    Height = 3
+    Cursor = crVSplit
+    Hint = ''
+    Align = alBottom
+    ParentColor = False
+    Color = clBtnFace
+  end
+  object Panel1: TUniPanel
+    Left = 0
+    Top = 0
+    Width = 630
+    Height = 27
+    Hint = ''
+    Align = alTop
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 0
+    Caption = ''
+    object sbtnSearch: TUniSpeedButton
+      Left = 1
+      Top = 1
+      Width = 25
+      Height = 25
+      Hint = 'Search'
+      ShowHint = True
+      ParentShowHint = False
+      Glyph.Data = {
+        36060000424D3606000000000000360000002800000020000000100000000100
+        1800000000000006000000000000000000000000000000000000FF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFB18C76A07860
+        90604090584090584087492AFF00FFFF00FFFF00FFB485659C755DA070509058
+        40905030773818FF00FF8B8B8B7777775F5F5F5A5A5A5A5A5A4A4A4AFF00FFFF
+        00FFFF00FF8484847474746F6F6F5A5A5A5151513B3B3BFF00FFB09080FFF8FF
+        E0C8C0D0A090C08060804020FF00FFFF00FFFF00FFB08060F0E8E0E0C8C0D0A8
+        90B07850804820FF00FF8F8F8FFAFAFAC9C9C9A1A1A1818181424242FF00FFFF
+        00FFFF00FF7F7F7FE7E7E7C9C9C9A7A7A7777777484848FF00FFB09080FFF8FF
+        E0C8C0D0A090C08060804020FF00FFFF00FFFF00FFB08060F0E8E0F0E0E0E0C0
+        B0C08870804830FF00FF8F8F8FFAFAFAC9C9C9A1A1A1818181424242FF00FFFF
+        00FFFF00FF7F7F7FE7E7E7E2E2E2C0C0C08989894A4A4AFF00FFB09080FFF8FF
+        E0C8C0D0A090C08060804020FF00FFFF00FFFF00FFB08060F0E8E0F0E0E0E0C0
+        B0C08870804830FF00FF8F8F8FFAFAFAC9C9C9A1A1A1818181424242FF00FFFF
+        00FFFF00FF7F7F7FE7E7E7E2E2E2C0C0C08989894A4A4AFF00FFC09880FFFFFF
+        F0E8E0E0C8C0D0A080804020FF00FFFF00FFFF00FFB08060F0E8E0F0E0E0E0C0
+        B0C08870804830FF00FF979797FFFFFFE7E7E7C9C9C99E9E9E424242FF00FFFF
+        00FFFF00FF7F7F7FE7E7E7E2E2E2C0C0C08989894A4A4AFF00FFC3A494B08870
+        A068509050308048308048208038108F4C26B08870A068509058309048308040
+        20703810905830FF00FFA4A4A48787876969695151514A4A4A4848483B3B3B4E
+        4E4E8787876969695757574C4C4C424242393939575757FF00FFDEC4B4B08870
+        FFFFFFE0D0C0D0A090A07050804010D5B89CB09070E0D8D0F0D8D0D0A090B078
+        50803820CFA98AFF00FFC3C3C3878787FFFFFFCECECEA1A1A16F6F6F414141B5
+        B5B58D8D8DD7D7D7D9D9D9A1A1A17777773D3D3DA7A7A7FF00FFFF00FFC09080
+        F0F0F0FFF8F0F0D8C0B08060804820965732B09070FFFFFFFFF8F0F0D0C0B078
+        50804820FF00FFFF00FFFF00FFFF00FFF0F0F0F7F7F7D5D5D57F7F7F48484857
+        57578D8D8DFFFFFFF7F7F7D0D0D0777777484848FF00FFFF00FFFF00FFF8E2D2
+        C09880B08060A068509050309058409D6842B07860B08870A070508048308048
+        20ECC4A7FF00FFFF00FFFF00FFE1E1E19797977F7F7F6969695151515A5A5A67
+        67677979798787876F6F6F4A4A4A484848C2C2C2FF00FFFF00FFFF00FFFF00FF
+        C09880FFF8FFE0C0B0C09070804820FF00FFC09880FFF8FFE0C8B0D0A0808048
+        20FF00FFFF00FFFF00FFFF00FFFF00FF979797FAFAFAC0C0C08E8E8E484848FF
+        00FF979797FAFAFAC5C5C59E9E9E484848FF00FFFF00FFFF00FFFF00FFFF00FF
+        CFB1A1B09080A06850905030875139FF00FFC0A890B09080A06850905030864F
+        37FF00FFFF00FFFF00FFFF00FFFF00FFB0B0B08F8F8F696969515151525252FF
+        00FFA5A5A58F8F8F696969515151505050FF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFB1836DFFF8F0814527FF00FFFF00FFFF00FFB08068FFF8F0804324FF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF838383F7F7F7464646FF00FFFF
+        00FFFF00FF808080F7F7F7444444FF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFC7A898B48D759D6843FF00FFFF00FFFF00FFCEAE9CB48C749C6640FF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFA7A7A78C8C8C676767FF00FFFF
+        00FFFF00FFADADAD8B8B8B656565FF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
+      Caption = ''
+      Align = alLeft
+      Anchors = [akLeft, akTop, akBottom]
+      ParentColor = False
+      Color = clWindow
+      OnClick = sbtnSearchClick
+    end
+    object sbEActivity: TUniSpeedButton
+      Left = 73
+      Top = 1
+      Width = 25
+      Height = 25
+      Hint = 'Enterprise Account Activity'
+      ShowHint = True
+      ParentShowHint = False
+      Glyph.Data = {
+        36060000424D3606000000000000360000002800000020000000100000000100
+        18000000000000060000120B0000120B00000000000000000000FF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        99A399597C59367136216D21216B212F6A2F718A71CACACAFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFA1A1A17373736464645E5E5E5D5D5D5D
+        5D5D838383CACACAFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFBFC2BF2D6C2D
+        00910000B30000C10000C50000C40000BF00008E00708A70FF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFC1C1C15F5F5F7D7D7D9A9A9AA6A6A6AAAAAAA9A9A9A4
+        A4A47A7A7A838383FF00FFFF00FFFF00FFFF00FFFF00FFFF00FF7E967E00DC00
+        00FA0000EC0000E90000E80000E90000FA0000BD00738A73FF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FF8F8F8FBEBEBED8D8D8CCCCCCCACACAC9C9C9CACACAD8
+        D8D8A3A3A3848484FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFA6AEA600E93F
+        00FF1300FF0000FF0000FF0000FF0000FF0002A002AEB2AEFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFACACACCBCBCBDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDC
+        DCDC8A8A8AB1B1B1FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF3B9C48
+        19FF6800FF0F00D50000CC0000FC0500EE00467846CACACABFB3B2BAB1AFB9B2
+        AFB7AEAAB3A9A4C7C5C4FF00FF8A8A8AE1E1E1DCDCDCB8B8B8B0B0B0D9D9D9CE
+        CECE6D6D6DCACACAB4B4B4B2B2B2B2B2B2AEAEAEA9A9A9C5C5C5FF00FFBBBEBB
+        24A43900C113007800016801057105003F14150F27DDA795FFFFEAFFF2DBFAE9
+        D1FEEED7EAD5BCAC9D96FF00FFBDBDBD8F8F8FA6A6A666666658585860606036
+        3636161616A8A8A8FBFBFBEFEFEFE6E6E6EBEBEBD2D2D29D9D9DFF00FFFF00FF
+        FF00FF4F7B4F00687F0581B3254C48563547002661244151B6B3B3B3B8C3BFC9
+        C9F1FCFEFFFFFFAFA199FF00FFFF00FFFF00FF7171716A6A6A8A8A8A4949493C
+        3C3C383838434343B3B3B3BABABAC9C9C9FCFCFCFFFFFFA1A1A1FF00FFFF00FF
+        FF00FF3A3A3A000000001C641078F7A19CA12A5B7A0000035500004D00006535
+        1FFFFFFFFFFEEEB6ACA8FF00FFFF00FFFF00FF3A3A3A0000003434349C9C9C9E
+        9E9E616161000000131313101010363636FFFFFFFBFBFBACACACFF00FFFF00FF
+        6D6D6D2C242A00000000000000448BD3FFFFD3B69B9A4300FBC672FFE488954C
+        00C49A89F6E9DBC0BBB9FF00FFFF00FF6D6D6D252525000000000000575757FD
+        FDFDB3B3B3474747BDBDBDD8D8D84D4D4D9B9B9BE8E8E8BBBBBBFF00FFFF00FF
+        4646463F3F3F191A1A00000000000093A9C6FFD6A5E1C07DFFFFEEFFFFFFD3C6
+        A0926348C5A796C7C5C4FF00FFFF00FF4646463F3F3F1A1A1A000000000000AE
+        AEAED1D1D1B8B8B8FCFCFCFFFFFFC0C0C0626262A6A6A6C5C5C5FF00FFFF00FF
+        5656561D1D1D000000000000000000000000ECCDBAE7BC92D5C5A3E3DABBCEAC
+        7CF2CDADC8B6A8FF00FFFF00FFFF00FF5656561D1D1D00000000000000000000
+        0000CCCCCCB8B8B8C0C0C0D5D5D5A6A6A6CACACAB5B5B5FF00FFFF00FFFF00FF
+        B8B8B82A2A2A0000000202024646466B6662FFFFFF93745AA67C52B7905C8A61
+        3AF1EAE1C8B6A9FF00FFFF00FFFF00FFB8B8B82A2A2A00000002020246464666
+        6666FFFFFF7272727878788A8A8A5E5E5EE9E9E9B5B5B5FF00FFFF00FFFF00FF
+        FF00FFCBCBCBB6B6B6BDBDBDFF00FFC8B4ABF5F2EE93979897898493817C9A9C
+        A3E8EAE3B9A396FF00FFFF00FFFF00FFFF00FFCBCBCBB6B6B6BDBDBDFF00FFB4
+        B4B4F2F2F29797978989898282829D9D9DE9E9E9A2A2A2FF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFFF00FFC6C2C0B2A6A1BCB0ABBBB1ACBBB1ACBEB1
+        AAB5A59EBBB4B1FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC2
+        C2C2A6A6A6B0B0B0B1B1B1B1B1B1B1B1B1A5A5A5B4B4B4FF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
+      Caption = ''
+      Align = alLeft
+      Anchors = [akLeft, akTop, akBottom]
+      ParentColor = False
+      Color = clWindow
+      OnClick = sbEActivityClick
+    end
+    object sbtnUpdateFinRpt: TUniSpeedButton
+      AlignWithMargins = True
+      Left = 37
+      Top = 4
+      Width = 25
+      Height = 19
+      Hint = 'Update Financial Reports'
+      ShowHint = True
+      ParentShowHint = False
+      Glyph.Data = {
+        36060000424D3606000000000000360000002800000020000000100000000100
+        18000000000000060000130B0000130B00000000000000000000FF00FF404040
+        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FF404040FF00FFFF00FFFF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF00800000E000
+        404040FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FF6D6D6DC2C2C2404040FF00FFFF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF00800000FF00
+        00E000404040897E7E826F6B999494C3C3C3FF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FF6D6D6DDCDCDCC2C2C24040407F7F7F707070959595C3
+        C3C3FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF00800000E020
+        00FF0000E0004040402F8F82306E642B45344F49367571689B9B9BC2C2C2CCCB
+        CBFF00FFFF00FFFF00FF6D6D6DC2C2C2DCDCDCC2C2C240404088888869696940
+        40404646466F6F6F9B9B9BC2C2C2CBCBCBFF00FFFF00FFFF00FF00800000FF00
+        00E02040E0A000800000DBFF00D3FF00BEE400BCDB0088997D2D18C40E05CE16
+        16A45454B4B4B4FF00FF6D6D6DDCDCDCC2C2C2CECECE6D6D6DDDDDDDD7D7D7C2
+        C2C2BEBEBE8888883535353A3A3A4040405D5D5DB4B4B4FF00FF00800000FF00
+        80E02000800000E5FF00CCFF00D2FF00E3FF00BFFF856E84FF9043FF6F37FF56
+        28FF4C20A30606AEAEAE6D6D6DDCDCDCC4C4C46D6D6DE4E4E4D2D2D2D6D6D6E3
+        E3E3CACACA7575759191917A7A7A6969696363632E2E2EAEAEAE008000C0DCC0
+        00800000E7FF00B8FF00B5FF00B3FF00CBFF00348DFE6407FFFFB3FFB171FF67
+        37FF5628FF4318AC7A7A6D6D6DD5D5D56D6D6DE6E6E6C4C4C4C3C3C3C2C2C2D2
+        D2D2515151707070F2F2F2AEAEAE7575756969695F5F5F7F7F7FBEBEBE008000
+        D8C7D34CA36E00935C00B0F300BBFF00D3FF0076D37C3948895D4FC96139FFB6
+        76FF9054FF6030B04E4EBEBEBE6D6D6DCCCCCC959595848484BCBCBCC7C7C7D7
+        D7D78D8D8D4444445E5E5E676767B2B2B29393937070705A5A5A9F9F9F747575
+        FFFFFFC1C2AA005D00008100009B4D00A28B00A971007D00002930F5BCAEFFFF
+        B5FFD88BFFAC6DAE67679F9F9F757575FFFFFFBDBDBD4E4E4E6E6E6E89898998
+        98989999996B6B6B292929BEBEBEF2F2F2CFCFCFAAAAAA6E6E6E8C8C8C969696
+        FFFFFFFFFFFF569047005600005900005A00008B00004B00ED806DFFFFFFFFFF
+        FBFFFFD3E79967BFB0B08C8C8C969696FFFFFFFFFFFF8181814848484B4B4B4C
+        4C4C7777773F3F3F898989FFFFFFFFFFFFF7F7F7989898B1B1B18282829D9D9D
+        FFFFFFE8E5E8F8F5F8E3F3E084B07A519E3A007A00005C005D4B00AD4900BC85
+        60CE938CC8B2B3FF00FF8282829D9D9DFFFFFFE6E6E6F6F6F6EFEFEFA4A4A48C
+        8C8C6868684E4E4E4444444E4E4E848484979797B4B4B4FF00FF7A7A7AA8A8A8
+        FFFFFFCFCFCFECE9ECFFFFFFF3ECF5FFFFFFFCF3FE007110006400005A000E0E
+        0EC2C2C2FF00FFFF00FF7A7A7AA8A8A8FFFFFFCFCFCFEAEAEAFFFFFFEFEFEFFF
+        FFFFF6F6F66161615555554C4C4C0E0E0EC2C2C2FF00FFFF00FF777777B8B8B8
+        FFFFFFF6F6F6FFFFFFEFEFEFD8D8D8FFFFFFFFFCFF789C8C0023000076004577
+        3DFF00FFFF00FFFF00FF777777B8B8B8FFFFFFF6F6F6FFFFFFEFEFEFD8D8D8FF
+        FFFFFDFDFD9696961C1C1C6565656B6B6BFF00FFFF00FFFF00FFA9A9A97E7E7E
+        EFEFEFEFEFEFFFFFFFFDFDFDF5F5F5FFFFFFFFFFFFD3E6E0005100BCD9B0A69B
+        A7FF00FFFF00FFFF00FFA9A9A97E7E7EEFEFEFEFEFEFFFFFFFFDFDFDF5F5F5FF
+        FFFFFFFFFFE4E4E4454545D0D0D09F9F9FFF00FFFF00FFFF00FFFF00FFCBCBCB
+        A8A8A8848484898989919191ACACACE2E2E2ECECECFFFFFFFFFFFFFFFFFF8888
+        88FF00FFFF00FFFF00FFFF00FFCBCBCBA8A8A8848484898989919191ACACACE2
+        E2E2ECECECFFFFFFFFFFFFFFFFFF888888FF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFC9C9C9AAAAAA8A8A8A8988899F999E7F7E7FC0C0
+        C0FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC9C9C9AA
+        AAAA8A8A8A8888889B9B9B7E7E7EC0C0C0FF00FFFF00FFFF00FF}
+      Caption = ''
+      Align = alLeft
+      Anchors = [akLeft, akTop, akBottom]
+      ParentColor = False
+      Color = clWindow
+      OnClick = sbtnUpdateFinRptClick
+    end
+    object Bevel2: TUniPanel
+      AlignWithMargins = True
+      Left = 68
+      Top = 4
+      Width = 2
+      Height = 19
+      Hint = ''
+      Align = alLeft
+      Anchors = [akLeft, akTop, akBottom]
+      TabOrder = 5
+      Caption = ''
+    end
+    object Bevel3: TUniPanel
+      AlignWithMargins = True
+      Left = 29
+      Top = 4
+      Width = 2
+      Height = 19
+      Hint = ''
+      Align = alLeft
+      Anchors = [akLeft, akTop, akBottom]
+      TabOrder = 6
+      Caption = ''
+    end
+    object navMain: TUniDBNavigator
+      Left = 404
+      Top = 1
+      Width = 225
+      Height = 25
+      Hint = ''
+      ShowHint = True
+      ParentShowHint = False
+      DataSource = GL_DM.SrcGLAcct
+      VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbInsert, nbDelete, nbPost, nbCancel, nbRefresh]
+      Align = alRight
+      Anchors = [akTop, akRight, akBottom]
+      TabOrder = 0
+    end
+  end
+  object PageControl2: TUniPageControl
+    Left = 0
+    Top = 27
+    Width = 630
+    Height = 292
+    Hint = ''
+    ActivePage = TabForm
+    Align = alClient
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    TabOrder = 1
+    OnChange = PageControl2Change
+    object TabForm: TUniTabSheet
+      Hint = ''
+      Caption = 'Form'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 256
+      ExplicitHeight = 128
+      object PnlClient01: TUniPanel
+        Left = 0
+        Top = 0
+        Width = 622
+        Height = 264
+        Hint = ''
+        Align = alClient
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        TabOrder = 0
+        Caption = ''
+        object Splitter1: TUniSplitter
+          Left = 154
+          Top = 1
+          Width = 6
+          Height = 262
+          Hint = ''
+          Align = alLeft
+          ParentColor = False
+          Color = clBtnFace
+        end
+        object PnlFormLeft1: TUniPanel
+          Left = 1
+          Top = 1
+          Width = 153
+          Height = 262
+          Hint = ''
+          Align = alLeft
+          Anchors = [akLeft, akTop, akBottom]
+          TabOrder = 0
+          Caption = ''
+          object Label1: TUniLabel
+            Left = 8
+            Top = 12
+            Width = 83
+            Height = 13
+            Hint = ''
+            Caption = 'Account  Number'
+            TabOrder = 1
+          end
+          object Label2: TUniLabel
+            Left = 8
+            Top = 36
+            Width = 53
+            Height = 13
+            Hint = ''
+            Caption = 'Description'
+            TabOrder = 2
+          end
+          object Label3: TUniLabel
+            Left = 8
+            Top = 60
+            Width = 67
+            Height = 13
+            Hint = ''
+            Caption = 'Account Type'
+            TabOrder = 3
+          end
+          object Label4: TUniLabel
+            Left = 8
+            Top = 84
+            Width = 132
+            Height = 13
+            Hint = ''
+            Caption = 'Supplement Reporting Type'
+            TabOrder = 4
+          end
+          object lblEPlant: TUniLabel
+            Left = 8
+            Top = 108
+            Width = 31
+            Height = 13
+            Hint = ''
+            Caption = 'EPlant'
+            TabOrder = 5
+          end
+        end
+        object PnlFormClient1: TUniPanel
+          Left = 160
+          Top = 1
+          Width = 461
+          Height = 262
+          Hint = ''
+          Align = alClient
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          TabOrder = 1
+          Caption = ''
+          DesignSize = (
+            461
+            262)
+          object sbAcctType: TUniSpeedButton
+            Left = 229
+            Top = 56
+            Width = 22
+            Height = 22
+            Hint = 'View/Edit Account Types'
+            ShowHint = True
+            ParentShowHint = False
+            Glyph.Data = {
+              F6000000424DF600000000000000760000002800000010000000100000000100
+              0400000000008000000000000000000000001000000000000000000000000000
+              8000008000000080800080000000800080008080000080808000C0C0C0000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00DDDDDDDDDDDD
+              DDDDDDDDDDDDDDDDDDDDDDDD0000000000DDDDDD0FFFFFFFF0DDDDDD0FFFFFFF
+              F0DDDDDD0FF80FFFF0DDDDDD0F800FFFF0DDDDDD080B0FFFF0DDDDDD00B0FFFF
+              F0DDDDDD0B0FFFFFF0DDDDD0B0FFFFFFF0DDDD0B0FFFFFFFF0DDD0B07FFFFFFF
+              F0DDD90D0000000000DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD}
+            Caption = ''
+            ParentColor = False
+            Color = clWindow
+            OnClick = AccountTypeMaint1Click
+          end
+          object sbtnEPlant: TUniSpeedButton
+            Left = 229
+            Top = 104
+            Width = 22
+            Height = 22
+            Hint = 'Assign Plant'
+            ShowHint = True
+            ParentShowHint = False
+            Glyph.Data = {
+              F6000000424DF600000000000000760000002800000010000000100000000100
+              0400000000008000000000000000000000001000000000000000000000000000
+              8000008000000080800080000000800080008080000080808000C0C0C0000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00DDDDDDDDDDDD
+              DDDDDDDDDDDDDDDDDDDDDDDD0000000000DDDDDD0FFFFFFFF0DDDDDD0FFFFFFF
+              F0DDDDDD0FF80FFFF0DDDDDD0F800FFFF0DDDDDD080B0FFFF0DDDDDD00B0FFFF
+              F0DDDDDD0B0FFFFFF0DDDDD0B0FFFFFFF0DDDD0B0FFFFFFFF0DDD0B07FFFFFFF
+              F0DDD90D0000000000DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD}
+            Caption = ''
+            ParentColor = False
+            Color = clWindow
+            OnClick = sbtnEPlantClick
+          end
+          object Label8: TUniLabel
+            Left = 258
+            Top = 60
+            Width = 49
+            Height = 13
+            Hint = ''
+            Caption = '(Required)'
+            TabOrder = 13
+          end
+          object dbeAcctNumber: TUniDBEdit
+            Left = 0
+            Top = 8
+            Width = 249
+            Height = 21
+            Hint = ''
+            DataField = 'ACCT'
+            DataSource = GL_DM.SrcGLAcct
+            TabOrder = 0
+          end
+          object DBEdit2: TUniDBEdit
+            Left = 0
+            Top = 32
+            Width = 249
+            Height = 21
+            Hint = ''
+            DataField = 'DESCRIP'
+            DataSource = GL_DM.SrcGLAcct
+            TabOrder = 1
+          end
+          object dblcAcctType: TUniDBLookupComboBox
+            Left = 0
+            Top = 56
+            Width = 225
+            Height = 21
+            Hint = ''
+            ListField = 'DESCRIP'
+            ListSource = SrcGlSubAcctType
+            KeyField = 'ID'
+            ListFieldIndex = 0
+            DataField = 'GL_SUBACCT_TYPE_ID'
+            DataSource = GL_DM.SrcGLAcct
+            TabOrder = 2
+            Color = clWindow
+            OnCloseUp = dblcAcctTypeCloseUp
+          end
+          object dbCorVu: TUniDBComboBox
+            Left = 0
+            Top = 80
+            Width = 225
+            Height = 21
+            Hint = ''
+            DataField = 'CORVU_ACCT_TYPE'
+            DataSource = GL_DM.SrcGLAcct
+            Style = csDropDownList
+            Items.Strings = (
+              'CASH'
+              'RECEIVABLES'
+              'CURRENT ASSET'
+              'LONG TERM ASSET'
+              'PAYABLES'
+              'CURRENT LIABILITY'
+              'LONG TERM LIABILITY'
+              'SALES'
+              'COST OF GOODS SOLD'
+              'EXPENSE'
+              'FG INVENTORY'
+              'RAW INVENTORY'
+              'WIP INVENTORY'
+              'RETAINED EARNINGS'
+              'STATISTICAL')
+            TabOrder = 3
+            OnKeyDown = dbCorVuKeyDown
+          end
+          object dbePlant: TUniDBEdit
+            Left = 0
+            Top = 104
+            Width = 225
+            Height = 21
+            Hint = ''
+            DataField = 'EPlant_Name'
+            DataSource = GL_DM.SrcGLAcct
+            TabOrder = 4
+            TabStop = False
+            Color = clBtnFace
+          end
+          object dbHideFromPK: TUniDBCheckBox
+            Left = 0
+            Top = 152
+            Width = 434
+            Height = 17
+            Hint = 
+              'Check this box to exclude this account from being shown in PickL' +
+              'ists'
+            ShowHint = True
+            ParentShowHint = False
+            DataField = 'PK_HIDE'
+            DataSource = GL_DM.SrcGLAcct
+            ValueChecked = 'Y'
+            ValueUnchecked = 'N'
+            Caption = 'Hide from all pick lists'
+            Anchors = [akLeft, akTop, akRight]
+            TabOrder = 5
+          end
+          object dbHideFromGL: TUniDBCheckBox
+            Left = 0
+            Top = 168
+            Width = 434
+            Height = 17
+            Hint = 
+              'Check this box to exclude this account from being shown in PickL' +
+              'ists'
+            ShowHint = True
+            ParentShowHint = False
+            DataField = 'GL_HIDE'
+            DataSource = GL_DM.SrcGLAcct
+            ValueChecked = 'Y'
+            ValueUnchecked = 'N'
+            Caption = 'Hide from GL transaction pick lists'
+            Anchors = [akLeft, akTop, akRight]
+            TabOrder = 6
+          end
+          object dbHideFromAP: TUniDBCheckBox
+            Left = 0
+            Top = 184
+            Width = 434
+            Height = 17
+            Hint = 
+              'Check this box to exclude this account from being shown in PickL' +
+              'ists'
+            ShowHint = True
+            ParentShowHint = False
+            DataField = 'AP_HIDE'
+            DataSource = GL_DM.SrcGLAcct
+            ValueChecked = 'Y'
+            ValueUnchecked = 'N'
+            Caption = 'Hide from Purchase Order and Accounts Payable pick lists'
+            Anchors = [akLeft, akTop, akRight]
+            TabOrder = 7
+          end
+          object dbHideFromAR: TUniDBCheckBox
+            Left = 0
+            Top = 200
+            Width = 434
+            Height = 17
+            Hint = 
+              'Check this box to exclude this account from being shown in PickL' +
+              'ists'
+            ShowHint = True
+            ParentShowHint = False
+            DataField = 'AR_HIDE'
+            DataSource = GL_DM.SrcGLAcct
+            ValueChecked = 'Y'
+            ValueUnchecked = 'N'
+            Caption = 'Hide from Sales Order and Accounts Receivable pick lists'
+            Anchors = [akLeft, akTop, akRight]
+            TabOrder = 8
+          end
+          object DBCheckBox2: TUniDBCheckBox
+            Left = 0
+            Top = 217
+            Width = 434
+            Height = 17
+            Hint = 'Use of this account requires a cost source association'
+            ShowHint = True
+            ParentShowHint = False
+            DataField = 'COST_SOURCE_RQD'
+            DataSource = GL_DM.SrcGLAcct
+            ValueChecked = 'Y'
+            ValueUnchecked = 'N'
+            Caption = 'Cost Source Required'
+            Anchors = [akLeft, akTop, akRight]
+            TabOrder = 9
+          end
+        end
+      end
+    end
+    object TabGrid: TUniTabSheet
+      Hint = ''
+      Caption = 'Tabular'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 256
+      ExplicitHeight = 128
+      object gridAccounts: TIQUniGridControl
+        Left = 0
+        Top = 0
+        Width = 622
+        Height = 264
+        Layout = 'border'
+        ParentAlignmentControl = False
+        AlignmentControl = uniAlignmentClient
+        Align = alClient
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        Font.Name = 'MS Sans Serif'
+        TabOrder = 0
+        IQComponents.Grid.Left = 0
+        IQComponents.Grid.Top = 29
+        IQComponents.Grid.Width = 405
+        IQComponents.Grid.Height = 178
+        IQComponents.Grid.Hint = ''
+        IQComponents.Grid.DataSource = GL_DM.SrcGLAcct
+        IQComponents.Grid.LoadMask.Message = 'Loading data...'
+        IQComponents.Grid.Align = alClient
+        IQComponents.Grid.Anchors = [akLeft, akTop, akRight, akBottom]
+        IQComponents.Grid.TabOrder = 0
+        IQComponents.Navigator.Left = 410
+        IQComponents.Navigator.Top = 0
+        IQComponents.Navigator.Width = 241
+        IQComponents.Navigator.Height = 25
+        IQComponents.Navigator.Hint = ''
+        IQComponents.Navigator.ShowHint = True
+        IQComponents.Navigator.DataSource = GL_DM.SrcGLAcct
+        IQComponents.Navigator.LayoutConfig.Region = 'east'
+        IQComponents.Navigator.TabOrder = 3
+        IQComponents.HiddenPanel.Left = 405
+        IQComponents.HiddenPanel.Top = 29
+        IQComponents.HiddenPanel.Width = 209
+        IQComponents.HiddenPanel.Height = 178
+        IQComponents.HiddenPanel.Hint = ''
+        IQComponents.HiddenPanel.Visible = True
+        IQComponents.HiddenPanel.Align = alRight
+        IQComponents.HiddenPanel.Anchors = [akTop, akRight, akBottom]
+        IQComponents.FormTab.Hint = ''
+        IQComponents.FormTab.ImageIndex = 1
+        IQComponents.FormTab.Caption = 'Form'
+        IQComponents.FormTab.Layout = 'border'
+        IQComponents.FormTab.ExplicitLeft = 0
+        IQComponents.FormTab.ExplicitTop = 0
+        IQComponents.FormTab.ExplicitWidth = 256
+        IQComponents.FormTab.ExplicitHeight = 128
+        DataSource = GL_DM.SrcGLAcct
+        Columns = <
+          item
+            FieldName = 'ACCT'
+            Title.Caption = 'Account #'
+            Width = 154
+            CheckBoxField.FieldValues = 'true;false'
+          end
+          item
+            FieldName = 'DESCRIP'
+            Title.Caption = 'Description'
+            Width = 64
+            CheckBoxField.FieldValues = 'true;false'
+          end
+          item
+            FieldName = 'EEXCLUDE'
+            Title.Caption = 'Exclude'
+            Width = 64
+            CheckBoxField.FieldValues = 'Y;N'
+          end
+          item
+            FieldName = 'SubAcctType1'
+            Title.Caption = 'Account Type'
+            Width = 64
+            CheckBoxField.FieldValues = 'true;false'
+          end
+          item
+            FieldName = 'EPlant_Name'
+            Title.Caption = 'EPlant'
+            Width = 64
+            CheckBoxField.FieldValues = 'true;false'
+          end
+          item
+            FieldName = 'GL_HIDE'
+            Title.Caption = 'Hide from GL transaction pick lists'
+            Width = 64
+            CheckBoxField.FieldValues = 'Y;N'
+          end
+          item
+            FieldName = 'AP_HIDE'
+            Title.Caption = 'Hide from Purchase Order and Accounts Payable pick lis'
+            Width = 64
+            CheckBoxField.FieldValues = 'Y;N'
+          end
+          item
+            FieldName = 'ts'
+            Title.Caption = 'Update this Blank Field'
+            Width = 64
+            CheckBoxField.FieldValues = 'true;false'
+          end
+          item
+            FieldName = 'AR_HIDE'
+            Title.Caption = 'Hide from Sales Order and Accounts Receivable pick lis'
+            Width = 64
+            CheckBoxField.FieldValues = 'Y;N'
+          end
+          item
+            FieldName = 'ts'
+            Title.Caption = 'Update this Blank Field'
+            Width = 64
+            CheckBoxField.FieldValues = 'true;false'
+          end
+          item
+            FieldName = 'PK_HIDE'
+            Title.Caption = 'Hide from Pick Lists'
+            Width = 64
+            CheckBoxField.FieldValues = 'Y;N'
+          end
+          item
+            FieldName = 'COST_SOURCE_RQD'
+            Title.Caption = 'Cost Source Required'
+            Width = 64
+            CheckBoxField.FieldValues = 'Y;N'
+          end>
+        TabsVisible = True
+        Marker = 0
+      end
+      object wwDBComboDlg1: TUniEdit
+        Left = 120
+        Top = 144
+        Width = 121
+        Height = 21
+        Hint = ''
+        Text = ''
+        TabOrder = 1
+      end
+      object wwDBComboDlg2: TUniEdit
+        Left = 128
+        Top = 184
+        Width = 121
+        Height = 21
+        Hint = ''
+        Text = ''
+        TabOrder = 2
+      end
+    end
+    object TabTreeView: TUniTabSheet
+      Hint = ''
+      Caption = 'TreeView'
+      object Bevel1: TUniPanel
+        Left = 0
+        Top = 27
+        Width = 622
+        Height = 3
+        Hint = ''
+        Align = alTop
+        Anchors = [akLeft, akTop, akRight]
+        TabOrder = 2
+        Caption = ''
+      end
+      object TV: TUniTreeView
+        Left = 0
+        Top = 30
+        Width = 622
+        Height = 234
+        Hint = ''
+        Items.FontData = {0100000000}
+        Images = ImageList1
+        Align = alClient
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        TabOrder = 0
+        Color = clWindow
+      end
+      object Panel2: TUniPanel
+        Tag = 1999
+        Left = 0
+        Top = 0
+        Width = 622
+        Height = 27
+        Hint = ''
+        ShowHint = True
+        ParentShowHint = False
+        Align = alTop
+        Anchors = [akLeft, akTop, akRight]
+        TabOrder = 1
+        Caption = ''
+        object sbtnExpand: TUniSpeedButton
+          Left = 1
+          Top = 1
+          Width = 25
+          Height = 25
+          Hint = 'Full Expand'
+          ShowHint = True
+          Glyph.Data = {
+            36060000424D3606000000000000360000002800000020000000100000000100
+            1800000000000006000000000000000000000000000000000000FF00FFFF00FF
+            FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+            00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+            FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF0000000000000000000000
+            00000000000000FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+            00FFFF00FF000000000000000000000000000000000000FF00FFFF00FFFF00FF
+            FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+            00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+            FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF0000000000000000000000
+            00000000000000FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+            00FFFF00FF000000000000000000000000000000000000FF00FFFF00FFFF00FF
+            FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+            00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+            FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF0000000000000000000000
+            00000000000000FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+            00FFFF00FF000000000000000000000000000000000000FF00FFFF00FFFF00FF
+            508050407040305030203820FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FFFF00FFFF00FF757575656565484848323232FF00FFFF
+            00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+            50905060A860508850305030FF00FFFF00FFFF00FF0000000000000000000000
+            00000000000000FF00FFFF00FFFF00FF8282829898987B7B7B484848FF00FFFF
+            00FFFF00FF000000000000000000000000000000000000FF00FF70A88060A070
+            60986070B070509850407040305030203820FF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FF9D9D9D9494948B8B8BA2A2A288888865656548484832
+            3232FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF80B090A0D8A0
+            70C08070B87060A060509050408840305030FF00FF0000000000000000000000
+            00000000000000FF00FFA7A7A7CACACAB0B0B0A8A8A891919182828279797948
+            4848FF00FF000000000000000000000000000000000000FF00FF90B8A0B0D8B0
+            A0D8A090D0A070B87060A860509850407040FF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FFB1B1B1CECECECACACAC3C3C3A8A8A898989888888865
+            6565FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF90C0A090B8A0
+            80B090A0D8A070C080609860509050508050FF00FF0000000000000000000000
+            00000000000000FF00FFB7B7B7B1B1B1A7A7A7CACACAB0B0B08B8B8B82828275
+            7575FF00FF000000000000000000000000000000000000FF00FFFF00FFFF00FF
+            90B8A0B0D8B0A0D8A060A070FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FFFF00FFFF00FFB1B1B1CECECECACACA949494FF00FFFF
+            00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+            90C0A090B8A080B09070A880FF00FFFF00FFFF00FF0000000000000000000000
+            00000000000000FF00FFFF00FFFF00FFB7B7B7B1B1B1A7A7A79D9D9DFF00FFFF
+            00FFFF00FF000000000000000000000000000000000000FF00FFFF00FFFF00FF
+            FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+            00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+            FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+            00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
+          Caption = ''
+          ParentColor = False
+          Color = clWindow
+          OnClick = FullExpand1Click
+        end
+        object sbtnCollapse: TUniSpeedButton
+          Left = 26
+          Top = 1
+          Width = 25
+          Height = 25
+          Hint = 'Collapse All Nodes'
+          ShowHint = True
+          Glyph.Data = {
+            36060000424D3606000000000000360000002800000020000000100000000100
+            1800000000000006000000000000000000000000000000000000FF00FFFF00FF
+            FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+            00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+            FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+            00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+            FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+            00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+            FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+            00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+            FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+            00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+            FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+            00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+            FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF0000000000000000000000
+            00000000000000FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+            00FFFF00FF000000000000000000000000000000000000FF00FFFF00FFFF00FF
+            FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+            00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF6078D01038B0
+            1038B01030B01028A01028A0002090002090FF00FF0000000000000000000000
+            00000000000000FF00FF8F8F8F6161616161615E5E5E5555555555554A4A4A4A
+            4A4AFF00FF000000000000000000000000000000000000FF00FF6080D09098FF
+            5060FF5060FF3048F03048E02040D01028A0FF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FF949494B4B4B49696969696968585857E7E7E73737355
+            5555FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF7088E0A0A8FF
+            9090FF7080FF5068FF3058F02048F01038B0FF00FF0000000000000000000000
+            00000000000000FF00FF9F9F9FBFBFBFB0B0B0A6A6A69999998B8B8B85858561
+            6161FF00FF000000000000000000000000000000000000FF00FF7088E07088E0
+            6080D06078D05070C05060C04058B04058B0FF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FF9F9F9F9F9F9F9494948F8F8F8585857C7C7C71717171
+            7171FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+            FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+            00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+            FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+            00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+            FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+            00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+            FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+            FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+            00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
+          Caption = ''
+          ParentColor = False
+          Color = clWindow
+          OnClick = FullCollapse1Click
+        end
+        object Panel3: TUniPanel
+          Tag = 1999
+          Left = 595
+          Top = 1
+          Width = 26
+          Height = 25
+          Hint = ''
+          ShowHint = True
+          Align = alRight
+          Anchors = [akTop, akRight, akBottom]
+          TabOrder = 0
+          Caption = ''
+          object sbtnRefresh: TUniSpeedButton
+            Left = 1
+            Top = 0
+            Width = 25
+            Height = 25
+            Hint = 'Refresh TreeView'
+            ShowHint = True
+            Glyph.Data = {
+              46010000424D460100000000000076000000280000001C0000000D0000000100
+              040000000000D000000000000000000000001000000010000000000000000000
+              8000008000000080800080000000800080008080000080808000C0C0C0000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+              3333333FFFFF3333000033333707333333333FF3337733330000333700733333
+              3333733337333333000033300733333333337333733333330000337073333333
+              3337333F3333333300003300333333333337333F3FFFFFF30000330033300000
+              3337333F733333F300003300733370003337333F373333F30000337007370000
+              33373333F33333F3000033300000007033337333333373F30000333370007330
+              33333733333773F3000033333333333333333377777337330000333333333333
+              33333333333333330000}
+            Caption = ''
+            ParentColor = False
+            Color = clWindow
+            OnClick = sbtnRefreshClick
+          end
+        end
+      end
+    end
+  end
+  object Panel4: TUniPanel
+    Left = 0
+    Top = 322
+    Width = 630
+    Height = 195
+    Hint = ''
+    Align = alBottom
+    Anchors = [akLeft, akRight, akBottom]
+    TabOrder = 2
+    Caption = ''
+    object PageControl1: TUniPageControl
+      Left = 1
+      Top = 1
+      Width = 628
+      Height = 193
+      Hint = ''
+      ActivePage = TabSheet1
+      Align = alClient
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      TabOrder = 0
+      object TabSheet1: TUniTabSheet
+        Hint = ''
+        Caption = 'User Defined Form'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 256
+        ExplicitHeight = 128
+        object IQUDEmbeddedForm1: TIQWebUDEmbeddedForm
+          Left = 0
+          Top = 0
+          Width = 620
+          Height = 165
+          Hint = ''
+          Align = alClient
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          TabOrder = 0
+          Caption = ''
+          Active = False
+          DataField = 'ID'
+          DataSource = GL_DM.SrcGLAcct
+          Source = 'GLACCT'
+          TableName = 'GLACCT'
+          SecurityRegister = SR
+          BevelOuter = bvNone
+          BevelInner = bvNone
+        end
+      end
+    end
+  end
+  object MainMenu1: TUniMainMenu
+    Left = 227
+    Top = 65534
+    object GL1: TUniMenuItem
+      Caption = '&File'
+      object New1: TUniMenuItem
+        Caption = 'New'
+        OnClick = InvokeNavigator
+      end
+      object Delete1: TUniMenuItem
+        Caption = 'Delete'
+        OnClick = InvokeNavigator
+      end
+      object Search1: TUniMenuItem
+        Caption = 'Search'
+        OnClick = sbtnSearchClick
+      end
+      object N1: TUniMenuItem
+        Caption = '-'
+      end
+      object Replicate1: TUniMenuItem
+        Caption = 'Replicate'
+        OnClick = Replicate1Click
+      end
+      object BrowseGLBatches1: TUniMenuItem
+        Caption = '&Browse GL Batches'
+        OnClick = BrowseGLBatches1Click
+      end
+      object N12: TUniMenuItem
+        Caption = '-'
+      end
+      object AccountMask1: TUniMenuItem
+        Caption = 'Account Structure'
+        OnClick = AccountMask1Click
+      end
+      object N9: TUniMenuItem
+        Caption = '-'
+      end
+      object Exit1: TUniMenuItem
+        Caption = 'E&xit'
+        OnClick = Exit1Click
+      end
+    end
+    object Budgets1: TUniMenuItem
+      Caption = 'Budgets'
+      object Budget1: TUniMenuItem
+        Caption = '&Budget'
+        OnClick = Budget1Click
+      end
+      object N7: TUniMenuItem
+        Caption = '-'
+        Visible = False
+      end
+      object CreateBudgetGroups1: TUniMenuItem
+        Caption = 'Define Budget Groups'
+        Visible = False
+        OnClick = CreateBudgetGroups1Click
+      end
+      object CreateBudgets1: TUniMenuItem
+        Caption = 'Create Budgets by Group'
+        Visible = False
+        OnClick = CreateBudgets1Click
+      end
+    end
+    object Options1: TUniMenuItem
+      Caption = '&Options'
+      object DefinePeriods1: TUniMenuItem
+        Caption = 'Define Periods'
+        OnClick = DefinePeriods1Click
+      end
+      object mnSysParams: TUniMenuItem
+        Caption = 'System Parameters'
+        OnClick = mnSysParamsClick
+      end
+      object DefineSubAccts1: TUniMenuItem
+        Caption = 'Financial Reporting Groups'
+        Visible = False
+        OnClick = DefineSubAccts1Click
+      end
+      object N11: TUniMenuItem
+        Caption = '-'
+      end
+      object Bankmanager1: TUniMenuItem
+        Caption = '&Bank Manager'
+        OnClick = Bankmanager1Click
+      end
+      object N6: TUniMenuItem
+        Caption = '-'
+      end
+      object AccountTypeMaint1: TUniMenuItem
+        Caption = 'Account Type Maintenance'
+        OnClick = AccountTypeMaint1Click
+      end
+      object AccountActivity1: TUniMenuItem
+        Caption = 'Account Activity'
+        OnClick = AccountActivity1Click
+      end
+      object JournalEntries1: TUniMenuItem
+        Caption = 'Journal Entries'
+        OnClick = JournalEntries1Click
+      end
+      object AccountRevaluation1: TUniMenuItem
+        Caption = 'Account &Revaluation'
+        OnClick = AccountRevaluation1Click
+      end
+      object N4: TUniMenuItem
+        Caption = '-'
+      end
+      object TrialBalance1: TUniMenuItem
+        Caption = 'Trial Balance'
+        OnClick = TrialBalance1Click
+      end
+      object N5: TUniMenuItem
+        Caption = '-'
+        Visible = False
+      end
+      object YearEndClosing1: TUniMenuItem
+        Caption = 'Year End Closing'
+        Visible = False
+      end
+      object N8: TUniMenuItem
+        Caption = '-'
+      end
+      object ReferenceCodes1: TUniMenuItem
+        Caption = 'Reference Codes'
+        HelpContext = 999318
+        OnClick = ReferenceCodes1Click
+      end
+      object EnableUserDefinedForm1: TUniMenuItem
+        Caption = 'Enable User Defined Form'
+        OnClick = EnableUserDefinedForm1Click
+      end
+      object MergeHistoryDeleteGeneralLedgerAccounts1: TUniMenuItem
+        Caption = 'Merge History && Delete General Ledger Accounts'
+        OnClick = MergeHistoryDeleteGeneralLedgerAccounts1Click
+      end
+    end
+    object Reports1: TUniMenuItem
+      Caption = '&Reports'
+      object Other1: TUniMenuItem
+        Caption = '&Print'
+        OnClick = Other1Click
+      end
+      object UserDefined1: TUniMenuItem
+        Caption = 'Printer &Setup'
+        OnClick = UserDefined1Click
+      end
+    end
+    object Help1: TUniMenuItem
+      Caption = 'Help'
+      object Contents1: TUniMenuItem
+        Caption = '&Contents'
+        OnClick = Contents1Click
+      end
+      object About1: TUniMenuItem
+        Caption = 'About'
+        OnClick = About1Click
+      end
+    end
+    object Debug1: TUniMenuItem
+      Caption = 'Debug'
+      Visible = False
+      object Show1: TUniMenuItem
+        Caption = 'Show'
+        OnClick = Show1Click
+      end
+    end
+  end
+  object IQAbout1: TIQWebAbout
+    ModuleName = 'GL Account Maintenance'
+    Version = 'DEV.176554'
+    ChangeListNumber = '$Change: 197445 $'
+    BuildVersion = '176554'
+    Left = 255
+    Top = 65534
+  end
+  object IQRepDef1: TIQWebRepDef
+    App_ID = 'FrmGLMain'
+    WebUse = False
+    TouchScreen = False
+    Left = 284
+    Top = 65534
+  end
+  object PrinterSetupDialog1: TPrinterSetupDialog
+    Left = 312
+    Top = 65534
+  end
+  object PopupMenu1: TUniPopupMenu
+    Left = 170
+    Top = 65534
+    object ShowTotals1: TUniMenuItem
+      Caption = '&Show Periods Total'
+    end
+    object N3: TUniMenuItem
+      Caption = '-'
+    end
+    object Recalculate1: TUniMenuItem
+      Caption = '&Recalculate $ vs %'
+    end
+  end
+  object PopupMenu2: TUniPopupMenu
+    Left = 198
+    Top = 65534
+    object ShowTotals2: TUniMenuItem
+      Caption = '&Show Periods Total'
+    end
+    object N2: TUniMenuItem
+      Caption = '-'
+    end
+    object Recalculate2: TUniMenuItem
+      Caption = '&Recalculate $$ vs %%'
+    end
+    object Diff1: TUniMenuItem
+      Caption = 'Store Difference Here'
+    end
+  end
+  object SR: TIQWebSecurityRegister
+    SecurityItems.Strings = (
+      'btnApply'
+      'btnRevert'
+      'btnSetCriteria'
+      'navMain'
+      'gridAccounts'
+      'gridAcctBudget'
+      'gridCurrentPeriodBudget'
+      'gridPrevPeriodBudget'
+      'MainMenu1'
+      'About1'
+      'AccountActivity1'
+      'AccountMask1'
+      'Bankmanager1'
+      'BudgetComparisons1'
+      'Budgets1'
+      'CreateBudgetGroups1'
+      'CreateBudgets1'
+      'DefinePeriods1'
+      'DefineSubAccts1'
+      'Delete1'
+      'Diff1'
+      'Exit1'
+      'GL1'
+      'Help1'
+      'JournalEntries1'
+      'mnSysParams'
+      'MonthlyAllocations1'
+      'New1'
+      'Options1'
+      'Other1'
+      'Recalculate1'
+      'Recalculate2'
+      'Replicate1'
+      'Reports1'
+      'Search1'
+      'ShowTotals1'
+      'ShowTotals2'
+      'TrialBalance1'
+      'UserDefined1'
+      'YearEndClosing1'
+      'PopupMenu1'
+      'PopupMenu2'
+      'QryGLAcct_Budget'
+      'QryGLSubAcct'
+      'QryPrevPeriodBudget'
+      'sbtnSearch'
+      'sbtnToggle'
+      'TblGLAcct'
+      'TblGLBudget'
+      'TblGlPeriods'
+      'TblGlYear'
+      'TblIQSys'
+      'sbEActivity'
+      'AccountTypeMaint1'
+      'sbtnUpdateFinRpt'
+      'sbtnEPlant'
+      'dbHideFromPK'
+      'dbHideFromGL'
+      'dbHideFromAR'
+      'dbHideFromAP'
+      'dbCorVu'
+      'BrowseGLBatches1'
+      'MergeHistoryDeleteGeneralLedgerAccounts1'
+      'sbAcctType'
+      'DelecteactivityfromCTRIALBALANCEASOF1'
+      '')
+    SecurityCode = 'FRMGLMAIN'
+    Left = 340
+    Top = 65534
+  end
+  object QryAcctType: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select id, '
+      '       parent_id,'
+      '       level,'
+      '       descrip'
+      '  from glsub_acct_type'
+      'start with parent_id is NULL'
+      'connect by parent_id = prior id')
+    Left = 371
+    Top = 65534
+  end
+  object PopupMenu3: TUniPopupMenu
+    Left = 141
+    Top = 65534
+    object FullExpand1: TUniMenuItem
+      Caption = 'Full Expand'
+      OnClick = FullExpand1Click
+    end
+    object FullCollapse1: TUniMenuItem
+      Caption = 'Full Collapse'
+      OnClick = FullCollapse1Click
+    end
+  end
+  object ImageList1: TUniImageList
+    Left = 432
+    Top = 65534
+    Bitmap = {
+      494C010103000500040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      0000000000003600000028000000400000001000000001002000000000000010
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000B69D8500B3977D00B69D
+      850000000000B69D8500B3977D00B3977D00B3977D00B3977D00B69D85000000
+      0000B69D8500B3977D00B69D8500C5B0A0000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000B69D8500B3977D00B69D
+      850000000000B69D8500B3977D00B3977D00B3977D00B3977D00B69D85000000
+      0000B69D8500B3977D00B69D8500C5B0A0000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000B69D8500ECDFCB00ECDFCB00B397
+      7D00B3977D00B3977D00EEE2CE00EEE2CE00EEE2CE00EEE2CE00B3977D00B397
+      7D00B3977D00EBDEC900EBDEC900B69D8500000000000000000018799C001879
+      9C0018799C0018799C0018799C0018799C0018799C0018799C0018799C001879
+      9C0018799C0018799C0018799C0000000000B69D8500ECDFCB00ECDFCB00B397
+      7D00B3977D00B3977D00EEE2CE00EEE2CE00EEE2CE00EEE2CE00B3977D00B397
+      7D00B3977D00EBDEC900EBDEC900B69D85000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000B3977D00F1E7D800F1E7D800F1E7
+      D800F1E7D800F1E7D800F1E7D800F1E7D800F1E7D800F1E7D800F1E7D800F1E7
+      D800F1E7D800F1E7D800F1E7D800B3977D0000000000188EB500188EB500188E
+      B500188EB500188EB500188EB500188EB500188EB500188EB500188EB500188E
+      B500188EB500188EB500188EB50018799C00B3977D00F1E7D800F1E7D800F1E7
+      D800F1E7D800F1E7D800F1E7D800F1E7D800F1E7D800F1E7D800F1E7D800F1E7
+      D800F1E7D800F1E7D800F1E7D800B3977D000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000B3977D00F5EEE300F5EEE300F5EE
+      E300F5EEE300F5EEE300F5EEE300F5EEE300F5EEE300F5EEE300F5EEE300F5EE
+      E300F5EEE300F5EEE300F5EEE300B3977D00319EBD0063CFFF00188EB5009CFF
+      FF006BD7FF006BD7FF006BD7FF006BD7FF006BD7FF006BD7FF006BD7FF006BD7
+      FF0039B6DE009CF7FF00188EB50018799C00B3977D00F5EEE300F5EEE300F5EE
+      E300F5EEE300F5EEE300F5EEE300F5EEE300F5EEE300F5EEE300F5EEE300F5EE
+      E300F5EEE300F5EEE300F5EEE300B3977D000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000B3977D00FAF6F000B3977D00B397
+      7D00B3977D00B3977D00B3977D00B3977D00FAF6F000B3977D00B3977D00B397
+      7D00B3977D00B3977D00F9F5EE00B3977D00319EBD0063CFFF00188EB5009CFF
+      FF007BE7FF007BE7FF007BE7FF007BE7FF007BE7FF007BE7FF007BE7FF007BDF
+      FF0042B6DE009CFFFF00188EB50018799C00B3977D00FAF6F000B3977D00B397
+      7D00B3977D00B3977D00B3977D00B3977D00FAF6F000B3977D00B3977D00B397
+      7D00B3977D00B3977D00F9F5EE00B3977D000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000B3977D00FCFAF700FCFAF700FCFA
+      F700FCFAF700FCFAF700FCFAF700FCFAF700FCFAF700FCFAF700FCFAF700FCFA
+      F700FCFAF700FCFAF700FCFAF700B3977D00319EBD0063CFFF00188EB5009CFF
+      FF0084E7FF0084E7FF0084E7FF0084E7FF0084E7FF0084E7FF0084E7FF0084EF
+      FF004AB6DE00A5F7FF00188EB50018799C00B3977D00FCFAF700FCFAF700FCFA
+      F700FCFAF700FCFAF700FCFAF700FCFAF700FCFAF700FCFAF700FCFAF700FCFA
+      F700FCFAF700FCFAF700FCFAF700B3977D000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000B3977D00FEFDFD00FEFDFD00FEFD
+      FD00FEFDFD00FEFDFD00FEFDFD00FEFDFD00FEFDFD00FEFEFE00FEFEFE00FEFE
+      FE00FEFEFE00FEFEFE00FEFEFE00B3977D00319EBD0063CFFF00188EB5009CFF
+      FF0094FFFF0094FFFF0094FFFF0094FFFF0094FFFF0094FFFF0094FFFF008CF7
+      FF0052BEE7009CFFFF00188EB50018799C00B3977D00FEFDFD00FEFDFD00FEFD
+      FD00FEFDFD00FEFDFD00FEFDFD00FEFDFD00FEFDFD00FEFEFE00FEFEFE00FEFE
+      FE00FEFEFE00FEFEFE00FEFEFE00B3977D000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000B3977D00FFFFFF00B3977D00B397
+      7D00B3977D00B3977D00B3977D00B3977D00FFFFFF00B3977D00B3977D00B397
+      7D00B3977D00FFFFFF00FFFFFF00B3977D00319EBD006BD7FF00188EB5009CFF
+      FF009CFFFF009CFFFF009CFFFF00A5F7FF009CFFFF009CFFFF009CFFFF009CFF
+      FF0063CFFF009CFFFF00188EB50018799C00B3977D00FFFFFF00B3977D00B397
+      7D00B3977D00B3977D00B3977D00B3977D00FFFFFF00B3977D00B3977D00B397
+      7D00B3977D00FFFFFF00FFFFFF00B3977D000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000B3977D00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00B3977D00319EBD007BDFFF00188EB500FFFF
+      FF00F7FFFF00F7FFFF00F7FFFF00F7FFFF00F7FFFF00FFFFFF00FFFFFF00FFFF
+      FF0084D7F700F7FFFF00188EB50018799C00B3977D00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00B3977D000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000B3977D00FFFBF700FFFBF700FFFB
+      F700FFFBF700FFFBF700FFFBF700FFFBF700FFFBF700FFFBF700FFFBF700FFFB
+      F700FFFBF700FFFBF700FFFBF700B3977D00319EBD0084EFFF0084E7FF00188E
+      B500188EB500188EB500188EB500188EB500188EB500188EB500188EB500188E
+      B500188EB500188EB500188EB50000000000B3977D00FFFBF700FFFBF700FFFB
+      F700FFFBF700FFFBF700FFFBF700FFFBF700FFFBF700FFFBF700FFFBF700FFFB
+      F700FFFBF700FFFBF700FFFBF700B3977D000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000B3977D001CF4000027FB0D005AFF
+      4600A5FF9B00C5FFBF00D6FFD100D0FFCA00B9FFB10087FF7A0030FC17001CF2
+      00001BE900001BE200001BE40000B3977D00319EBD009CF7FF008CF7FF008CF7
+      FF008CF7FF008CF7FF008CF7FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF001079A500000000000000000000000000B3977D0039CFF7004DD7F80064E1
+      F9007CEBFB008FF3FC009BF7FE009AF5FE008EEEFF007BE3FF0063D6FF004AC9
+      FF0034BDFF0024B5FF002EB7FE00B3977D000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000B3977D001CF2000022FA060043FF
+      2D009BFF9000C2FFBB00D5FFD000D4FFCE00C0FFB90098FF8C004AFE36001CF5
+      00001BEB00001BE300001BE70000B69D8500319EBD00FFFFFF009CFFFF009CFF
+      FF009CFFFF009CFFFF00FFFFFF00188EB500188EB500188EB500188EB500188E
+      B5001079A500000000000000000000000000B3977D0036CDF60048D5F7005FDF
+      F90077E9FB008CF2FC0099F7FD009BF6FE0092F0FF0080E6FF0068DAFF0050CC
+      FF0039C0FF0027B6FF0040BCFC00B69D85000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000B3977D001CF200001CF800002FFF
+      150091FF8400BBFFB300D2FFCC00D6FFD100B3977D00B3977D00B3977D00B397
+      7D00B3977D00B3977D00B69D8500C5B09F0000000000319EBD00FFFFFF00FFFF
+      FF00FFFFFF00F7FFFF00319EBD00000000000000000000000000000000000000
+      000000000000000000000000000000000000B3977D0033CCF60043D3F70059DC
+      F90071E7FA0087F0FC0097F6FD009FF7FD00B3977D00B3977D00B3977D00B397
+      7D00B3977D00B3977D00B69D8500C5B09F000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000B69D85001CF200001CF6000028FD
+      0E007DFF6F00B2FFA900CEFFC800D2FFCD00B69D850000000000000000000000
+      0000000000000000000000000000000000000000000000000000319EBD00319E
+      BD00319EBD00319EBD0000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000B69D85003DCDF5003FD1F70054DA
+      F8006CE4FA0083EEFB0094F5FD00A9F6FA00B69D850000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000C5AF9D00B69D8500B3977D00B397
+      7D00B3977D00B3977D00B3977D00B69D8500C5B0A00000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000C5AF9D00B69D8500B3977D00B397
+      7D00B3977D00B3977D00B3977D00B69D8500C5B0A00000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000424D3E000000000000003E000000
+      2800000040000000100000000100010000000000800000000000000000000000
+      000000000000000000000000FFFFFF00FFFFFFFFFFFF00008810FFFF88100000
+      0000C00100000000000080000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000010000000000000007000000000000000700000000000081FF00000000
+      007FC3FF007F0000007FFFFF007F000000000000000000000000000000000000
+      000000000000}
+  end
+  object SrcGlSubAcctType: TDataSource
+    DataSet = QrySubAcctType
+    Left = 402
+    Top = 65534
+  end
+  object QrySubAcctType: TFDQuery
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select * from glsub_acct_type order by descrip')
+    Left = 402
+    Top = 10
+  end
+  object QryTreeView: TFDQuery
+    Tag = 1
+    Filtered = True
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select glacct.gl_subacct_type_id,'
+      '       glacct.acct,'
+      '       glacct.descrip,'
+      '       glacct.eplant_id,'
+      '       ybb.year_end_balance'
+      '  from glacct,'
+      '       V_GLACCT_FOR_TREEVIEW ybb,'
+      '      (select glyear_id from iqsys) sys'
+      'where ybb.glacct_id = glacct.id'
+      '   and ybb.glyear_id = sys.glyear_id'
+      'order by acct ')
+    Left = 462
+    Top = 65534
+    object QryTreeViewGL_SUBACCT_TYPE_ID: TBCDField
+      FieldName = 'GL_SUBACCT_TYPE_ID'
+      Size = 0
+    end
+    object QryTreeViewACCT: TStringField
+      FieldName = 'ACCT'
+      Size = 50
+    end
+    object QryTreeViewDESCRIP: TStringField
+      FieldName = 'DESCRIP'
+      Size = 50
+    end
+    object QryTreeViewYEAR_END_BALANCE: TFMTBCDField
+      FieldName = 'YEAR_END_BALANCE'
+      Size = 38
+    end
+    object QryTreeViewEPLANT_ID: TBCDField
+      FieldName = 'EPLANT_ID'
+      Size = 0
+    end
+  end
+  object PopupMenu4: TUniPopupMenu
+    Left = 496
+    Top = 59
+    object DelecteactivityfromCTRIALBALANCEASOF1: TUniMenuItem
+      Caption = 'Delecte activity from C_TRIAL_BALANCE_AS_OF'
+      OnClick = DelecteactivityfromCTRIALBALANCEASOF1Click
+    end
+  end
+end

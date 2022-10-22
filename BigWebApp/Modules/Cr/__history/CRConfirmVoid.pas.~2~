@@ -1,0 +1,54 @@
+unit CRConfirmVoid;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  Vcl.Forms,
+  IQMS.Common.Confbas,
+  IQMS.WebVcl.SecurityRegister,
+  Vcl.Controls,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniPanel,
+  uniButton, uniCheckBox, uniLabel;
+
+type
+  TConfirmCRVoid = class(TIQDialogCheckBox)
+    Panel3: TUniPanel;
+    BtnYes: TUniButton;
+    BtnNo: TUniButton;
+    procedure BtnYesClick(Sender: TObject);
+  private
+    { Private declarations }
+  protected
+    procedure SetKey(const Value: string); override;
+  public
+    { Public declarations }
+    constructor Create(AStr, AKey :String);override;
+  end;
+
+
+implementation
+
+{$R *.dfm}
+
+constructor TConfirmCRVoid.Create(AStr, AKey :String);
+begin
+  inherited Create(AStr, AKey);
+  if AKey > '' then
+  begin
+     SR.SecurityCode := UpperCase(AKey);
+     SR.Refresh;
+  end;
+end;
+
+
+procedure TConfirmCRVoid.BtnYesClick(Sender: TObject);
+begin
+  FResult := TUniButton(Sender).Tag;
+  Close;
+end;
+
+end.

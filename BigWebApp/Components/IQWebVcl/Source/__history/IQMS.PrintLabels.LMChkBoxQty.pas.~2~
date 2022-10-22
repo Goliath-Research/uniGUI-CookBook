@@ -1,0 +1,44 @@
+unit IQMS.PrintLabels.LMChkBoxQty;
+
+interface
+
+uses
+  Winapi.Windows,
+  Vcl.Forms,
+  IQMS.Common.ConfBas,
+  FireDAC.Comp.Client,
+  FireDAC.Phys,
+  IQMS.WebVcl.SecurityRegister,
+  Vcl.Controls,
+  System.Classes,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniPanel,
+  uniButton, uniCheckBox, uniLabel;
+
+type
+  TFrmIQLMChkBoxQty = class(TIQDialogCheckBox)
+    pnlButtons: TUniPanel;
+    btnContinue: TUniButton;
+    btnCancel: TUniButton;
+  private
+    { Private declarations }
+  protected
+    procedure AssignText( S: string ); override;
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+{ TIQDialogCheckBox1 }
+
+procedure TFrmIQLMChkBoxQty.AssignText(S: string);
+begin
+  inherited;
+  lblConfBasMsgText.Caption:= S;
+end;
+
+end.

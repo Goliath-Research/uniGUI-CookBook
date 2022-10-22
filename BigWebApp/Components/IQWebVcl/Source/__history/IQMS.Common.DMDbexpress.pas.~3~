@@ -1,0 +1,172 @@
+
+{***********************************************************************}
+{                                                                       }
+{ DB Express Data Module Base Unit                                      }
+{                                                                       }
+{ This is a base, data module unit for all projects that use            }
+{ DBExpress.  Add this unit to your project, and inherit your           }
+{ project data module from it.  It already contains an                  }
+{ SQLConnection object, and will initialize the connection based        }
+{ on the standard, IQMS login.  All you need to do is add               }
+{ DBExpress datasets and begin working.                                 }
+{                                                                       }
+{***********************************************************************}
+
+(* *** History ***
+
+   01/19/2010
+     This unit created (Byron).
+
+   01/25/2010
+     Added RefreshDataSet() (Byron).
+
+*)
+
+unit IQMS.Common.DMDbexpress;
+
+interface
+
+uses
+  Winapi.Windows,
+  Vcl.Forms,
+  System.SysUtils,
+  System.Classes,
+//  Data.DBXpress,
+  Data.DB,
+  Data.SqlExpr,
+  IQMS.WebVcl.DBExpress,
+  Data.DBXOracle;
+
+type
+  TDBExpress_DM = class(TDataModule)
+    SQLConnection: TSQLConnection;
+    procedure DataModuleCreate(Sender: TObject);
+  private
+    { Private declarations }
+    procedure AssignUserName(const AValue: String);
+    procedure AssignEPlant(const AEPlantID: Real; const AEPlantName: String;
+     const AIncludeNulls: Boolean);
+  public
+    { Public declarations }
+    procedure RefreshDataSet(const ADataSet: TIQWebDbxCustomDataSet;
+     AKeyFieldName: String = 'ID');
+  end;
+
+resourcestring
+ strNotConnected = 'Oracle database not connected.  Cannot proceed.';
+
+
+implementation
+
+{$R *.dfm}
+
+uses
+  IQMS.DBTrans.dbtdbexp,
+  IQMS.Common.ApplicationSet,
+  IQMS.Common.Dates,
+  IQMS.Common.DataLib,
+  IQMS.Common.Dialogs,
+  IQMS.Common.Miscellaneous,
+  IQMS.Common.Numbers,
+  IQMS.WebVcl.SecurityManager;
+
+
+procedure TDBExpress_DM.DataModuleCreate(Sender: TObject);
+begin
+  if SQLConnection.Connected then
+     SQLConnection.Connected := False;
+
+  if IQMS.Common.Miscellaneous.EnsureConnectionExists then
+     begin
+       IQMS.DBTrans.dbtdbexp.DBX_ConfigureSQLConnection(SQLConnection);
+       SQLConnection.Connected := True;
+     end
+  else
+     // 'Oracle database not connected.  Cannot proceed.'
+     raise Exception.Create(strNotConnected);
+
+  if Assigned(SecurityManager) then
+     begin
+       AssignUserName(SecurityManager.UserName);
+       AssignEPlant(SecurityManager.EPlant_ID_AsFloat,
+        SecurityManager.EPlant_Name, False);
+     end;
+
+  IQMS.Common.ApplicationSet.AssignApplicationSettingsA(Application);
+  IQMS.Common.Dates.IQCalculateTimeZoneDiff;
+
+end;
+
+procedure TDBExpress_DM.AssignUserName(const AValue: String);
+begin
+  try
+    IQMS.DBTrans.dbtdbexp.DBX_RunSQLFmt(SQLConnection,
+     'begin misc.user_name::= ''%s''; end;',
+     [AValue]);
+  except
+  end;
+end;
+
+procedure TDBExpress_DM.AssignEPlant(const AEPlantID: Real; const AEPlantName: String;
+ const AIncludeNulls: Boolean);
+begin
+  if (AEPlantID = 0) then
+     Exit;
+
+  try
+    IQMS.DBTrans.dbtdbexp.DBX_RunSQLFmt(SQLConnection,
+     'begin misc.eplant_id  ::= %.0f; misc.eplant_name ::= ''%s''; end;',
+     [AEPlantID, AEPlantName]);
+  except
+  end;
+
+  {try
+    IQMS.DBTrans.dbtdbexp.DBX_RunSQLFmt(SQLConnection,
+     'begin misc.eplant_include_nulls ::= %d; end;',
+     [IQMS.Common.Numbers.iIIf(AIncludeNulls, 1, 0 )]);
+  except
+  end; }
+end;
+
+procedure TDBExpress_DM.RefreshDataSet(const ADataSet: TIQWebDbxCustomDataSet;
+ AKeyFieldName: String);
+var
+   AID: Real;
+   fld: TField;
+begin
+ try
+    AID := 0;
+    fld := NIL;
+
+    ADataSet.DisableControls;
+    if (AKeyFieldName > '') then
+       begin
+         fld := ADataSet.FindField(AKeyFieldName);
+         if (fld <> NIL) and (fld is TFMTBCDField) then
+            AID := fld.AsFloat;
+       end;
+
+    if ADataSet is TIQWebDbxQuery then
+       begin
+        TIQWebDbxQuery(ADataSet).Close;
+        TIQWebDbxQuery(ADataSet).SQLConnection := Self.SQLConnection;
+        TIQWebDbxQuery(ADataSet).Open;
+       end
+    else if ADataSet is TIQWebDbxTable then
+       begin
+        TIQWebDbxTable(ADataSet).Close;
+        TIQWebDbxTable(ADataSet).SQLConnection := Self.SQLConnection;
+        TIQWebDbxTable(ADataSet).Open;
+       end;
+
+    IQCheckAssign1000Separator(ADataSet);
+
+    if (fld <> NIL) and (AID <> 0) then
+       ADataSet.Locate(AKeyFieldName, AID, []);
+
+ finally
+    ADataSet.EnableControls;
+ end;
+end;
+
+end.

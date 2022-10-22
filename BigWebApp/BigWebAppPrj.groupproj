@@ -1,0 +1,96 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{B0CEAFC2-07E3-44E7-B4AA-FD13BD9A9692}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Components\Packages\IQMSWebController.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Components\Packages\IQMSWebControllerDesign.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Components\IQUniEditor\IQUniEditors.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Components\IQUniEditor\IQUniEditorsdcl.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Components\IQWebCommon\Packages\IQWebCommon.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="BigWebApp.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="IQMSWebController">
+        <MSBuild Projects="Components\Packages\IQMSWebController.dproj"/>
+    </Target>
+    <Target Name="IQMSWebController:Clean">
+        <MSBuild Projects="Components\Packages\IQMSWebController.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IQMSWebController:Make">
+        <MSBuild Projects="Components\Packages\IQMSWebController.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="IQMSWebControllerDesign">
+        <MSBuild Projects="Components\Packages\IQMSWebControllerDesign.dproj"/>
+    </Target>
+    <Target Name="IQMSWebControllerDesign:Clean">
+        <MSBuild Projects="Components\Packages\IQMSWebControllerDesign.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IQMSWebControllerDesign:Make">
+        <MSBuild Projects="Components\Packages\IQMSWebControllerDesign.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="IQUniEditors">
+        <MSBuild Projects="Components\IQUniEditor\IQUniEditors.dproj"/>
+    </Target>
+    <Target Name="IQUniEditors:Clean">
+        <MSBuild Projects="Components\IQUniEditor\IQUniEditors.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IQUniEditors:Make">
+        <MSBuild Projects="Components\IQUniEditor\IQUniEditors.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="IQUniEditorsdcl">
+        <MSBuild Projects="Components\IQUniEditor\IQUniEditorsdcl.dproj"/>
+    </Target>
+    <Target Name="IQUniEditorsdcl:Clean">
+        <MSBuild Projects="Components\IQUniEditor\IQUniEditorsdcl.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IQUniEditorsdcl:Make">
+        <MSBuild Projects="Components\IQUniEditor\IQUniEditorsdcl.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="IQWebCommon">
+        <MSBuild Projects="Components\IQWebCommon\Packages\IQWebCommon.dproj"/>
+    </Target>
+    <Target Name="IQWebCommon:Clean">
+        <MSBuild Projects="Components\IQWebCommon\Packages\IQWebCommon.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IQWebCommon:Make">
+        <MSBuild Projects="Components\IQWebCommon\Packages\IQWebCommon.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="BigWebApp">
+        <MSBuild Projects="BigWebApp.dproj"/>
+    </Target>
+    <Target Name="BigWebApp:Clean">
+        <MSBuild Projects="BigWebApp.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="BigWebApp:Make">
+        <MSBuild Projects="BigWebApp.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="IQMSWebController;IQMSWebControllerDesign;IQUniEditors;IQUniEditorsdcl;IQWebCommon;BigWebApp"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="IQMSWebController:Clean;IQMSWebControllerDesign:Clean;IQUniEditors:Clean;IQUniEditorsdcl:Clean;IQWebCommon:Clean;BigWebApp:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="IQMSWebController:Make;IQMSWebControllerDesign:Make;IQUniEditors:Make;IQUniEditorsdcl:Make;IQWebCommon:Make;BigWebApp:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

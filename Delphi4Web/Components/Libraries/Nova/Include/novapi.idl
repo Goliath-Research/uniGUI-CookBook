@@ -1,0 +1,279 @@
+// novapi.idl : IDL source for novaPI
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (novapi.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(1988B197-ADAD-4195-A8C1-AB033F615287),
+	dual, //comment out this line when importing TypeLib in Delphi
+	nonextensible,
+	helpstring("INovaPdfOptions80 Interface"),
+	pointer_default(unique)
+]
+interface INovaPdfOptions80 : IDispatch
+{
+	[id(1), helpstring("method Initialize")] HRESULT Initialize([in, string] LPCWSTR p_wsPrinterName, [in, string] LPCWSTR p_wsLicenseKey);
+	[id(2), helpstring("method Initialize2")] HRESULT Initialize2([in, string] BSTR p_wsPrinterName, [in, string] BSTR p_wsLicenseKey);
+	[id(3), helpstring("method InitializeSilent")] HRESULT InitializeSilent([in, string] LPCWSTR p_wsPrinterName, [in, string] LPCWSTR p_wsLicenseKey);
+	[id(4), helpstring("method InitializeSilent2")] HRESULT InitializeSilent2([in, string] BSTR p_wsPrinterName, [in, string] BSTR p_wsLicenseKey);
+
+	//Events
+	[id(5), helpstring("method RegisterNovaEvent")] HRESULT RegisterNovaEvent([in] LPCWSTR p_wsEventName);
+	[id(6), helpstring("method RegisterNovaEvent2")] HRESULT RegisterNovaEvent2([in] BSTR p_wsEventName);
+	[id(7), helpstring("method WaitForNovaEvent")] HRESULT WaitForNovaEvent([in] LONG p_nMilliseconds, [out] BOOL* p_bTimeout);
+
+	//set/get options
+	[id(8), helpstring("method SetOptionString")] HRESULT SetOptionString([in] LONG p_nOption, [in, string] LPCWSTR p_wsValue);
+	[id(9), helpstring("method SetOptionString2")] HRESULT SetOptionString2([in] LONG p_nOption, [in, string] BSTR p_wsValue);
+	[id(10), helpstring("method GetOptionString")] HRESULT GetOptionString([in] LONG p_nOption, [out, string] LPWSTR* p_pwsValue);
+	[id(11), helpstring("method GetOptionString2")] HRESULT GetOptionString2([in] LONG p_nOption, [out, string] BSTR* p_pwsValue);
+	[id(12), helpstring("method SetOptionLong")] HRESULT SetOptionLong([in] LONG p_nOption, [in] LONG p_lValue);
+	[id(13), helpstring("method GetOptionLong")] HRESULT GetOptionLong([in] LONG p_nOption, [out] LONG* p_plValue);
+	[id(14), helpstring("method SetOptionBool")] HRESULT SetOptionBool([in] LONG p_nOption, [in] BOOL p_bValue);
+	[id(15), helpstring("method GetOptionBool")] HRESULT GetOptionBool([in] LONG p_nOption, [out] BOOL* p_pbValue);
+	
+	//Profiles
+	[id(16), helpstring("method LoadProfile")] HRESULT LoadProfile([in, string] LPCWSTR p_wsProfileId);
+	[id(17), helpstring("method LoadProfile2")] HRESULT LoadProfile2([in, string] BSTR p_wsProfileId);
+	[id(18), helpstring("method SaveProfile")] HRESULT SaveProfile();
+	[id(19), helpstring("method AddProfile")] HRESULT AddProfile([in, string] LPCWSTR p_wsProfileName, [in] BOOL p_bPublicProfile, [out] LPWSTR* p_pwsNewProfileId);
+	[id(20), helpstring("method AddProfile2")] HRESULT AddProfile2([in, string] BSTR p_wsProfileName, [in] BOOL p_bPublicProfile, [out] BSTR* p_pwsNewProfileId);
+	[id(21), helpstring("method CopyProfile")] HRESULT CopyProfile([in, string] LPCWSTR p_wsNewProfileName, [in] BOOL p_bPublicProfile, [in, string] LPCWSTR p_wsOldProfileId, [out] LPWSTR* p_pwsNewProfileId);
+	[id(22), helpstring("method CopyProfile2")] HRESULT CopyProfile2([in, string] BSTR p_wsNewProfileName, [in] BOOL p_bPublicProfile, [in, string] BSTR p_wsOldProfileId, [out]BSTR* p_pwsNewProfileId);
+	[id(23), helpstring("method DeleteProfile")] HRESULT DeleteProfile([in, string] LPCWSTR p_wsProfileId);
+	[id(24), helpstring("method DeleteProfile2")] HRESULT DeleteProfile2([in, string] BSTR p_wsProfileId);
+	[id(25), helpstring("method GetFirstProfile")] HRESULT GetFirstProfile([out] LPWSTR* p_wsProfileId);
+	[id(26), helpstring("method GetFirstProfile2")] HRESULT GetFirstProfile2([out] BSTR* p_wsProfileId);
+	[id(27), helpstring("method GetNextProfile")] HRESULT GetNextProfile([out] LPWSTR* p_wsProfileId);
+	[id(28), helpstring("method GetNextProfile2")] HRESULT GetNextProfile2([out] BSTR* p_wsProfileId);
+	[id(29), helpstring("method GetActiveProfile")] HRESULT GetActiveProfile([out] LPWSTR* p_wsProfileId);
+	[id(30), helpstring("method GetActiveProfile2")] HRESULT GetActiveProfile2([out] BSTR* p_wsProfileId);
+	[id(31), helpstring("method SetActiveProfile")] HRESULT SetActiveProfile([in] LPWSTR p_wsProfileId);
+	[id(32), helpstring("method SetActiveProfile2")] HRESULT SetActiveProfile2([in] BSTR p_wsProfileId);
+
+	//Fonts
+	[id(33), helpstring("method GetFontOption")] HRESULT GetFontOption([in, string] LPCWSTR p_wsFontName, [out] BOOL* p_pbAlwaysEmbed, [out] BOOL* p_pbNeverEmbed);
+	[id(34), helpstring("method GetFontOption2")] HRESULT GetFontOption2([in, string] BSTR p_wsFontName, [out] BOOL* p_pbAlwaysEmbed, [out] BOOL* p_pbNeverEmbed);
+	[id(35), helpstring("method SetFontOption")] HRESULT SetFontOption([in, string] LPCWSTR p_wsFontName, [in] BOOL p_bAlwaysEmbed, [in] BOOL p_bNeverEmbed);
+	[id(36), helpstring("method SetFontOption2")] HRESULT SetFontOption2([in, string] BSTR p_wsFontName, [in] BOOL p_bAlwaysEmbed, [in] BOOL p_bNeverEmbed);
+	[id(37), helpstring("method ClearFontOptions")] HRESULT ClearFontOptions();
+
+	//Bookmark options
+	[id(38), helpstring("method AddBookmarkDefinition")] HRESULT AddBookmarkDefinition([in] SHORT p_nHeading, [in] BOOL p_bEnabled, [in] BOOL p_bDetFont, [in, string] LPCWSTR p_wsDetFont, [in] LONG p_nDetFontType, [in] BOOL p_bDetStyle, [in] BOOL p_bDetBold, [in] BOOL p_bDetItalic, [in] BOOL p_bDetSize, [in] INT p_nDetSizeVal, [in] FLOAT p_nDetSizePt, [in] BOOL p_bDetColor, [in] LONG p_nDetColor, [in] BOOL p_bDispAsBold, [in] BOOL p_bDispAsItalic, [in] LONG p_nDispColor, [out] SHORT* p_nDefinition);
+	[id(39), helpstring("method AddBookmarkDefinition2")] HRESULT AddBookmarkDefinition2([in] SHORT p_nHeading, [in] BOOL p_bEnabled, [in] BOOL p_bDetFont, [in, string] BSTR p_wsDetFont, [in] LONG p_nDetFontType, [in] BOOL p_bDetStyle, [in] BOOL p_bDetBold, [in] BOOL p_bDetItalic, [in] BOOL p_bDetSize, [in] INT p_nDetSizeVal, [in] FLOAT p_nDetSizePt, [in] BOOL p_bDetColor, [in] LONG p_nDetColor, [in] BOOL p_bDispAsBold, [in] BOOL p_bDispAsItalic, [in] LONG p_nDispColor, [out] SHORT* p_nDefinition);
+	[id(40), helpstring("method ModifyBookmarkDefinition")] HRESULT ModifyBookmarkDefinition([in] SHORT p_nDefinition, [in] SHORT p_nHeading, [in] BOOL p_bEnabled, [in] BOOL p_bDetFont, [in, string] LPCWSTR p_wsDetFont, [in] LONG p_nDetFontType, [in] BOOL p_bDetStyle, [in] BOOL p_bDetBold, [in] BOOL p_bDetItalic, [in] BOOL p_bDetSize, [in] INT p_nDetSizeVal, [in] FLOAT p_nDetSizePt, [in] BOOL p_bDetColor, [in] LONG p_nDetColor, [in] BOOL p_bDispAsBold, [in] BOOL p_bDispAsItalic, [in] LONG p_nDispColor);
+	[id(41), helpstring("method ModifyBookmarkDefinition2")] HRESULT ModifyBookmarkDefinition2([in] SHORT p_nDefinition, [in] SHORT p_nHeading, [in] BOOL p_bEnabled, [in] BOOL p_bDetFont, [in, string] BSTR p_wsDetFont, [in] LONG p_nDetFontType, [in] BOOL p_bDetStyle, [in] BOOL p_bDetBold, [in] BOOL p_bDetItalic, [in] BOOL p_bDetSize, [in] INT p_nDetSizeVal, [in] FLOAT p_nDetSizePt, [in] BOOL p_bDetColor, [in] LONG p_nDetColor, [in] BOOL p_bDispAsBold, [in] BOOL p_bDispAsItalic, [in] LONG p_nDispColor);
+	[id(42), helpstring("method DeleteBookmarkDefinition")] HRESULT DeleteBookmarkDefinition([in] SHORT p_nDefinition);
+	[id(43), helpstring("method GetBookmarkDefinition")] HRESULT GetBookmarkDefinition([in] SHORT p_nDefinition, [out] SHORT* p_pnHeading, [out] BOOL* p_pbEnabled, [out] BOOL* p_pbDetFont, [out, string] LPWSTR* p_pwsDetFont, [out] LONG* p_pnDetFontType, [out] BOOL* p_pbDetStyle, [out] BOOL* p_pbDetBold, [out] BOOL* p_pbDetItalic, [out] BOOL* p_pbDetSize, [out] INT* p_pnDetSizeVal, [out] FLOAT* p_pnDetSizePt, [out] BOOL* p_pbDetColor, [out] LONG* p_pnDetColor, [out] BOOL* p_pbDispAsBold, [out] BOOL* p_pbDispAsItalic, [out] LONG* p_pnDispColor);
+	[id(44), helpstring("method GetBookmarkDefinition2")] HRESULT GetBookmarkDefinition2([in] SHORT p_nDefinition, [out] SHORT* p_pnHeading, [out] BOOL* p_pbEnabled, [out] BOOL* p_pbDetFont, [out, string] BSTR* p_pwsDetFont, [out] LONG* p_pnDetFontType, [out] BOOL* p_pbDetStyle, [out] BOOL* p_pbDetBold, [out] BOOL* p_pbDetItalic, [out] BOOL* p_pbDetSize, [out] INT* p_pnDetSizeVal, [out] FLOAT* p_pnDetSizePt, [out] BOOL* p_pbDetColor, [out] LONG* p_pnDetColor, [out] BOOL* p_pbDispAsBold, [out] BOOL* p_pbDispAsItalic, [out] LONG* p_pnDispColor);
+	[id(45), helpstring("method GetBookmarkDefinitionCount")] HRESULT GetBookmarkDefinitionCount([out] SHORT* p_nCount);
+
+	//Printers
+	[id(46), helpstring("method SetDefaultPrinter")] HRESULT SetDefaultPrinter(void);
+	[id(47), helpstring("method RestoreDefaultPrinter")] HRESULT RestoreDefaultPrinter(void);
+	[id(48), helpstring("method GetPDFFileName")] HRESULT GetPDFFileName([in] BOOL p_bPrintStarted, [out, string] LPWSTR* p_pwsFileName);
+	[id(49), helpstring("method GetPDFFileName2")] HRESULT GetPDFFileName2([in] BOOL p_bPrintStarted, [out, string] BSTR* p_pwsFileName);
+	[id(50), helpstring("method SetPrinterOption")] HRESULT SetPrinterOption([in] LONG p_nOption, [in] LONG p_lValue);
+
+	//Events window
+	[id(51), helpstring("method RegisterEventWindow")] HRESULT RegisterEventWindow([in] LONG p_hWnd);
+	[id(52), helpstring("method UnRegisterEventWindow")] HRESULT UnRegisterEventWindow(void);
+
+	//Licensing
+	[id(53), helpstring("method InitializeOLEUsage")] HRESULT InitializeOLEUsage([in] BSTR p_pwstrOLEProgID);
+	[id(54), helpstring("method LicenseOLEServer")] HRESULT LicenseOLEServer(void);
+	[id(55), helpstring("method LicenseShellExecuteFile")] HRESULT LicenseShellExecuteFile([in] BSTR p_pwstrFileName);
+	[id(56), helpstring("method LicenseApplication")] HRESULT LicenseApplication([in] BSTR p_pwstrAppName);
+
+	//Forms
+	//[id(19), helpstring("method AddPredefinedForm")] HRESULT AddPredefinedForm([in] LPCWSTR p_wsFormName, [in] LPCWSTR p_wsDescription, [in] FLOAT p_fWidth, [in] FLOAT p_fHeight, [in] BOOL p_bVisible, [in] LPCWSTR p_wsProfileName, [in] BOOL p_bPublicProfile);
+	//[id(39), helpstring("method AddPredefinedForm2")] HRESULT AddPredefinedForm2([in] BSTR p_wsFormName, [in] BSTR p_wsDescription, [in] FLOAT p_fWidth, [in] FLOAT p_fHeight, [in] BOOL p_bVisible, [in] BSTR p_wsProfileName, [in] BOOL p_bPublicProfile);
+	//[id(20), helpstring("method GetPredefinedForm")] HRESULT GetPredefinedForm([in] LPCWSTR p_wsFormName, [out] LPWSTR* p_wsFormDescription, [out] FLOAT* p_pfWidth, [out] FLOAT* p_pfHeight, [out] BOOL* p_pbVisible, [in] LPCWSTR p_wsProfileName, [in] BOOL p_bPublicProfile);
+	//[id(40), helpstring("method GetPredefinedForm2")] HRESULT GetPredefinedForm2([in] BSTR p_wsFormName, [out] BSTR* p_wsFormDescription, [out] FLOAT* p_pfWidth, [out] FLOAT* p_pfHeight, [out] BOOL* p_pbVisible, [in] BSTR p_wsProfileName, [in] BOOL p_bPublicProfile);
+	//[id(21), helpstring("method RemovePredefinedForm")] HRESULT RemovePredefinedForm([in] LPCWSTR p_wsFormName, [in] LPCWSTR p_wsProfileName, [in] BOOL p_bPublicProfile);
+	//[id(41), helpstring("method RemovePredefinedForm2")] HRESULT RemovePredefinedForm2([in] BSTR p_wsFormName, [in] BSTR p_wsProfileName, [in] BOOL p_bPublicProfile);
+	//[id(22), helpstring("method SetFormVisible")] HRESULT SetFormVisible([in] LPCWSTR p_wsFormName, [in] BOOL p_bVisible, [in] LPCWSTR p_wsProfileName, [in] BOOL p_bPublicProfile);
+	//[id(42), helpstring("method SetFormVisible2")] HRESULT SetFormVisible2([in] BSTR p_wsFormName, [in] BOOL p_bVisible, [in] BSTR p_wsProfileName, [in] BOOL p_bPublicProfile);
+	//[id(23), helpstring("method GetFirstForm")] HRESULT GetFirstForm([out] LPWSTR* p_pwsFormName, [out] LPWSTR* p_pwsFormDescription, [out] FLOAT* p_pfWidth, [out] FLOAT* p_pfHeight, [out] BOOL* p_pbVisible, [in] LPCWSTR p_wsProfileName, [in] BOOL p_bPublicProfile);
+	//[id(43), helpstring("method GetFirstForm2")] HRESULT GetFirstForm2([out] BSTR* p_pwsFormName, [out] BSTR* p_pwsFormDescription, [out] FLOAT* p_pfWidth, [out] FLOAT* p_pfHeight, [out] BOOL* p_pbVisible, [in] BSTR p_wsProfileName, [in] BOOL p_bPublicProfile);
+	//[id(24), helpstring("method GetNextForm")] HRESULT GetNextForm([out] LPWSTR* p_pwsFormName, [out] LPWSTR* p_pwsFormDescription, [out] FLOAT* p_pfWidth, [out] FLOAT* p_pfHeight, [out] BOOL* p_pbVisible);
+	//[id(44), helpstring("method GetNextForm2")] HRESULT GetNextForm2([out] BSTR* p_pwsFormName, [out] BSTR* p_pwsFormDescription, [out] FLOAT* p_pfWidth, [out] FLOAT* p_pfHeight, [out] BOOL* p_pbVisible);
+
+	//Watermark (image) options
+	[id(57), helpstring("method AddWatermarkImage")] HRESULT AddWatermarkImage([out, string] LPWSTR* p_pwsNewWatermarkId, [out, string] LPWSTR* p_pwsNewLayoutId);
+	[id(58), helpstring("method AddWatermarkImage2")] HRESULT AddWatermarkImage2([out, string] BSTR* p_pwsNewWatermarkId, [out, string] BSTR* p_pwsNewLayoutId);
+
+	[id(59), helpstring("method SetWatermarkImageOptionString")] HRESULT SetWatermarkImageOptionString([in, string] LPWSTR p_pwsWatermarkId, [in] LONG p_nOption, [in, string] LPCWSTR p_wsValue);
+	[id(60), helpstring("method SetWatermarkImageOptionString2")] HRESULT SetWatermarkImageOptionString2([in, string] BSTR p_pwsWatermarkId, [in] LONG p_nOption, [in, string] BSTR p_wsValue);
+	[id(61), helpstring("method SetWatermarkImageOptionLong")] HRESULT SetWatermarkImageOptionLong([in, string] LPWSTR p_pwsWatermarkId, [in] LONG p_nOption, [in] LONG p_nValue);
+	[id(62), helpstring("method SetWatermarkImageOptionLong2")] HRESULT SetWatermarkImageOptionLong2([in, string] BSTR p_pwsWatermarkId, [in] LONG p_nOption, [in] LONG p_nValue);
+	[id(63), helpstring("method SetWatermarkImageOptionBool")] HRESULT SetWatermarkImageOptionBool([in, string] LPWSTR p_pwsWatermarkId, [in] LONG p_nOption, [in] BOOL p_bValue);
+	[id(64), helpstring("method SetWatermarkImageOptionBool2")] HRESULT SetWatermarkImageOptionBool2([in, string] BSTR p_pwsWatermarkId, [in] LONG p_nOption, [in] BOOL p_bValue);
+	[id(65), helpstring("method SetWatermarkImageOptionFloat")] HRESULT SetWatermarkImageOptionFloat([in, string] LPWSTR p_pwsWatermarkId, [in] LONG p_nOption, [in] FLOAT p_fValue);
+	[id(66), helpstring("method SetWatermarkImageOptionFloat2")] HRESULT SetWatermarkImageOptionFloat2([in, string] BSTR p_pwsWatermarkId, [in] LONG p_nOption, [in] FLOAT p_fValue);
+
+	[id(67), helpstring("method GetWatermarkImageCount")] HRESULT GetWatermarkImageCount([out] LONG* p_pnCount);
+	[id(68), helpstring("method GetWatermarkImage")] HRESULT GetWatermarkImage([in] LONG p_nIndex, [out, string] LPWSTR* p_pwsWatermarkId);
+	[id(69), helpstring("method GetWatermarkImage2")] HRESULT GetWatermarkImage2([in] LONG p_nIndex, [out, string] BSTR* p_pwsWatermarkId);
+	[id(70), helpstring("method DeleteWatermarkImage")] HRESULT DeleteWatermarkImage([in, string] LPWSTR p_wsWatermarkId);
+	[id(71), helpstring("method DeleteWatermarkImage2")] HRESULT DeleteWatermarkImage2([in, string] BSTR p_wsWatermarkId);
+
+	[id(72), helpstring("method GetWatermarkImageOptionString")] HRESULT GetWatermarkImageOptionString([in, string] LPWSTR p_pwsWatermarkId, [in] LONG p_nOption, [out, string] LPWSTR* p_pwsValue);
+	[id(73), helpstring("method GetWatermarkImageOptionString2")] HRESULT GetWatermarkImageOptionString2([in, string] BSTR p_pwsWatermarkId, [in] LONG p_nOption, [out, string] BSTR* p_pwsValue);
+	[id(74), helpstring("method GetWatermarkImageOptionLong")] HRESULT GetWatermarkImageOptionLong([in, string] LPWSTR p_pwsWatermarkId, [in] LONG p_nOption, [out] LONG* p_pnValue);
+	[id(75), helpstring("method GetWatermarkImageOptionLong2")] HRESULT GetWatermarkImageOptionLong2([in, string] BSTR p_pwsWatermarkId, [in] LONG p_nOption, [out] LONG* p_pnValue);
+	[id(76), helpstring("method GetWatermarkImageOptionBool")] HRESULT GetWatermarkImageOptionBool([in, string] LPWSTR p_pwsWatermarkId, [in] LONG p_nOption, [out] BOOL* p_pnValue);
+	[id(77), helpstring("method GetWatermarkImageOptionBool2")] HRESULT GetWatermarkImageOptionBool2([in, string] BSTR p_pwsWatermarkId, [in] LONG p_nOption, [out] BOOL* p_pnValue);
+	[id(78), helpstring("method GetWatermarkImageOptionFloat")] HRESULT GetWatermarkImageOptionFloat([in, string] LPWSTR p_pwsWatermarkId, [in] LONG p_nOption, [out] FLOAT* p_pnValue);
+	[id(79), helpstring("method GetWatermarkImageOptionFloat2")] HRESULT GetWatermarkImageOptionFloat2([in, string] BSTR p_pwsWatermarkId, [in] LONG p_nOption, [out] FLOAT* p_pnValue);
+
+	//Layout options
+	[id(80), helpstring("method SetLayoutOptionString")] HRESULT SetLayoutOptionString([in, string] LPWSTR p_pwsObjectId, [in, string] LPWSTR p_pwsLayoutId, [in] LONG p_nOption, [in, string] LPCWSTR p_wsValue);
+	[id(81), helpstring("method SetLayoutOptionString2")] HRESULT SetLayoutOptionString2([in, string] BSTR p_pwsObjectId, [in, string] BSTR p_pwsLayoutId, [in] LONG p_nOption, [in, string] BSTR p_wsValue);
+	[id(82), helpstring("method SetLayoutOptionLong")] HRESULT SetLayoutOptionLong([in, string] LPWSTR p_pwsObjectId, [in, string] LPWSTR p_pwsLayoutId, [in] LONG p_nOption, [in] LONG p_nValue);
+	[id(83), helpstring("method SetLayoutOptionLong2")] HRESULT SetLayoutOptionLong2([in, string] BSTR p_pwsObjectId, [in, string] BSTR p_pwsLayoutId, [in] LONG p_nOption, [in] LONG p_nValue);
+	[id(84), helpstring("method SetLayoutOptionBool")] HRESULT SetLayoutOptionBool([in, string] LPWSTR p_pwsObjectId, [in, string] LPWSTR p_pwsLayoutId, [in] LONG p_nOption, [in] BOOL p_bValue);
+	[id(85), helpstring("method SetLayoutOptionBool2")] HRESULT SetLayoutOptionBool2([in, string] BSTR p_pwsObjectId, [in, string] BSTR p_pwsLayoutId, [in] LONG p_nOption, [in] BOOL p_bValue);
+	[id(86), helpstring("method SetLayoutOptionFloat")] HRESULT SetLayoutOptionFloat([in, string] LPWSTR p_pwsObjectId, [in, string] LPWSTR p_pwsLayoutId, [in] LONG p_nOption, [in] FLOAT p_fValue);
+	[id(87), helpstring("method SetLayoutOptionFloat2")] HRESULT SetLayoutOptionFloat2([in, string] BSTR p_pwsObjectId, [in, string] BSTR p_pwsLayoutId, [in] LONG p_nOption, [in] FLOAT p_fValue);
+
+	[id(88), helpstring("method GetLayoutOptionString")] HRESULT GetLayoutOptionString([in, string] LPWSTR p_pwsObjectId, [in, string] LPWSTR p_pwsLayoutId, [in] LONG p_nOption, [out, string] LPWSTR* p_pwsValue);
+	[id(89), helpstring("method GetLayoutOptionString2")] HRESULT GetLayoutOptionString2([in, string] BSTR p_pwsObjectId, [in, string] BSTR p_pwsLayoutId, [in] LONG p_nOption, [out, string] BSTR* p_pwsValue);
+	[id(90), helpstring("method GetLayoutOptionLong")] HRESULT GetLayoutOptionLong([in, string] LPWSTR p_pwsObjectId, [in, string] LPWSTR p_pwsLayoutId, [in] LONG p_nOption, [out] LONG* p_pnValue);
+	[id(91), helpstring("method GetLayoutOptionLong2")] HRESULT GetLayoutOptionLong2([in, string] BSTR p_pwsObjectId, [in, string] BSTR p_pwsLayoutId, [in] LONG p_nOption, [out] LONG* p_pnValue);
+	[id(92), helpstring("method GetLayoutOptionBool")] HRESULT GetLayoutOptionBool([in, string] LPWSTR p_pwsObjectId, [in, string] LPWSTR p_pwsLayoutId, [in] LONG p_nOption, [out] BOOL* p_pnValue);
+	[id(93), helpstring("method GetLayoutOptionBool2")] HRESULT GetLayoutOptionBool2([in, string] BSTR p_pwsObjectId, [in, string] BSTR p_pwsLayoutId, [in] LONG p_nOption, [out] BOOL* p_pnValue);
+	[id(94), helpstring("method GetLayoutOptionFloat")] HRESULT GetLayoutOptionFloat([in, string] LPWSTR p_pwsObjectId, [in, string] LPWSTR p_pwsLayoutId, [in] LONG p_nOption, [out] FLOAT* p_pnValue);
+	[id(95), helpstring("method GetLayoutOptionFloat2")] HRESULT GetLayoutOptionFloat2([in, string] BSTR p_pwsObjectId, [in, string] BSTR p_pwsLayoutId, [in] LONG p_nOption, [out] FLOAT* p_pnValue);
+
+	[id(96),  helpstring("method GetLayoutCount")] HRESULT GetLayoutCount([in, string] LPWSTR p_wsObjectId, [out] LONG* p_pnCount);
+	[id(97),  helpstring("method GetLayoutCount2")] HRESULT GetLayoutCount2([in, string] BSTR p_wsObjectId, [out] LONG* p_pnCount);
+	[id(98), helpstring("method GetLayout")] HRESULT GetLayout([in, string] LPWSTR p_pwsObjectId, [in] LONG p_nIndex, [out, string] LPWSTR* p_pwsLayoutId);
+	[id(99), helpstring("method GetLayout2")] HRESULT GetLayout2([in, string] BSTR p_pwsObjectId, [in] LONG p_nIndex, [out, string] BSTR* p_pwsLayoutId);
+	[id(100), helpstring("method DeleteLayout")] HRESULT DeleteLayout([in, string] LPWSTR p_pwsObjectId, [in, string] LPWSTR p_wsLayoutId);
+	[id(101), helpstring("method DeleteLayout2")] HRESULT DeleteLayout2([in, string] BSTR p_pwsObjectId, [in, string] BSTR p_wsLayoutId);
+
+	//Watermark (text) options
+	[id(102), helpstring("method AddWatermarkText")] HRESULT AddWatermarkText([out, string] LPWSTR* p_pwsNewWatermarkId, [out, string] LPWSTR* p_pwsNewLayoutId);
+	[id(103), helpstring("method AddWatermarkText2")] HRESULT AddWatermarkText2([out, string] BSTR* p_pwsNewWatermarkId, [out, string] BSTR* p_pwsNewLayoutId);
+
+	[id(104), helpstring("method SetWatermarkTextOptionString")] HRESULT SetWatermarkTextOptionString([in, string] LPWSTR p_pwsWatermarkId, [in] LONG p_nOption, [in, string] LPCWSTR p_wsValue);
+	[id(105), helpstring("method SetWatermarkTextOptionString2")] HRESULT SetWatermarkTextOptionString2([in, string] BSTR p_pwsWatermarkId, [in] LONG p_nOption, [in, string] BSTR p_wsValue);
+	[id(106), helpstring("method SetWatermarkTextOptionLong")] HRESULT SetWatermarkTextOptionLong([in, string] LPWSTR p_pwsWatermarkId, [in] LONG p_nOption, [in] LONG p_nValue);
+	[id(107), helpstring("method SetWatermarkTextOptionLong2")] HRESULT SetWatermarkTextOptionLong2([in, string] BSTR p_pwsWatermarkId, [in] LONG p_nOption, [in] LONG p_nValue);
+	[id(108), helpstring("method SetWatermarkTextOptionBool")] HRESULT SetWatermarkTextOptionBool([in, string] LPWSTR p_pwsWatermarkId, [in] LONG p_nOption, [in] BOOL p_bValue);
+	[id(109), helpstring("method SetWatermarkTextOptionBool2")] HRESULT SetWatermarkTextOptionBool2([in, string] BSTR p_pwsWatermarkId, [in] LONG p_nOption, [in] BOOL p_bValue);
+	[id(110), helpstring("method SetWatermarkTextOptionFloat")] HRESULT SetWatermarkTextOptionFloat([in, string] LPWSTR p_pwsWatermarkId, [in] LONG p_nOption, [in] FLOAT p_fValue);
+	[id(111), helpstring("method SetWatermarkTextOptionFloat2")] HRESULT SetWatermarkTextOptionFloat2([in, string] BSTR p_pwsWatermarkId, [in] LONG p_nOption, [in] FLOAT p_fValue);
+
+	[id(112), helpstring("method GetWatermarkTextCount")] HRESULT GetWatermarkTextCount([out] LONG* p_pnCount);
+	[id(113), helpstring("method GetWatermarkText")] HRESULT GetWatermarkText([in] LONG p_nIndex, [out, string] LPWSTR* p_pwsWatermarkId);
+	[id(114), helpstring("method GetWatermarkText2")] HRESULT GetWatermarkText2([in] LONG p_nIndex, [out, string] BSTR* p_pwsWatermarkId);
+	[id(115), helpstring("method DeleteWatermarkText")] HRESULT DeleteWatermarkText([in, string] LPWSTR p_wsWatermarkId);
+	[id(116), helpstring("method DeleteWatermarkText2")] HRESULT DeleteWatermarkText2([in, string] BSTR p_wsWatermarkId);
+
+	[id(117), helpstring("method GetWatermarkTextOptionString")] HRESULT GetWatermarkTextOptionString([in, string] LPWSTR p_pwsWatermarkId, [in] LONG p_nOption, [out, string] LPWSTR* p_pwsValue);
+	[id(118), helpstring("method GetWatermarkTextOptionString2")] HRESULT GetWatermarkTextOptionString2([in, string] BSTR p_pwsWatermarkId, [in] LONG p_nOption, [out, string] BSTR* p_pwsValue);
+	[id(119), helpstring("method GetWatermarkTextOptionLong")] HRESULT GetWatermarkTextOptionLong([in, string] LPWSTR p_pwsWatermarkId, [in] LONG p_nOption, [out] LONG* p_pnValue);
+	[id(120), helpstring("method GetWatermarkTextOptionLong2")] HRESULT GetWatermarkTextOptionLong2([in, string] BSTR p_pwsWatermarkId, [in] LONG p_nOption, [out] LONG* p_pnValue);
+	[id(121), helpstring("method GetWatermarkTextOptionBool")] HRESULT GetWatermarkTextOptionBool([in, string] LPWSTR p_pwsWatermarkId, [in] LONG p_nOption, [out] BOOL* p_pnValue);
+	[id(122), helpstring("method GetWatermarkTextOptionBool2")] HRESULT GetWatermarkTextOptionBool2([in, string] BSTR p_pwsWatermarkId, [in] LONG p_nOption, [out] BOOL* p_pnValue);
+	[id(123), helpstring("method GetWatermarkTextOptionFloat")] HRESULT GetWatermarkTextOptionFloat([in, string] LPWSTR p_pwsWatermarkId, [in] LONG p_nOption, [out] FLOAT* p_pnValue);
+	[id(124), helpstring("method GetWatermarkTextOptionFloat2")] HRESULT GetWatermarkTextOptionFloat2([in, string] BSTR p_pwsWatermarkId, [in] LONG p_nOption, [out] FLOAT* p_pnValue);
+
+	[id(125), helpstring("method AddNovaPrinter")] HRESULT AddNovaPrinter([in, string] LPCWSTR p_wsPrinterName, [in, string] LPCWSTR p_wsPortName, [in, string] LPCWSTR p_wsOEMID, [in, string] LPCWSTR p_wsServicePort, [in, string] LPCWSTR p_wsLicenseKey);
+	[id(126), helpstring("method AddNovaPrinter2")] HRESULT AddNovaPrinter2([in, string] BSTR p_wsPrinterName, [in, string] BSTR p_wsPortName, [in, string] BSTR p_wsOEMID, [in, string] BSTR p_wsServicePort, [in, string] BSTR p_wsLicenseKey);
+	[id(127), helpstring("method DeleteNovaPrinter")] HRESULT DeleteNovaPrinter([in, string] LPCWSTR p_wsPrinterName);
+	[id(128), helpstring("method DeleteNovaPrinter2")] HRESULT DeleteNovaPrinter2([in, string] BSTR p_wsPrinterName);
+
+	//Emails (image)
+	[id(129), helpstring("method AddEmail")] HRESULT AddEmail([out, string] LPWSTR* p_pwsNewEmailId);
+	[id(130), helpstring("method AddEmail2")] HRESULT AddEmail2([out, string] BSTR* p_pwsNewEmailId);
+	[id(131), helpstring("method SetEmailOptionString")] HRESULT SetEmailOptionString([in, string] LPWSTR p_pwsEmailId, [in] LONG p_nOption, [in, string] LPCWSTR p_wsValue);
+	[id(132), helpstring("method SetEmailOptionString2")] HRESULT SetEmailOptionString2([in, string] BSTR p_pwsEmailId, [in] LONG p_nOption, [in, string] BSTR p_wsValue);
+	[id(133), helpstring("method SetEmailOptionLong")] HRESULT SetEmailOptionLong([in, string] LPWSTR p_pwsEmailId, [in] LONG p_nOption, [in] LONG p_nValue);
+	[id(134), helpstring("method SetEmailOptionLong2")] HRESULT SetEmailOptionLong2([in, string] BSTR p_pwsEmailId, [in] LONG p_nOption, [in] LONG p_nValue);
+	[id(135), helpstring("method SetEmailOptionBool")] HRESULT SetEmailOptionBool([in, string] LPWSTR p_pwsEmailId, [in] LONG p_nOption, [in] BOOL p_bValue);
+	[id(136), helpstring("method SetEmailOptionBool2")] HRESULT SetEmailOptionBool2([in, string] BSTR p_pwsEmailId, [in] LONG p_nOption, [in] BOOL p_bValue);
+	[id(137), helpstring("method GetEmailCount")] HRESULT GetEmailCount([out] LONG* p_pnCount);
+	[id(138), helpstring("method GetEmail")] HRESULT GetEmail(LONG p_nIndex, [out, string] LPWSTR* p_pwsEmailId);
+	[id(139), helpstring("method GetEmail2")] HRESULT GetEmail2(LONG p_nIndex, [out, string] BSTR* p_pwsEmailId);
+	[id(140), helpstring("method DeleteEmail")] HRESULT DeleteEmail([in, string] LPWSTR p_wsEmailId);
+	[id(141), helpstring("method DeleteEmail2")] HRESULT DeleteEmail2([in, string] BSTR p_wsEmailId);
+	[id(142), helpstring("method GetEmailOptionString")] HRESULT GetEmailOptionString([in, string] LPWSTR p_pwsEmailId, [in] LONG p_nOption, [out, string] LPWSTR* p_pwsValue);
+	[id(143), helpstring("method GetEmailOptionString2")] HRESULT GetEmailOptionString2([in, string] BSTR p_pwsEmailId, [in] LONG p_nOption, [out, string] BSTR* p_pwsValue);
+	[id(144), helpstring("method GetEmailOptionLong")] HRESULT GetEmailOptionLong([in, string] LPWSTR p_pwsEmailId, [in] LONG p_nOption, [out] LONG* p_pnValue);
+	[id(145), helpstring("method GetEmailOptionLong2")] HRESULT GetEmailOptionLong2([in, string] BSTR p_pwsEmailId, [in] LONG p_nOption, [out] LONG* p_pnValue);
+	[id(146), helpstring("method GetEmailOptionBool")] HRESULT GetEmailOptionBool([in, string] LPWSTR p_pwsEmailId, [in] LONG p_nOption, [out] BOOL* p_pbValue);
+	[id(147), helpstring("method GetEmailOptionBool2")] HRESULT GetEmailOptionBool2([in, string] BSTR p_pwsEmailId, [in] LONG p_nOption, [out] BOOL* p_pbValue);
+
+	//Receipients
+	[id(148), helpstring("method AddEmailRecipient")] HRESULT AddEmailRecipient([in, string] LPWSTR p_pwsEmailId, [out, string] LPWSTR* p_pwsNewRecipientId, [in, string] LPWSTR p_pwsFrom, [in, string] LPWSTR p_pwsTo, [in, string] LPWSTR p_pwsCC, [in, string] LPWSTR p_pwsBCC);
+	[id(149), helpstring("method AddEmailRecipient2")] HRESULT AddEmailRecipient2([in, string] BSTR p_pwsEmailId, [out, string] BSTR* p_pwsNewRecipientId, [in, string] BSTR p_pwsFrom, [in, string] BSTR p_pwsTo, [in, string] BSTR p_pwsCC, [in, string] BSTR p_pwsBCC);
+	[id(150), helpstring("method DeleteEmailRecipient")] HRESULT DeleteEmailRecipient([in, string] LPWSTR p_pwsEmailId, [in, string] LPWSTR p_pwsRecipientId);
+	[id(151), helpstring("method DeleteEmailRecipient2")] HRESULT DeleteEmailRecipient2([in, string] BSTR p_pwsEmailId, [in, string] BSTR p_pwsRecipientId);
+	[id(152), helpstring("method GetEmailRecipientCount")] HRESULT GetEmailRecipientCount([in, string] LPWSTR p_pwsEmailId, [out] LONG* p_pnCount);
+	[id(153), helpstring("method GetEmailRecipientCount2")] HRESULT GetEmailRecipientCount2([in, string] BSTR p_pwsEmailId, [out] LONG* p_pnCount);
+	[id(154), helpstring("method GetEmailRecipient")] HRESULT GetEmailRecipient([in] LONG p_nIndex, [in, string] LPWSTR p_pwsEmailId, [out, string] LPWSTR* p_pwsRecipientId, [out, string] LPWSTR* p_pwsFrom, [out, string] LPWSTR* p_pwsTo, [out, string] LPWSTR* p_pwsCC, [out, string] LPWSTR* p_pwsBCC);
+	[id(155), helpstring("method GetEmailRecipient2")] HRESULT GetEmailRecipient2([in] LONG p_nIndex, [in, string] BSTR p_pwsEmailId, [out, string] BSTR* p_pwsRecipientId, [out, string] BSTR* p_pwsFrom, [out, string] BSTR* p_pwsTo, [out, string] BSTR* p_pwsCC, [out, string] BSTR* p_pwsBCC);
+	[id(156), helpstring("method SetEmailRecipient")] HRESULT SetEmailRecipient([in, string] LPWSTR p_pwsRecipientId, [in, string] LPWSTR p_pwsFrom, [in, string] LPWSTR p_pwsTo, [in, string] LPWSTR p_pwsCC, [in, string] LPWSTR p_pwsBCC);
+	[id(157), helpstring("method SetEmailRecipient2")] HRESULT SetEmailRecipient2([in, string] BSTR p_pwsRecipientId, [in, string] BSTR p_pwsFrom, [in, string] BSTR p_pwsTo, [in, string] BSTR p_pwsCC, [in, string] BSTR p_pwsBCC);
+	
+	//Signature
+	[id(158), helpstring("method GetSignature")] HRESULT GetSignature([out, string] LPWSTR* p_pwsSignatureId, LPWSTR* p_pwsLayoutId);
+	[id(159), helpstring("method GetSignature2")] HRESULT GetSignature2([out, string] BSTR* p_pwsSignatureId, BSTR* p_pwsLayoutId);
+	
+	//Overlay
+	[id(160), helpstring("method GetOverlay")] HRESULT GetOverlay([out, string] LPWSTR* p_pwsOverlayId, LPWSTR* p_pwsLayoutId);
+	[id(161), helpstring("method GetOverlay2")] HRESULT GetOverlay2([out, string] BSTR* p_pwsOverlayId, BSTR* p_pwsLayoutId);
+	
+	//Content
+	[id(162), helpstring("method GetContentLayout")] HRESULT GetContentLayout([out, string] LPWSTR* p_pwsContentId, [out, string] LPWSTR* p_pwsLayoutId);
+	[id(163), helpstring("method GetContentLayout2")] HRESULT GetContentLayout2([out, string] BSTR* p_pwsContentId, [out, string] BSTR* p_pwsLayoutId);
+	
+	//Encrypted strings
+	[id(164), helpstring("method SetOptionEncryptedString")] HRESULT SetOptionEncryptedString([in] LONG p_nOption, [in, string] LPCWSTR p_wsValue);
+	[id(165), helpstring("method SetOptionEncryptedString2")] HRESULT SetOptionEncryptedString2([in] LONG p_nOption, [in, string] BSTR p_wsValue);
+	[id(166), helpstring("method GetOptionEncryptedString")] HRESULT GetOptionEncryptedString([in] LONG p_nOption, [out, string] LPWSTR* p_pwsValue);
+	[id(167), helpstring("method GetOptionEncryptedString2")] HRESULT GetOptionEncryptedString2([in] LONG p_nOption, [out, string] BSTR* p_pwsValue);
+	[id(168), helpstring("method SetWatermarkImageOptionEncryptedString")] HRESULT SetWatermarkImageOptionEncryptedString([in, string] LPWSTR p_pwsWatermarkId, [in] LONG p_nOption, [in, string] LPCWSTR p_wsValue);
+	[id(169), helpstring("method SetWatermarkImageOptionEncryptedString2")] HRESULT SetWatermarkImageOptionEncryptedString2([in, string] BSTR p_pwsWatermarkId, [in] LONG p_nOption, [in, string] BSTR p_wsValue);
+	[id(170), helpstring("method GetWatermarkImageOptionEncryptedString")] HRESULT GetWatermarkImageOptionEncryptedString([in, string] LPWSTR p_pwsWatermarkId, [in] LONG p_nOption, [out, string] LPWSTR* p_pwsValue);
+	[id(171), helpstring("method GetWatermarkImageOptionEncryptedString2")] HRESULT GetWatermarkImageOptionEncryptedString2([in, string] BSTR p_pwsWatermarkId, [in] LONG p_nOption, [out, string] BSTR* p_pwsValue);
+	[id(172), helpstring("method SetEmailOptionEncryptedString")] HRESULT SetEmailOptionEncryptedString([in, string] LPWSTR p_pwsEmailId, [in] LONG p_nOption, [in, string] LPCWSTR p_wsValue);
+	[id(173), helpstring("method SetEmailOptionEncryptedString2")] HRESULT SetEmailOptionEncryptedString2([in, string] BSTR p_pwsEmailId, [in] LONG p_nOption, [in, string] BSTR p_wsValue);
+	[id(174), helpstring("method GetEmailOptionEncryptedString")] HRESULT GetEmailOptionEncryptedString([in, string] LPWSTR p_pwsEmailId, [in] LONG p_nOption, [out, string] LPWSTR* p_pwsValue);
+	[id(175), helpstring("method GetEmailOptionEncryptedString2")] HRESULT GetEmailOptionEncryptedString2([in, string] BSTR p_pwsEmailId, [in] LONG p_nOption, [out, string] BSTR* p_pwsValue);
+	
+	//Public profiles
+	[id(176), helpstring("method SetPrinterActivePublicProfile")] HRESULT SetPrinterActivePublicProfile([in, string] LPWSTR p_wsPrinterName, [in, string] LPWSTR p_wsProfileId);
+	[id(177), helpstring("method SetPrinterActivePublicProfile2")] HRESULT SetPrinterActivePublicProfile2([in, string] BSTR p_wsPrinterName, [in, string] BSTR p_wsProfileId);
+	[id(178), helpstring("method DeletePrinterActivePublicProfile")] HRESULT DeletePrinterActivePublicProfile([in, string] LPWSTR p_wsPrinterName);
+	[id(179), helpstring("method DeletePrinterActivePublicProfile2")] HRESULT DeletePrinterActivePublicProfile2([in, string] BSTR p_wsPrinterName);
+	[id(180), helpstring("method SetPrinterPublicProfile")] HRESULT SetPrinterPublicProfile([in, string] LPWSTR p_wsPrinterName, [in, string] LPWSTR p_wsProfileId, [in] BOOL p_bVisible);
+	[id(181), helpstring("method SetPrinterPublicProfile2")] HRESULT SetPrinterPublicProfile2([in, string] BSTR p_wsPrinterName, [in, string] BSTR p_wsProfileId, [in] BOOL p_bVisible);
+
+};
+[
+	uuid(9B7C4847-8D28-43CC-ADD2-A6495EB93175),
+	version(8.0),
+	helpstring("novaPI 8.0 Type Library")
+]
+library novaPILib80
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(74DA3985-C44B-4CFB-885B-FA0F19DFD36D),
+		helpstring("NovaPdfOptions80 Class"),
+		version(8.0)
+	]
+	coclass NovaPdfOptions80
+	{
+		[default] interface INovaPdfOptions80;
+	};
+};

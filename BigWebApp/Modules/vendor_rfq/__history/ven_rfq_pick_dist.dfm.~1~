@@ -1,0 +1,677 @@
+object FrmVendorRFQPickDist: TFrmVendorRFQPickDist
+  Left = 449
+  Top = 270
+  ClientHeight = 427
+  ClientWidth = 665
+  Caption = 'Pick Distributors'
+  OnShow = UniFormShow
+  OldCreateOrder = False
+  OnClose = FormClose
+  MonitoredKeys.Keys = <>
+  OnCreate = UniFormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Splitter1: TUniSplitter
+    Left = 0
+    Top = 207
+    Width = 665
+    Height = 3
+    Cursor = crVSplit
+    Hint = ''
+    Align = alTop
+    ParentColor = False
+    Color = clBtnFace
+  end
+  object Panel2: TUniPanel
+    Left = 0
+    Top = 27
+    Width = 665
+    Height = 180
+    Hint = ''
+    Align = alTop
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 0
+    Caption = ''
+    object IQSearch1: TIQUniGridControl
+      Left = 1
+      Top = 1
+      Width = 663
+      Height = 178
+      Layout = 'border'
+      ParentAlignmentControl = False
+      AlignmentControl = uniAlignmentClient
+      Align = alClient
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      TabOrder = 0
+      IQComponents.Grid.Left = 0
+      IQComponents.Grid.Top = 29
+      IQComponents.Grid.Width = 446
+      IQComponents.Grid.Height = 92
+      IQComponents.Grid.Hint = ''
+      IQComponents.Grid.DataSource = SrcVendors
+      IQComponents.Grid.LoadMask.Message = 'Loading data...'
+      IQComponents.Grid.Align = alClient
+      IQComponents.Grid.Anchors = [akLeft, akTop, akRight, akBottom]
+      IQComponents.Grid.TabOrder = 0
+      IQComponents.Navigator.Left = 410
+      IQComponents.Navigator.Top = 0
+      IQComponents.Navigator.Width = 241
+      IQComponents.Navigator.Height = 25
+      IQComponents.Navigator.Hint = ''
+      IQComponents.Navigator.ShowHint = True
+      IQComponents.Navigator.DataSource = SrcVendors
+      IQComponents.Navigator.LayoutConfig.Region = 'east'
+      IQComponents.Navigator.TabOrder = 3
+      IQComponents.HiddenPanel.Left = 446
+      IQComponents.HiddenPanel.Top = 29
+      IQComponents.HiddenPanel.Width = 209
+      IQComponents.HiddenPanel.Height = 92
+      IQComponents.HiddenPanel.Hint = ''
+      IQComponents.HiddenPanel.Visible = True
+      IQComponents.HiddenPanel.Align = alRight
+      IQComponents.HiddenPanel.Anchors = [akTop, akRight, akBottom]
+      IQComponents.FormTab.Hint = ''
+      IQComponents.FormTab.ImageIndex = 1
+      IQComponents.FormTab.Caption = 'Form'
+      IQComponents.FormTab.Layout = 'border'
+      DataSource = SrcVendors
+      Columns = <
+        item
+          FieldName = 'VENDORNO'
+          Title.Caption = 'Vendor #'
+          Width = 46
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'COMPANY'
+          Title.Caption = 'Company'
+          Width = 184
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'CITY'
+          Title.Caption = 'City'
+          Width = 51
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'STATE'
+          Title.Caption = 'State'
+          Width = 29
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'ZIP'
+          Title.Caption = 'Zip'
+          Width = 26
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'ADDR1'
+          Title.Caption = 'Address 1'
+          Width = 57
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'ADDR2'
+          Title.Caption = 'Address 2'
+          Width = 30
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'ADDR3'
+          Title.Caption = 'Address 3'
+          Width = 30
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'STATUS_ID'
+          Title.Caption = 'Status'
+          Width = 20
+          CheckBoxField.FieldValues = 'true;false'
+        end>
+      Marker = 0
+    end
+  end
+  object Panel3: TUniPanel
+    Left = 0
+    Top = 0
+    Width = 665
+    Height = 27
+    Hint = ''
+    Align = alTop
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 1
+    Alignment = taLeftJustify
+    Caption = ' OEM Vendors'
+    object pnlLegend: TUniPanel
+      Left = 642
+      Top = 1
+      Width = 23
+      Height = 25
+      Hint = ''
+      ShowHint = True
+      ParentShowHint = False
+      Align = alRight
+      Anchors = [akTop, akRight, akBottom]
+      TabOrder = 0
+      Caption = ''
+      object Shape8: TShape
+        Left = 1
+        Top = 7
+        Width = 10
+        Height = 11
+        Hint = 'AKA Vendor'
+        Brush.Color = clAqua
+        Shape = stSquare
+      end
+    end
+  end
+  object Panel1: TUniPanel
+    Left = 0
+    Top = 210
+    Width = 665
+    Height = 176
+    Hint = ''
+    Align = alClient
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    TabOrder = 2
+    Caption = ''
+    object Panel4: TUniPanel
+      Tag = 1999
+      Left = 1
+      Top = 1
+      Width = 663
+      Height = 28
+      Hint = ''
+      Align = alTop
+      Anchors = [akLeft, akTop, akRight]
+      TabOrder = 0
+      Alignment = taLeftJustify
+      Caption = ' Distributors'
+      object NavDist: TUniDBNavigator
+        Left = 551
+        Top = 1
+        Width = 112
+        Height = 26
+        Hint = ''
+        DataSource = SrcVendorOEMDist
+        VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+        Align = alRight
+        Anchors = [akTop, akRight, akBottom]
+        TabOrder = 0
+      end
+    end
+    object wwDBGrid1: TIQUniGridControl
+      Left = 1
+      Top = 28
+      Width = 663
+      Height = 148
+      Layout = 'border'
+      ParentAlignmentControl = False
+      AlignmentControl = uniAlignmentClient
+      Align = alClient
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      TabOrder = 1
+      IQComponents.Grid.Left = 0
+      IQComponents.Grid.Top = 29
+      IQComponents.Grid.Width = 446
+      IQComponents.Grid.Height = 62
+      IQComponents.Grid.Hint = ''
+      IQComponents.Grid.DataSource = SrcVendorOEMDist
+      IQComponents.Grid.LoadMask.Message = 'Loading data...'
+      IQComponents.Grid.Align = alClient
+      IQComponents.Grid.Anchors = [akLeft, akTop, akRight, akBottom]
+      IQComponents.Grid.TabOrder = 0
+      IQComponents.Navigator.Left = 410
+      IQComponents.Navigator.Top = 0
+      IQComponents.Navigator.Width = 241
+      IQComponents.Navigator.Height = 25
+      IQComponents.Navigator.Hint = ''
+      IQComponents.Navigator.ShowHint = True
+      IQComponents.Navigator.DataSource = SrcVendorOEMDist
+      IQComponents.Navigator.LayoutConfig.Region = 'east'
+      IQComponents.Navigator.TabOrder = 3
+      IQComponents.HiddenPanel.Left = 446
+      IQComponents.HiddenPanel.Top = 29
+      IQComponents.HiddenPanel.Width = 209
+      IQComponents.HiddenPanel.Height = 62
+      IQComponents.HiddenPanel.Hint = ''
+      IQComponents.HiddenPanel.Visible = True
+      IQComponents.HiddenPanel.Align = alRight
+      IQComponents.HiddenPanel.Anchors = [akTop, akRight, akBottom]
+      IQComponents.FormTab.Hint = ''
+      IQComponents.FormTab.ImageIndex = 1
+      IQComponents.FormTab.Caption = 'Form'
+      IQComponents.FormTab.Layout = 'border'
+      DataSource = SrcVendorOEMDist
+      Columns = <
+        item
+          FieldName = 'VENDORNO'
+          Title.Caption = 'Vendor #'
+          Width = 63
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'COMPANY'
+          Title.Caption = 'Vendor'
+          Width = 59
+          ReadOnly = True
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'CITY'
+          Title.Caption = 'City'
+          Width = 53
+          ReadOnly = True
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'STATE'
+          Title.Caption = 'State or Region'
+          Width = 20
+          ReadOnly = True
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'ZIP'
+          Title.Caption = 'Zip/Postal Code'
+          Width = 10
+          ReadOnly = True
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'ADDR1'
+          Title.Caption = 'Address 1'
+          Width = 20
+          ReadOnly = True
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'ADDR2'
+          Title.Caption = 'Address 2'
+          Width = 20
+          ReadOnly = True
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'ADDR3'
+          Title.Caption = 'Address 3'
+          Width = 20
+          ReadOnly = True
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'CUSER1'
+          Title.Caption = 'User Text'
+          Width = 30
+          ReadOnly = True
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'QA_RATING'
+          Title.Caption = 'Q.A. Rating'
+          Width = 10
+          ReadOnly = True
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'VEN_RATING'
+          Title.Caption = 'Vendor Rating'
+          Width = 10
+          ReadOnly = True
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'STATUS_ID'
+          Title.Caption = 'Status'
+          Width = 20
+          ReadOnly = True
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'FED_TAX_ID'
+          Title.Caption = 'Tax ID'
+          Width = 20
+          ReadOnly = True
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'IS_OEM'
+          Title.Caption = 'OEM'
+          Width = 1
+          ReadOnly = True
+          CheckBoxField.FieldValues = 'true;false'
+        end>
+      Marker = 0
+    end
+  end
+  object Panel5: TUniPanel
+    Left = 0
+    Top = 386
+    Width = 665
+    Height = 41
+    Hint = ''
+    Align = alBottom
+    Anchors = [akLeft, akRight, akBottom]
+    TabOrder = 3
+    Caption = ''
+    object Panel6: TUniPanel
+      Left = 483
+      Top = 1
+      Width = 182
+      Height = 39
+      Hint = ''
+      Align = alRight
+      Anchors = [akTop, akRight, akBottom]
+      TabOrder = 0
+      Caption = ''
+      object btnOK: TUniButton
+        Left = 4
+        Top = 8
+        Width = 75
+        Height = 25
+        Hint = ''
+        Caption = 'OK'
+        TabOrder = 1
+        OnClick = btnOKClick
+      end
+      object btnCancel: TUniButton
+        Left = 94
+        Top = 8
+        Width = 75
+        Height = 25
+        Hint = ''
+        Caption = 'Cancel'
+        ModalResult = 2
+        TabOrder = 2
+      end
+    end
+  end
+  object SrcVendors: TDataSource
+    DataSet = QryVendors
+    Left = 96
+    Top = 51
+  end
+  object QryVendors: TFDQuery
+    BeforeOpen = QryVendorsBeforeOpen
+    Connection = UniMainModule.FDConnection1
+    SQL.Strings = (
+      'select vendorno,'
+      '       company,'
+      '       city,'
+      '       state,'
+      '       zip,'
+      '       addr1,'
+      '       addr2,'
+      '       addr3,'
+      '       id,'
+      '       status_id,'
+      
+        '       (select count(id) from arinvt_vendors where vendor_id = v' +
+        'endor.id and arinvt_id = :arinvt_id) as aka_count'
+      '  from vendor'
+      ' where is_oem = '#39'Y'#39
+      '   and nvl(pk_hide, '#39'N'#39') <> '#39'Y'#39
+      'order by vendorno'
+      ''
+      ''
+      ''
+      '')
+    Left = 96
+    Top = 75
+    ParamData = <
+      item
+        Name = 'arinvt_id'
+        DataType = ftFloat
+        ParamType = ptInput
+      end>
+    object QryVendorsVENDORNO: TStringField
+      DisplayLabel = 'Vendor #'
+      DisplayWidth = 12
+      FieldName = 'VENDORNO'
+      Origin = 'VENDORNO'
+      FixedChar = True
+      Size = 10
+    end
+    object QryVendorsCOMPANY: TStringField
+      DisplayLabel = 'Company'
+      DisplayWidth = 30
+      FieldName = 'COMPANY'
+      Origin = 'COMPANY'
+      Size = 60
+    end
+    object QryVendorsCITY: TStringField
+      DisplayLabel = 'City'
+      DisplayWidth = 20
+      FieldName = 'CITY'
+      Origin = 'city'
+      FixedChar = True
+      Size = 30
+    end
+    object QryVendorsSTATE: TStringField
+      DisplayLabel = 'State'
+      DisplayWidth = 20
+      FieldName = 'STATE'
+      Origin = 'state'
+    end
+    object QryVendorsZIP: TStringField
+      DisplayLabel = 'Zip'
+      DisplayWidth = 10
+      FieldName = 'ZIP'
+      Origin = 'zip'
+      FixedChar = True
+      Size = 10
+    end
+    object QryVendorsADDR1: TStringField
+      DisplayLabel = 'Address 1'
+      DisplayWidth = 30
+      FieldName = 'ADDR1'
+      Origin = 'addr1'
+      Size = 60
+    end
+    object QryVendorsADDR2: TStringField
+      DisplayLabel = 'Address 2'
+      DisplayWidth = 30
+      FieldName = 'ADDR2'
+      Origin = 'addr2'
+      Size = 60
+    end
+    object QryVendorsADDR3: TStringField
+      DisplayLabel = 'Address 3'
+      DisplayWidth = 30
+      FieldName = 'ADDR3'
+      Origin = 'addr3'
+      Size = 60
+    end
+    object QryVendorsSTATUS_ID: TStringField
+      DisplayLabel = 'Status'
+      DisplayWidth = 20
+      FieldName = 'STATUS_ID'
+      Origin = 'STATUS_ID'
+      FixedChar = True
+    end
+    object QryVendorsID: TBCDField
+      FieldName = 'ID'
+      Visible = False
+      Size = 0
+    end
+    object QryVendorsAKA_COUNT: TFMTBCDField
+      DisplayWidth = 10
+      FieldName = 'AKA_COUNT'
+      Visible = False
+    end
+  end
+  object SrcVendorOEMDist: TDataSource
+    DataSet = QryVendorOEMDist
+    Left = 136
+    Top = 52
+  end
+  object QryVendorOEMDist: TFDQuery
+    MasterSource = SrcVendors
+    MasterFields = 'ID'
+    Connection = UniMainModule.FDConnection1
+    SQL.Strings = (
+      'select o.id,'
+      '       o.oem_vendor_id,'
+      '       o.dist_vendor_id,'
+      '       v.vendorno,'
+      '       v.company,'
+      '       v.city,'
+      '       v.state,'
+      '       v.zip,'
+      '       v.addr1,'
+      '       v.addr2,'
+      '       v.addr3,'
+      '       v.cuser1,'
+      '       v.qa_rating,'
+      '       v.ven_rating,'
+      '       v.status_id,'
+      '       v.fed_tax_id,'
+      '       v.is_OEM'
+      '  from vendor_oem_dist o,'
+      '       vendor v'
+      ' where o.oem_vendor_id = :id'
+      '   and o.dist_vendor_id = v.id'
+      ' order by v.vendorno'
+      ''
+      '')
+    Left = 136
+    Top = 68
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftFloat
+        ParamType = ptInput
+        Size = 8
+      end>
+    object QryVendorOEMDistVENDORNO: TStringField
+      DisplayLabel = 'Vendor #'
+      DisplayWidth = 10
+      FieldName = 'VENDORNO'
+      Size = 10
+    end
+    object QryVendorOEMDistCOMPANY: TStringField
+      DisplayLabel = 'Vendor'
+      DisplayWidth = 30
+      FieldName = 'COMPANY'
+      ReadOnly = True
+      Size = 30
+    end
+    object QryVendorOEMDistCITY: TStringField
+      DisplayLabel = 'City'
+      DisplayWidth = 30
+      FieldName = 'CITY'
+      ReadOnly = True
+      Size = 30
+    end
+    object QryVendorOEMDistSTATE: TStringField
+      DisplayLabel = 'State or Region'
+      DisplayWidth = 20
+      FieldName = 'STATE'
+      ReadOnly = True
+    end
+    object QryVendorOEMDistZIP: TStringField
+      DisplayLabel = 'Zip/Postal Code'
+      DisplayWidth = 10
+      FieldName = 'ZIP'
+      ReadOnly = True
+      Size = 10
+    end
+    object QryVendorOEMDistADDR1: TStringField
+      DisplayLabel = 'Address 1'
+      DisplayWidth = 20
+      FieldName = 'ADDR1'
+      Origin = 'VENDOR.ADDR1'
+      ReadOnly = True
+      Size = 30
+    end
+    object QryVendorOEMDistADDR2: TStringField
+      DisplayLabel = 'Address 2'
+      DisplayWidth = 20
+      FieldName = 'ADDR2'
+      Origin = 'VENDOR.ADDR2'
+      ReadOnly = True
+      Size = 30
+    end
+    object QryVendorOEMDistADDR3: TStringField
+      DisplayLabel = 'Address 3'
+      DisplayWidth = 20
+      FieldName = 'ADDR3'
+      Origin = 'IQ.VENDOR.ADDR3'
+      ReadOnly = True
+      FixedChar = True
+      Size = 30
+    end
+    object QryVendorOEMDistCUSER1: TStringField
+      DisplayLabel = 'User Text'
+      DisplayWidth = 30
+      FieldName = 'CUSER1'
+      Origin = 'IQ.VENDOR.CUSER1'
+      ReadOnly = True
+      Size = 60
+    end
+    object QryVendorOEMDistQA_RATING: TStringField
+      DisplayLabel = 'Q.A. Rating'
+      DisplayWidth = 10
+      FieldName = 'QA_RATING'
+      Origin = 'IQ.V_VENDOR.QA_RATING'
+      ReadOnly = True
+      FixedChar = True
+      Size = 10
+    end
+    object QryVendorOEMDistVEN_RATING: TStringField
+      DisplayLabel = 'Vendor Rating'
+      DisplayWidth = 10
+      FieldName = 'VEN_RATING'
+      Origin = 'IQ.V_VENDOR.VEN_RATING'
+      ReadOnly = True
+      FixedChar = True
+      Size = 10
+    end
+    object QryVendorOEMDistSTATUS_ID: TStringField
+      DisplayLabel = 'Status'
+      DisplayWidth = 20
+      FieldName = 'STATUS_ID'
+      Origin = 'IQ.V_VENDOR.STATUS_ID'
+      ReadOnly = True
+      FixedChar = True
+    end
+    object QryVendorOEMDistFED_TAX_ID: TStringField
+      DisplayLabel = 'Tax ID'
+      DisplayWidth = 20
+      FieldName = 'FED_TAX_ID'
+      ReadOnly = True
+      FixedChar = True
+      Size = 30
+    end
+    object QryVendorOEMDistIS_OEM: TStringField
+      DisplayLabel = 'OEM'
+      DisplayWidth = 1
+      FieldName = 'IS_OEM'
+      Origin = 'IQ.VENDOR.IS_OEM'
+      ReadOnly = True
+      Size = 1
+    end
+    object QryVendorOEMDistID: TBCDField
+      FieldName = 'ID'
+      Origin = 'IQ.VENDOR_OEM_DIST.ID'
+      Visible = False
+      Size = 0
+    end
+    object QryVendorOEMDistOEM_VENDOR_ID: TBCDField
+      FieldName = 'OEM_VENDOR_ID'
+      Origin = 'IQ.VENDOR_OEM_DIST.OEM_VENDOR_ID'
+      Visible = False
+      Size = 0
+    end
+    object QryVendorOEMDistDIST_VENDOR_ID: TBCDField
+      DisplayLabel = 'Vendor #'
+      FieldName = 'DIST_VENDOR_ID'
+      Origin = 'IQ.VENDOR_OEM_DIST.DIST_VENDOR_ID'
+      Required = True
+      Visible = False
+      Size = 0
+    end
+  end
+end

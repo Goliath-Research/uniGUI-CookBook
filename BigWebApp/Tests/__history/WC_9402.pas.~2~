@@ -1,0 +1,20 @@
+unit WC_9402;
+
+interface
+
+implementation
+
+uses
+  TestReg,
+  System.Variants,
+  IQMS.WebVcl.Documents;
+
+procedure Test1;
+begin
+  DoShowModal9402;
+end;
+
+initialization
+
+  TTestRepo.RegisterTest('WC-9402', 'Ap', 'FrmOutOfBal', 'DoShowModalDialogCheckBox', Test1);
+end.

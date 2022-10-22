@@ -1,0 +1,1072 @@
+unit IQMS.DBTrans.dbtdb;
+
+(* ************************************************************************
+  *** IQMS Dataset Objects ***                                            *
+  *                                                                       *
+  *   This unit contains generic, database-related calls.                 *
+  *                                                                       *
+  ************************************************************************ *)
+
+(* ----------------------------------------------------------------------------
+  *** Field Catalog (TFieldCatalog) ***
+
+  Purpose:
+  The component is used to catalog (list) table fields, along with data type,
+  size, precision, and any other field information that cannot otherwise
+  be preserved in a string list.
+
+  Usage:
+  The Field Catalog may be used as a simple list of dataset fields.  But it
+  can also be used application-wide to remember fields, whose definition
+  has already been checked.  The Field Catalog saves hits on the database.
+  This assists speed especially where network connections are not what they
+  should be, and it is more efficient since we are re-using what we have
+  already checked.
+
+  The Field Catalog is created and freed by the main form.  The catalog is
+  kept in memory during the entire session.  So, if importing a group of
+  projects through COM (IQAlert) or the command line, there is no redundant
+  checks for field definitions.
+
+  ---------------------------------------------------------------------------- *)
+
+(* ----------------------------------------------------------------------------
+  *** History ***
+
+  11/09/2009
+  This unit created.
+
+  12/08/2009
+  Moved TFieldCatalog to this unit.
+
+  ---------------------------------------------------------------------------- *)
+
+interface
+
+uses
+  Windows,
+  Forms,
+  Dialogs,
+  Messages,
+  SysUtils,
+  Classes,
+  Controls,
+  IQMS.Common.Registry,
+  Variants,
+  DB,
+  Provider,
+  DBClient,
+  FMTBcd,
+  SqlExpr,
+  System.Generics.Collections,
+  System.Generics.Defaults;
+
+procedure RaiseGetValStandardException(E: Exception; ASQL, ADatabase: string);
+
+type
+  { Forwards }
+  TCustomFieldCatalog = class;
+  TFieldCatalog = class;
+  TFieldMap = class;
+  TCustomFieldList = class;
+  TFieldListItem = class;
+
+  { TFieldEntry }
+  TFieldEntry = class(TCollectionItem)
+    private
+      { Private declarations }
+      FSize: Integer;
+      FFieldName: string;
+      FTableName: string;
+      FDataType: string;
+      FPrecision: Integer;
+      FScale: Integer;
+      FNullable: Boolean;
+      FTag: Integer;
+      FCustomText2: string;
+      FCustomText1: string;
+      FCustomValue: Variant;
+      FChecked: Boolean;
+      function GetFieldLabel: string;
+    public
+      { Public declarations }
+      constructor Create(Collection: TCollection); override;
+      destructor Destroy; override;
+    published
+      { Published declarations }
+      property FieldLabel: string
+        read GetFieldLabel;
+      property TableName: string
+        read FTableName
+        write FTableName;
+      property FieldName: string
+        read FFieldName
+        write FFieldName;
+      property DataType: string
+        read FDataType
+        write FDataType;
+      property Precision: Integer
+        read FPrecision
+        write FPrecision;
+      property Scale: Integer
+        read FScale
+        write FScale;
+      property Size: Integer
+        read FSize
+        write FSize;
+      property Nullable: Boolean
+        read FNullable
+        write FNullable;
+      property Tag: Integer
+        read FTag
+        write FTag;
+      property Checked: Boolean
+        read FChecked
+        write FChecked;
+      property CustomText1: string
+        read FCustomText1
+        write FCustomText1;
+      property CustomText2: string
+        read FCustomText2
+        write FCustomText2;
+      property CustomValue: Variant
+        read FCustomValue
+        write FCustomValue;
+  end;
+
+  { TCustomFieldCatalog }
+  TCustomFieldCatalog = class(TCollection)
+    private
+      { Private declarations }
+      function GetItems(index: Integer): TFieldEntry;
+      procedure SetItems(index: Integer; const Value: TFieldEntry);
+    public
+      { Public declarations }
+      function Add(const ATableName, AFieldName: string): TFieldEntry; virtual;
+      function Find(const ATableName, AFieldName: string): TFieldEntry;
+      function IndexOf(ATableName, AFieldName: string): Integer;
+
+      procedure GetFieldList(const ATableName: string; var AFields: TStringList;
+        ADataTypeFilter: string = '');
+
+      property Items[index: Integer]: TFieldEntry
+        read GetItems
+        write SetItems;
+        default;
+
+    published
+      { Published declarations }
+  end;
+
+  { TFieldCatalog }
+  TFieldCatalog = class(TCustomFieldCatalog)
+    private
+      { Private declarations }
+      FSQLConnection: TSQLConnection;
+    public
+      { Public declarations }
+      constructor Create(ASQLConnection: TSQLConnection);
+
+      function Add(const ATableName, AFieldName: string): TFieldEntry; override;
+      function FindItem(ATableName, AFieldName: string): TFieldEntry;
+
+      function FieldExists(ATableName, AFieldName: string): Boolean;
+      function FieldSizeFor(ATableName, AFieldName: string): Integer;
+      function FieldDataTypeFor(ATableName, AFieldName: string): string;
+      // VARCHAR2, NUMBER, etc.
+
+      procedure AddTableFields(ATableName: string);
+      procedure RemoveTable(ATableName: string);
+    published
+      { Published declarations }
+      property SQLConnection: TSQLConnection
+        read FSQLConnection
+        write FSQLConnection;
+  end;
+
+  { TMapPart }
+  TMapPart = (mpSource, mpTarget);
+
+  { TFieldMap }
+  TFieldMap = class(TComponent)
+    strict private
+      FItems: TStringList;
+      function GetItem(Index: Integer): string;
+      procedure SetItem(Index: Integer; const Value: string);
+    public
+      constructor Create(AOwner: TComponent);
+      destructor Destroy; override;
+
+      procedure Add(const ATarget, ASource: string);
+      procedure AddLine(const ALineText: string);
+      procedure AddMap(const AFieldMap: TFieldMap);
+      procedure AddStrings(const AStrings: TStringList);
+
+      procedure AssignStrings(var AStrings: TStringList);
+
+      procedure GetSourceFields(var AList: TStringList; AsParams: Boolean = FALSE);
+      procedure GetTargetFields(var AList: TStringList; AsParams: Boolean = FALSE);
+      function GetFieldMapField(AIndex: Integer; AMapPart: TMapPart): string;
+
+      procedure Clear;
+      function Count: Integer;
+      function Target(const AIndex: Integer): string;
+      function Source(const AIndex: Integer): string;
+
+      function CommaText(const AMapPart: TMapPart): string; overload;
+      function CommaText: string; overload;
+      procedure AddFromCommaText(const AFieldMapText: string);
+      function IndexOfSource(const AValue: string): Integer;
+      function IndexOfTarget(const AValue: string): Integer;
+      property Items[Index: Integer]: string read GetItem write SetItem;
+  end;
+
+  { TFieldListItem }
+  TFieldListItem = class(TCollectionItem)
+    private
+      { Private declarations }
+      FSize: Integer;
+      FFieldName: string;
+      FDataType: string;
+      FPrecision: Integer;
+      FScale: Integer;
+      FNullable: Boolean;
+      FFixedWidth: Integer;
+      FValue: Variant;
+      FDisplayLabel: string;
+      FTagString: string;
+    public
+      { Public declarations }
+      constructor Create(Collection: TCustomFieldList);
+      destructor Destroy; override;
+      function DataTypeDisplay: string;
+    published
+      { Published declarations }
+      property FieldName: string
+        read FFieldName
+        write FFieldName;
+      property DataType: string
+        read FDataType
+        write FDataType;
+      property Precision: Integer
+        read FPrecision
+        write FPrecision;
+      property Scale: Integer
+        read FScale
+        write FScale;
+      property Size: Integer
+        read FSize
+        write FSize;
+      property Nullable: Boolean
+        read FNullable
+        write FNullable;
+      property FixedWidth: Integer
+        read FFixedWidth
+        write FFixedWidth;
+      property DisplayLabel: string
+        read FDisplayLabel
+        write FDisplayLabel;
+      property Value: Variant
+        read FValue
+        write FValue;
+      property TagString: string
+        read FTagString
+        write FTagString;
+  end;
+
+  { TCustomFieldList }
+  TCustomFieldList = class(TCollection)
+    private
+      { Private declarations }
+      function GetItems(index: Integer): TFieldListItem;
+      procedure SetItems(index: Integer; const Value: TFieldListItem);
+    public
+      { Public declarations }
+      constructor Create;
+      function Add(const AFieldName: string; AFixedWidth: Integer = 0)
+        : TFieldListItem; virtual;
+      function AddField(const AField: TField): TFieldListItem; virtual;
+      function Find(const AFieldName: string): TFieldListItem;
+      function IndexOf(AFieldName: string): Integer;
+      property Items[index: Integer]: TFieldListItem
+        read GetItems
+        write SetItems;
+        default;
+      function FieldNameCommaText: string;
+      function DisplayLabelCommaText: string;
+    published
+      { Published declarations }
+  end;
+
+procedure GetFieldListByDataType(const ASQLConnection: TSQLConnection;
+  const AOracleTableName: string; const AOracleDataType: array of string;
+  var AFields: TStringList);
+
+function GetDataTypeDef(const ADataType: string; ADataLength, ADataPrecision,
+  ADataScale: Integer; ANotNull: Boolean): string;
+
+const
+  DEFAULT_DATA_TYPE = 'VARCHAR2';
+
+implementation
+
+{ Note:  Keep the "uses" clause very simple.  This unit is hooked into
+  the VCL.  Do not call dbtshare. }
+
+uses
+  IQMS.DBTrans.dbtrscstr,
+  IQMS.Common.Boolean,
+  IQMS.Common.Dialogs,
+  Math,
+  StrUtils;
+
+procedure RaiseGetValStandardException(E: Exception; ASQL, ADatabase: string);
+var
+  ADatabaseStr, ASQLStr, AMsg: string;
+begin
+  { Standard exception }
+  AMsg := '';
+  ADatabaseStr := '';
+  ASQLStr := '';
+
+  if Trim(ADatabase) > '' then
+    ADatabaseStr := Format(dbtrscstr.cTXT0000184 { 'Database:  %s' } ,
+      [ADatabase]);
+  if Trim(ASQL) > '' then
+    // dbtrscstr.cTXT0000185 = 'SQL expression:';
+    ASQLStr := dbtrscstr.cTXT0000185 + #13 + ASQL;
+
+  AMsg := E.Message + #13 + ADatabaseStr + #13 + ASQLStr;
+
+  if Trim(AMsg) > '' then
+    raise Exception.Create(AMsg);
+end;
+
+procedure GetFieldListByDataType(const ASQLConnection: TSQLConnection;
+  const AOracleTableName: string; const AOracleDataType: array of string;
+  var AFields: TStringList);
+var
+  q: TSQLQuery;
+  s_type, s_comma: string;
+  i: Integer;
+begin
+  q := nil;
+  s_type := '';
+  if AOracleTableName = '' then
+    Exit;
+  if not Assigned(ASQLConnection) then
+    Exit;
+  if not Assigned(AFields) then
+    Exit;
+  AFields.Clear;
+  for i := low(AOracleDataType) to high(AOracleDataType) do
+    begin
+      s_comma := StrUtils.IfThen(( high(AOracleDataType) > 0) and
+        (i < high(AOracleDataType)), ',', '');
+      s_type := s_type + Format('''%s''%s', [AOracleDataType[i], s_comma]);
+    end;
+  try
+    q := TSQLQuery.Create(nil);
+    q.SQLConnection := ASQLConnection;
+    q.SQL.Add('SELECT column_name');
+    q.SQL.Add('FROM cols');
+    q.SQL.Add('WHERE');
+    // Ex: '  data_type in (''BLOB'',''CLOB'',''LONG'')'
+    q.SQL.Add(' data_type in (' + s_type + ')');
+    // q.SQL.Add(' data_type = ''BLOB''');
+    q.SQL.Add(Format(' AND table_name = UPPER(''%s'') ', [AOracleTableName]));
+    q.Open;
+    while not q.EOF do
+      begin
+        AFields.Add(q.FieldByName('COLUMN_NAME').AsString);
+        q.Next;
+      end;
+  finally
+    FreeAndNil(q);
+  end;
+end;
+
+function GetDataTypeDef(const ADataType: string; ADataLength, ADataPrecision,
+  ADataScale: Integer; ANotNull: Boolean): string;
+begin
+  // Returns field definition string
+  if (ADataType = 'CHAR') or (ADataType = 'NCHAR') or (ADataType = 'VARCHAR2')
+    or (ADataType = 'NVARCHAR2') then
+    Result := Format('%s(%d BYTE)', [ADataType, ADataLength])
+
+  else if (ADataType = 'NUMBER') or (ADataType = 'FLOAT') or (ADataType = 'DEC')
+    or (ADataType = 'DECIMAL') or (ADataType = 'REAL') or
+    (ADataType = 'BINARY_DOUBLE') or (ADataType = 'BINARY_FLOAT') then
+    begin
+      if (ADataPrecision > 0) and (ADataScale > 0) then
+        Result := Format('%s(%d,%d)', [ADataType, ADataPrecision, ADataScale])
+      else if (ADataPrecision > 0) then
+        Result := Format('%s(%d)', [ADataType, ADataPrecision])
+      else
+        Result := ADataType;
+    end
+
+  else if (ADataType = 'INTEGER') or (ADataType = 'INT') or
+    (ADataType = 'SMALLINT') then
+    Result := ADataType
+
+  else if (ADataType = 'DATE') or (ADataType = 'TIMESTAMP') then
+    Result := ADataType
+
+  else if (ADataType = 'CLOB') or (ADataType = 'NCLOB') or (ADataType = 'BLOB')
+    or (ADataType = 'BFILE') or (ADataType = 'LONG') or (ADataType = 'RAW') or
+    (ADataType = 'LONG RAW') then
+    Result := ADataType
+
+  else
+    Result := ADataType;
+
+  if ANotNull then
+    Result := Format('%s NOT NULL', [Result]);
+end;
+
+{ ---------------------------------------------------------------------------- }
+{ TFieldEntry }
+{ ---------------------------------------------------------------------------- }
+
+constructor TFieldEntry.Create(Collection: TCollection);
+begin
+  inherited Create(Collection);
+end;
+
+destructor TFieldEntry.Destroy;
+begin
+  inherited Destroy;
+end;
+
+{ TCustomFieldCatalog }
+
+function TCustomFieldCatalog.Add(const ATableName, AFieldName: string)
+  : TFieldEntry;
+begin
+  Result := TFieldEntry( inherited Add);
+  Result.TableName := Trim(UpperCase(ATableName));
+  Result.FieldName := Trim(UpperCase(AFieldName));
+end;
+
+function TCustomFieldCatalog.Find(const ATableName, AFieldName: string)
+  : TFieldEntry;
+var
+  i: Integer;
+begin
+  Result := nil;
+  i := IndexOf(ATableName, AFieldName);
+  if i > - 1 then
+    Result := Items[i];
+end;
+
+function TCustomFieldCatalog.IndexOf(ATableName, AFieldName: string): Integer;
+var
+  i: Integer;
+begin
+  Result := - 1; // default
+
+  ATableName := Trim(UpperCase(ATableName));
+  AFieldName := Trim(UpperCase(AFieldName));
+
+  // cycle list and find item
+  for i := 0 to Count - 1 do
+    if (CompareStr(TFieldEntry(Items[i]).TableName, ATableName) = 0) and
+      (CompareStr(TFieldEntry(Items[i]).FieldName, AFieldName) = 0) then
+      begin
+        Result := i;
+        Break;
+      end;
+end;
+
+function TCustomFieldCatalog.GetItems(index: Integer): TFieldEntry;
+begin
+  Result := TFieldEntry( inherited Items[index]);
+end;
+
+procedure TCustomFieldCatalog.SetItems(index: Integer;
+  const Value: TFieldEntry);
+begin
+  inherited Items[index] := Value;
+end;
+
+procedure TCustomFieldCatalog.GetFieldList(const ATableName: string;
+  var AFields: TStringList; ADataTypeFilter: string);
+var
+  i: Integer;
+begin
+  if not Assigned(AFields) then
+    Exit;
+  AFields.Clear;
+  for i := 0 to Count - 1 do
+    if (Items[i].TableName = ATableName) then
+      begin
+        if (ADataTypeFilter > '') then
+          begin
+            if (Items[i].DataType = ADataTypeFilter) then
+              AFields.Add(Items[i].FieldName);
+          end
+        else
+          AFields.Add(Items[i].FieldName);
+      end;
+end;
+
+{ ---------------------------------------------------------------------------- }
+{ TFieldCatalog }
+{ ---------------------------------------------------------------------------- }
+
+constructor TFieldCatalog.Create(ASQLConnection: TSQLConnection);
+begin
+  inherited Create(TFieldEntry);
+  FSQLConnection := ASQLConnection;
+end;
+
+function TFieldCatalog.Add(const ATableName, AFieldName: string): TFieldEntry;
+var
+  // A: Variant;
+  q: TSQLQuery;
+begin
+  // Adds to the list
+  Result := nil; // default
+
+  if not Assigned(FSQLConnection) then
+    raise Exception.Create('Application Error:  SQLConnection not assigned.');
+
+  if (ATableName = '') or (AFieldName = '') then
+    Exit;
+
+  // Check if item already exists, and pass it as a result
+  Result := FindItem(ATableName, AFieldName);
+
+  // Create the new item
+  if Result = nil then
+    begin
+      Result := inherited Add(ATableName, AFieldName);
+      try
+        q := TSQLQuery.Create(nil);
+        try
+          q.SQLConnection := FSQLConnection;
+          q.SQL.Add('SELECT data_type, data_length, data_precision, ');
+          q.SQL.Add(' data_scale, nullable');
+          q.SQL.Add('FROM cols');
+          q.SQL.Add(Format('WHERE table_name = UPPER(TRIM(''%s'')) AND ',
+            [UpperCase(ATableName)]));
+          q.SQL.Add(Format('     column_name = UPPER(TRIM(''%s'')) AND',
+            [UpperCase(AFieldName)]));
+          q.SQL.Add('     ROWNUM < 2');
+          q.Open;
+          if not (q.BOF and q.EOF) then
+            begin
+              Result.DataType := q.Fields[0].AsString; // 'data_type'
+              Result.Size := q.Fields[1].AsInteger; // 'data_length'
+              Result.Precision := q.Fields[2].AsInteger; // 'data_precision'
+              Result.Scale := q.Fields[3].AsInteger; // 'data_scale'
+              Result.Nullable := IQMS.Common.Boolean.YNToBool(q.Fields[4].AsString);
+              // 'nullable'
+            end;
+        finally
+          if Assigned(q) then
+            FreeAndNil(q);
+        end;
+      except
+        // suppress
+      end;
+    end;
+end;
+
+procedure TFieldCatalog.AddTableFields(ATableName: string);
+var
+  q: TSQLQuery;
+begin
+  if not Assigned(FSQLConnection) then
+    raise Exception.Create('Application Error:  SQLConnection not assigned.');
+
+  ATableName := Trim(UpperCase(ATableName));
+  if ATableName = '' then
+    raise Exception.Create('Application Error:  Table name not provided.');
+
+  try
+    q := TSQLQuery.Create(nil);
+    q.SQLConnection := FSQLConnection;
+    q.SQL.Add('SELECT column_name');
+    q.SQL.Add('FROM cols');
+    q.SQL.Add(Format('WHERE table_name = UPPER(TRIM(''%s''))', [ATableName]));
+    q.Open;
+    while not q.EOF do
+      begin
+        Self.Add(ATableName, q.Fields[0].AsString);
+        q.Next;
+      end;
+  finally
+    if Assigned(q) then
+      FreeAndNil(q);
+  end;
+end;
+
+procedure TFieldCatalog.RemoveTable(ATableName: string);
+var
+  i: Integer;
+begin
+  if Count = 0 then
+    Exit;
+  for i := Count - 1 downto 0 do
+    if Items[i].TableName = ATableName then
+      Items[i].Free;
+end;
+
+function TFieldEntry.GetFieldLabel: string;
+begin
+  Result := Format('%s.%s', [TableName, FieldName]);
+end;
+
+function TFieldCatalog.FieldExists(ATableName, AFieldName: string): Boolean;
+begin
+  // Does field exist in table?
+  Result := FindItem(ATableName, AFieldName) <> nil;
+end;
+
+function TFieldCatalog.FieldSizeFor(ATableName, AFieldName: string): Integer;
+var
+  AItem: TFieldEntry;
+begin
+  // Returns field size
+  Result := 0;
+  AItem := Add(ATableName, AFieldName);
+  if AItem <> nil then
+    Result := AItem.Size;
+end;
+
+function TFieldCatalog.FieldDataTypeFor(ATableName, AFieldName: string): string;
+var
+  AItem: TFieldEntry;
+begin
+  // Returns field size
+  Result := '';
+  AItem := Add(ATableName, AFieldName);
+  if AItem <> nil then
+    Result := AItem.DataType;
+end;
+
+function TFieldCatalog.FindItem(ATableName, AFieldName: string): TFieldEntry;
+begin
+  Result := inherited Find(ATableName, AFieldName);
+end;
+
+{ ---------------------------------------------------------------------------- }
+{ ---------------------------------------------------------------------------- }
+{ ---------------------------------------------------------------------------- }
+
+{ TFieldMap }
+
+constructor TFieldMap.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  FItems := TStringList.Create;
+end;
+
+destructor TFieldMap.Destroy;
+begin
+  if Assigned(FItems) then
+    FreeAndNil(FItems);
+  inherited Destroy;
+end;
+
+procedure TFieldMap.Add(const ATarget, ASource: string);
+begin
+  // Example:  TARGET_FIELD=SOURCE_FIELD
+  FItems.Add(Format('%s=%s', [ATarget, ASource]));
+end;
+
+function TFieldMap.GetFieldMapField(AIndex: Integer;
+  AMapPart: TMapPart): string;
+var
+  i: Integer;
+  S: string;
+begin
+
+  Result := ''; // default result
+
+  // Check for valid index
+  if (FItems.Count = 0) or (AIndex < 0) or (AIndex > FItems.Count - 1) then
+    Exit;
+
+  // full line of text
+  // Example:  TARGET_FIELD=SOURCE_FIELD
+  S := FItems.Strings[AIndex];
+
+  // Find the equal (=) sign
+  i := Pos('=', S);
+
+  // Return the single field for either part if there is no equal sign
+  if i = 0 then
+    Result := Trim(S)
+    // Otherwise, get the part
+  else
+    case AMapPart of
+      mpSource: // right side
+        // Note:  Do not trim the source field name; it may contain a space.
+        // This is OK, since it allows the import to work.  In the end,
+        // the Oracle field name will not contain a space. (04/16/2010).
+        // Result := Trim(Copy( S, i + 1, Length( S )));
+        Result := Copy(S, i + 1, Length(S));
+      mpTarget: // left side
+        Result := Trim(Copy(S, 1, i - 1));
+    end;
+end;
+
+procedure TFieldMap.GetSourceFields(var AList: TStringList; AsParams: Boolean);
+var
+  i: Integer;
+  S: string;
+begin
+  if not Assigned(AList) then
+    Exit;
+
+  AList.Clear; // clear first
+
+  // Cycle list and get fields
+  for i := 0 to FItems.Count - 1 do
+    begin
+      // Get the text
+      S := GetFieldMapField(i, mpSource);
+
+      // Return as a param?
+      if AsParams then
+        S := ':' + S;
+
+      // Add field to the list
+      AList.Add(S);
+    end;
+end;
+
+procedure TFieldMap.GetTargetFields(var AList: TStringList; AsParams: Boolean);
+var
+  i: Integer;
+  S: string;
+begin
+  if not Assigned(AList) then
+    Exit;
+
+  AList.Clear; // clear first
+
+  // Cycle list and get fields
+  for i := 0 to FItems.Count - 1 do
+    begin
+
+      // Get the text
+      S := GetFieldMapField(i, mpTarget);
+
+      // Return as a param?
+      if AsParams then
+        S := ':' + S;
+
+      // Add field to the list
+      AList.Add(S);
+    end;
+end;
+
+function TFieldMap.IndexOfSource(const AValue: string): Integer;
+var
+  i: Integer;
+begin
+  Result := -1;
+  for i := 0 to FItems.Count - 1 do
+   if CompareText(AValue, GetFieldMapField(i, mpSource)) = 0 then
+     begin
+       Result := i;
+       Break;
+     end;
+end;
+
+function TFieldMap.IndexOfTarget(const AValue: string): Integer;
+var
+  i: Integer;
+begin
+  Result := -1;
+  for i := 0 to FItems.Count - 1 do
+   if CompareText(AValue, GetFieldMapField(i, mpTarget)) = 0 then
+     begin
+       Result := i;
+       Break;
+     end;
+end;
+
+function TFieldMap.CommaText: string;
+begin
+  Result := StringReplace(Trim(FItems.Text), #13, ',', [rfReplaceAll, rfIgnoreCase]);
+end;
+
+function TFieldMap.Count: Integer;
+begin
+  Result := FItems.Count;
+end;
+
+procedure TFieldMap.AddFromCommaText(const AFieldMapText: string);
+begin
+  FItems.Text := StringReplace(AFieldMapText, ',', #13, [rfReplaceAll, rfIgnoreCase]);
+end;
+
+procedure TFieldMap.AddLine(const ALineText: string);
+begin
+  if Pos('=', ALineText) > 0 then
+    FItems.Add(ALineText);
+end;
+
+procedure TFieldMap.AddMap(const AFieldMap: TFieldMap);
+var
+  i: Integer;
+begin
+  if not Assigned(AFieldMap) then
+    Exit;
+  for i := 0 to AFieldMap.Count - 1 do
+    Self.Add(AFieldMap.Target(i), AFieldMap.Source(i));
+end;
+
+procedure TFieldMap.AddStrings(const AStrings: TStringList);
+begin
+  if Assigned(AStrings) then
+    FItems.AddStrings(AStrings);
+end;
+
+procedure TFieldMap.AssignStrings(var AStrings: TStringList);
+begin
+  if Assigned(AStrings) then
+    AStrings.AddStrings(FItems);
+end;
+
+function TFieldMap.GetItem(Index: Integer): string;
+begin
+  Result := FItems[Index];
+end;
+
+procedure TFieldMap.SetItem(Index: Integer; const Value: string);
+begin
+  FItems[Index] := Value;
+end;
+
+function TFieldMap.Source(const AIndex: Integer): string;
+begin
+  if AIndex > -1 then
+    Result := GetFieldMapField(AIndex, mpSource)
+  else
+    Result := '';
+end;
+
+function TFieldMap.Target(const AIndex: Integer): string;
+begin
+  if AIndex > -1 then
+    Result := GetFieldMapField(AIndex, mpTarget)
+  else
+    Result := '';
+end;
+
+function TFieldMap.CommaText(const AMapPart: TMapPart): string;
+const
+  Delimiter = ',';
+  QuoteChar = '"';
+var
+  S: string;
+  P: PChar;
+  i, ACount: Integer;
+
+  function _Get(AIndex: Integer): string;
+  begin
+    Result := GetFieldMapField(AIndex, AMapPart);
+  end;
+
+begin
+  ACount := Self.Count;
+  if (ACount = 1) and (_Get(0) = '') then
+    Result := QuoteChar + QuoteChar
+  else
+    begin
+      Result := '';
+      for i := 0 to ACount - 1 do
+        begin
+          S := _Get(i);
+          P := PChar(S);
+          while not (P^ in [#0 .. ' ', QuoteChar, Delimiter]) do
+{$IFDEF MSWINDOWS}
+            P := CharNext(P);
+{$ELSE}
+            Inc(P);
+{$ENDIF}
+          if (P^ <> #0) then
+            S := AnsiQuotedStr(S, QuoteChar);
+          Result := Result + S + Delimiter;
+        end;
+      System.Delete(Result, Length(Result), 1);
+    end;
+end;
+
+procedure TFieldMap.Clear;
+begin
+  FItems.Clear;
+end;
+
+{ TFieldListItem }
+
+constructor TFieldListItem.Create(Collection: TCustomFieldList);
+begin
+  inherited Create(Collection);
+  // Initialization
+  FSize := 0;
+  FFieldName := '';
+  FDataType := DEFAULT_DATA_TYPE;
+  FSize := 250;
+  FPrecision := 0;
+  FScale := 0;
+  FNullable := True;
+  FFixedWidth := 0;
+end;
+
+destructor TFieldListItem.Destroy;
+begin
+  inherited Destroy;
+end;
+
+function TFieldListItem.DataTypeDisplay: string;
+begin
+  Result := GetDataTypeDef(FDataType, FSize, FPrecision, FScale, FALSE);
+end;
+
+{ TCustomFieldList }
+
+constructor TCustomFieldList.Create;
+begin
+  inherited Create(TFieldListItem);
+end;
+
+function TCustomFieldList.Add(const AFieldName: string; AFixedWidth: Integer)
+  : TFieldListItem;
+begin
+  Result := TFieldListItem( inherited Add);
+  if AFieldName > '' then
+    Result.FieldName := Trim(UpperCase(AFieldName))
+  else
+    Result.FieldName := Format('FIELD%d', [Count + 1]);
+  Result.DataType := DEFAULT_DATA_TYPE;
+  Result.FixedWidth := AFixedWidth;
+  Result.DisplayLabel := AFieldName;
+end;
+
+function TCustomFieldList.AddField(const AField: TField): TFieldListItem;
+begin
+  Result := Add('');
+  if Assigned(AField) then
+    begin
+      Result.FieldName := AField.FieldName;
+      // Result.DataType       := AField.DataType    ;
+      // Result.Precision      := AField.Precision   ;
+      // Result.Scale          := AField.Scale       ;
+      Result.Size := AField.Size;
+      Result.DisplayLabel := AField.DisplayLabel;
+      Result.Value := AField.Value;
+    end;
+end;
+
+function TCustomFieldList.Find(const AFieldName: string): TFieldListItem;
+var
+  i: Integer;
+begin
+  Result := nil;
+  i := IndexOf(AFieldName);
+  if i > - 1 then
+    Result := Items[i];
+end;
+
+function TCustomFieldList.IndexOf(AFieldName: string): Integer;
+var
+  i: Integer;
+begin
+  Result := - 1; // default
+
+  AFieldName := Trim(UpperCase(AFieldName));
+
+  // cycle list and find item
+  for i := 0 to Count - 1 do
+    if (CompareStr(TFieldListItem(Items[i]).FieldName, AFieldName) = 0) then
+      begin
+        Result := i;
+        Break;
+      end;
+end;
+
+function TCustomFieldList.GetItems(index: Integer): TFieldListItem;
+begin
+  Result := TFieldListItem( inherited Items[index]);
+end;
+
+procedure TCustomFieldList.SetItems(index: Integer;
+  const Value: TFieldListItem);
+begin
+  inherited Items[index] := Value;
+end;
+
+function TCustomFieldList.FieldNameCommaText: string;
+const
+  Delimiter = ',';
+  QuoteChar = '"';
+var
+  S: string;
+  P: PChar;
+  i, ACount: Integer;
+begin
+  ACount := Self.Count;
+  if (ACount = 1) and (Items[0].FieldName = '') then
+    Result := QuoteChar + QuoteChar
+  else
+    begin
+      Result := '';
+      for i := 0 to ACount - 1 do
+        begin
+          S := Items[i].FieldName;
+          P := PChar(S);
+          while not (P^ in [#0 .. ' ', QuoteChar, Delimiter]) do
+{$IFDEF MSWINDOWS}
+            P := CharNext(P);
+{$ELSE}
+            Inc(P);
+{$ENDIF}
+          if (P^ <> #0) then
+            S := AnsiQuotedStr(S, QuoteChar);
+          Result := Result + S + Delimiter;
+        end;
+      System.Delete(Result, Length(Result), 1);
+    end;
+end;
+
+function TCustomFieldList.DisplayLabelCommaText: string;
+const
+  Delimiter = ',';
+  QuoteChar = '"';
+var
+  S: string;
+  P: PChar;
+  i, ACount: Integer;
+begin
+  ACount := Self.Count;
+  if (ACount = 1) and (Items[0].DisplayLabel = '') then
+    Result := QuoteChar + QuoteChar
+  else
+    begin
+      Result := '';
+      for i := 0 to ACount - 1 do
+        begin
+          S := Items[i].DisplayLabel;
+          P := PChar(S);
+          while not (P^ in [#0 .. ' ', QuoteChar, Delimiter]) do
+{$IFDEF MSWINDOWS}
+            P := CharNext(P);
+{$ELSE}
+            Inc(P);
+{$ENDIF}
+          if (P^ <> #0) then
+            S := AnsiQuotedStr(S, QuoteChar);
+          Result := Result + S + Delimiter;
+        end;
+      System.Delete(Result, Length(Result), 1);
+    end;
+end;
+
+end.

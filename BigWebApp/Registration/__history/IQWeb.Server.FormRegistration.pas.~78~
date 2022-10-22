@@ -1,0 +1,77 @@
+unit IQWeb.Server.FormRegistration;
+
+interface
+
+type
+
+  TFormDef = record
+    ClassName : string;
+    Singleton : boolean;
+  end;
+
+  TNavNode = record
+    Caption : string;
+    Level   : integer;
+    FormIdx : integer;
+  end;
+
+const
+
+  FormQty = 19;
+  NodeQty = 25;
+
+  FormDefs : array[1..FormQty] of TFormDef =
+  (
+    {  1 } (ClassName: 'TUniShipViaMaintenance'       ; Singleton: true ),
+    {  2 } (ClassName: 'TUniPackagingAssistant'       ; Singleton: false),
+    {  3 } (ClassName: 'TUniVinGen'                   ; Singleton: false),
+    {  4 } (ClassName: 'TFrmInvoice'                  ; Singleton: false),
+    {  5 } (ClassName: 'TUniCap_Main'                 ; Singleton: true ),
+    {  6 } (ClassName: 'TFrmCustSelect'               ; Singleton: true ),
+    {  7 } (ClassName: 'TFrmAPPoRecDrillDwn'          ; Singleton: true ),
+    {  8 } (ClassName: 'TFrmAPReplicate'              ; Singleton: true ),
+    {  9 } (ClassName: 'TFrmICrMemo'                  ; Singleton: true ),
+    { 10 } (ClassName: 'TFrmShowCashRec'              ; Singleton: true ),
+    { 11 } (ClassName: 'TBomNextLotNo'                ; Singleton: true ),
+    { 12 } (ClassName: 'TFrmBOMConfirmDeleteEmployee' ; Singleton: true ),
+    { 13 } (ClassName: 'TFrmViewExceptions'           ; Singleton: true ),
+    { 14 } (ClassName: 'TFrmDayHrsCalc'               ; Singleton: true ),
+    { 15 } (ClassName: 'TFrmShowDayParts'             ; Singleton: true ),
+    { 16 } (ClassName: 'TFrmProjectedHoursShift'      ; Singleton: true ),
+    { 17 } (ClassName: 'TFrmLabor_Details_Base'       ; Singleton: true ),
+    { 18 } (ClassName: 'TFrmMatExcepShipOrder'        ; Singleton: true ),
+    { 19 } (ClassName: 'TFrmSelClass'                 ; Singleton: true )
+  );
+
+  NavTree : array[1..NodeQty] of TNavNode =
+  (
+    (Caption: 'Accounts Payable'        ; Level: 1; FormIdx: 0),
+    (Caption: 'Accounts Receivable'     ; Level: 1; FormIdx: 0),
+      (Caption: 'Accounts Receivable - Invoicing' ; Level: 2; FormIdx: 4),
+    (Caption: 'Asset Management'        ; Level: 1; FormIdx: 0),
+    (Caption: 'CRM'                     ; Level: 1; FormIdx: 0),
+    (Caption: 'eCommerce'               ; Level: 1; FormIdx: 0),
+    (Caption: 'Estimating'              ; Level: 1; FormIdx: 0),
+    (Caption: 'Expense Reports'         ; Level: 1; FormIdx: 0),
+    (Caption: 'Forecast'                ; Level: 1; FormIdx: 0),
+    (Caption: 'General Ledger'          ; Level: 1; FormIdx: 0),
+    (Caption: 'Manufacturing'           ; Level: 1; FormIdx: 0),
+    (Caption: 'Payroll'                 ; Level: 1; FormIdx: 0),
+    (Caption: 'Process Cost'            ; Level: 1; FormIdx: 0),
+    (Caption: 'Purchase Order Receiving'; Level: 1; FormIdx: 0),
+    (Caption: 'Quality'                 ; Level: 1; FormIdx: 0),
+    (Caption: 'RT Machine Monitoring'   ; Level: 1; FormIdx: 0),
+    (Caption: 'Sales & Distribution'    ; Level: 1; FormIdx: 0),
+      (Caption: 'Ship Via Maintenance'            ; Level: 2; FormIdx: 1),
+      (Caption: 'Packaging Assistant'             ; Level: 2; FormIdx: 2),
+    (Caption: 'System Parameters'       ; Level: 1; FormIdx: 0),
+    (Caption: 'Time & Attendance'       ; Level: 1; FormIdx: 0),
+    (Caption: 'WMS'                     ; Level: 1; FormIdx: 0),
+    (Caption: 'Workforce'               ; Level: 1; FormIdx: 0),
+    (Caption: 'Capacity'                ; Level: 1; FormIdx: 0),
+      (Caption: 'Capacity Main'                   ; Level: 2; FormIdx: 5)
+  );
+
+implementation
+
+end.

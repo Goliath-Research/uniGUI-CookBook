@@ -1,0 +1,193 @@
+unit Address_BookDataModule;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  Vcl.ExtCtrls, Vcl.Menus, 
+  Vcl.Grids, Vcl.StdCtrls, Vcl.ComCtrls,
+  Data.DB, Vcl.Buttons, Vcl.DBCtrls, Mask, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Error, MainModule,
+  FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool,
+  FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Comp.Client, FireDAC.Stan.Param,
+  FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet,
+  System.Actions, Vcl.ActnList,
+  IQCore.Interfaces,
+  IQMS.Data.Lib,
+  System.ImageList, Vcl.ImgList, IQMS.WebComponents.DataControllerList,
+  uniImageList, uniGUIBaseClasses, uniGUIClasses;
+
+type
+  TAddress_Book_DM = class(TDataModule, IIQDataModuleFrameEventHandler)
+    MainMenu1: TMainMenu;
+    File1: TMenuItem;
+    Help1: TMenuItem;
+    Help2: TMenuItem;
+    About1: TMenuItem;
+    SrcManual_PS_Addr: TDataSource;
+    TblManual_PS_Addr: TFDTable;
+    TblManual_PS_AddrID: TFMTBCDField;
+    TblManual_PS_AddrADDR1: TStringField;
+    TblManual_PS_AddrADDR2: TStringField;
+    TblManual_PS_AddrADDR3: TStringField;
+    TblManual_PS_AddrCITY: TStringField;
+    TblManual_PS_AddrSTATE: TStringField;
+    TblManual_PS_AddrCOUNTRY: TStringField;
+    TblManual_PS_AddrZIP: TStringField;
+    TblManual_PS_AddrFAX_NUMBER: TStringField;
+    TblManual_PS_AddrPRIME_CONTACT: TStringField;
+    PZipCode: TPopupMenu;
+    SelectZipCode1: TMenuItem;
+    muiSearch: TMenuItem;
+    TblManual_PS_AddrPHONE_NUMBER: TStringField;
+    TblManual_PS_AddrUSE_USA_MASK: TStringField;
+    MnuActionList: TActionList;
+    actmnuFileSearch: TAction;
+    actMnuFileExit: TAction;
+    actMnuHelpAbout: TAction;
+    TlbActionList: TActionList;
+    actToolbarSearch: TAction;
+    SpeedBtnActionList: TActionList;
+    actZipCodeLookup: TAction;
+    IQDataControllerLinkList1: TIQDataControllerLinkList;
+    tlbUniImageList: TUniImageList;
+    tlbImageListAdapter: TUniImageListAdapter;
+    procedure sbtnLookupCustomerZipCodeClick(Sender: TObject);
+    procedure cbCountryChange(Sender: TObject);
+    procedure TblManual_PS_AddrPHONE_NUMBERGetText(Sender: TField;
+      var Text: string; DisplayText: Boolean);
+    procedure About1Click(Sender: TObject);
+    procedure PkAddrBookIQModify(Sender: TObject; var Action: TModalResult;
+      var ResultValue: Variant);
+    procedure TblManual_PS_AddrNewRecord(DataSet: TDataSet);
+    procedure TblManual_PS_AddrFAX_NUMBERGetText(Sender: TField;
+      var Text: string; DisplayText: Boolean);
+    procedure LoadCountries();
+    procedure actToolbarSearchExecute(Sender: TObject);
+  private const
+    cnstAppendNew = 1;
+  private
+    { Private declarations }
+    FCountryList : TStringList;
+
+    procedure SetActive(Value : boolean);
+  public
+    { Public declarations }
+
+    procedure DoOnFrameCreate(Sender: TObject);
+    procedure DoOnFrameDestroy(Sender: TObject);
+  end;
+
+  function Address_Book_DM: TAddress_Book_DM;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  UniGUIVars, uniGUIMainModule, IQUniEditor, IQModuleFormDesigner;
+
+function Address_Book_DM: TAddress_Book_DM;
+begin
+  Result := UniMainModule.GetModuleInstance(TAddress_Book_DM) as TAddress_Book_DM;
+end;
+
+procedure TAddress_Book_DM.SetActive(Value: boolean);
+begin
+  TblManual_PS_Addr.Active  := Value;
+end;
+
+procedure TAddress_Book_DM.DoOnFrameCreate(Sender: TObject);
+begin
+  //SetActive(true);
+
+//  regional.LoadCountries(cbCountry);
+  IQSetTablesActive(True, self);
+  FCountryList := TStringList.Create;
+//    cbCountry.Text := SelectValueFmtAsString(
+//    'select country from manual_packslip_addr where id = %d',
+//    [TblManual_PS_AddrID.AsLargeInt]);
+//  AdjustPageControlToParent(pgctrlMain);
+//  pgctrlMain.ActivePageIndex := 0;
+end;
+
+procedure TAddress_Book_DM.DoOnFrameDestroy(Sender: TObject);
+begin
+  SetActive(false);
+  FCountryList.Free;
+end;
+
+{ TfrmAddressBook }
+
+procedure TAddress_Book_DM.About1Click(Sender: TObject);
+begin
+//  IQAbout1.Execute;
+end;
+
+procedure TAddress_Book_DM.actToolbarSearchExecute(Sender: TObject);
+begin
+//
+end;
+
+procedure TAddress_Book_DM.cbCountryChange(Sender: TObject);
+begin
+//  regional.LoadStateCombo(dbeState, cbCountry);
+end;
+
+procedure TAddress_Book_DM.PkAddrBookIQModify(Sender: TObject;
+  var Action: TModalResult; var ResultValue: Variant);
+begin
+  {create new MANUAL_PACKSLIP_ADDR record}
+  Action := mrOK;
+ end;
+
+procedure TAddress_Book_DM.sbtnLookupCustomerZipCodeClick(Sender: TObject);
+var
+  ACity, AState, ACountry: string;
+begin
+  //Lookup zip code for MANUAL_PACKSLIP_ADDR record
+end;
+
+procedure TAddress_Book_DM.TblManual_PS_AddrFAX_NUMBERGetText(Sender: TField;
+  var Text: string; DisplayText: Boolean);
+begin
+  Text := FormatTelephoneText(Sender.AsString, TblManual_PS_AddrUSE_USA_MASK.AsString = 'Y');
+end;
+
+procedure TAddress_Book_DM.TblManual_PS_AddrNewRecord(DataSet: TDataSet);
+begin
+ TblManual_PS_AddrID.asFloat := GetNextID('MANUAL_PACKSLIP_ADDR');
+end;
+
+procedure TAddress_Book_DM.TblManual_PS_AddrPHONE_NUMBERGetText(Sender: TField;
+  var Text: string; DisplayText: Boolean);
+begin
+  Text := FormatTelephoneText(Sender.AsString, TblManual_PS_AddrUSE_USA_MASK.AsString = 'Y');
+end;
+
+procedure TAddress_Book_DM.LoadCountries;
+begin
+  with TFDQuery.Create(nil) do
+  try
+    Connection := UniMainModule.FDConnection1;
+    SQL.Add('SELECT a.country');
+    SQL.Add('FROM v_country_codes a');
+    SQL.Add('WHERE NVL(default_spelling,''N'') = ''Y'' ');
+    SQL.Add('ORDER BY a.country');
+    Open;
+    while not EOF do
+    begin
+      FCountryList.Add(Fields[0].AsString);
+      Next;
+    end;
+  finally
+    Free;
+  end;
+end;
+
+initialization
+  RegisterModuleClass(TAddress_Book_DM);
+  IQRegisterClass(RegisteredDataModules, 'Address_Book_DM', TAddress_Book_DM);
+
+end.

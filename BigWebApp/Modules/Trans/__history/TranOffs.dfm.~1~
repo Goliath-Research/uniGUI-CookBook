@@ -1,0 +1,643 @@
+object FrmTransOffset: TFrmTransOffset
+  Left = 297
+  Top = 157
+  ClientHeight = 386
+  ClientWidth = 666
+  Caption = 'Select Item to Offset'
+  OldCreateOrder = True
+  OnClose = FormClose
+  MonitoredKeys.Keys = <>
+  OnCreate = FormCreate
+  object Splitter1: TUniSplitter
+    Left = 0
+    Top = 227
+    Width = 666
+    Height = 3
+    Cursor = crVSplit
+    Hint = ''
+    Align = alBottom
+    ParentColor = False
+    Color = clBtnFace
+    ExplicitWidth = 503
+  end
+  object Bevel1: TUniPanel
+    Left = 0
+    Top = 27
+    Width = 666
+    Height = 3
+    Hint = ''
+    Align = alTop
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 5
+    Caption = ''
+    ExplicitWidth = 503
+  end
+  object Panel1: TUniPanel
+    Left = 0
+    Top = 0
+    Width = 666
+    Height = 27
+    Hint = ''
+    Align = alTop
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 0
+    Caption = ''
+    ExplicitWidth = 503
+    object sbtnSearch: TUniSpeedButton
+      Left = 1
+      Top = 1
+      Width = 25
+      Height = 25
+      Hint = 'Search Translog Item'
+      ShowHint = True
+      ParentShowHint = False
+      Glyph.Data = {
+        36060000424D3606000000000000360000002800000020000000100000000100
+        1800000000000006000000000000000000000000000000000000FF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFB18C76A07860
+        90604090584090584087492AFF00FFFF00FFFF00FFB485659C755DA070509058
+        40905030773818FF00FF8B8B8B7777775F5F5F5A5A5A5A5A5A4A4A4AFF00FFFF
+        00FFFF00FF8484847474746F6F6F5A5A5A5151513B3B3BFF00FFB09080FFF8FF
+        E0C8C0D0A090C08060804020FF00FFFF00FFFF00FFB08060F0E8E0E0C8C0D0A8
+        90B07850804820FF00FF8F8F8FFAFAFAC9C9C9A1A1A1818181424242FF00FFFF
+        00FFFF00FF7F7F7FE7E7E7C9C9C9A7A7A7777777484848FF00FFB09080FFF8FF
+        E0C8C0D0A090C08060804020FF00FFFF00FFFF00FFB08060F0E8E0F0E0E0E0C0
+        B0C08870804830FF00FF8F8F8FFAFAFAC9C9C9A1A1A1818181424242FF00FFFF
+        00FFFF00FF7F7F7FE7E7E7E2E2E2C0C0C08989894A4A4AFF00FFB09080FFF8FF
+        E0C8C0D0A090C08060804020FF00FFFF00FFFF00FFB08060F0E8E0F0E0E0E0C0
+        B0C08870804830FF00FF8F8F8FFAFAFAC9C9C9A1A1A1818181424242FF00FFFF
+        00FFFF00FF7F7F7FE7E7E7E2E2E2C0C0C08989894A4A4AFF00FFC09880FFFFFF
+        F0E8E0E0C8C0D0A080804020FF00FFFF00FFFF00FFB08060F0E8E0F0E0E0E0C0
+        B0C08870804830FF00FF979797FFFFFFE7E7E7C9C9C99E9E9E424242FF00FFFF
+        00FFFF00FF7F7F7FE7E7E7E2E2E2C0C0C08989894A4A4AFF00FFC3A494B08870
+        A068509050308048308048208038108F4C26B08870A068509058309048308040
+        20703810905830FF00FFA4A4A48787876969695151514A4A4A4848483B3B3B4E
+        4E4E8787876969695757574C4C4C424242393939575757FF00FFDEC4B4B08870
+        FFFFFFE0D0C0D0A090A07050804010D5B89CB09070E0D8D0F0D8D0D0A090B078
+        50803820CFA98AFF00FFC3C3C3878787FFFFFFCECECEA1A1A16F6F6F414141B5
+        B5B58D8D8DD7D7D7D9D9D9A1A1A17777773D3D3DA7A7A7FF00FFFF00FFC09080
+        F0F0F0FFF8F0F0D8C0B08060804820965732B09070FFFFFFFFF8F0F0D0C0B078
+        50804820FF00FFFF00FFFF00FFFF00FFF0F0F0F7F7F7D5D5D57F7F7F48484857
+        57578D8D8DFFFFFFF7F7F7D0D0D0777777484848FF00FFFF00FFFF00FFF8E2D2
+        C09880B08060A068509050309058409D6842B07860B08870A070508048308048
+        20ECC4A7FF00FFFF00FFFF00FFE1E1E19797977F7F7F6969695151515A5A5A67
+        67677979798787876F6F6F4A4A4A484848C2C2C2FF00FFFF00FFFF00FFFF00FF
+        C09880FFF8FFE0C0B0C09070804820FF00FFC09880FFF8FFE0C8B0D0A0808048
+        20FF00FFFF00FFFF00FFFF00FFFF00FF979797FAFAFAC0C0C08E8E8E484848FF
+        00FF979797FAFAFAC5C5C59E9E9E484848FF00FFFF00FFFF00FFFF00FFFF00FF
+        CFB1A1B09080A06850905030875139FF00FFC0A890B09080A06850905030864F
+        37FF00FFFF00FFFF00FFFF00FFFF00FFB0B0B08F8F8F696969515151525252FF
+        00FFA5A5A58F8F8F696969515151505050FF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFB1836DFFF8F0814527FF00FFFF00FFFF00FFB08068FFF8F0804324FF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF838383F7F7F7464646FF00FFFF
+        00FFFF00FF808080F7F7F7444444FF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFC7A898B48D759D6843FF00FFFF00FFFF00FFCEAE9CB48C749C6640FF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFA7A7A78C8C8C676767FF00FFFF
+        00FFFF00FFADADAD8B8B8B656565FF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
+      Caption = ''
+      ParentColor = False
+      Color = clWindow
+      OnClick = sbtnSearchClick
+    end
+    object sbtnScope: TUniSpeedButton
+      Left = 26
+      Top = 1
+      Width = 25
+      Height = 25
+      Hint = 'Define Scope'
+      ShowHint = True
+      ParentShowHint = False
+      Glyph.Data = {
+        36060000424D3606000000000000360000002800000020000000100000000100
+        1800000000000006000000000000000000000000000000000000FF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FF5A5857404040202820000800FF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF58585840
+        4040252525050505FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FF606060706870404040000800FF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF6060606A
+        6A6A404040050505FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FF605860909090606060302830FF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF5B5B5B90
+        90906060602A2A2AFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FF505850B0A8B0808080404840FF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF555555AB
+        ABAB808080464646FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFE0C9B9605850C0C0C0A0A0A0404040CEB3A0FF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC8C8C8575757C0
+        C0C0A0A0A0404040B2B2B2FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFE0CABA505850A0A0A0D0D0D0B0B0B0707070201820CCAE9BFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC9C9C9555555A0A0A0D0
+        D0D0B0B0B07070701A1A1AADADADFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFE1CCBC706870C0B8C0E0E8E0E0E0E0C0C0C0909890605860201820CBAB
+        96FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFCBCBCB6A6A6ABBBBBBE6E6E6E0
+        E0E0C0C0C09696965B5B5B1A1A1AA9A9A9FF00FFFF00FFFF00FFFF00FFFF00FF
+        E1CDBE707070C0C0C0F0E8F0FFF8FFF0F0F0D0D8D0C0C0C0A098A06058601018
+        10C9A791FF00FFFF00FFFF00FFFF00FFCCCCCC707070C0C0C0EBEBEBFAFAFAF0
+        F0F0D6D6D6C0C0C09B9B9B5B5B5B161616A5A5A5FF00FFFF00FFFF00FFE1CDC0
+        808080D0D0D0F0F0F0FFFFFFFFFFFFFFF8FFE0E8E0D0D8D0C0B8C09090905050
+        50201820C8A38CFF00FFFF00FFCCCCCC808080D0D0D0F0F0F0FFFFFFFFFFFFFA
+        FAFAE6E6E6D6D6D6BBBBBB9090905050501A1A1AA2A2A2FF00FFFF00FF808080
+        D0D0D0F0F0F0FFF8FFFFF8FFF0F8F0F0F0F0E0E8E0D0D0D0C0C0C0A098A06068
+        60505850101810FF00FFFF00FF808080D0D0D0F0F0F0FAFAFAFAFAFAF6F6F6F0
+        F0F0E6E6E6D0D0D0C0C0C09B9B9B656565555555161616FF00FFFF00FFB0B8B0
+        C0C8C0D0D0D0D0D0D0C0C0C0C0B8C0B0B0B0A0A8A0A0A0A0A098A09090907078
+        70606060504850FF00FFFF00FFB6B6B6C6C6C6D0D0D0D0D0D0C0C0C0BBBBBBB0
+        B0B0A6A6A6A0A0A09B9B9B9090907575756060604A4A4AFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
+      Caption = ''
+      ParentColor = False
+      Color = clWindow
+      OnClick = sbtnScopeClick
+    end
+    object NavMain: TUniDBNavigator
+      Left = 566
+      Top = 1
+      Width = 100
+      Height = 25
+      Hint = ''
+      ShowHint = True
+      ParentShowHint = False
+      VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+      Align = alRight
+      Anchors = [akTop, akRight, akBottom]
+      TabOrder = 0
+      ExplicitLeft = 403
+    end
+  end
+  object pnlBottom: TUniPanel
+    Left = 0
+    Top = 348
+    Width = 666
+    Height = 38
+    Hint = ''
+    Align = alBottom
+    Anchors = [akLeft, akRight, akBottom]
+    TabOrder = 1
+    Caption = ''
+    ExplicitWidth = 503
+    object Panel3: TUniPanel
+      Left = 455
+      Top = 1
+      Width = 211
+      Height = 36
+      Hint = ''
+      Align = alRight
+      Anchors = [akTop, akRight, akBottom]
+      TabOrder = 0
+      Caption = ''
+      ExplicitLeft = 292
+      object btnOK: TUniButton
+        Left = 1
+        Top = 6
+        Width = 97
+        Height = 25
+        Hint = ''
+        Caption = '&OK'
+        ModalResult = 1
+        TabOrder = 1
+      end
+      object btnCancel: TUniButton
+        Left = 104
+        Top = 6
+        Width = 97
+        Height = 25
+        Hint = ''
+        Caption = '&Cancel'
+        ModalResult = 2
+        TabOrder = 2
+      end
+    end
+  end
+  object pnlTransLogDtls: TUniPanel
+    Left = 0
+    Top = 230
+    Width = 666
+    Height = 118
+    Hint = ''
+    Align = alBottom
+    Anchors = [akLeft, akRight, akBottom]
+    TabOrder = 2
+    Caption = ''
+    ExplicitWidth = 503
+    object gridTransLogDtls: TUniDBGrid
+      Left = 1
+      Top = 20
+      Width = 664
+      Height = 98
+      Hint = ''
+      DataSource = SrcTransLogDtl
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgTabs, dgCancelOnExit]
+      LoadMask.Message = 'Loading data...'
+      OnEnter = gridItemsEnter
+      Align = alClient
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      TabOrder = 0
+      Columns = <
+        item
+          FieldName = 'TRANS_DATE'
+          Title.Caption = 'Date'
+          Width = 112
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'TRANS_QUAN'
+          Title.Caption = 'Quantity'
+          Width = 64
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'LOC_DESC'
+          Title.Caption = 'Location'
+          Width = 94
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'LOTNO'
+          Title.Caption = 'Lot #'
+          Width = 58
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'TRANS_TYPE'
+          Title.Caption = 'Transaction Type'
+          Width = 91
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'RG_QUAN'
+          Title.Caption = 'RG Quantity'
+          Width = 41
+          CheckBoxField.FieldValues = 'true;false'
+        end
+        item
+          FieldName = 'WORKORDER_ID'
+          Title.Caption = 'WO #'
+          Width = 64
+          CheckBoxField.FieldValues = 'true;false'
+        end>
+    end
+    object Panel4: TUniPanel
+      Tag = 1999
+      Left = 1
+      Top = 1
+      Width = 664
+      Height = 20
+      Hint = ''
+      Align = alTop
+      Anchors = [akLeft, akTop, akRight]
+      ParentFont = False
+      Font.Color = clWhite
+      TabOrder = 1
+      Caption = ''
+      Color = clBtnShadow
+      ExplicitWidth = 501
+      object Label1: TUniLabel
+        Left = 1
+        Top = 1
+        Width = 174
+        Height = 13
+        Hint = ''
+        Caption = 'Disposition Transaction Details'
+        Align = alTop
+        Anchors = [akLeft, akTop, akRight]
+        ParentFont = False
+        Font.Color = clWhite
+        Font.Style = [fsBold]
+        TabOrder = 1
+      end
+    end
+  end
+  object gridItems: TUniDBGrid
+    Left = 0
+    Top = 30
+    Width = 666
+    Height = 197
+    Hint = ''
+    DataSource = SrcUniqueItems
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgTabs, dgCancelOnExit]
+    LoadMask.Message = 'Loading data...'
+    OnEnter = gridItemsEnter
+    Align = alClient
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    TabOrder = 3
+    Columns = <
+      item
+        FieldName = 'ITEMNO'
+        Title.Caption = 'Item #'
+        Width = 304
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'DESCRIP'
+        Title.Caption = 'Description'
+        Width = 151
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'CLASS'
+        Title.Caption = 'Class'
+        Width = 33
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'REV'
+        Title.Caption = 'Rev'
+        Width = 32
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'UNIT'
+        Title.Caption = 'Unit'
+        Width = 41
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'EPLANT_ID'
+        Title.Caption = 'EPlant ID'
+        Width = 64
+        CheckBoxField.FieldValues = 'true;false'
+      end>
+  end
+  object SrcUniqueItems: TDataSource
+    DataSet = QryUniqueItems
+    Left = 24
+    Top = 64
+  end
+  object QryUniqueItems: TFDQuery
+    BeforeOpen = AssignParamBeforeOpen
+    OnCalcFields = QryUniqueItemsCalcFields
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select distinct'
+      '       t.arinvt_id,'
+      '       t.class,'
+      '       t.itemno,'
+      '       t.rev,'
+      '       t.descrip,'
+      '       t.unit, '
+      '       t.eplant_id'
+      '  from translog t, arinvt a'
+      ' where t.trans_in_out = '#39'IN'#39
+      '   and t.trans_date between :date1 and :date2'
+      '   and t.arinvt_id is not NULL'
+      '   and misc.eplant_filter( t.eplant_id ) = 1'
+      ''
+      '   and t.arinvt_id = a.id'
+      '   and a.standard_id is not null'
+      '   and NVL(t.parent_arinvt_id, 0) = 0'
+      ' order by t.itemno')
+    Left = 24
+    Top = 80
+    ParamData = <
+      item
+        Name = 'date1'
+        DataType = ftDateTime
+        ParamType = ptInput
+      end
+      item
+        Name = 'date2'
+        DataType = ftDateTime
+        ParamType = ptInput
+      end>
+    object QryUniqueItemsARINVT_ID: TBCDField
+      FieldName = 'ARINVT_ID'
+      Origin = 'TRANSLOG.ARINVT_ID'
+      Size = 0
+    end
+    object QryUniqueItemsCLASS: TStringField
+      DisplayLabel = 'Class'
+      FieldName = 'CLASS'
+      Origin = 'TRANSLOG.CLASS'
+      Size = 2
+    end
+    object QryUniqueItemsITEMNO: TStringField
+      DisplayLabel = 'Item #'
+      FieldName = 'ITEMNO'
+      Origin = 'TRANSLOG.ITEMNO'
+      Size = 50
+    end
+    object QryUniqueItemsREV: TStringField
+      DisplayLabel = 'Rev'
+      FieldName = 'REV'
+      Origin = 'TRANSLOG.REV'
+      Size = 15
+    end
+    object QryUniqueItemsDESCRIP: TStringField
+      DisplayLabel = 'Description'
+      FieldName = 'DESCRIP'
+      Origin = 'TRANSLOG.DESCRIP'
+      Size = 100
+    end
+    object QryUniqueItemsUNIT: TStringField
+      DisplayLabel = 'Unit'
+      FieldName = 'UNIT'
+      Origin = 'TRANSLOG.UNIT'
+      Size = 10
+    end
+    object QryUniqueItemsdate1: TDateTimeField
+      FieldKind = fkCalculated
+      FieldName = 'date1'
+      Calculated = True
+    end
+    object QryUniqueItemsdate2: TDateTimeField
+      FieldKind = fkCalculated
+      FieldName = 'date2'
+      Calculated = True
+    end
+    object QryUniqueItemsEPLANT_ID: TBCDField
+      DisplayLabel = 'EPlant ID'
+      FieldName = 'EPLANT_ID'
+      Size = 0
+    end
+  end
+  object SrcTransLogDtl: TDataSource
+    DataSet = QryTransLogDtl
+    Left = 72
+    Top = 64
+  end
+  object QryTransLogDtl: TFDQuery
+    MasterSource = SrcUniqueItems
+    MasterFields = 'ARINVT_ID;date1;date2'
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select id,'
+      '       trans_type,'
+      '       trans_date,'
+      '       trans_quan,'
+      '       rg_quan,'
+      '       loc_desc,'
+      '       lotno,'
+      '       workorder_id'
+      '  from translog'
+      ' where arinvt_id = :arinvt_id'
+      '   and trans_date between :date1 and :date2'
+      '   and rtrim(trans_type) = '#39'DISPOSITION'#39
+      ' order by trans_date, id')
+    Left = 72
+    Top = 80
+    ParamData = <
+      item
+        Name = 'ARINVT_ID'
+        DataType = ftBCD
+        ParamType = ptInput
+        Size = 8
+      end
+      item
+        Name = 'date1'
+        DataType = ftDateTime
+        ParamType = ptInput
+        Size = 8
+      end
+      item
+        Name = 'date2'
+        DataType = ftDateTime
+        ParamType = ptInput
+        Size = 8
+      end>
+    object QryTransLogDtlID: TBCDField
+      FieldName = 'ID'
+      Origin = 'TRANSLOG.ID'
+      Size = 0
+    end
+    object QryTransLogDtlTRANS_TYPE: TStringField
+      DisplayLabel = 'Transaction Type'
+      FieldName = 'TRANS_TYPE'
+      Origin = 'TRANSLOG.TRANS_TYPE'
+      Size = 30
+    end
+    object QryTransLogDtlTRANS_DATE: TDateTimeField
+      DisplayLabel = 'Date'
+      FieldName = 'TRANS_DATE'
+      Origin = 'TRANSLOG.TRANS_DATE'
+    end
+    object QryTransLogDtlTRANS_QUAN: TFMTBCDField
+      DisplayLabel = 'Quantity'
+      FieldName = 'TRANS_QUAN'
+      Origin = 'TRANSLOG.TRANS_QUAN'
+      Size = 6
+    end
+    object QryTransLogDtlRG_QUAN: TFMTBCDField
+      DisplayLabel = 'RG Quantity'
+      FieldName = 'RG_QUAN'
+      Origin = 'TRANSLOG.RG_QUAN'
+      Size = 6
+    end
+    object QryTransLogDtlLOC_DESC: TStringField
+      DisplayLabel = 'Location'
+      FieldName = 'LOC_DESC'
+      Origin = 'TRANSLOG.LOC_DESC'
+      Size = 30
+    end
+    object QryTransLogDtlLOTNO: TStringField
+      DisplayLabel = 'Lot #'
+      FieldName = 'LOTNO'
+      Origin = 'TRANSLOG.LOTNO'
+      Size = 25
+    end
+    object QryTransLogDtlWORKORDER_ID: TBCDField
+      DisplayLabel = 'WO #'
+      FieldName = 'WORKORDER_ID'
+      Size = 0
+    end
+  end
+  object PkItems: TIQWebHpick
+    BeforeOpen = AssignParamBeforeOpen
+    Connection = UniMainModule.FDConnection1
+    SQL.Strings = (
+      'select distinct'
+      '       t.arinvt_id,'
+      '       t.class,'
+      '       t.itemno,'
+      '       t.rev,'
+      '       t.descrip,'
+      '       t.unit'
+      '  from translog t, arinvt a'
+      ' where rtrim(t.trans_in_out) = '#39'IN'#39
+      '   and t.trans_date between :date1 and :date2'
+      '   and t.arinvt_id = a.id'
+      '   and a.standard_id is not null'
+      '   and misc.eplant_filter( a.eplant_id ) = 1')
+    Title = 'Select from Pick List'
+    Touchscreen = False
+    ForceShowWaitForPrompt = False
+    Left = 120
+    Top = 64
+    ParamData = <
+      item
+        Name = 'date1'
+        DataType = ftDateTime
+        ParamType = ptInput
+      end
+      item
+        Name = 'date2'
+        DataType = ftDateTime
+        ParamType = ptInput
+      end>
+    object PkItemsARINVT_ID: TBCDField
+      FieldName = 'ARINVT_ID'
+      Origin = 'TRANSLOG.ARINVT_ID'
+      Visible = False
+      Size = 0
+    end
+    object PkItemsITEMNO: TStringField
+      DisplayLabel = 'Item #'
+      FieldName = 'ITEMNO'
+      Origin = 'TRANSLOG.ITEMNO'
+      Size = 50
+    end
+    object PkItemsDESCRIP: TStringField
+      DisplayLabel = 'Description'
+      FieldName = 'DESCRIP'
+      Origin = 'TRANSLOG.DESCRIP'
+      Size = 100
+    end
+    object PkItemsCLASS: TStringField
+      DisplayLabel = 'Class'
+      FieldName = 'CLASS'
+      Origin = 'TRANSLOG.CLASS'
+      Size = 2
+    end
+    object PkItemsREV: TStringField
+      DisplayLabel = 'Revision'
+      FieldName = 'REV'
+      Origin = 'TRANSLOG.REV'
+      Size = 15
+    end
+    object PkItemsUNIT: TStringField
+      DisplayLabel = 'Unit'
+      FieldName = 'UNIT'
+      Origin = 'TRANSLOG.UNIT'
+      Size = 10
+    end
+  end
+end

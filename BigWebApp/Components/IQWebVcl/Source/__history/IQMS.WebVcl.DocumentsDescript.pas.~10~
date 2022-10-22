@@ -1,0 +1,679 @@
+unit IQMS.WebVcl.DocumentsDescript;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Controls,
+  Vcl.Forms,
+  Data.DB,
+  Vcl.Buttons,
+  IQMS.WebVcl.Hpick,
+  FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniRadioButton,
+  uniButton,
+  uniBitBtn,
+  uniEdit,
+  uniPanel,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniLabel,
+  uniMultiItem,
+  uniComboBox,
+  uniDBComboBox, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt;
+
+type
+  { TDocDescrip }
+  TDocDescrip = class(TUniForm)
+    PkIQ_Docs: TIQWebHPick;
+    PkIQ_DocsDESCRIP: TStringField;
+    PkIQ_DocsUSERID: TStringField;
+    PkIQ_DocsTIMESTAMP: TDateTimeField;
+    PkIQ_DocsID: TBCDField;
+    SrcDocsLink: TDataSource;
+    PnlMain: TUniPanel;
+    Bevel1: TUniPanel;
+    rbNew: TUniRadioButton;
+    rbPick: TUniRadioButton;
+    rbMemo: TUniRadioButton;
+    rbChange: TUniRadioButton;
+    Label2: TUniLabel;
+    edSeq: TUniEdit;
+    Label1: TUniLabel;
+    edDesc: TUniEdit;
+    Label3: TUniLabel;
+    comboPrintWith: TUniDBComboBox;
+    PnlButtons: TUniPanel;
+    PnlButtonsInner: TUniPanel;
+    BitBtnOK: TUniBitBtn;
+    BitBtnCancel: TUniBitBtn;
+    procedure FormCreate(Sender: TObject);
+    procedure edDescChange(Sender: TObject);
+    procedure rbPickClick(Sender: TObject);
+    procedure BitBtnOKClick(Sender: TObject);
+    procedure BitBtnCancelClick(Sender: TObject);
+    procedure comboPrintWithKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+    procedure NewDoc;
+    procedure ChangeDoc;
+    procedure PickDoc;
+    function GetDocsLink: TDataSet;
+    //function GetDocsBlob: TFDQuery;
+    function GetDocClass: string;
+    function GetDocsLinkField: string;
+    function ProperSeq(ASeq: Integer): Integer;
+    procedure EditBlob(ID: Real);
+    function GetDocsSingle: Boolean;
+    procedure AssignPrintWith;
+    function MasterFieldValue: Int64;
+
+  public
+    { Public declarations }
+    property DocsLink: TDataSet read GetDocsLink;
+    //property DocsBlob: TFDQuery read GetDocsBlob;
+    // property DocsLookUp: TFDQuery  read GetDocsLookUp;
+    property DocClass: string read GetDocClass;
+    property DocsLinkField: string read GetDocsLinkField;
+    property DocsSingle: Boolean read GetDocsSingle;
+
+    procedure EnableOKBtn;
+  end;
+
+procedure DoDocDescrip;
+procedure AssignPrintWithToList(AItems: TStrings; AParentTableName: string);
+
+
+implementation
+
+{$R *.DFM}
+
+
+uses
+  IQMS.WebVcl.DocumentUtils,
+  IQMS.WebVcl.Documents,
+//  iqeditor,
+  IQMS.Common.DataLib,
+  IQMS.Common.Dialogs,
+  IQMS.Common.StringUtils,
+  IQMS.WebVcl.ResourceStrings;
+
+procedure DoDocDescrip;
+begin
+  with TDocDescrip.Create(uniGUIApplication.UniApplication) do
+    begin
+      ShowModal;
+      // DocsLink.State s/b browse unless user exited via X then cancel editing
+      if DocsLink.State in [dsEdit, dsInsert] then
+         DocsLink.Cancel;
+    end;
+end;
+
+procedure AssignPrintWithToList(AItems: TStrings; AParentTableName: string);
+// ============================================================================
+  procedure _AddPrintWith(const APrintWith: String);
+  begin
+    // Add text to AItems list.  Uses the TwwDBComboBox format for mapped lists.
+    // See IQMS.WebVcl.DocumentUtils.pas
+    // i.e., 'None'#9'NONE'
+    with AItems do
+      Add(Format('%s'#9'%s', [GetPrintWithDisplay(APrintWith), APrintWith]));
+  end;
+
+// ============================================================================
+begin
+
+  { NOTE: When adding items to the Print With list, please add to the
+    GetPrintWithDisplay() function located in \iqwin\vcl\IQMS.WebVcl.DocumentUtils.pas.
+
+    The function returns the display text, based on the translated
+    resource string constant.  We save one string to the database,
+    and display another to the user. }
+
+  AParentTableName := StrAfterDot(AParentTableName);
+  with AItems do
+    begin
+      Clear; // clear all items in the list, before building new list
+
+      // Always add "NONE" by default
+      _AddPrintWith('NONE');
+
+      // with AItems do
+      if AParentTableName = 'ARINVT' then
+        begin
+          _AddPrintWith('PACKING SLIP');
+          _AddPrintWith('PO');
+          _AddPrintWith('SALES ORDER');
+          _AddPrintWith('SALES ORDER ACK');
+          _AddPrintWith('INVOICE');
+          _AddPrintWith('INSPECT RECEIPT');
+          _AddPrintWith('WEB');
+          _AddPrintWith('VENDOR RFQ');
+          _AddPrintWith('COC');
+          _AddPrintWith('CRM QUOTE');
+          _AddPrintWith('ALL');
+        end
+      else if AParentTableName = 'PARTNO' then
+        begin
+          _AddPrintWith('PACKING SLIP');
+          _AddPrintWith('PO');
+          _AddPrintWith('SALES ORDER');
+          _AddPrintWith('SALES ORDER ACK');
+          _AddPrintWith('INVOICE');
+          _AddPrintWith('INSPECT RECEIPT');
+          _AddPrintWith('WEB');
+          _AddPrintWith('ALL');
+        end
+      else if AParentTableName = 'ORDERS' then
+        begin
+          _AddPrintWith('SALES ORDER');
+          _AddPrintWith('SALES ORDER ACK');
+          _AddPrintWith('PACKING SLIP');
+          _AddPrintWith('COC');
+          _AddPrintWith('ALL');
+        end
+      else if AParentTableName = 'QUOTE' then
+        begin
+          _AddPrintWith('RFQ');
+        end
+      else if AParentTableName = 'STANDARD' then
+        begin
+          _AddPrintWith('BOM ');
+          _AddPrintWith('WORK ORDER');
+          _AddPrintWith('ROUTING PACKET');
+          _AddPrintWith('ALL');
+        end
+      else if AParentTableName = 'TOOL_RFQ' then // Tooling Project
+        begin
+          _AddPrintWith('PROJECT');
+          _AddPrintWith('PROJECT WORK ORDER');
+          _AddPrintWith('ALL');
+        end
+      else if AParentTableName = 'TOOL_TASK_INFORMATION' then // Tooling Tasks
+        begin
+          _AddPrintWith('PROJECT');
+          _AddPrintWith('PROJECT WORK ORDER');
+          _AddPrintWith('ALL');
+        end
+      else if AParentTableName = 'PMEQMT' then // PM Equipment
+        begin
+          _AddPrintWith('PM WORK ORDER');
+          _AddPrintWith('BOM');
+          _AddPrintWith('WORK ORDER');
+        end
+      else if AParentTableName = 'PMTASKS' then // PM Tasks
+        begin
+          _AddPrintWith('PM WORK ORDER');
+        end
+      else if AParentTableName = 'SNDOP' then
+        begin
+          _AddPrintWith('BOM');
+          _AddPrintWith('WORK ORDER');
+          _AddPrintWith('ALL');
+        end
+      else if AParentTableName = 'PMWO' then
+        begin
+          _AddPrintWith('PM WORK ORDER');
+        end
+      else if AParentTableName = 'PROD_CODE' then
+        begin
+          _AddPrintWith('WORK ORDER'); { R&R workorder (RMA) }
+          _AddPrintWith('ALL');
+        end
+      else if AParentTableName = 'ARCUSTO' then
+        begin
+          _AddPrintWith('SALES ORDER');
+          _AddPrintWith('SALES ORDER ACK');
+          _AddPrintWith('PACKING SLIP');
+          _AddPrintWith('COC');
+          _AddPrintWith('PICKTICKET');
+          _AddPrintWith('WORK ORDER');
+          _AddPrintWith('INVOICE'); // EIQ-9923
+        end
+      else if AParentTableName = 'VENDOR' then
+        begin
+          _AddPrintWith('PO');
+        end
+      else if AParentTableName = 'CRM_QUOTE' then
+        begin
+          _AddPrintWith('CRM QUOTE');
+        end
+      else if AParentTableName = 'ARINVT_LOT_DOCS' then
+        begin
+          _AddPrintWith('COC');
+          _AddPrintWith('PACKING SLIP');
+          _AddPrintWith('ALL');
+        end
+      else if (AParentTableName = 'AKA_BUYING') or
+        (AParentTableName = 'ARINVT_VENDORS') then
+        begin
+          _AddPrintWith('PO');
+          _AddPrintWith('ALL');
+        end
+      else if (AParentTableName = 'AKA_SELLING') or (AParentTableName = 'AKA')
+        or (AParentTableName = 'AKA_DOCS') then
+        begin
+          _AddPrintWith('SALES ORDER');
+          _AddPrintWith('SALES ORDER ACK');
+          _AddPrintWith('WORK ORDER');
+          _AddPrintWith('COC');
+          _AddPrintWith('ALL');
+        end
+      else if (AParentTableName = 'PO') then
+        begin
+          _AddPrintWith('PO');
+        end
+      else if (AParentTableName = 'VENDOR_RFQ_HDR') then
+        begin
+          _AddPrintWith('VENDOR_RFQ_HDR');
+        end
+      else if (AParentTableName = 'RUNS_BEST') then
+        begin
+          _AddPrintWith('WORK ORDER');
+        end
+      else if AParentTableName = 'CAR' then
+        begin
+          _AddPrintWith('WORK ORDER');
+        end
+      else if AParentTableName = 'APQP' then
+        begin
+          _AddPrintWith('WORK ORDER');
+        end
+      else if AParentTableName = 'ECO' then
+        begin
+          _AddPrintWith('WORK ORDER');
+        end
+      else if AParentTableName = 'PPAP' then
+        begin
+          _AddPrintWith('WORK ORDER');
+        end
+      else if AParentTableName = 'WF_HEADER' then
+        begin
+          _AddPrintWith('WORK ORDER');
+        end
+      else if AParentTableName = 'WORKFLOW' then
+        begin
+          _AddPrintWith('WORK ORDER');
+        end
+      else if (AParentTableName = 'RM') or (AParentTableName = 'RMA') then
+        begin
+          _AddPrintWith('REWORK');
+        end
+      else if (AParentTableName = 'SHIP_TO') then
+        begin
+          _AddPrintWith('PACKING SLIP');
+          _AddPrintWith('PICKTICKET');
+        end
+      else if (AParentTableName = 'BILL_TO') then
+        begin
+          _AddPrintWith('INVOICE');
+        end
+      else if (AParentTableName = 'WORK_CENTER') then
+        begin
+          _AddPrintWith('WORK ORDER');
+        end
+      else if AParentTableName = 'ORD_DETAIL' then
+        begin
+          _AddPrintWith('SALES ORDER');
+          _AddPrintWith('SALES ORDER ACK');
+          _AddPrintWith('PACKING SLIP');
+          _AddPrintWith('WORK ORDER');
+          _AddPrintWith('ALL');
+        end
+      else if (AParentTableName = 'CRM_QUOTE_DETAIL') then
+        begin
+          _AddPrintWith('WORK ORDER');
+          _AddPrintWith('CRM QUOTE');
+          _AddPrintWith('ALL');
+        end
+      else if (AParentTableName = 'EXP_DETAIL') then
+        begin
+          _AddPrintWith('EXPENSE REPORT');
+        end
+      else if (AParentTableName = 'EXP_HEADER') then
+        begin
+          _AddPrintWith('EXPENSE REPORT');
+        end
+      else if (AParentTableName = 'SHIPMENTS') then
+        begin
+          _AddPrintWith('PACKING SLIP');
+          _AddPrintWith('ALL');
+        end
+      else if (AParentTableName = 'ARPREPOST') then
+        begin
+          _AddPrintWith('AR INVOICE');
+        end
+      else if (AParentTableName = 'ARINVOICE') then
+        begin
+          _AddPrintWith('AR INVOICE');
+        end
+    end;
+end;
+
+{ TDocDescrip }
+
+procedure TDocDescrip.FormCreate(Sender: TObject);
+begin
+  // Set the max length for the edit control
+  edDesc.MaxLength := SelectValueAsInteger(
+    ' SELECT data_length                    '#13 +
+    '   FROM cols                           '#13 +
+    '  WHERE table_name = ''IQ_DOCS'' AND   '#13 +
+    '        column_name = ''DESCRIP''      ');
+  SrcDocsLink.DataSet := DocsLink;
+  edSeq.Text := IntToStr(ProperSeq(DocsLink.FieldByName('DOCSEQ').asInteger));
+  edDesc.Text := DocsLink.FieldByName('DESCRIP').asString;
+
+  AssignPrintWith;
+
+  edSeq.Visible := (not DocsSingle);
+  Label2.Visible := (not DocsSingle);
+
+  if DocsSingle then
+    // IQMS.WebVcl.ResourceStrings.cTXT0000015 = 'Change Description'
+    rbChange.Caption := IQMS.WebVcl.ResourceStrings.cTXT0000015
+  else
+    // IQMS.WebVcl.ResourceStrings.cTXT0000016 = 'Change Description / Sequence'
+    rbChange.Caption := IQMS.WebVcl.ResourceStrings.cTXT0000016;
+
+  with DocsLink do
+    begin
+      if (State = dsInsert) or (Eof and Bof) then
+        begin
+          rbNew.Checked := TRUE;
+          rbChange.Enabled := FALSE;
+          rbMemo.Enabled := FALSE;
+        end
+      else if State = dsInactive then
+        begin
+          rbNew.Checked := FALSE;
+          rbChange.Checked := FALSE;
+          rbPick.Checked := FALSE;
+          rbMemo.Checked := FALSE;
+          rbNew.Enabled := FALSE;
+          rbChange.Enabled := FALSE;
+          rbPick.Enabled := FALSE;
+          rbMemo.Enabled := FALSE;
+        end
+      else
+        rbChange.Checked := TRUE;
+
+      if not (State in [dsInsert, dsEdit]) then
+        begin
+          if rbChange.Checked then
+            Edit
+          else if rbNew.Checked then
+            Insert;
+        end;
+    end; // with DocsLink do
+
+  if DocClass <> '' then
+    PkIQ_Docs.SQL.Add(Format('WHERE doc_class = ''%s'' ', [DocClass]));
+end;
+
+procedure TDocDescrip.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TDocDescrip.AssignPrintWith;
+var
+  AParentTableName: string;
+begin
+  // if Assigned( DocsLink.MasterSource ) and Assigned(DocsLink.MasterSource.DataSet) then
+  // AParentTableName:= StrAfterDot( TFDTable(DocsLink.MasterSource.DataSet).TableName )
+  // else
+  // AParentTableName:= '';
+
+  AParentTableName := TIQWebDocs(uniGUIApplication.UniApplication).MasterTableName;
+
+  // Fill combo box with "Print With" list
+//  comboPrintWith.MapList := TRUE;
+  AssignPrintWithToList(comboPrintWith.Items, AParentTableName);
+//  comboPrintWith.ApplyList; // for after modifying list at runtime
+
+  with comboPrintWith do
+     ItemIndex:= Items.IndexOf( DocsLink.FieldByName('TYPE').asString );
+//    comboPrintWith.Text := comboPrintWith.GetComboDisplay(DocsLink.FieldByName('TYPE').asString)
+end;
+
+function TDocDescrip.GetDocsLink: TDataSet;
+begin
+  //Result := TIQWebDocs(uniGUIApplication.UniApplication).DocsLink;
+end;
+
+{function TDocDescrip.GetDocsBlob: TFDQuery;
+begin
+  Result := TIQDocs(Owner).DocsBlob
+end;}
+
+function TDocDescrip.GetDocClass: string;
+begin
+  Result := TIQWebDocs(uniGUIApplication.UniApplication).DocClass
+end;
+
+function TDocDescrip.GetDocsLinkField: string;
+begin
+  //Result := TIQWebDocs(uniGUIApplication.UniApplication).DocsLinkField;
+end;
+
+procedure TDocDescrip.edDescChange(Sender: TObject);
+begin
+  EnableOKBtn;
+end;
+
+procedure TDocDescrip.EnableOKBtn;
+begin
+  BitBtnOK.Enabled := (edDesc.Text <> '') or rbPick.Checked;
+end;
+
+procedure TDocDescrip.BitBtnOKClick(Sender: TObject);
+var
+  ACursor: Integer;
+begin
+  ACursor := Screen.Cursors[crSQLWait];
+  try
+    Screen.Cursors[crSQLWait] := Screen.Cursors[crArrow];
+    Screen.Cursor := crArrow;
+    try
+      if rbNew.Checked then
+        NewDoc
+      else if rbChange.Checked then
+        ChangeDoc
+      else if rbPick.Checked then
+        PickDoc
+      else if rbMemo.Checked then
+        EditBlob(DocsLink.FieldByName('IQ_DOCS_ID').asFloat);
+
+      if not (DocsLink.State in [dsEdit, dsInsert]) then
+        DocsLink.Edit;
+      DocsLink.FieldByName('DOCSEQ').asFloat := StrToIntDef(edSeq.Text, 99);
+
+//      DocsBlob.Close;
+//      DocsBlob.Open;
+
+      DocsLink.FieldByName('TYPE').asString := comboPrintWith.text;
+      DocsLink.Post;
+      DocsLink.Refresh;
+      Close;
+    finally
+      // Restore the cursor
+      Screen.Cursor := crArrow; // necessary, or SQL wait will appear again
+      Screen.Cursors[crSQLWait] := ACursor;
+      Screen.Cursor := crDefault;
+    end;
+  except
+    on E: Exception do
+      if not (E is EAbort) then
+        begin
+          IQWarning(FixFireDACErrorMessage(E.Message));
+          BitBtnCancelClick(NIL);
+        end;
+  end
+end;
+
+procedure TDocDescrip.BitBtnCancelClick(Sender: TObject);
+begin
+  try
+    DocsLink.Cancel;
+  finally
+    Close;
+    Screen.Cursor := crDefault;
+  end;
+end;
+
+procedure TDocDescrip.rbPickClick(Sender: TObject);
+begin
+  edDesc.Enabled := not rbPick.Checked;
+  Label1.Enabled := not rbPick.Checked;
+  edDescChange(Sender); { Disable/Enable OK Button }
+end;
+
+procedure TDocDescrip.NewDoc;
+var
+  AID: LargeInt;
+begin
+  AID := GetNextID('IQ_DOCS'); // create new AID for IQ_DOCS
+
+  with TFDQuery.Create(nil) do
+    try
+      ConnectionName := 'IQFD';
+      SQL.Add('INSERT INTO iq_docs(id,          ');
+      SQL.Add('                    doc_class,   ');
+      SQL.Add('                    descrip)     ');
+      SQL.Add('    VALUES (:id,                 ');
+      SQL.Add('            :doc_class,          ');
+      SQL.Add('            :descrip)            ');
+      ParamByName('id').DataType := ftFmtBCD;
+      ParamByName('doc_class').DataType := ftString;
+      ParamByName('descrip').DataType := ftString;
+
+      ParamByName('id').AsFMTBCD := AID;
+      ParamByName('doc_class').asString := DocClass;
+      ParamByName('descrip').asString := edDesc.Text;
+
+      ExecSQL;
+
+      DocsLink.FieldByName('IQ_DOCS_ID').AsFloat := AID;
+    finally
+      Free;
+    end;
+
+  EditBlob(AID);
+end;
+
+procedure TDocDescrip.EditBlob(ID: Real);
+var
+  ADataSource: TDataSource;
+  ATable: TFDTable;
+begin
+  ATable := TFDTable.Create(self);
+  try
+    ADataSource := TDataSource.Create(self);
+    try
+      ADataSource.DataSet := ATable;
+      with ATable do
+        begin
+          // DataBaseName:= DocsLink.DataBaseName;
+          ConnectionName := 'IQFD';
+          TableName := 'IQ_DOCS';
+          Open;
+          if not FindKey([ID]) then
+            // IQMS.WebVcl.ResourceStrings.cTXT0000017 =
+            // 'Unable to find a document ID, %.0f'
+            raise Exception.Create(Format(IQMS.WebVcl.ResourceStrings.cTXT0000017, [ID]));
+        end;
+
+//      Editor(ADataSource, ATable.FieldByName('DOC_BLOB') as TBlobField);
+    finally
+      ADataSource.Free;
+    end;
+  finally
+    ATable.Free;
+  end;
+end;
+
+procedure TDocDescrip.ChangeDoc;
+begin
+  with TFDQuery.Create(self) do
+    try
+      ConnectionName := 'IQFD';
+      SQL.Add('UPDATE iq_docs ');
+      SQL.Add(Format('SET descrip = ''%s'' ', [FixStr(edDesc.Text)]));
+      SQL.Add(Format('WHERE id = %.0f ', [DocsLink.FieldByName('IQ_DOCS_ID')
+        .asFloat]));
+      ExecSQL;
+    finally
+      Free;
+    end;
+end;
+
+procedure TDocDescrip.PickDoc;
+begin
+  if not IQPickAndReplace(DocsLink.FieldByName('IQ_DOCS_ID'), PkIQ_Docs, 'ID')
+  then
+    System.SysUtils.Abort;
+end;
+
+function TDocDescrip.ProperSeq(ASeq: Integer): Integer;
+var
+  ATableName: string;
+begin
+  Result := ASeq;
+  if ASeq > 0 then
+    Exit;
+
+  if (DocsLink is TFDTable) then
+   ATableName := TFDTable(DocsLink).TableName
+  else if (DocsLink is TFDQuery) then
+   ATableName := TFDQuery(DocsLink).UpdateOptions.UpdateTableName;
+
+  if DocsLinkField <> '' then
+    try
+      with TFDQuery.Create(nil) do
+        try
+      ConnectionName := 'IQFD';
+          SQL.Add(Format('SELECT MAX(docseq) FROM %s WHERE %s = %d',
+            [ATableName, DocsLinkField, MasterFieldValue]));
+          Open;
+          Result := Fields[0].asInteger + 1;
+        finally
+          Free;
+        end;
+    except
+      Result := 999;
+    end
+end;
+
+function TDocDescrip.GetDocsSingle: Boolean;
+begin
+  Result := TIQWebDocs(uniGUIApplication.UniApplication).FSingleDoc;
+end;
+
+function TDocDescrip.MasterFieldValue: Int64;
+begin
+  Result := TIQWebDocs(uniGUIApplication.UniApplication).MasterFieldValue;
+end;
+
+procedure TDocDescrip.comboPrintWithKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = VK_DELETE then
+    begin
+      comboPrintWith.ItemIndex := - 1;
+      Key := 0;
+    end;
+end;
+
+end.

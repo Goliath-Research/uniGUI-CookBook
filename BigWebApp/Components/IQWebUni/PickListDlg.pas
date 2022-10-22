@@ -1,0 +1,276 @@
+unit PickListDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics,
+  Controls, Forms, Dialogs, uniGUITypes, uniGUIAbstractClasses,
+  uniGUIClasses, uniGUIForm, uniGUIBaseClasses, uniPanel, uniCheckBox, uniEdit,
+  uniButton, uniBitBtn, uniSpeedButton, uniStatusBar, uniLabel, uniBasicGrid,
+  uniDBGrid, DB, uniImageList, uniGUIDialogs, uniGUIMainModule,
+  IQWeb.Server.DataServices,
+  Generics.Collections;
+
+type
+  TSinglePickListCallBack   = reference to procedure (aResult: TModalResult; aID : integer);
+  TMultiplePickListCallBack = reference to procedure (aResult: TModalResult; aIDs: TList<integer>);
+
+  TPickListForm = class(TUniForm)
+    upnlTop: TUniPanel;
+    uedtSearch: TUniEdit;
+    uchkCaseInsensitive: TUniCheckBox;
+    uchkWaitForPrompt: TUniCheckBox;
+    uchkExactMatch: TUniCheckBox;
+    usbtnToggleHide: TUniSpeedButton;
+    usbtnSubQuery: TUniSpeedButton;
+    usbtnSearch: TUniSpeedButton;
+    usbtnSortCriteria: TUniSpeedButton;
+    usbtnSortCriteriaDropDown: TUniSpeedButton;
+    usbtnFilter: TUniSpeedButton;
+    usbtnFilterDropDown: TUniSpeedButton;
+    usbtnRemoveFilter: TUniSpeedButton;
+    upnlSpeedButtons: TUniPanel;
+    upnlSubQuery: TUniPanel;
+    upnlToggleHide: TUniPanel;
+    upnlSearch: TUniPanel;
+    UniStatusBar1: TUniStatusBar;
+    uplnBottom: TUniPanel;
+    upnlButtons: TUniPanel;
+    upnlPropagate: TUniPanel;
+    ulblPropagate: TUniLabel;
+    uchkPropagateSort: TUniCheckBox;
+    uchkPropagateScope: TUniCheckBox;
+    ubbSelect: TUniBitBtn;
+    ubbCancel: TUniBitBtn;
+    ubbNew: TUniBitBtn;
+    UniDBGrid1: TUniDBGrid;
+    UniImageList1: TUniImageList;
+    ds: TDataSource;
+    procedure UniDBGrid1TitleClick(Column: TUniDBGridColumn);
+    procedure usbtnSearchClick(Sender: TObject);
+    procedure usbtnFilterClick(Sender: TObject);
+    procedure usbtnRemoveFilterClick(Sender: TObject);
+    procedure UniDBGrid1ColumnSort(Column: TUniDBGridColumn;
+      Direction: Boolean);
+    procedure UniFormBeforeShow(Sender: TObject);
+  private
+    { Private declarations }
+    FSrcDataset   : TDataset;
+    FActiveColumn : TUniDBGridColumn;
+    FIQDataServices : IIQDataServices;
+
+    procedure FormatGrid;
+    procedure SetActiveColumn(Column: TUniDBGridColumn);
+
+    property ActiveColumn : TUniDBGridColumn read FActiveColumn write SetActiveColumn;
+  public
+    { Public declarations }
+
+  end;
+
+  procedure DoSinglePickList  (aSrcDataset: TDataset; aID : integer;        aCallBack: TSinglePickListCallBack);
+  procedure DoMultiplePickList(aSrcDataset: TDataset; aIDs: TList<integer>; aCallBack: TMultiplePickListCallBack);
+
+implementation
+
+uses
+  uniGUIApplication,
+  StrUtils,
+  Spring.Services;
+
+{$R *.dfm}
+
+procedure DoSinglePickList(aSrcDataset: TDataset; aID: integer; aCallBack: TSinglePickListCallBack);
+begin
+  with TPickListForm(TUniGUIMainModule(UniApplication.UniMainModule).GetFormInstance(TPickListForm)) do
+  begin
+    FSrcDataset := aSrcDataset;
+    ds.DataSet := FSrcDataset;
+
+    FormatGrid;
+    UniDBGrid1.Options := UniDBGrid1.Options - [dgMultiSelect];
+
+    if aID <> 0 then
+      FSrcDataset.Locate('ID', aID, []);
+
+    ShowModal
+    (
+      procedure (Sender: TComponent; AResult: Integer)
+      var
+        mr  : TModalResult;
+        aID : integer;
+      begin
+        mr := TModalResult(AResult);
+        if mr = mrOK then
+          aID := trunc( FSrcDataset.FieldByName('ID').Value )
+        else
+          aID := 0;
+
+        aCallBack(mr, aID);
+      end
+    );
+  end;
+end;
+
+procedure DoMultiplePickList(aSrcDataset: TDataset; aIDs: TList<integer>; aCallBack: TMultiplePickListCallBack);
+var
+  aID: integer;
+  aBookmark: TBookmark;
+begin
+  with TPickListForm(TUniGUIMainModule(UniApplication.UniMainModule).GetFormInstance(TPickListForm)) do
+  begin
+    FSrcDataset := aSrcDataset;
+    ds.DataSet := FSrcDataset;
+
+    FormatGrid;
+    UniDBGrid1.Options := UniDBGrid1.Options + [dgMultiSelect];
+
+    if aIDs <> nil then
+      for aID in aIDs do
+        if FSrcDataset.Locate('ID', aID, []) then
+          begin
+            // Translate ID to Bookmark for uniGUI use
+            aBookmark := FSrcDataset.GetBookmark;
+            uniDBGrid1.SelectedRows.AddItem(aBookmark);
+          end;
+
+    ShowModal
+    (
+      procedure (Sender: TComponent; AResult: Integer)
+      var
+        mr   : TModalResult;
+        i    : integer;
+        aID  : integer;
+        aIDs : TList<integer>;
+        aBookmark: TBookmark;
+      begin
+        mr := TModalResult(AResult);
+        if mr = mrOK then
+          begin
+            // uniDBGrid1.SelectedRows
+            aIDs := TList<integer>.Create;
+            for i := 0 to uniDBGrid1.SelectedRows.Count - 1 do
+              begin
+                // Translate Bookmark to ID for our use
+                aBookmark := uniDBGrid1.SelectedRows.Items[i];
+                FSrcDataset.GotoBookmark(aBookmark);
+                aID := FSrcDataset.FieldByName('ID').Value;
+                aIDs.Add( aID );
+              end;
+          end
+        else
+          aIDs := nil;
+
+        aCallBack(mr, aIDs);
+      end
+    );
+  end;
+end;
+
+{ TPickListForm }
+
+procedure TPickListForm.SetActiveColumn(Column: TUniDBGridColumn);
+begin
+  if Assigned(FActiveColumn) then
+    FActiveColumn.Title.Font.Style := FActiveColumn.Title.Font.Style - [fsBold];
+
+  FActiveColumn := Column;
+  FActiveColumn.Title.Font.Style := FActiveColumn.Title.Font.Style + [fsBold];
+end;
+
+procedure TPickListForm.UniDBGrid1ColumnSort(Column: TUniDBGridColumn;
+  Direction: Boolean);
+begin
+  FIQDataServices.SortDataSet
+  (
+    FSrcDataset,
+    Column.FieldName,
+    Direction,
+    uchkCaseInsensitive.Checked
+  );
+end;
+
+procedure TPickListForm.UniDBGrid1TitleClick(Column: TUniDBGridColumn);
+begin
+  ActiveColumn := Column;
+end;
+
+procedure TPickListForm.UniFormBeforeShow(Sender: TObject);
+begin
+  // Locate the corresponding DataServices
+  // Just for now, it is hard-coded to FireDAC and Oracle
+  FIQDataServices := ServiceLocator.GetService<IIQDataServices>('FireDAC-Oracle');
+end;
+
+procedure TPickListForm.usbtnFilterClick(Sender: TObject);
+var
+  strFieldValue: string;
+  strFilter: string;
+begin
+  // First, just for the selected column
+
+  strFilter := uedtSearch.Text;
+  if not uchkExactMatch.Checked then
+     strFilter := '%' + strFilter + '%';
+
+  strFieldValue := FActiveColumn.FieldName;
+
+  if uchkCaseInsensitive.Checked then
+    begin
+      strFieldValue := Format('UPPER(%s)', [strFieldValue]);
+      strFilter     := UpperCase(strFilter);
+    end;
+
+  FSrcDataset.Filtered := false;
+  FSrcDataset.Filter := Format('%s LIKE ''%s''', [strFieldValue, strFilter]);
+  FSrcDataset.Filtered := true;
+
+  usbtnRemoveFilter.Enabled := true;
+end;
+
+procedure TPickListForm.usbtnRemoveFilterClick(Sender: TObject);
+begin
+  FSrcDataset.Filtered := false;
+  usbtnRemoveFilter.Enabled := false;
+end;
+
+procedure TPickListForm.usbtnSearchClick(Sender: TObject);
+var
+  loOptions: TLocateOptions;
+begin
+  // First, just for the selected column
+  loOptions := [];
+
+  if uchkCaseInsensitive.Checked then
+    loOptions := loOptions + [loCaseInsensitive];
+
+  if not uchkExactMatch.Checked then
+     loOptions := loOptions + [loPartialKey];
+
+  FSrcDataset.Locate(FActiveColumn.FieldName, uedtSearch.Text, loOptions);
+end;
+
+procedure TPickListForm.FormatGrid;
+var
+  aField  : TField;
+  c       : integer;
+  aColumn : TUniDBGridColumn;
+begin
+  for c := 0 to UniDBGrid1.Columns.Count - 1 do
+    begin
+      aColumn := TUniDBGridColumn(UniDBGrid1.Columns[c]);
+
+      aField    := FSrcDataset.FindField(aColumn.FieldName);
+
+      aColumn.Title.Caption := aField.DisplayLabel;
+      aColumn.Width         := aField.DisplayWidth * 6;
+      aColumn.Visible       := aField.Visible;
+      aColumn.Sortable      := true;
+      aColumn.Font.Assign(UniDBGrid1.TitleFont);
+
+      if aColumn.Visible and not Assigned(FActiveColumn) then
+        ActiveColumn := aColumn;
+    end;
+end;
+
+end.

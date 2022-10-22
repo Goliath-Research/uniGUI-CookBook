@@ -1,0 +1,634 @@
+object FrmErrors: TFrmErrors
+  Left = 59
+  Top = 153
+  ClientHeight = 302
+  ClientWidth = 480
+  Caption = 'Errors and Warnings'
+  OldCreateOrder = False
+  OnClose = FormClose
+  Menu = MainMenu1
+  MonitoredKeys.Keys = <>
+  OnCreate = UniFormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Splitter1: TUniSplitter
+    Left = 0
+    Top = 120
+    Width = 480
+    Height = 3
+    Cursor = crVSplit
+    Hint = ''
+    Align = alTop
+    ParentColor = False
+    Color = clBtnFace
+  end
+  object IQSearchHeader: TIQUniGridControl
+    Left = 0
+    Top = 0
+    Width = 480
+    Height = 120
+    Layout = 'border'
+    ParentAlignmentControl = False
+    AlignmentControl = uniAlignmentClient
+    Align = alTop
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 0
+    IQComponents.Grid.Left = 0
+    IQComponents.Grid.Top = 29
+    IQComponents.Grid.Width = 263
+    IQComponents.Grid.Height = 34
+    IQComponents.Grid.Hint = ''
+    IQComponents.Grid.DataSource = SrcInputRec
+    IQComponents.Grid.LoadMask.Message = 'Loading data...'
+    IQComponents.Grid.Align = alClient
+    IQComponents.Grid.Anchors = [akLeft, akTop, akRight, akBottom]
+    IQComponents.Grid.TabOrder = 0
+    IQComponents.Navigator.Left = 410
+    IQComponents.Navigator.Top = 0
+    IQComponents.Navigator.Width = 241
+    IQComponents.Navigator.Height = 25
+    IQComponents.Navigator.Hint = ''
+    IQComponents.Navigator.ShowHint = True
+    IQComponents.Navigator.DataSource = SrcInputRec
+    IQComponents.Navigator.LayoutConfig.Region = 'east'
+    IQComponents.Navigator.TabOrder = 3
+    IQComponents.HiddenPanel.Left = 263
+    IQComponents.HiddenPanel.Top = 29
+    IQComponents.HiddenPanel.Width = 209
+    IQComponents.HiddenPanel.Height = 34
+    IQComponents.HiddenPanel.Hint = ''
+    IQComponents.HiddenPanel.Visible = True
+    IQComponents.HiddenPanel.Align = alRight
+    IQComponents.HiddenPanel.Anchors = [akTop, akRight, akBottom]
+    IQComponents.FormTab.Hint = ''
+    IQComponents.FormTab.ImageIndex = 1
+    IQComponents.FormTab.Caption = 'Form'
+    IQComponents.FormTab.Layout = 'border'
+    DataSource = SrcInputRec
+    TabsVisible = True
+    Marker = 0
+  end
+  object Panel3: TUniPanel
+    Left = 0
+    Top = 123
+    Width = 480
+    Height = 27
+    Hint = ''
+    Align = alTop
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 1
+    Caption = ''
+    object sbtnInfo: TUniSpeedButton
+      Left = 1
+      Top = 1
+      Width = 25
+      Height = 25
+      Hint = 'Information Messages'
+      ShowHint = True
+      ParentShowHint = False
+      GroupIndex = 1
+      AllowAllUp = True
+      Glyph.Data = {
+        36060000424D3606000000000000360000002800000020000000100000000100
+        18000000000000060000120B0000120B00000000000000000000FF00FFFF00FF
+        FF00FFFF00FFCBCACAA67D78824136733325733325814135A47B76CAC8C8FF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFCBCBCB9999996E6E6E61
+        61616161616D6D6D979797CACACAFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFAB85816725106729007F39009545009646007E390067290062230FA982
+        7EFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF9F9F9F5252524C4C4C58585861
+        61616161615757574C4C4C5151519C9C9CFF00FFFF00FFFF00FFFF00FFFF00FF
+        9E6D675D2002944300E07347DF4307DD4002DC4002DC440CE081599F4A005620
+        0197635CFF00FFFF00FFFF00FFFF00FF8F8F8F484848616161A5A5A587878784
+        8484848484888888ADADAD666666454545878787FF00FFFF00FFFF00FFAB8682
+        602102B66400E04C10E44A09D44509BB917DAA8371C14B1AE04909DF541DCB6F
+        00602301AA847FFF00FFFF00FF9F9F9F4A4A4A7070708B8B8B8A8A8A838383AC
+        ACACA0A0A08181818888889191917A7A7A4A4A4A9D9D9DFF00FFCBCACA6F260F
+        AA5E07E25517E75715E75715CF4F15F9F6F5D8D8D8B65629E25615E25615DF5C
+        23BA6B0F66250ECAC8C8CBCBCB5656566E6E6E8F8F8F919191919191868686FF
+        FFFFE4E4E48484848E8E8E8E8E8E949494797979515151CACACAA77C76784000
+        E07847E96820E96820EA6820D25E1EFAF7F6DBDBDBB76131E46620E36420E364
+        20E39069844603A47873999999545454A5A5A59797979797979898988B8B8BFF
+        FFFFE7E7E7888888959595959595959595B6B6B65B5B5B9696969B6141AC7106
+        E46421EA772CEC782CEE792CD76E29FAF9F7DBDBDBBA6E3AE8762CE6752CE374
+        2CDD692BAA67038C49367E7E7E6E6E6E9595959D9D9D9E9E9E9E9E9E939393FF
+        FFFFE7E7E78D8D8D9C9C9C9B9B9B9A9A9A9797976D6D6D727272996F32CE880A
+        E8792FED8737EE8737F08939DA7D34FAF9F7DBDBDBBC7841EA8637E88537E683
+        36E06C25C776008844257878788080809D9D9DA3A3A3A4A4A4A6A6A6999999FF
+        FFFFE7E7E7929292A2A2A2A1A1A1A0A0A09595957979796A6A6A9B7732C87F00
+        E98337EE9441F09642F49844DF924AFAF9F9E0E0E0BF864BEE9643E99241E790
+        40E0732CBE6F00864125797979797979A2A2A2A8A8A8AAAAAAADADADA6A6A6FF
+        FFFFECECEC989898A9A9A9A6A6A6A5A5A5989898757575696969A17E489D6D00
+        E77D35EF9F4DF1A34FF7A954EAA95DE2D2BCE0CFB7D79F5CF3A955EDA04FE89B
+        4CE07C3B9E59008C4636858585656565A0A0A0AFAFAFB1B1B1B5B5B5B4B4B4DC
+        DCDCD8D8D8AAAAAAB4B4B4AFAFAFABABABA0A0A0666666727272AD8E7E957E00
+        DC8655F0A658F4AD5DF9B664F7B867C19F71B89A71EEB264F5B666F0AD60ECA5
+        58E89D757F3500A478739F9F9F616161A9A9A9B4B4B4B8B8B8BEBEBEBFBFBFAA
+        AAAAA6A6A6B8B8B8BCBCBCB8B8B8B3B3B3BEBEBE585858969696CBCACAA19115
+        A26700E98B4AF6B66CFABD72DCAB6DF1F1F0D6D6D6C6A373F6BB71F3B66EE488
+        4CAF5E0071260ECAC7C7CBCBCB6F6F6F686868AAAAAAC0C0C0C5C5C5B5B5B5FB
+        FBFBE3E3E3ADADADC2C2C2C0C0C0A9A9A96D6D6D565656C9C9C9FF00FFB29787
+        9B9601BA6B00EC9153FABF7BEEB776F4F0ECF2EFEBE0B074F6BC78E88F54B674
+        2C713001A9807CFF00FFFF00FFA5A5A5656565727272B1B1B1C9C9C9C1C1C1FB
+        FBFBFAFAFAB9B9B9C6C6C6AFAFAF8585855050509C9C9CFF00FFFF00FFFF00FF
+        A88D6B999801A26300DB9167EA8B4EE69153E28D52E88C51E098729E5503733C
+        009C655BFF00FFFF00FFFF00FFFF00FF969696636363686868B2B2B2ACACACAD
+        ADADABABABADADADB8B8B8676767515151898989FF00FFFF00FFFF00FFFF00FF
+        FF00FFB29988A1A2158A8700896500A16800A06800835900765800845A18AF84
+        7AFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFA5A5A57070705C5C5C5C5C5C67
+        67676767675959595353536464649E9E9EFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFCAC8C7B3A47AA99D41A298289F9328A18A40AB8B77CAC6C6FF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC9C9C9A0A0A085858578
+        78787676768181819C9C9CC8C8C8FF00FFFF00FFFF00FFFF00FF}
+      Caption = ''
+      ParentFont = False
+      Font.Color = clNavy
+      Font.Style = [fsBold]
+      ParentColor = False
+      Color = clWindow
+      OnClick = sbtnErrorClick
+    end
+    object sbtnWarning: TUniSpeedButton
+      Left = 27
+      Top = 1
+      Width = 25
+      Height = 25
+      Hint = 'Warning Messages'
+      ShowHint = True
+      ParentShowHint = False
+      GroupIndex = 2
+      AllowAllUp = True
+      Glyph.Data = {
+        36060000424D3606000000000000360000002800000020000000100000000100
+        18000000000000060000C40E0000C40E00000000000000000000FF00FF6D6D6D
+        6666666666666666666666666666666666666666666666666666666666666666
+        666666666F6F6FFF00FFFF00FF6D6D6D66666666666666666666666666666666
+        66666666666666666666666666666666666666666F6F6FFF00FF606E742BB6F4
+        27BCFF26BBFF27BAFF26BAFF4394BB5D727C5C737D4194BC25B8FF25B7FF25B8
+        FF24B7FF2AAFF1616C716E6E6EC0C0C0C8C8C8C7C7C7C7C7C7C7C7C79A9A9A73
+        73737474749A9A9AC5C5C5C5C5C5C5C5C5C5C5C5BBBBBB6C6C6C64696B31BAF1
+        2BC3FF2BC2FF2AC2FF2CBEFA6B6B6BE9E9E9E8E8E868686829BDFD28BEFF28BD
+        FF28BDFF2FB2ED656768696969C3C3C3CCCCCCCCCCCCCCCCCCC8C8C86B6B6BC0
+        C0C0C0C0C0686868C8C8C8C9C9C9C9C9C9C9C9C9BCBCBC6767679999994E93AA
+        30CBFF31CBFF30CAFF30C7FB6A6A6AE9E9E9E8E8E86868682FC5FD2DC6FF2DC6
+        FF2CC5FF508AA19C9C9C999999959595D2D2D2D2D2D2D1D1D1CECECE6A6A6AC0
+        C0C0C0C0C0686868CDCDCDCECECECECECECECECE8C8C8C9C9C9CC9C9C9646A6B
+        3CC8EF37D3FF37D3FF36D2FF4BA1BB6868686868684AA1BC34CFFF33CEFF33CD
+        FF39C1EB65686AC9C9C9C9C9C96A6A6ACCCCCCD8D8D8D8D8D8D7D7D7A3A3A368
+        6868686868A3A3A3D5D5D5D4D4D4D3D3D3C6C6C6686868C9C9C9FF00FF9B9B9B
+        5699A940DBFF40DAFF3FDAFF3ED9FF3ED8FD3DD7FD3CD7FF3CD7FF3BD7FF3BD6
+        FF5591A19D9D9DFF00FFFF00FF9B9B9B999999DDDDDDDDDDDDDDDDDDDCDCDCDB
+        DBDBDADADADBDBDBDBDBDBDBDBDBDADADA9292929D9D9DFF00FFFF00FFC9C9C9
+        65696A4FD4EF4BE1FF4AE1FF5A98A56666666666665998A546DEFF46DEFF49CD
+        E9666768CBCBCBFF00FFFF00FFC9C9C9696969D4D4D4E2E2E2E2E2E298989866
+        6666666666989898E0E0E0E0E0E0CECECE676767CBCBCBFF00FFFF00FFFF00FF
+        9B9B9B609CA758E5FF58DEF66F6F6FFFFFFFFFFFFF6F6F6F53DDF651E3FF5E95
+        A09F9F9FFF00FFFF00FFFF00FFFF00FF9B9B9B9B9B9BE5E5E5DEDEDE6F6F6FC0
+        C0C0C0C0C06F6F6FDDDDDDE3E3E39494949F9F9FFF00FFFF00FFFF00FFFF00FF
+        C9C9C966696A69DAED68E2F66F6F6FFFFFFFFFFFFF6F6F6F62E1F661D5E86668
+        68CBCBCBFF00FFFF00FFFF00FFFF00FFC9C9C9696969D9D9D9E1E1E16F6F6FC0
+        C0C0C0C0C06F6F6FE0E0E0D4D4D4686868CBCBCBFF00FFFF00FFFF00FFFF00FF
+        FF00FF9C9C9C6F9CA37AE6F66F6F6FFFFFFFFFFFFF6F6F6F74E5F66B979E9F9F
+        9FFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF9C9C9C9B9B9BE5E5E56F6F6FC0
+        C0C0C0C0C06F6F6FE3E3E39696969F9F9FFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFC9C9C967696A88D9E36F6F6FFFFFFFFFFFFF6F6F6F81D5E0666868CBCB
+        CBFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC9C9C9696969D7D7D76F6F6FC0
+        C0C0C0C0C06F6F6FD3D3D3686868CBCBCBFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FF9D9D9D7D9EA17EA1A56666666666667DA1A578969A9F9F9FFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF9D9D9D9D9D9DA0A0A066
+        6666666666A0A0A09595959F9F9FFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFCBCBCB676868A6E3E9B0F8FFB0F8FFA2DFE6676868CBCBCBFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFCBCBCB686868E1E1E1DD
+        DDDDDDDDDDDDDDDD686868CBCBCBFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FF9F9F9F879EA0BDFAFFBDFAFF829798A1A1A1FF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF9F9F9F9D9D9DDD
+        DDDDDDDDDD969696A1A1A1FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFCBCBCB676868B2E2E6B0DFE2676868CBCBCBFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFCBCBCB686868E0
+        E0E0DDDDDD686868CBCBCBFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFA1A1A16C71716B6F6FA3A3A3FF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFA1A1A170
+        70706F6F6FA3A3A3FF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
+      Caption = ''
+      ParentFont = False
+      Font.Color = clYellow
+      Font.Style = [fsBold]
+      ParentColor = False
+      Color = clWindow
+      OnClick = sbtnErrorClick
+    end
+    object sbtnError: TUniSpeedButton
+      Left = 53
+      Top = 1
+      Width = 25
+      Height = 25
+      Hint = 'Error Messages'
+      ShowHint = True
+      ParentShowHint = False
+      GroupIndex = 3
+      AllowAllUp = True
+      Down = True
+      Glyph.Data = {
+        36060000424D3606000000000000360000002800000020000000100000000100
+        18000000000000060000120B0000120B00000000000000000000FF00FFFF00FF
+        FF00FFFF00FFFF00FFA3A3C93737B20A0A930808932B2BAAA3A3C8FF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFACACAC63636347
+        47474747475B5B5BACACACFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFB4B4CC3232B1000085000586000990000C9100078600007D3131A8B3B3
+        CAFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFBABABA6060603F3F3F40404046
+        46464747474040403B3B3B5C5C5CB8B8B8FF00FFFF00FFFF00FFFF00FFFF00FF
+        9393CC080898020595151BD42025D78C8EB49697AC2C32C21B25D80509920808
+        899191C6FF00FFFF00FFFF00FFFF00FFA1A1A14A4A4A4848486C6C6C6F6F6F97
+        97979C9C9C6868686F6F6F4747474242429E9E9EFF00FFFF00FFFF00FFB2B2CE
+        0B0B9F0E10A53B3BF52C2CFF8A8AD8F9F9F9F3F3F38686BC3A3AFF454AF71015
+        A60A0A8AB1B1CAFF00FFFF00FFB8B8B84E4E4E5252528484848484849F9F9FBC
+        BCBCBCBCBC9393938888888A8A8A535353434343B7B7B7FF00FFFF00FF3131C3
+        0707995353F54A4AFF3434FF4344CDEFEFF5FAFAFB5A5BCC3F3FFF5454FF5B5E
+        F9090E9A2E2EA9FF00FFFF00FF6969694A4A4A8C8C8C8D8D8D878787747474BC
+        BCBCBCBCBC7F7F7F8989899191919292924B4B4B5C5C5CFF00FF9FA0D20101A0
+        3D3DD86767FF4F4FFF3D3DFF2A2BE54E4EB35454A73A3AE93B3BEB5858FF6B6B
+        FF4047E20101899A9AC8ACACAC4D4D4D7777779999998F8F8F8989897878786E
+        6E6E6D6D6D7E7E7E7F7F7F9393939C9C9C7E7E7E414141A5A5A53D4CD90005A8
+        6B6BFA6363FF5454FF4A4AFF3636DBD8D8E0C7C7C74647C95454FF5D5DFF6A6A
+        FF6B6EFD0007A33838B87C7C7C5252529999999797979191918D8D8D767676BC
+        BCBCC7C7C77474749191919595959B9B9B9C9C9C5050506666661932D70910B7
+        6F6FFF6262FF5959FF5656FF4444C2FDFDFDE6E6E65C5CBE5A5AE16363FF6969
+        FF6D6DFF0E13BA1515AD7272725B5B5B9E9E9E9797979393939292926F6F6FBC
+        BCBCBCBCBC7A7A7A8787879797979A9A9A9D9D9D5D5D5D5757571636D80912B7
+        6363FF5F5FFF6060FF6363EE3E40B5FFFFFFF4F4F45E5FB56565E16C6CFF6767
+        FF6666FF1013BA1212AD7474745B5B5B979797959595969696909090686868BC
+        BCBCBCBCBC7878788C8C8C9C9C9C9999999999995D5D5D5656562F56DE000EAA
+        5757FB5E5EFF6A6AFF7373EE5555B9FFFFFFFDFDFD6A6BB47B7AED7777FF6969
+        FF6060FD0205A52A2ABC8282825454549191919595959B9B9B999999747474BC
+        BCBCBCBCBC7F7F7F9C9C9CA2A2A29A9A9A959595505050636363819BDA001AB2
+        3535DC6060FF7575FF7F7EE85D5DB9FFFFFFFFFFFF7373B78383E78181FF6E6D
+        FF4040E70000987878CEA9A9A95A5A5A767676969696A1A1A19D9D9D797979BC
+        BCBCBCBCBC8585859F9F9FA7A7A79D9D9D7F7F7F494949909090FF00FF1A4DD7
+        0C13B35C5CF97D7DFF7777D36566C0FFFFFFFFFFFF7071BB8383DC8686FF6868
+        FD1010B41818BAFF00FFFF00FF7B7B7B595959929292A5A5A5919191808080BC
+        BCBCBCBCBC8585859B9B9BAAAAAA9999995959595E5E5EFF00FFFF00FF92ABD8
+        032BC5171AC16969F78888E56667BCFFFFFFFFFFFF6969BC8383E56C6CFA1D1D
+        C70207AD8F8FD3FF00FFFF00FFB4B4B4676767626262979797A2A2A27F7F7FBC
+        BCBCBCBCBC8181819E9E9E9A9A9A656565545454A1A1A1FF00FFFF00FFFF00FF
+        6E97DE0229C90C12BC3C3CDC5A5BDA5E5FC76060C75555CE3F3FE21010BD0209
+        B56A6ED9FF00FFFF00FFFF00FFFF00FFA7A7A76969695E5E5E7878788484847F
+        7F7F7F7F7F7C7C7C7C7C7C5E5E5E5959598E8E8EFF00FFFF00FFFF00FFFF00FF
+        FF00FF8AA9DA124CDF001DC40210BB151AC5181DC70710BD0010BC1229D28590
+        D8FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFB4B4B47E7E7E6363635D5D5D64
+        64646565655E5E5E5D5D5D6D6D6DA3A3A3FF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFCACBCD769EDE3973E5225AE41E55E43463E2738EDDC8C9CDFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFCBCBCBACACAC94949486
+        86868484848A8A8AA2A2A2CACACAFF00FFFF00FFFF00FFFF00FF}
+      Caption = ''
+      ParentFont = False
+      Font.Color = clRed
+      Font.Style = [fsBold]
+      ParentColor = False
+      Color = clWindow
+      OnClick = sbtnErrorClick
+    end
+    object DBNavigator1: TUniDBNavigator
+      Left = 379
+      Top = 1
+      Width = 100
+      Height = 25
+      Hint = ''
+      DataSource = SrcError
+      VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+      Align = alRight
+      Anchors = [akTop, akRight, akBottom]
+      TabOrder = 0
+    end
+  end
+  object IQSearchError: TIQUniGridControl
+    Left = 0
+    Top = 150
+    Width = 480
+    Height = 152
+    Layout = 'border'
+    ParentAlignmentControl = False
+    AlignmentControl = uniAlignmentClient
+    Align = alClient
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    TabOrder = 2
+    IQComponents.Grid.Left = 0
+    IQComponents.Grid.Top = 29
+    IQComponents.Grid.Width = 263
+    IQComponents.Grid.Height = 66
+    IQComponents.Grid.Hint = ''
+    IQComponents.Grid.DataSource = SrcError
+    IQComponents.Grid.LoadMask.Message = 'Loading data...'
+    IQComponents.Grid.Align = alClient
+    IQComponents.Grid.Anchors = [akLeft, akTop, akRight, akBottom]
+    IQComponents.Grid.TabOrder = 0
+    IQComponents.Navigator.Left = 410
+    IQComponents.Navigator.Top = 0
+    IQComponents.Navigator.Width = 241
+    IQComponents.Navigator.Height = 25
+    IQComponents.Navigator.Hint = ''
+    IQComponents.Navigator.ShowHint = True
+    IQComponents.Navigator.DataSource = SrcError
+    IQComponents.Navigator.LayoutConfig.Region = 'east'
+    IQComponents.Navigator.TabOrder = 3
+    IQComponents.HiddenPanel.Left = 263
+    IQComponents.HiddenPanel.Top = 29
+    IQComponents.HiddenPanel.Width = 209
+    IQComponents.HiddenPanel.Height = 66
+    IQComponents.HiddenPanel.Hint = ''
+    IQComponents.HiddenPanel.Visible = True
+    IQComponents.HiddenPanel.Align = alRight
+    IQComponents.HiddenPanel.Anchors = [akTop, akRight, akBottom]
+    IQComponents.FormTab.Hint = ''
+    IQComponents.FormTab.ImageIndex = 1
+    IQComponents.FormTab.Caption = 'Form'
+    IQComponents.FormTab.Layout = 'border'
+    DataSource = SrcError
+    Columns = <
+      item
+        FieldName = 'TYPE'
+        Title.Caption = 'Error Type'
+        Width = 64
+        CheckBoxField.FieldValues = 'true;false'
+      end
+      item
+        FieldName = 'TEXT'
+        Title.Caption = 'Error'
+        Width = 64
+        CheckBoxField.FieldValues = 'true;false'
+      end>
+    TabsVisible = True
+    Marker = 0
+    object wwwErrorDlg: TUniEdit
+      Left = 336
+      Top = 56
+      Width = 121
+      Height = 21
+      Hint = ''
+      Text = ''
+      TabOrder = 2
+    end
+  end
+  object MainMenu1: TUniMainMenu
+    Left = 368
+    Top = 32
+    object File1: TUniMenuItem
+      Caption = '&File'
+      object Exit1: TUniMenuItem
+        Caption = '&Exit'
+        OnClick = Exit1Click
+      end
+    end
+    object Help1: TUniMenuItem
+      Caption = '&Help'
+      object About1: TUniMenuItem
+        Caption = '&About'
+        OnClick = About1Click
+      end
+    end
+  end
+  object SrcInputRec: TDataSource
+    DataSet = QryInputRec
+    Left = 32
+    Top = 72
+  end
+  object QryInputRec: TFDQuery
+    AfterScroll = QryInputRecAfterScroll
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select a.id,'
+      '      a.input_file_id,'
+      '      a.arcusto_id,'
+      '      a.pono,'
+      '      a.ord_date,'
+      '      a.ship_attn,'
+      '      a.ship_addr1,'
+      '      a.ship_city,'
+      '      a.ship_state,'
+      '      a.ship_country,'
+      '      a.ship_zip,'
+      '      a.ship_to_id,'
+      '      a.itemno,'
+      '      a.descrip,'
+      '      a.arinvt_id,'
+      '      a.promise_date,'
+      '      a.request_date,'
+      '      a.qty,'
+      '      a.cuser1,'
+      '      a.cuser2,'
+      '      a.cuser3,'
+      '      a.cuser4,'
+      '      a.cuser5'
+      ' from input_file_rec a'
+      'where a.input_file_id = :ID'
+      
+        '  and exists (select id from input_file_log where input_file_rec' +
+        '_id = a.id)'
+      ' ')
+    Left = 48
+    Top = 72
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object QryInputRecID: TBCDField
+      FieldName = 'ID'
+      Origin = 'a.ID'
+      Size = 0
+    end
+    object QryInputRecINPUT_FILE_ID: TBCDField
+      FieldName = 'INPUT_FILE_ID'
+      Origin = 'a.INPUT_FILE_ID'
+      Size = 0
+    end
+    object QryInputRecARCUSTO_ID: TBCDField
+      FieldName = 'ARCUSTO_ID'
+      Origin = 'a.ARCUSTO_ID'
+      Size = 0
+    end
+    object QryInputRecPONO: TStringField
+      FieldName = 'PONO'
+      Origin = 'a.PONO'
+      Size = 35
+    end
+    object QryInputRecORD_DATE: TDateTimeField
+      FieldName = 'ORD_DATE'
+      Origin = 'a.ORD_DATE'
+    end
+    object QryInputRecSHIP_ATTN: TStringField
+      FieldName = 'SHIP_ATTN'
+      Origin = 'a.SHIP_ATTN'
+      FixedChar = True
+      Size = 60
+    end
+    object QryInputRecSHIP_ADDR1: TStringField
+      FieldName = 'SHIP_ADDR1'
+      Origin = 'a.SHIP_ADDR1'
+      FixedChar = True
+      Size = 60
+    end
+    object QryInputRecSHIP_CITY: TStringField
+      FieldName = 'SHIP_CITY'
+      Origin = 'a.SHIP_CITY'
+      FixedChar = True
+      Size = 30
+    end
+    object QryInputRecSHIP_STATE: TStringField
+      FieldName = 'SHIP_STATE'
+      Origin = 'a.SHIP_STATE'
+      FixedChar = True
+    end
+    object QryInputRecSHIP_COUNTRY: TStringField
+      FieldName = 'SHIP_COUNTRY'
+      Origin = 'a.SHIP_COUNTRY'
+      FixedChar = True
+      Size = 30
+    end
+    object QryInputRecSHIP_ZIP: TStringField
+      FieldName = 'SHIP_ZIP'
+      Origin = 'a.SHIP_ZIP'
+      FixedChar = True
+      Size = 10
+    end
+    object QryInputRecSHIP_TO_ID: TBCDField
+      FieldName = 'SHIP_TO_ID'
+      Origin = 'a.SHIP_TO_ID'
+      Size = 0
+    end
+    object QryInputRecITEMNO: TStringField
+      FieldName = 'ITEMNO'
+      Origin = 'a.ITEMNO'
+      Size = 50
+    end
+    object QryInputRecDESCRIP: TStringField
+      FieldName = 'DESCRIP'
+      Origin = 'a.DESCRIP'
+      Size = 100
+    end
+    object QryInputRecARINVT_ID: TBCDField
+      FieldName = 'ARINVT_ID'
+      Origin = 'a.ARINVT_ID'
+      Size = 0
+    end
+    object QryInputRecPROMISE_DATE: TDateTimeField
+      FieldName = 'PROMISE_DATE'
+      Origin = 'a.PROMISE_DATE'
+    end
+    object QryInputRecREQUEST_DATE: TDateTimeField
+      FieldName = 'REQUEST_DATE'
+      Origin = 'a.REQUEST_DATE'
+    end
+    object QryInputRecQTY: TBCDField
+      FieldName = 'QTY'
+      Origin = 'a.QTY'
+    end
+    object QryInputRecCUSER1: TStringField
+      FieldName = 'CUSER1'
+      Origin = 'a.CUSER1'
+      Size = 60
+    end
+    object QryInputRecCUSER2: TStringField
+      FieldName = 'CUSER2'
+      Origin = 'a.CUSER2'
+      Size = 60
+    end
+    object QryInputRecCUSER3: TStringField
+      FieldName = 'CUSER3'
+      Origin = 'a.CUSER3'
+      Size = 60
+    end
+    object QryInputRecCUSER4: TStringField
+      FieldName = 'CUSER4'
+      Origin = 'a.CUSER4'
+      Size = 60
+    end
+    object QryInputRecCUSER5: TStringField
+      FieldName = 'CUSER5'
+      Origin = 'a.CUSER5'
+      Size = 60
+    end
+  end
+  object SrcError: TDataSource
+    DataSet = QryError
+    Left = 56
+    Top = 208
+  end
+  object QryError: TFDQuery
+    Tag = 1
+    Filtered = True
+    Connection = UniMainModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select id,'
+      'input_file_rec_id,'
+      'type,'
+      'text'
+      ' from input_file_log'
+      'where input_file_rec_id = :AID')
+    Left = 72
+    Top = 208
+    ParamData = <
+      item
+        Name = 'AID'
+        DataType = ftBCD
+        ParamType = ptInput
+      end>
+    object QryErrorTYPE: TStringField
+      DisplayLabel = 'Error Type'
+      DisplayWidth = 1
+      FieldName = 'TYPE'
+      Origin = 'TYPE'
+      FixedChar = True
+      Size = 1
+    end
+    object QryErrorTEXT: TStringField
+      DisplayLabel = 'Error'
+      DisplayWidth = 50
+      FieldName = 'TEXT'
+      Origin = 'TEXT'
+      Size = 2000
+    end
+    object QryErrorID: TBCDField
+      FieldName = 'ID'
+      Origin = 'ID'
+      Visible = False
+      Size = 0
+    end
+    object QryErrorINPUT_FILE_REC_ID: TBCDField
+      FieldName = 'INPUT_FILE_REC_ID'
+      Origin = 'INPUT_FILE_REC_ID'
+      Visible = False
+      Size = 0
+    end
+  end
+  object IQAbout1: TIQWebAbout
+    ModuleName = 'Errors and Warnings'
+    Version = 'DEV.176554'
+    BuildVersion = '176554'
+    Left = 336
+    Top = 32
+  end
+  object wwMemoDialog1: TwwMemoDialog
+    DataSource = SrcError
+    DataField = 'TEXT'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    MemoAttributes = [mSizeable, mWordWrap, mViewOnly]
+    DlgLeft = 0
+    DlgTop = 0
+    DlgWidth = 561
+    DlgHeight = 396
+    Left = 280
+    Top = 214
+  end
+end

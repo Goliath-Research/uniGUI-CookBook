@@ -1,0 +1,1624 @@
+object FrmLotTracking: TFrmLotTracking
+  Left = 85
+  Top = 159
+  HelpContext = 1423836
+  ClientHeight = 591
+  ClientWidth = 625
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  Menu = MainMenu1
+  OldCreateOrder = False
+  OnActivate = FormActivate
+  OnClose = FormClose
+  OnCreate = FormCreate
+  object Splitter1: TUniSplitter
+    Left = 0
+    Top = 188
+    Width = 625
+    Height = 3
+    Cursor = crVSplit
+    Align = alTop
+    ExplicitWidth = 521
+  end
+  object Panel3: TUniPanel
+    Left = 0
+    Top = 0
+    Width = 625
+    Height = 27
+    Align = alTop
+    TabOrder = 0
+    object sbFilter: TUniSpeedButton
+      Left = 1
+      Top = 1
+      Width = 25
+      Height = 25
+      Hint = 'Set Filter'
+      Glyph.Data = {
+        36060000424D3606000000000000360000002800000020000000100000000100
+        1800000000000006000000000000000000000000000000000000FF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FF5A5857404040202820000800FF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF58585840
+        4040252525050505FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FF606060706870404040000800FF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF6060606A
+        6A6A404040050505FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FF605860909090606060302830FF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF5B5B5B90
+        90906060602A2A2AFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FF505850B0A8B0808080404840FF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF555555AB
+        ABAB808080464646FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFE0C9B9605850C0C0C0A0A0A0404040CEB3A0FF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC8C8C8575757C0
+        C0C0A0A0A0404040B2B2B2FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFE0CABA505850A0A0A0D0D0D0B0B0B0707070201820CCAE9BFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC9C9C9555555A0A0A0D0
+        D0D0B0B0B07070701A1A1AADADADFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFE1CCBC706870C0B8C0E0E8E0E0E0E0C0C0C0909890605860201820CBAB
+        96FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFCBCBCB6A6A6ABBBBBBE6E6E6E0
+        E0E0C0C0C09696965B5B5B1A1A1AA9A9A9FF00FFFF00FFFF00FFFF00FFFF00FF
+        E1CDBE707070C0C0C0F0E8F0FFF8FFF0F0F0D0D8D0C0C0C0A098A06058601018
+        10C9A791FF00FFFF00FFFF00FFFF00FFCCCCCC707070C0C0C0EBEBEBFAFAFAF0
+        F0F0D6D6D6C0C0C09B9B9B5B5B5B161616A5A5A5FF00FFFF00FFFF00FFE1CDC0
+        808080D0D0D0F0F0F0FFFFFFFFFFFFFFF8FFE0E8E0D0D8D0C0B8C09090905050
+        50201820C8A38CFF00FFFF00FFCCCCCC808080D0D0D0F0F0F0FFFFFFFFFFFFFA
+        FAFAE6E6E6D6D6D6BBBBBB9090905050501A1A1AA2A2A2FF00FFFF00FF808080
+        D0D0D0F0F0F0FFF8FFFFF8FFF0F8F0F0F0F0E0E8E0D0D0D0C0C0C0A098A06068
+        60505850101810FF00FFFF00FF808080D0D0D0F0F0F0FAFAFAFAFAFAF6F6F6F0
+        F0F0E6E6E6D0D0D0C0C0C09B9B9B656565555555161616FF00FFFF00FFB0B8B0
+        C0C8C0D0D0D0D0D0D0C0C0C0C0B8C0B0B0B0A0A8A0A0A0A0A098A09090907078
+        70606060504850FF00FFFF00FFB6B6B6C6C6C6D0D0D0D0D0D0C0C0C0BBBBBBB0
+        B0B0A6A6A6A0A0A09B9B9B9090907575756060604A4A4AFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
+      ParentShowHint = False
+      ShowHint = True
+      OnClick = sbFilterClick
+    end
+  end
+  object pgctrlHeader: TUniPageControl
+    Left = 0
+    Top = 27
+    Width = 625
+    Height = 161
+    ActivePage = TabHeader
+    Align = alTop
+    TabOrder = 1
+    OnChange = pgctrlHeaderChange
+    object TabHeader: TUniTabSheet
+      Caption = 'Transactions'
+      object pnlTransHeader: TUniPanel
+        Left = 0
+        Top = 0
+        Width = 617
+        Height = 133
+        Align = alClient
+        TabOrder = 0
+        object IQSearch1: TIQUniGridControl
+          Left = 0
+          Top = 0
+          Width = 617
+          Height = 133
+          SaveFilter = False
+          SortDirection = sdAscending
+          ShowFilter = True
+          ShowRecordView = True
+          Align = alClient
+          BevelOuter = bvNone
+          ComponentParentFont = True
+          DefaultDrawing = True
+          RowHeightPercent = 100
+          FixedCols = 0
+          TitleAlignment = taLeftJustify
+          TitleLines = 1
+          MemoAttributes = [mSizeable, mWordWrap, mGridShow]
+          DBNavVisible = True
+          DBNavWidth = 100
+          TabOrder = 0
+          UseTFields = True
+          DataSource = SrcTransLog
+              Columns = <
+                item
+                  FieldName = 'SUM_TRANS_QUAN'
+                  Title.Caption = 'Trans. Qty'
+                  Width = 10
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'ITEMNO'
+                  Title.Caption = 'Item#'
+                  Width = 25
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'CLASS'
+                  Title.Caption = 'Class'
+                  Width = 2
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'REV'
+                  Title.Caption = 'Rev.'
+                  Width = 15
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'DESCRIPTION'
+                  Title.Caption = 'Description'
+                  Width = 35
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'UNIT'
+                  Title.Caption = 'Unit'
+                  Width = 10
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'LOTNO'
+                  Title.Caption = 'Lot#'
+                  Width = 25
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end>
+          Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+          OnDblClick = ShowDetails1Click
+          PopupMenu = PopupMenu1
+        end
+      end
+    end
+    object TabLotDocsHeader: TUniTabSheet
+      Caption = 'Lot Documents'
+      ImageIndex = 1
+      object ScrollBox1: TUniScrollBox
+        Left = 0
+        Top = 0
+        Width = 617
+        Height = 133
+        HorzScrollBar.Range = 350
+        Align = alClient
+        TabOrder = 0
+        object IQExtDocLotDocsHeader: TIQWebExtDoc
+          Left = 0
+          Top = 0
+          Width = 617
+          Height = 133
+          Align = alClient
+          BevelOuter = bvNone
+          Filter = '(*.*)|*.*|(*.doc)|*.doc|(*.rtf)|*.rtf'
+          MasterFields = 'ID'
+          MasterSource = SrcArinvtLotDocsHeader
+          Source = 'ARINVT_LOT_DOCS'
+          TableName = 'ARINVT_LOT_DOCS'
+          TabOrder = 0
+          BeforeInsert = IQExtDocLotDocsHeaderBeforeInsert
+        end
+      end
+    end
+    object tabLotControl: TUniTabSheet
+      Caption = 'Lot Control'
+      ImageIndex = 2
+      object ScrollBox3: TUniScrollBox
+        Left = 0
+        Top = 0
+        Width = 617
+        Height = 133
+        VertScrollBar.Range = 400
+        Align = alClient
+        TabOrder = 0
+        object Panel2: TUniPanel
+          Left = 0
+          Top = 0
+          Width = 596
+          Height = 400
+          Align = alClient
+          TabOrder = 0
+          object Splitter2: TUniSplitter
+            Left = 84
+            Top = 0
+            Height = 400
+            ExplicitHeight = 250
+          end
+          object Panel4: TUniPanel
+            Left = 0
+            Top = 0
+            Width = 84
+            Height = 400
+            Align = alLeft
+            TabOrder = 0
+            object IQUserDefLabelLotControl1: TIQWebUserDefLabel
+              Left = 1
+              Top = 6
+              Width = 35
+              Height = 13
+              Caption = 'CUser1'
+              OnGetOwnerName = IQUserDefLabelLotControl1GetOwnerName
+              ParentAppName = 'IQWIN32.EXE'
+            end
+            object IQUserDefLabelLotControl2: TIQWebUserDefLabel
+              Left = 1
+              Top = 30
+              Width = 35
+              Height = 13
+              Caption = 'CUser2'
+              OnGetOwnerName = IQUserDefLabelLotControl1GetOwnerName
+              ParentAppName = 'IQWIN32.EXE'
+            end
+            object IQUserDefLabelLotControl3: TIQWebUserDefLabel
+              Left = 1
+              Top = 54
+              Width = 35
+              Height = 13
+              Caption = 'CUser3'
+              OnGetOwnerName = IQUserDefLabelLotControl1GetOwnerName
+              ParentAppName = 'IQWIN32.EXE'
+            end
+            object IQUserDefLabelLotControl4: TIQWebUserDefLabel
+              Left = 1
+              Top = 78
+              Width = 35
+              Height = 13
+              Caption = 'CUser4'
+              OnGetOwnerName = IQUserDefLabelLotControl1GetOwnerName
+              ParentAppName = 'IQWIN32.EXE'
+            end
+            object IQUserDefLabelLotControl5: TIQWebUserDefLabel
+              Left = 1
+              Top = 102
+              Width = 35
+              Height = 13
+              Caption = 'CUser5'
+              OnGetOwnerName = IQUserDefLabelLotControl1GetOwnerName
+              ParentAppName = 'IQWIN32.EXE'
+            end
+            object IQUserDefLabelLotControlN1: TIQWebUserDefLabel
+              Left = 1
+              Top = 126
+              Width = 35
+              Height = 13
+              Caption = 'NUser1'
+              OnGetOwnerName = IQUserDefLabelLotControl1GetOwnerName
+              ParentAppName = 'IQWIN32.EXE'
+            end
+            object IQUserDefLabelLotControlN2: TIQWebUserDefLabel
+              Left = 1
+              Top = 150
+              Width = 35
+              Height = 13
+              Caption = 'NUser2'
+              OnGetOwnerName = IQUserDefLabelLotControl1GetOwnerName
+              ParentAppName = 'IQWIN32.EXE'
+            end
+            object IQUserDefLabelLotControlN3: TIQWebUserDefLabel
+              Left = 1
+              Top = 174
+              Width = 35
+              Height = 13
+              Caption = 'NUser3'
+              OnGetOwnerName = IQUserDefLabelLotControl1GetOwnerName
+              ParentAppName = 'IQWIN32.EXE'
+            end
+            object IQUserDefLabelLotControlN4: TIQWebUserDefLabel
+              Left = 1
+              Top = 198
+              Width = 35
+              Height = 13
+              Caption = 'NUser4'
+              OnGetOwnerName = IQUserDefLabelLotControl1GetOwnerName
+              ParentAppName = 'IQWIN32.EXE'
+            end
+            object IQUserDefLabelLotControlN5: TIQWebUserDefLabel
+              Left = 1
+              Top = 222
+              Width = 35
+              Height = 13
+              Caption = 'NUser5'
+              OnGetOwnerName = IQUserDefLabelLotControl1GetOwnerName
+              ParentAppName = 'IQWIN32.EXE'
+            end
+            object IQUserDefLabelLotControlD1: TIQWebUserDefLabel
+              Left = 1
+              Top = 246
+              Width = 35
+              Height = 13
+              Caption = 'DUser1'
+              OnGetOwnerName = IQUserDefLabelLotControl1GetOwnerName
+              ParentAppName = 'IQWIN32.EXE'
+            end
+            object IQUserDefLabelLotControlD2: TIQWebUserDefLabel
+              Left = 1
+              Top = 270
+              Width = 35
+              Height = 13
+              Caption = 'DUser2'
+              OnGetOwnerName = IQUserDefLabelLotControl1GetOwnerName
+              ParentAppName = 'IQWIN32.EXE'
+            end
+            object IQUserDefLabelLotControlD3: TIQWebUserDefLabel
+              Left = 1
+              Top = 294
+              Width = 35
+              Height = 13
+              Caption = 'DUser3'
+              OnGetOwnerName = IQUserDefLabelLotControl1GetOwnerName
+              ParentAppName = 'IQWIN32.EXE'
+            end
+            object IQUserDefLabelLotControlD4: TIQWebUserDefLabel
+              Left = 1
+              Top = 318
+              Width = 35
+              Height = 13
+              Caption = 'DUser4'
+              OnGetOwnerName = IQUserDefLabelLotControl1GetOwnerName
+              ParentAppName = 'IQWIN32.EXE'
+            end
+            object IQUserDefLabelLotControlD5: TIQWebUserDefLabel
+              Left = 1
+              Top = 342
+              Width = 35
+              Height = 13
+              Caption = 'DUser5'
+              OnGetOwnerName = IQUserDefLabelLotControl1GetOwnerName
+              ParentAppName = 'IQWIN32.EXE'
+            end
+          end
+          object Panel5: TUniPanel
+            Left = 87
+            Top = 0
+            Width = 509
+            Height = 400
+            Align = alClient
+            TabOrder = 1
+            DesignSize = (
+              509
+              400)
+            object DBEdit1: TUniDBEdit
+              Left = 0
+              Top = 4
+              Width = 505
+              Height = 19
+              Anchors = [akLeft, akTop, akRight]
+              DataField = 'CUSER1'
+              DataSource = SrcArinvtLotDocsHeader
+              TabOrder = 0
+            end
+            object DBEdit2: TUniDBEdit
+              Left = 0
+              Top = 28
+              Width = 505
+              Height = 19
+              Anchors = [akLeft, akTop, akRight]
+              DataField = 'CUSER2'
+              DataSource = SrcArinvtLotDocsHeader
+              TabOrder = 1
+            end
+            object DBEdit3: TUniDBEdit
+              Left = 0
+              Top = 52
+              Width = 505
+              Height = 19
+              Anchors = [akLeft, akTop, akRight]
+              DataField = 'CUSER3'
+              DataSource = SrcArinvtLotDocsHeader
+              TabOrder = 2
+            end
+            object DBEdit4: TUniDBEdit
+              Left = 0
+              Top = 76
+              Width = 505
+              Height = 19
+              Anchors = [akLeft, akTop, akRight]
+              DataField = 'CUSER4'
+              DataSource = SrcArinvtLotDocsHeader
+              TabOrder = 3
+            end
+            object DBEdit5: TUniDBEdit
+              Left = 0
+              Top = 100
+              Width = 505
+              Height = 19
+              Anchors = [akLeft, akTop, akRight]
+              DataField = 'CUSER5'
+              DataSource = SrcArinvtLotDocsHeader
+              TabOrder = 4
+            end
+            object DBEdit6: TUniDBEdit
+              Left = 0
+              Top = 124
+              Width = 138
+              Height = 19
+              DataField = 'NUSER1'
+              DataSource = SrcArinvtLotDocsHeader
+              TabOrder = 5
+            end
+            object DBEdit7: TUniDBEdit
+              Left = 0
+              Top = 148
+              Width = 138
+              Height = 19
+              DataField = 'NUSER2'
+              DataSource = SrcArinvtLotDocsHeader
+              TabOrder = 6
+            end
+            object DBEdit8: TUniDBEdit
+              Left = 0
+              Top = 172
+              Width = 138
+              Height = 19
+              DataField = 'NUSER3'
+              DataSource = SrcArinvtLotDocsHeader
+              TabOrder = 7
+            end
+            object DBEdit9: TUniDBEdit
+              Left = 0
+              Top = 196
+              Width = 138
+              Height = 19
+              DataField = 'NUSER4'
+              DataSource = SrcArinvtLotDocsHeader
+              TabOrder = 8
+            end
+            object DBEdit10: TUniDBEdit
+              Left = 0
+              Top = 220
+              Width = 138
+              Height = 19
+              DataField = 'NUSER5'
+              DataSource = SrcArinvtLotDocsHeader
+              TabOrder = 9
+            end
+            object wwDBDateTimePicker1: TUniDBDateTimePicker
+              Left = 0
+              Top = 243
+              Width = 138
+              Height = 21
+              DataField = 'DUSER1'
+              DataSource = SrcArinvtLotDocsHeader
+              TabOrder = 10
+            end
+            object wwDBDateTimePicker2: TUniDBDateTimePicker
+              Left = 0
+              Top = 267
+              Width = 138
+              Height = 21
+              DataField = 'DUSER2'
+              DataSource = SrcArinvtLotDocsHeader
+              TabOrder = 11
+            end
+            object wwDBDateTimePicker3: TUniDBDateTimePicker
+              Left = 0
+              Top = 291
+              Width = 138
+              Height = 21
+              DataField = 'DUSER3'
+              DataSource = SrcArinvtLotDocsHeader
+              TabOrder = 12
+            end
+            object wwDBDateTimePicker4: TUniDBDateTimePicker
+              Left = 0
+              Top = 315
+              Width = 138
+              Height = 21
+              DataField = 'DUSER4'
+              DataSource = SrcArinvtLotDocsHeader
+              TabOrder = 13
+            end
+            object wwDBDateTimePicker5: TUniDBDateTimePicker
+              Left = 0
+              Top = 339
+              Width = 138
+              Height = 21
+              DataField = 'DUSER5'
+              DataSource = SrcArinvtLotDocsHeader
+              TabOrder = 14
+            end
+          end
+        end
+      end
+    end
+  end
+  object pgctrlDependent: TUniPageControl
+    Left = 0
+    Top = 191
+    Width = 625
+    Height = 400
+    ActivePage = TabDependednt
+    Align = alClient
+    TabOrder = 2
+    object TabDependednt: TUniTabSheet
+      Caption = 'Dependent Transactions'
+      object pnlDetails: TUniPanel
+        Left = 0
+        Top = 0
+        Width = 617
+        Height = 372
+        Align = alClient
+        TabOrder = 0
+        object spliDetailsArchived: TUniSplitter
+          Left = 0
+          Top = 187
+          Width = 617
+          Height = 3
+          Cursor = crVSplit
+          Align = alTop
+          ExplicitWidth = 513
+        end
+        object Panel6: TUniPanel
+          Left = 0
+          Top = 0
+          Width = 617
+          Height = 187
+          Align = alTop
+          TabOrder = 0
+          object bvlDetailsCurrentLeft: TUniPanel
+            Left = 0
+            Top = 20
+            Width = 16
+            Height = 167
+            Align = alLeft
+            ExplicitTop = 19
+            ExplicitHeight = 168
+          end
+          object IQSearch2: TIQUniGridControl
+            Left = 16
+            Top = 20
+            Width = 601
+            Height = 167
+            SaveFilter = False
+            SortDirection = sdAscending
+            ShowFilter = True
+            ShowRecordView = True
+            Align = alClient
+            BevelOuter = bvNone
+            ComponentParentFont = True
+            DefaultDrawing = True
+            RowHeightPercent = 100
+            FixedCols = 0
+            TitleAlignment = taLeftJustify
+            TitleLines = 1
+            MemoAttributes = [mSizeable, mWordWrap, mGridShow]
+            DBNavVisible = True
+            DBNavWidth = 100
+            TabOrder = 0
+            UseTFields = True
+            DataSource = SrcDetail
+              Columns = <
+                item
+                  FieldName = 'CLASS'
+                  Title.Caption = 'Class'
+                  Width = 2
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'ITEMNO'
+                  Title.Caption = 'Item#'
+                  Width = 25
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'DESCRIP'
+                  Title.Caption = 'Description'
+                  Width = 35
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'REV'
+                  Title.Caption = 'Rev'
+                  Width = 15
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'UNIT'
+                  Title.Caption = 'Unit'
+                  Width = 10
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'RG_QUAN'
+                  Title.Caption = 'RG Qty.'
+                  Width = 10
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'TRANS_QUAN'
+                  Title.Caption = 'Trans. Qty.'
+                  Width = 10
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'LOTNO'
+                  Title.Caption = 'RM Lot#'
+                  Width = 25
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end>
+            Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+            OnDblClick = DrillDown1Click
+            PopupMenu = PopupMenu2
+            ExplicitTop = 19
+            ExplicitHeight = 168
+          end
+          object pnlDetailsCurrentTop: TUniPanel
+            Tag = 1999
+            Left = 0
+            Top = 0
+            Width = 617
+            Height = 20
+            Align = alTop
+            Color = clBtnShadow
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWhite
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentBackground = False
+            ParentFont = False
+            TabOrder = 1
+            ExplicitTop = 8
+            object lblCaption: TUniLabel
+              Left = 3
+              Top = 3
+              Width = 119
+              Height = 14
+              Align = alLeft
+              Caption = 'Current Transactions'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWhite
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = [fsBold]
+              ParentFont = False
+              ExplicitHeight = 13
+            end
+          end
+        end
+        object pnlDetailsArchived: TUniPanel
+          Left = 0
+          Top = 190
+          Width = 617
+          Height = 182
+          Align = alClient
+          TabOrder = 1
+          object bvlDetailsArchivedLeft: TUniPanel
+            Left = 0
+            Top = 20
+            Width = 16
+            Height = 162
+            Align = alLeft
+          end
+          object IQSearch3: TIQUniGridControl
+            Left = 16
+            Top = 20
+            Width = 601
+            Height = 162
+            SaveFilter = False
+            SortDirection = sdAscending
+            ShowFilter = True
+            ShowRecordView = True
+            Align = alClient
+            BevelOuter = bvNone
+            ComponentParentFont = True
+            DefaultDrawing = True
+            RowHeightPercent = 100
+            FixedCols = 0
+            TitleAlignment = taLeftJustify
+            TitleLines = 1
+            MemoAttributes = [mSizeable, mWordWrap, mGridShow]
+            DBNavVisible = True
+            DBNavWidth = 100
+            TabOrder = 0
+            UseTFields = True
+            DataSource = SrcDetailsArchived
+              Columns = <
+                item
+                  FieldName = 'CLASS'
+                  Title.Caption = 'Class'
+                  Width = 2
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'ITEMNO'
+                  Title.Caption = 'Item#'
+                  Width = 25
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'DESCRIP'
+                  Title.Caption = 'Description'
+                  Width = 35
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'REV'
+                  Title.Caption = 'Rev'
+                  Width = 15
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'UNIT'
+                  Title.Caption = 'Unit'
+                  Width = 10
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'RG_QUAN'
+                  Title.Caption = 'RG Qty.'
+                  Width = 10
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'TRANS_QUAN'
+                  Title.Caption = 'Trans. Qty.'
+                  Width = 10
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'LOTNO'
+                  Title.Caption = 'RM Lot#'
+                  Width = 25
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end>
+            Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+            OnDblClick = DrillDown1Click
+            PopupMenu = PopupMenu3
+          end
+          object pnlDetailsArchivedTop: TUniPanel
+            Tag = 1999
+            Left = 0
+            Top = 0
+            Width = 617
+            Height = 20
+            Align = alTop
+            Color = clBtnShadow
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWhite
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentBackground = False
+            ParentFont = False
+            TabOrder = 1
+            ExplicitTop = 8
+            object Label1: TUniLabel
+              Left = 3
+              Top = 3
+              Width = 126
+              Height = 14
+              Align = alLeft
+              Caption = 'Archived Transactions'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWhite
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = [fsBold]
+              ParentFont = False
+              ExplicitHeight = 13
+            end
+          end
+        end
+      end
+    end
+    object TabLotDocsDependent: TUniTabSheet
+      Caption = 'Lot Documents'
+      ImageIndex = 1
+      object pnlLotDocs: TUniPanel
+        Left = 0
+        Top = 0
+        Width = 617
+        Height = 372
+        Align = alClient
+        TabOrder = 0
+        object Splitter3: TUniSplitter
+          Left = 0
+          Top = 201
+          Width = 617
+          Height = 3
+          Cursor = crVSplit
+          Align = alTop
+          ExplicitWidth = 513
+        end
+        object pnlLotDocsTop: TUniPanel
+          Left = 0
+          Top = 0
+          Width = 617
+          Height = 201
+          Align = alTop
+          TabOrder = 0
+          object bvlLotDocsCurrentLeft: TUniPanel
+            Left = 0
+            Top = 20
+            Width = 16
+            Height = 181
+            Align = alLeft
+            ExplicitTop = 19
+            ExplicitHeight = 182
+          end
+          object IQExtDocLotDocsDependent: TIQWebExtDoc
+            Left = 16
+            Top = 20
+            Width = 601
+            Height = 181
+            Align = alClient
+            BevelOuter = bvNone
+            Filter = '(*.*)|*.*|(*.doc)|*.doc|(*.rtf)|*.rtf'
+            MasterFields = 'ID'
+            MasterSource = SrcArinvtLotDocsDetail
+            Source = 'ARINVT_LOT_DOCS'
+            TableName = 'ARINVT_LOT_DOCS'
+            TabOrder = 0
+            BeforeInsert = IQExtDocLotDocsDependentBeforeInsert
+            ExplicitTop = 19
+            ExplicitHeight = 182
+          end
+          object pnlLotDocsCurrentTop: TUniPanel
+            Tag = 1999
+            Left = 0
+            Top = 0
+            Width = 617
+            Height = 20
+            Align = alTop
+            Color = clBtnShadow
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWhite
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentBackground = False
+            ParentFont = False
+            TabOrder = 1
+            ExplicitTop = 8
+            object Label2: TUniLabel
+              Left = 3
+              Top = 3
+              Width = 119
+              Height = 14
+              Align = alLeft
+              Caption = 'Current Transactions'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWhite
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = [fsBold]
+              ParentFont = False
+              ExplicitHeight = 13
+            end
+          end
+        end
+        object pnlLotDocsArchived: TUniPanel
+          Left = 0
+          Top = 204
+          Width = 617
+          Height = 168
+          Align = alClient
+          TabOrder = 1
+          object bvlLotDocsArchivedLeft: TUniPanel
+            Left = 0
+            Top = 20
+            Width = 16
+            Height = 148
+            Align = alLeft
+          end
+          object IQExtDocLotDocsDependentArchived: TIQWebExtDoc
+            Left = 16
+            Top = 20
+            Width = 601
+            Height = 148
+            Align = alClient
+            BevelOuter = bvNone
+            Filter = '(*.*)|*.*|(*.doc)|*.doc|(*.rtf)|*.rtf'
+            MasterFields = 'ID'
+            MasterSource = SrcArinvtLotDocsDetailArchived
+            Source = 'ARINVT_LOT_DOCS'
+            TableName = 'ARINVT_LOT_DOCS'
+            TabOrder = 0
+            BeforeInsert = IQExtDocLotDocsDependentArchivedBeforeInsert
+          end
+          object pnlLotDocsArchivedTop: TUniPanel
+            Tag = 1999
+            Left = 0
+            Top = 0
+            Width = 617
+            Height = 20
+            Align = alTop
+            Color = clBtnShadow
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWhite
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentBackground = False
+            ParentFont = False
+            TabOrder = 1
+            ExplicitTop = 8
+            object Label3: TUniLabel
+              Left = 3
+              Top = 3
+              Width = 126
+              Height = 14
+              Align = alLeft
+              Caption = 'Archived Transactions'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWhite
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = [fsBold]
+              ParentFont = False
+              ExplicitHeight = 13
+            end
+          end
+        end
+      end
+    end
+  end
+  object MainMenu1: TUniMainMenu
+    Left = 304
+    Top = 65533
+    object File1: TUniMenuItem
+      Caption = '&File'
+      object Filter1: TUniMenuItem
+        Caption = '&Filter'
+        OnClick = sbFilterClick
+      end
+      object Exit1: TUniMenuItem
+        Caption = '&Exit'
+        OnClick = Exit1Click
+      end
+    end
+    object Reports1: TUniMenuItem
+      Caption = '&Reports'
+      object Print1: TUniMenuItem
+        Caption = '&Print'
+        OnClick = Print1Click
+      end
+      object PrinterSetup1: TUniMenuItem
+        Caption = 'Printer &Setup'
+        OnClick = PrinterSetup1Click
+      end
+    end
+    object Help1: TUniMenuItem
+      Caption = '&Help'
+      object Contents1: TUniMenuItem
+        Caption = 'Contents'
+        OnClick = Contents1Click
+      end
+      object About1: TUniMenuItem
+        Caption = '&About'
+        OnClick = About1Click
+      end
+    end
+  end
+  object PrinterSetupDialog1: TPrinterSetupDialog
+    Left = 274
+  end
+  object IQAbout1: TIQWebAbout
+    ModuleName = 'Lot Number Tracking'
+    Version = 'DEV.154925'
+    ChangeListNumber = '$Change: 187490 $'
+    BuildVersion = '154925'
+    Left = 335
+  end
+  object IQRepDef1: TIQWebRepDef
+    App_ID = 'FrmLotTracking'
+    WebUse = False
+    TouchScreen = False
+    Left = 368
+  end
+  object SrcTransLog: TDataSource
+    DataSet = QryTransLog
+    Left = 192
+    Top = 83
+  end
+  object QryTransLog: TFDQuery
+    AfterScroll = QryTransLogAfterScroll
+    Connection = DB_DataModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select trans_quan as sum_trans_quan,'
+      '       itemno as itemno,'
+      '       class,'
+      '       rev,'
+      '       DESCRIP as description,'
+      '       unit,'
+      '       lotno,'
+      '       arinvt_id'
+      '  from translog'
+      ' ')
+    Left = 192
+    Top = 96
+    object QryTransLogSUM_TRANS_QUAN: TFMTBCDField
+      DisplayLabel = 'Trans. Qty'
+      DisplayWidth = 10
+      FieldName = 'SUM_TRANS_QUAN'
+      Size = 6
+    end
+    object QryTransLogITEMNO: TStringField
+      DisplayLabel = 'Item#'
+      DisplayWidth = 25
+      FieldName = 'ITEMNO'
+      Origin = 'ITEMNO'
+      Size = 50
+    end
+    object QryTransLogCLASS: TStringField
+      DisplayLabel = 'Class'
+      DisplayWidth = 2
+      FieldName = 'CLASS'
+      Origin = 'CLASS'
+      Size = 2
+    end
+    object QryTransLogREV: TStringField
+      DisplayLabel = 'Rev.'
+      DisplayWidth = 15
+      FieldName = 'REV'
+      Origin = 'REV'
+      Size = 15
+    end
+    object QryTransLogDESCRIPTION: TStringField
+      DisplayLabel = 'Description'
+      DisplayWidth = 35
+      FieldName = 'DESCRIPTION'
+      Origin = 'DESCRIP'
+      Size = 100
+    end
+    object QryTransLogUNIT: TStringField
+      DisplayLabel = 'Unit'
+      DisplayWidth = 10
+      FieldName = 'UNIT'
+      Origin = 'UNIT'
+      Size = 10
+    end
+    object QryTransLogLOTNO: TStringField
+      DisplayLabel = 'Lot#'
+      DisplayWidth = 25
+      FieldName = 'LOTNO'
+      Origin = 'LOTNO'
+      Size = 25
+    end
+    object QryTransLogARINVT_ID: TBCDField
+      DisplayWidth = 10
+      FieldName = 'ARINVT_ID'
+      Origin = 'ARINVT_ID'
+      Visible = False
+      Size = 0
+    end
+  end
+  object SrcDetail: TDataSource
+    Left = 180
+    Top = 284
+  end
+  object QryDtl: TFDQuery
+    Connection = DB_DataModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select /*+ INDEX( translog ix_translog_trunc_fg_lotno ) */'
+      '       arinvt_id,'
+      '       class,'
+      '       itemno,'
+      '       descrip,'
+      '       rev,'
+      '       unit,'
+      '       trans_quan,'
+      '       rg_quan,'
+      '       lotno'
+      '  from translog'
+      ' where fg_lotno = '#39'ZZZ'#39
+      '   and rtrim(fg_lotno) is not null'
+      '   and itemno is not null '
+      '   and batch in (select distinct batch '
+      '                   from translog '
+      '                  where fg_lotno = '#39'ZZZ'#39
+      '                    and RTrim(fg_lotno) is not null '
+      '                    and parent_arinvt_id = 9999999'
+      '                    and itemno is not null)'
+      ''
+      '   '
+      '')
+    Left = 181
+    Top = 297
+    object QryDtlCLASS: TStringField
+      DisplayLabel = 'Class'
+      DisplayWidth = 2
+      FieldName = 'CLASS'
+      Origin = 'CLASS'
+      Size = 2
+    end
+    object QryDtlITEMNO: TStringField
+      DisplayLabel = 'Item#'
+      DisplayWidth = 25
+      FieldName = 'ITEMNO'
+      Origin = 'ITEMNO'
+      Size = 50
+    end
+    object QryDtlDESCRIP: TStringField
+      DisplayLabel = 'Description'
+      DisplayWidth = 35
+      FieldName = 'DESCRIP'
+      Origin = 'DESCRIP'
+      Size = 100
+    end
+    object QryDtlREV: TStringField
+      DisplayLabel = 'Rev'
+      DisplayWidth = 15
+      FieldName = 'REV'
+      Origin = 'REV'
+      Size = 15
+    end
+    object QryDtlUNIT: TStringField
+      DisplayLabel = 'Unit'
+      DisplayWidth = 10
+      FieldName = 'UNIT'
+      Origin = 'UNIT'
+      Size = 10
+    end
+    object QryDtlRG_QUAN: TFMTBCDField
+      DisplayLabel = 'RG Qty.'
+      DisplayWidth = 10
+      FieldName = 'RG_QUAN'
+      Origin = 'RG_QUAN'
+      Size = 6
+    end
+    object QryDtlTRANS_QUAN: TFMTBCDField
+      DisplayLabel = 'Trans. Qty.'
+      DisplayWidth = 10
+      FieldName = 'TRANS_QUAN'
+      Origin = 'TRANS_QUAN'
+      Size = 6
+    end
+    object QryDtlLOTNO: TStringField
+      DisplayLabel = 'RM Lot#'
+      DisplayWidth = 25
+      FieldName = 'LOTNO'
+      Origin = 'LOTNO'
+      Size = 25
+    end
+    object QryDtlARINVT_ID: TBCDField
+      DisplayWidth = 10
+      FieldName = 'ARINVT_ID'
+      Visible = False
+      Size = 0
+    end
+  end
+  object PopupMenu1: TUniPopupMenu
+    OnPopup = PopupMenu1Popup
+    Left = 224
+    Top = 84
+    object ShowDetails1: TUniMenuItem
+      Caption = '&Show Dependent Transactions'
+      OnClick = ShowDetails1Click
+    end
+    object DrillDown2: TUniMenuItem
+      Caption = '&Transaction Detail'
+      OnClick = DrillDown2Click
+    end
+    object LotTree1: TUniMenuItem
+      Caption = '&Lot# Tree'
+      OnClick = LotTree1Click
+    end
+    object RevLotTree1: TUniMenuItem
+      Caption = '&Reverse Lot# Tree'
+      OnClick = RevLotTree1Click
+    end
+    object CountryOfOrigin1: TUniMenuItem
+      Caption = 'Country Of Origin'
+      OnClick = CountryOfOrigin1Click
+    end
+    object N1: TUniMenuItem
+      Caption = '-'
+    end
+    object JumptoInventory1: TUniMenuItem
+      Caption = '&Jump to Inventory'
+      OnClick = JumptoInventory1Click
+    end
+  end
+  object PopupMenu2: TUniPopupMenu
+    OnPopup = PopupMenu2Popup
+    Left = 280
+    Top = 284
+    object DrillDown1: TUniMenuItem
+      Caption = '&Transaction Detail'
+      OnClick = DrillDown1Click
+    end
+    object LotTree2: TUniMenuItem
+      Caption = '&Lot# Tree'
+      OnClick = LotTree2Click
+    end
+    object RevLotTree2: TUniMenuItem
+      Caption = '&Reverse Lot# Tree'
+      OnClick = RevLotTree2Click
+    end
+    object CountryOfOrigin2: TUniMenuItem
+      Caption = 'Country Of Origin'
+      OnClick = CountryOfOrigin2Click
+    end
+    object N2: TUniMenuItem
+      Caption = '-'
+    end
+    object JumptoInventory2: TUniMenuItem
+      Caption = '&Jump to Inventory'
+      OnClick = JumptoInventory2Click
+    end
+  end
+  object SR: TIQWebSecurityRegister
+    SecurityItems.Strings = (
+      'sbFilter'
+      'Filter1'
+      'Reports1'
+      'Print1'
+      'PrinterSetup1'
+      'PrinterSetupDialog1'
+      'ShowDetails1'
+      'DrillDown2'
+      'LotTree1'
+      'RevLotTree1'
+      'JumptoInventory1'
+      'DrillDown1'
+      'LotTree2'
+      'RevLotTree2'
+      'JumptoInventory2')
+    SecurityCode = 'FRMLOTTRACKING'
+    Left = 268
+    Top = 84
+  end
+  object SrcArinvtLotDocsHeader: TDataSource
+    DataSet = QryArinvtLotDocsHeader
+    Left = 309
+    Top = 84
+  end
+  object QryArinvtLotDocsHeader: TFDQuery
+    MasterSource = SrcTransLog
+    MasterFields = 'ARINVT_ID;LOTNO'
+    Connection = DB_DataModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select id,'
+      '       country,'
+      '       cuser1,'
+      '       cuser2,'
+      '       cuser3,'
+      '       cuser4,'
+      '       cuser5,'
+      '       nuser1,'
+      '       nuser2,'
+      '       nuser3,'
+      '       nuser4,'
+      '       nuser5,'
+      '       duser1,'
+      '       duser2,'
+      '       duser3,'
+      '       duser4,'
+      '       duser5'
+      '  from arinvt_lot_docs'
+      ' where arinvt_id = :arinvt_id'
+      '   and NVL(rtrim(lotno), '#39'*'#39') = NVL(rtrim(:lotno), '#39'*'#39')'
+      '  ')
+    Left = 308
+    Top = 105
+    ParamData = <
+      item
+        Name = 'ARINVT_ID'
+        DataType = ftBCD
+        ParamType = ptInput
+        Size = 8
+      end
+      item
+        Name = 'LOTNO'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 26
+      end>
+    object QryArinvtLotDocsHeaderID: TBCDField
+      FieldName = 'ID'
+      Size = 0
+    end
+    object QryArinvtLotDocsHeaderCOUNTRY: TStringField
+      FieldName = 'COUNTRY'
+      Visible = False
+      Size = 100
+    end
+    object QryArinvtLotDocsHeaderCUSER1: TStringField
+      FieldName = 'CUSER1'
+      Size = 60
+    end
+    object QryArinvtLotDocsHeaderCUSER2: TStringField
+      FieldName = 'CUSER2'
+      Size = 60
+    end
+    object QryArinvtLotDocsHeaderCUSER3: TStringField
+      FieldName = 'CUSER3'
+      Size = 60
+    end
+    object QryArinvtLotDocsHeaderCUSER4: TStringField
+      FieldName = 'CUSER4'
+      Size = 60
+    end
+    object QryArinvtLotDocsHeaderCUSER5: TStringField
+      FieldName = 'CUSER5'
+      Size = 60
+    end
+    object QryArinvtLotDocsHeaderNUSER1: TFMTBCDField
+      FieldName = 'NUSER1'
+      Size = 6
+    end
+    object QryArinvtLotDocsHeaderNUSER2: TFMTBCDField
+      FieldName = 'NUSER2'
+      Size = 6
+    end
+    object QryArinvtLotDocsHeaderNUSER3: TFMTBCDField
+      FieldName = 'NUSER3'
+      Size = 6
+    end
+    object QryArinvtLotDocsHeaderNUSER4: TFMTBCDField
+      FieldName = 'NUSER4'
+      Size = 6
+    end
+    object QryArinvtLotDocsHeaderNUSER5: TFMTBCDField
+      FieldName = 'NUSER5'
+      Size = 6
+    end
+    object QryArinvtLotDocsHeaderDUSER1: TDateTimeField
+      FieldName = 'DUSER1'
+    end
+    object QryArinvtLotDocsHeaderDUSER2: TDateTimeField
+      FieldName = 'DUSER2'
+    end
+    object QryArinvtLotDocsHeaderDUSER3: TDateTimeField
+      FieldName = 'DUSER3'
+    end
+    object QryArinvtLotDocsHeaderDUSER4: TDateTimeField
+      FieldName = 'DUSER4'
+    end
+    object QryArinvtLotDocsHeaderDUSER5: TDateTimeField
+      FieldName = 'DUSER5'
+    end
+  end
+  object SrcArinvtLotDocsDetail: TDataSource
+    DataSet = QryArinvtLotDocsDetail
+    Left = 177
+    Top = 340
+  end
+  object QryArinvtLotDocsDetail: TFDQuery
+    MasterSource = SrcDetail
+    Connection = DB_DataModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select id, country'
+      '  from arinvt_lot_docs'
+      ' where arinvt_id = :arinvt_id'
+      '   and NVL(rtrim(lotno), '#39'*'#39') = NVL(rtrim(:lotno), '#39'*'#39')'
+      '  ')
+    Left = 177
+    Top = 352
+    ParamData = <
+      item
+        Name = 'ARINVT_ID'
+        DataType = ftBCD
+        ParamType = ptInput
+        Size = 8
+      end
+      item
+        Name = 'LOTNO'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 26
+      end>
+    object QryArinvtLotDocsDetailID: TBCDField
+      FieldName = 'ID'
+      Size = 0
+    end
+    object QryArinvtLotDocsDetailCOUNTRY: TStringField
+      FieldName = 'COUNTRY'
+      Visible = False
+      Size = 100
+    end
+  end
+  object SrcDetailsArchived: TDataSource
+    Left = 228
+    Top = 287
+  end
+  object QryDetailsArchived: TFDQuery
+    Tag = 1
+    Connection = DB_DataModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select '
+      '       arinvt_id,'
+      '       class,'
+      '       itemno,'
+      '       descrip,'
+      '       rev,'
+      '       unit,'
+      '       trans_quan,'
+      '       rg_quan,'
+      '       lotno'
+      '  from hist_translog'
+      ' where fg_lotno = '#39'ZZZ'#39
+      '   and rtrim(fg_lotno) is not null'
+      '   and itemno is not null '
+      '   and batch in (select distinct batch '
+      '                   from hist_translog '
+      '                  where fg_lotno = '#39'ZZZ'#39
+      '                    and RTrim(fg_lotno) is not null '
+      '                    and parent_arinvt_id = 9999999 '
+      '                    and itemno is not null)'
+      '')
+    Left = 228
+    Top = 298
+    object QryDetailsArchivedCLASS: TStringField
+      DisplayLabel = 'Class'
+      DisplayWidth = 2
+      FieldName = 'CLASS'
+      Origin = 'CLASS'
+      Size = 2
+    end
+    object QryDetailsArchivedITEMNO: TStringField
+      DisplayLabel = 'Item#'
+      DisplayWidth = 25
+      FieldName = 'ITEMNO'
+      Origin = 'ITEMNO'
+      Size = 50
+    end
+    object QryDetailsArchivedDESCRIP: TStringField
+      DisplayLabel = 'Description'
+      DisplayWidth = 35
+      FieldName = 'DESCRIP'
+      Origin = 'DESCRIP'
+      Size = 100
+    end
+    object QryDetailsArchivedREV: TStringField
+      DisplayLabel = 'Rev'
+      DisplayWidth = 15
+      FieldName = 'REV'
+      Origin = 'REV'
+      Size = 15
+    end
+    object QryDetailsArchivedUNIT: TStringField
+      DisplayLabel = 'Unit'
+      DisplayWidth = 10
+      FieldName = 'UNIT'
+      Origin = 'UNIT'
+      Size = 10
+    end
+    object QryDetailsArchivedRG_QUAN: TFMTBCDField
+      DisplayLabel = 'RG Qty.'
+      DisplayWidth = 10
+      FieldName = 'RG_QUAN'
+      Origin = 'RG_QUAN'
+      Size = 6
+    end
+    object QryDetailsArchivedTRANS_QUAN: TFMTBCDField
+      DisplayLabel = 'Trans. Qty.'
+      DisplayWidth = 10
+      FieldName = 'TRANS_QUAN'
+      Origin = 'TRANS_QUAN'
+      Size = 6
+    end
+    object QryDetailsArchivedLOTNO: TStringField
+      DisplayLabel = 'RM Lot#'
+      DisplayWidth = 25
+      FieldName = 'LOTNO'
+      Origin = 'LOTNO'
+      Size = 25
+    end
+    object QryDetailsArchivedARINVT_ID: TBCDField
+      DisplayWidth = 10
+      FieldName = 'ARINVT_ID'
+      Visible = False
+      Size = 0
+    end
+  end
+  object PopupMenu3: TUniPopupMenu
+    Left = 324
+    Top = 285
+    object TransactionDetail1: TUniMenuItem
+      Caption = 'Transaction Detail'
+      OnClick = TransactionDetail1Click
+    end
+    object CountryOfOrigin3: TUniMenuItem
+      Caption = 'Country Of Origin'
+      OnClick = CountryOfOrigin3Click
+    end
+    object N3: TUniMenuItem
+      Caption = '-'
+    end
+    object JumpToInventory3: TUniMenuItem
+      Caption = 'Jump To Inventory'
+      OnClick = JumpToInventory3Click
+    end
+  end
+  object SrcArinvtLotDocsDetailArchived: TDataSource
+    DataSet = QryArinvtLotDocsDetailArchived
+    Left = 228
+    Top = 338
+  end
+  object QryArinvtLotDocsDetailArchived: TFDQuery
+    Tag = 1
+    MasterSource = SrcDetailsArchived
+    Connection = DB_DataModule.FDConnection1
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'select id, country'
+      '  from arinvt_lot_docs'
+      ' where arinvt_id = :arinvt_id'
+      '   and NVL(rtrim(lotno), '#39'*'#39') = NVL(rtrim(:lotno), '#39'*'#39')'
+      '  '
+      '')
+    Left = 228
+    Top = 354
+    ParamData = <
+      item
+        Name = 'ARINVT_ID'
+        DataType = ftBCD
+        ParamType = ptInput
+        Size = 8
+      end
+      item
+        Name = 'LOTNO'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 26
+      end>
+    object QryArinvtLotDocsDetailArchivedID: TBCDField
+      FieldName = 'ID'
+      Size = 0
+    end
+    object QryArinvtLotDocsDetailArchivedCOUNTRY: TStringField
+      FieldName = 'COUNTRY'
+      Size = 100
+    end
+  end
+end

@@ -1,0 +1,138 @@
+unit vendor_rfq_capital_equip_dlg;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  Vcl.Controls,
+  Vcl.Forms,
+  IQMS.WebVcl.SecurityRegister,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniSplitter,
+  uniLabel,
+  uniPanel,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniEdit,
+  uniButton;
+
+type
+  TFrmVendorRFQCapitalEquipment = class(TUniForm)
+    Panel1: TUniPanel;
+    Panel3: TUniPanel;
+    Panel2: TUniPanel;
+    Panel4: TUniPanel;
+    Bevel1: TUniPanel;
+    Label1: TUniLabel;
+    Label2: TUniLabel;
+    edEquipment: TUniEdit;
+    edEquipmentDescrip: TUniEdit;
+    Splitter1: TUniSplitter;
+    Panel5: TUniPanel;
+    Button1: TUniButton;
+    btnCancel: TUniButton;
+//    SR: TIQWebSecurityRegister; // FRMVENDORRFQCAPITALEQUIPMENT
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Button1Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure UniFormCreate(Sender: TObject);
+  private
+    procedure Validate;
+    procedure SetDescription(const Value: string);
+    procedure SetEquipment(const Value: string);
+    function GetDescription: string;
+    function GetEquipment: string;
+    { Private declarations }
+  public
+    { Public declarations }
+
+    class function DoShowModal(var AEquipment, ADescription: string): Boolean;
+
+    property Equipment   : string read GetEquipment   write SetEquipment;
+    property Description : string read GetDescription write SetDescription;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  IQMS.Common.RegFrm,
+  IQMS.Common.Miscellaneous,
+//  IQSecIns;
+  vendor_rfq_rscstr;
+
+{ TFrmVendorRFQCapitalEquipment }
+
+class function TFrmVendorRFQCapitalEquipment.DoShowModal(var AEquipment, ADescription: string): Boolean;
+var
+  frm : TFrmVendorRFQCapitalEquipment;
+begin
+  frm := TFrmVendorRFQCapitalEquipment.Create(uniGUIApplication.UniApplication);
+  try
+    frm.Equipment   := AEquipment;
+    frm.Description := ADescription;
+
+    Result := frm.ShowModal = mrOk;
+    if Result then
+    begin
+      AEquipment   := frm.Equipment;
+      ADescription := frm.Description;
+    end;
+  finally
+    frm.Free;
+  end;
+end;
+
+procedure TFrmVendorRFQCapitalEquipment.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  IQRegFormWrite( self, [ self ]);
+end;
+
+procedure TFrmVendorRFQCapitalEquipment.FormShow(Sender: TObject);
+begin
+//  EnsureSecurityInspectorOnTopOf( self );
+end;
+
+function TFrmVendorRFQCapitalEquipment.GetDescription: string;
+begin
+  Result := edEquipmentDescrip.Text;
+end;
+
+function TFrmVendorRFQCapitalEquipment.GetEquipment: string;
+begin
+  Result := edEquipment.Text;
+end;
+
+procedure TFrmVendorRFQCapitalEquipment.SetDescription(const Value: string);
+begin
+  edEquipmentDescrip.Text:= Value;
+end;
+
+procedure TFrmVendorRFQCapitalEquipment.SetEquipment(const Value: string);
+begin
+  edEquipment.Text := Value;
+end;
+
+procedure TFrmVendorRFQCapitalEquipment.UniFormCreate(Sender: TObject);
+begin
+  IQRegFormRead( self, [ self ]);
+end;
+
+procedure TFrmVendorRFQCapitalEquipment.Button1Click(Sender: TObject);
+begin
+  Validate;
+  ModalResult := mrOK;
+end;
+
+procedure TFrmVendorRFQCapitalEquipment.Validate;
+begin
+//  IQAssert( Trim(edEquipment.Text) > '', vendor_rfq_rscstr.cTXT0000006 ); // 'Field ''Equipment'' must be entered - operation aborted.'
+end;
+
+end.

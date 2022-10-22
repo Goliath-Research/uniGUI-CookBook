@@ -1,0 +1,735 @@
+inherited FrmLabelsTouchScreen: TFrmLabelsTouchScreen
+  Left = 244
+  Top = 125
+  BorderStyle = bsSingle
+  ClientHeight = 707
+  ClientWidth = 1014
+  Font.Charset = ANSI_CHARSET
+  Font.Height = -13
+  Font.Style = [fsBold]
+  OnCreate = FormCreate
+  ExplicitWidth = 1020
+  ExplicitHeight = 755
+  PixelsPerInch = 96
+  TextHeight = 16
+  inherited Splitter1: TUniSplitter
+    Top = 285
+    Width = 1014
+    ExplicitTop = 272
+    ExplicitWidth = 710
+  end
+  inherited PnlToolbarUpper: TUniPanel
+    Width = 1014
+    Height = 41
+    ExplicitWidth = 1014
+    ExplicitHeight = 41
+    inherited SBToggleHeader: TUniSpeedButton
+      Left = 40
+      Width = 39
+      Height = 39
+      ExplicitLeft = 40
+      ExplicitWidth = 39
+      ExplicitHeight = 39
+    end
+    inherited SBSearch: TUniSpeedButton
+      Width = 39
+      Height = 39
+      ExplicitWidth = 39
+      ExplicitHeight = 39
+    end
+    inherited NavHeader: TUniDBNavigator
+      Left = 662
+      Width = 351
+      Height = 39
+      ConfirmDelete = False
+      ExplicitLeft = 662
+      ExplicitWidth = 351
+      ExplicitHeight = 39
+    end
+  end
+  inherited Panel2: TUniPanel
+    Top = 41
+    Width = 1014
+    Height = 244
+    ExplicitTop = 41
+    ExplicitWidth = 1014
+    ExplicitHeight = 244
+    inherited PC: TUniPageControl
+      Width = 1014
+      Height = 244
+      ExplicitWidth = 1014
+      ExplicitHeight = 244
+      inherited TabForm: TUniTabSheet
+        ExplicitWidth = 1006
+        ExplicitHeight = 234
+        inherited Label1: TUniLabel
+          Top = 52
+          Width = 97
+          Height = 16
+          ExplicitTop = 52
+          ExplicitWidth = 97
+          ExplicitHeight = 16
+        end
+        inherited Label2: TUniLabel
+          Top = 12
+          Width = 62
+          Height = 16
+          ExplicitTop = 12
+          ExplicitWidth = 62
+          ExplicitHeight = 16
+        end
+        inherited Label3: TUniLabel
+          Left = 8
+          Top = 84
+          Width = 104
+          Height = 16
+          ExplicitLeft = 8
+          ExplicitTop = 84
+          ExplicitWidth = 104
+          ExplicitHeight = 16
+        end
+        inherited Label4: TUniLabel
+          Left = 421
+          Top = 12
+          Width = 69
+          Height = 16
+          ExplicitLeft = 421
+          ExplicitTop = 12
+          ExplicitWidth = 69
+          ExplicitHeight = 16
+        end
+        inherited Label5: TUniLabel
+          Left = 421
+          Top = 55
+          Width = 65
+          Height = 16
+          ExplicitLeft = 421
+          ExplicitTop = 55
+          ExplicitWidth = 65
+          ExplicitHeight = 16
+        end
+        inherited Label6: TUniLabel
+          Top = 172
+          Width = 137
+          Height = 16
+          ExplicitTop = 172
+          ExplicitWidth = 137
+          ExplicitHeight = 16
+        end
+        inherited Label7: TUniLabel
+          Left = 421
+          Top = 172
+          Width = 60
+          Height = 16
+          WordWrap = True
+          ExplicitLeft = 421
+          ExplicitTop = 172
+          ExplicitWidth = 60
+          ExplicitHeight = 16
+        end
+        inherited Label8: TUniLabel
+          Left = 421
+          Top = 104
+          Width = 79
+          Height = 16
+          WordWrap = True
+          ExplicitLeft = 421
+          ExplicitTop = 104
+          ExplicitWidth = 79
+          ExplicitHeight = 16
+        end
+        inherited sbtnEPlant: TUniSpeedButton
+          Left = 681
+          Top = 104
+          Width = 48
+          Height = 40
+          ExplicitLeft = 681
+          ExplicitTop = 104
+          ExplicitWidth = 48
+          ExplicitHeight = 40
+        end
+        object Bevel1: TUniPanel [9]
+          Left = 0
+          Top = 140
+          Width = 1005
+          Height = 9
+          Anchors = [akLeft, akTop, akRight]
+          Shape = bsBottomLine
+          ExplicitWidth = 701
+        end
+        object sbtnServerDropDown: TUniSpeedButton [10]
+          Left = 318
+          Top = 160
+          Width = 48
+          Height = 40
+          Flat = True
+          Glyph.Data = {
+            12010000424D12010000000000007600000028000000130000000D0000000100
+            0400000000009C00000000000000000000001000000010000000000000000000
+            8000008000000080800080000000800080008080000080808000C0C0C0000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00666666666666
+            6666666000006666666666666666666000006666666660666666666000006666
+            6666000666666660000066666660000066666660000066666600000006666660
+            0000666660000000006666600000666600000000000666600000666000000000
+            0000666000006600000000000000066000006000000000000000006000006666
+            66666666666666600000666666666666666666600000}
+          OnClick = sbtnServerDropDownClick
+        end
+        object SpeedButton3: TUniSpeedButton [11]
+          Left = 681
+          Top = 0
+          Width = 48
+          Height = 40
+          Flat = True
+          Glyph.Data = {
+            12010000424D12010000000000007600000028000000130000000D0000000100
+            0400000000009C00000000000000000000001000000010000000000000000000
+            8000008000000080800080000000800080008080000080808000C0C0C0000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00666666666666
+            6666666000006666666666666666666000006666666660666666666000006666
+            6666000666666660000066666660000066666660000066666600000006666660
+            0000666660000000006666600000666600000000000666600000666000000000
+            0000666000006600000000000000066000006000000000000000006000006666
+            66666666666666600000666666666666666666600000}
+          OnClick = SpeedButton3Click
+        end
+        object SpeedButton1: TUniSpeedButton [12]
+          Left = 681
+          Top = 48
+          Width = 48
+          Height = 40
+          Flat = True
+          Glyph.Data = {
+            12010000424D12010000000000007600000028000000130000000D0000000100
+            0400000000009C00000000000000000000001000000010000000000000000000
+            8000008000000080800080000000800080008080000080808000C0C0C0000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00666666666666
+            6666666000006666666666666666666000006666666660666666666000006666
+            6666000666666660000066666660000066666660000066666600000006666660
+            0000666660000000006666600000666600000000000666600000666000000000
+            0000666000006600000000000000066000006000000000000000006000006666
+            66666666666666600000666666666666666666600000}
+          OnClick = SpeedButton1Click
+        end
+        object SpeedButton5: TUniSpeedButton [13]
+          Left = 681
+          Top = 160
+          Width = 48
+          Height = 40
+          Flat = True
+          Glyph.Data = {
+            12010000424D12010000000000007600000028000000130000000D0000000100
+            0400000000009C00000000000000000000001000000010000000000000000000
+            8000008000000080800080000000800080008080000080808000C0C0C0000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00666666666666
+            6666666000006666666666666666666000006666666660666666666000006666
+            6666000666666660000066666660000066666660000066666600000006666660
+            0000666660000000006666600000666600000000000666600000666000000000
+            0000666000006600000000000000066000006000000000000000006000006666
+            66666666666666600000666666666666666666600000}
+          OnClick = SpeedButton5Click
+        end
+        inherited Label9: TUniLabel
+          Top = 116
+          Width = 139
+          Height = 16
+          ExplicitTop = 116
+          ExplicitWidth = 139
+          ExplicitHeight = 16
+        end
+        inherited sbtnArcusto: TUniSpeedButton
+          Left = 324
+          Top = 0
+          Width = 40
+          Height = 40
+          ExplicitLeft = 324
+          ExplicitTop = 0
+          ExplicitWidth = 40
+          ExplicitHeight = 40
+        end
+        inherited cbKind: TUniDBComboBox [16]
+          Left = 560
+          Width = 119
+          Height = 24
+          Style = csSimple
+          Enabled = False
+          TabOrder = 10
+          Visible = False
+          ExplicitLeft = 560
+          ExplicitWidth = 119
+          ExplicitHeight = 24
+        end
+        inherited EditLabel: TUniDBEdit
+          Left = 168
+          Top = 48
+          Width = 198
+          Height = 24
+          TabOrder = 1
+          ExplicitLeft = 168
+          ExplicitTop = 48
+          ExplicitWidth = 198
+          ExplicitHeight = 24
+        end
+        inherited wwCustomerForm: TUniDBLookupComboBox [18]
+          Left = 170
+          Top = 8
+          Width = 148
+          Height = 24
+          TabOrder = 0
+          ShowButton = False
+          ExplicitLeft = 170
+          ExplicitTop = 8
+          ExplicitWidth = 148
+          ExplicitHeight = 24
+        end
+        object cmbLabelKind: TUniDBComboBox [19]
+          Left = 560
+          Top = 56
+          Width = 123
+          Height = 24
+          ShowButton = False
+          Style = csDropDown
+          MapList = False
+          AllowClearKey = False
+          DataField = 'LABEL_KIND'
+          DataSource = SrcLabels
+          DropDownCount = 8
+          ItemHeight = 0
+          Items.Strings = (
+            'RF'
+            'GENERAL')
+          ItemIndex = 1
+          Sorted = False
+          TabOrder = 5
+          UnboundDataType = wwDefault
+        end
+        inherited CBType: TUniDBComboBox
+          Left = 560
+          Top = 8
+          Width = 119
+          Height = 24
+          Style = csSimple
+          Enabled = False
+          TabOrder = 7
+          ExplicitLeft = 560
+          ExplicitTop = 8
+          ExplicitWidth = 119
+          ExplicitHeight = 24
+        end
+        inherited EditMenu: TUniDBEdit [21]
+          Left = 168
+          Top = 80
+          Width = 198
+          Height = 24
+          TabOrder = 2
+          ExplicitLeft = 168
+          ExplicitTop = 80
+          ExplicitWidth = 198
+          ExplicitHeight = 24
+        end
+        inherited wwDBComboBox2: TUniDBComboBox
+          Left = 560
+          Top = 168
+          Width = 123
+          Height = 24
+          ShowButton = False
+          TabOrder = 6
+          ExplicitLeft = 560
+          ExplicitTop = 168
+          ExplicitWidth = 123
+          ExplicitHeight = 24
+        end
+        inherited dbePlantName: TUniDBEdit
+          Left = 560
+          Top = 112
+          Width = 123
+          Height = 24
+          TabOrder = 9
+          ExplicitLeft = 560
+          ExplicitTop = 112
+          ExplicitWidth = 123
+          ExplicitHeight = 24
+        end
+        inherited wwDBComboBox1: TUniDBComboBox
+          Left = 168
+          Top = 168
+          Width = 148
+          Height = 24
+          ShowButton = False
+          TabOrder = 3
+          ExplicitLeft = 168
+          ExplicitTop = 168
+          ExplicitWidth = 148
+          ExplicitHeight = 24
+        end
+        inherited DBEdit1: TUniDBEdit
+          Left = 168
+          Top = 112
+          Height = 24
+          ExplicitLeft = 168
+          ExplicitTop = 112
+          ExplicitHeight = 24
+        end
+        object cmbLabelType: TUniDBComboBox
+          Left = 560
+          Top = 8
+          Width = 123
+          Height = 24
+          Style = csDropDown
+          DataField = 'LABEL_TYPE'
+          DataSource = SrcLabels
+          Items.Strings = (
+            'MANUFACTURED'
+            'PURCHASED'
+            'LOAD')
+          ItemIndex = 0
+          Sorted = False
+          TabOrder = 4
+        end
+      end
+      inherited TabGrid: TUniTabSheet
+        ExplicitWidth = 1006
+        ExplicitHeight = 234
+        inherited GridHeader: TIQUniGridControl
+          Width = 1006
+          Height = 234
+          TitleFont.Charset = ANSI_CHARSET
+          TitleFont.Height = -13
+          TitleFont.Style = [fsBold]
+          ExplicitWidth = 1006
+          ExplicitHeight = 234
+        end
+        inherited wwCustomerGrid: TUniDBLookupComboBox
+          Height = 24
+          ExplicitHeight = 24
+        end
+        inherited wwType: TUniDBComboBox
+          Height = 24
+          AutoDropDown = True
+          ExplicitHeight = 24
+        end
+        inherited wwKind: TUniDBComboBox
+          Height = 24
+          AutoDropDown = True
+          ExplicitHeight = 24
+        end
+        inherited wwNetNames: TUniDBComboBox
+          Height = 24
+          AutoDropDown = True
+          ExplicitHeight = 24
+        end
+        inherited wwDBComboComm_Port: TUniDBComboBox
+          Height = 24
+          ExplicitHeight = 24
+        end
+        inherited wwDBComboBoxRTMReportName: TUniDBComboBox
+          Height = 24
+          ExplicitHeight = 24
+        end
+        inherited wwDBComboBoxVerifyReprint: TUniDBComboBox
+          Height = 24
+          ExplicitHeight = 24
+        end
+        inherited wwDBComboBoxLabelTemplate: TUniDBComboBox
+          Height = 24
+          ExplicitHeight = 24
+        end
+      end
+    end
+  end
+  inherited Panel3: TUniPanel
+    Top = 288
+    Width = 1014
+    Height = 344
+    TabOrder = 2
+    ExplicitTop = 288
+    ExplicitWidth = 1014
+    ExplicitHeight = 344
+    inherited bvSpacerDetail1: TUniPanel
+      Top = 41
+      Width = 1014
+      ExplicitTop = 41
+      ExplicitWidth = 710
+    end
+    inherited PnlDetailGrid: TUniPanel
+      Top = 44
+      Width = 1014
+      Height = 300
+      ExplicitTop = 44
+      ExplicitWidth = 1014
+      ExplicitHeight = 300
+      inherited GridDetail: TIQUniGridControl
+        Width = 1012
+        Height = 298
+              Columns = <
+                item
+                  FieldName = 'FIELD_NAME'
+                  Title.Caption = 'Field Name'
+                  Width = 140
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'FIELD_TYPE'
+                  Title.Caption = 'Field Type'
+                  Width = 147
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'WIDTH'
+                  Title.Caption = 'Width'
+                  Width = 70
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'DEC'
+                  Title.Caption = 'Dec.'
+                  Width = 49
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end
+                item
+                  FieldName = 'ACT_WIDTH'
+                  Title.Caption = 'Actual Width'
+                  Width = 98
+                  ReadOnly = False
+                  CheckBoxField.FieldValues = 'true;false'
+                end>
+        TitleFont.Charset = ANSI_CHARSET
+        TitleFont.Height = -13
+        TitleFont.Style = [fsBold]
+        ExplicitWidth = 1012
+        ExplicitHeight = 298
+      end
+    end
+    inherited PnlToolbarLower: TUniPanel
+      Width = 1014
+      Height = 41
+      ExplicitWidth = 1014
+      ExplicitHeight = 41
+      object sbtnEditWidth: TUniSpeedButton [0]
+        Left = 1
+        Top = 1
+        Width = 39
+        Height = 39
+        Hint = 'Edit Width'
+        AllowAllUp = True
+        Flat = True
+        Glyph.Data = {
+          36060000424D3606000000000000360000002800000020000000100000000100
+          18000000000000060000232E0000232E00000000000000000000FF00FF806860
+          806050705840705840705040705040605040605030605030705040FF00FFFF00
+          FFFF00FFFF00FFFF00FFFF00FF6868686060605656565656565050505050504E
+          4E4E4C4C4C4C4C4C505050FF00FFFF00FFFF00FFFF00FFFF00FF967E75D0C0B0
+          D0B8B0D0B0A0C0B0A0C0A8A0C0A8A0C0A090C0A090B0A090B09890775E46FF00
+          FFFF00FFFF00FFFF00FF7E7E7EBEBEBEB8B8B8AFAFAFAEAEAEA8A8A8A8A8A8A0
+          A0A0A0A0A09E9E9E9999995C5C5CFF00FFFF00FFFF00FFFF00FF968675F0E0D0
+          D0C0B0D0B8B0D0B0B0C0B0A0C0A8A0C0A8A0C0A090C0A090B0A090775E46FF00
+          FFFF00FFFF00FFFF00FF848484DEDEDEBEBEBEB8B8B8B3B3B3AEAEAEA8A8A8A8
+          A8A8A0A0A0A0A0A09E9E9E5C5C5CFF00FFFF00FFFF00FFFF00FF968D85F0E0D0
+          929292606060D0B8B0929292606060C0B0A0929292606060C0A090775E46FF00
+          FFFF00FFFF00FFFF00FF8C8C8CDEDEDE929292606060B8B8B8929292606060AE
+          AEAE929292606060A0A0A05C5C5CFF00FFFF00FFFF00FFFF00FFA58D85F0E0E0
+          C8C8C8838383D0C0B0C8C8C8838383C0B0A0C8C8C8838383C0A890775E46FF00
+          FFFF00FFFF00FFFF00FF8D8D8DE2E2E2C8C8C8838383BEBEBEC8C8C8838383AE
+          AEAEC8C8C8838383A5A5A55C5C5CFF00FFFF00FFFF00FFFF00FFA59585F0E8E0
+          E0D0C0D0C8C0D0C0C0D0C0B0D0B8B0D0B8B0C0B0A0C0B0A0C0A8A0776655FF00
+          FFFF00FFFF00FFFF00FF939393E7E7E7CECECEC7C7C7C2C2C2BEBEBEB8B8B8B8
+          B8B8AEAEAEAEAEAEA8A8A8646464FF00FFFF00FFFF00FFFF00FFA59C94FFE8E0
+          929292606060E0C8C0929292606060D0B8B0929292606060C0B0A0866655FF00
+          FFFF00FFFF00FFFF00FF9B9B9BE9E9E9929292606060C9C9C9929292606060B8
+          B8B8929292606060AEAEAE666666FF00FFFF00FFFF00FFFF00FFB4A494FFF0F0
+          C8C8C8838383E0D0C0C8C8C8838383D0C0B0C8C8C8838383D0B0A0866D55FF00
+          FFFF00FFFF00FFFF00FFA2A2A2F2F2F2C8C8C8838383CECECEC8C8C8838383BE
+          BEBEC8C8C8838383AFAFAF6B6B6BFF00FFFF00FFFF00FFFF00FFB4A4A3FFF0F0
+          E0E0E0E0D8D0E0D0D0E0D0D0E0C8C0D0C8C0C0C8C0406070D0B8B0866D55FF00
+          FFFF00FFFF00FFFF00FFA6A6A6F2F2F2E0E0E0D7D7D7D2D2D2D2D2D2C9C9C9C7
+          C7C7C6C6C6626262B8B8B86B6B6BFF00FFFF00FFFF00FFFF00FFB4ABA3FFF8F0
+          929292E0E8F0607880E0E0E0606060C0C8D050607030A8D0203840B0A0A0FF00
+          FFFF00FFFF00FFA9B28DAAAAAAF7F7F7929292EAEAEA787878E0E0E0606060CA
+          CACA636363ADADAD383838A2A2A2FF00FFFF00FFFF00FFABABABB4ABA3FFF8F0
+          C8C8C890A8B080D0E0506070B0B8C050607060C0E050607030B8F01028301030
+          40102830767473407840AAAAAAF7F7F7C8C8C8A8A8A8D0D0D0636363B9B9B963
+          6363C3C3C3636363C1C1C12828283232322828287474746C6C6CB4B3A3FBF9F7
+          E0E0E0E0E8F090A8B080E0F050607080D0E050607060D0F040607030B0E02098
+          D02088B0205070508860B0B0B0F9F9F9E0E0E0EAEAEAA8A8A8DFDFDF636363D0
+          D0D0636363D2D2D2626262B7B7B7A2A2A28E8E8E5656567D7D7DDAC7C0BEB3A9
+          F0E8E0F0E8E0E0E8F090A8B080E0F050607080E0F040587060D0F050C8F040C0
+          F020B0E020A0D0609870C7C7C7B2B2B2E7E7E7E7E7E7EAEAEAA8A8A8DFDFDF63
+          6363DFDFDF5D5D5DD2D2D2CCCCCCC6C6C6B7B7B7A7A7A78D8D8DFF00FFDAC7C0
+          B0A8A0B0A8A0B0A090E0E8F090A8B080E0F040587080E0F070D8F060D0F050C8
+          F040C0F030B8F070A880FF00FFC7C7C7A7A7A7A7A7A79E9E9EEAEAEAA8A8A8DF
+          DFDF5D5D5DDFDFDFD9D9D9D2D2D2CCCCCCC6C6C6C1C1C19D9D9DFF00FFFF00FF
+          FF00FFFF00FFFF00FFFF00FFE0E8F090A8B080E0F080E0F080E0F070D8F060D0
+          F060B0D0808890B0C0A0FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFEAEAEAA8
+          A8A8DFDFDFDFDFDFDFDFDFD9D9D9D2D2D2B3B3B3898989B9B9B9FF00FFFF00FF
+          FF00FFFF00FFFF00FFFF00FFFF00FFE0E8F090A8B090A0B090A0A08098A08090
+          A0808890BEB7B2A0B8A0FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFEA
+          EAEAA8A8A8A3A3A39F9F9F989898939393898989B7B7B7B2B2B2}
+        NumGlyphs = 2
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = sbtnEditWidthClick
+      end
+      inherited NavDetail: TUniDBNavigator
+        Left = 740
+        Width = 273
+        Height = 39
+        ExplicitLeft = 740
+        ExplicitWidth = 273
+        ExplicitHeight = 39
+      end
+    end
+  end
+  inherited Panel5: TUniPanel
+    Top = 632
+    Width = 1014
+    Height = 57
+    TabOrder = 3
+    ExplicitTop = 632
+    ExplicitWidth = 1014
+    ExplicitHeight = 57
+    inherited Panel6: TUniPanel
+      Left = 400
+      Width = 614
+      Height = 57
+      ExplicitLeft = 400
+      ExplicitWidth = 614
+      ExplicitHeight = 57
+      object sbtnExit: TUniButton [0]
+        Left = 408
+        Top = 5
+        Width = 197
+        Height = 40
+        Caption = 'Close'
+        TabOrder = 2
+        OnClick = Exit1Click
+      end
+      inherited BtnCreate: TUniButton
+        Left = 205
+        Top = 5
+        Width = 197
+        Height = 40
+        TabOrder = 1
+        ExplicitLeft = 205
+        ExplicitTop = 5
+        ExplicitWidth = 197
+        ExplicitHeight = 40
+      end
+      inherited BtnReset: TUniButton
+        Top = 5
+        Width = 197
+        Height = 40
+        Caption = 'Reset To Defaults'
+        TabOrder = 0
+        ExplicitTop = 5
+        ExplicitWidth = 197
+        ExplicitHeight = 40
+      end
+    end
+    inherited Panel7: TUniPanel
+      Width = 400
+      Height = 57
+      Align = alClient
+      ExplicitWidth = 400
+      ExplicitHeight = 57
+      inherited Label37: TUniLabel
+        Left = 4
+        Top = 17
+        Width = 40
+        Height = 16
+        Caption = 'LM Dir'
+        ExplicitLeft = 4
+        ExplicitTop = 17
+        ExplicitWidth = 40
+        ExplicitHeight = 16
+      end
+      inherited sbtnSelectDir: TUniSpeedButton
+        Left = 355
+        Top = 5
+        Width = 40
+        Height = 40
+        Anchors = [akTop, akRight]
+        ExplicitLeft = 285
+        ExplicitTop = 5
+        ExplicitWidth = 40
+        ExplicitHeight = 40
+      end
+      inherited EditLMDir: TUniDBEdit
+        Left = 64
+        Top = 13
+        Width = 287
+        Height = 24
+        Anchors = [akLeft, akTop, akRight]
+        ExplicitLeft = 64
+        ExplicitTop = 13
+        ExplicitWidth = 287
+        ExplicitHeight = 24
+      end
+    end
+  end
+  object StatusBar1: TUniStatusBar [5]
+    Left = 0
+    Top = 689
+    Width = 1014
+    Height = 18
+    Panels = <
+      item
+        Bevel = pbNone
+        Width = 0
+      end>
+  end
+  inherited MainMenu1: TUniMainMenu
+    inherited File1: TUniMenuItem
+      Visible = False
+    end
+    inherited Help1: TUniMenuItem
+      Visible = False
+    end
+  end
+  inherited SrcLabelsDtl: TDataSource
+    Top = 257
+  end
+  inherited TblLabelsDtl: TFDTable
+    Top = 256
+  end
+  inherited SrcLabels: TDataSource
+    Top = 257
+  end
+  inherited TblLabels: TFDTable
+    Top = 256
+  end
+  inherited QryArcusto: TFDQuery
+    Top = 260
+  end
+  inherited TblLMInv: TFDTable
+    Top = 260
+  end
+  inherited TblLMMat: TFDTable
+    Top = 260
+  end
+  inherited TblArcusto: TFDTable
+    Top = 260
+  end
+  inherited IQAbout1: TIQWebAbout
+    ModuleName = 'ShopData Label Maintenance'
+  end
+  inherited SrcParams: TDataSource
+    Top = 292
+  end
+  inherited TblParams: TFDTable
+    Top = 288
+  end
+  inherited PkLabels: TIQWebHPick
+    Top = 300
+  end
+  inherited PkArcusto: TIQWebHPick
+    Top = 306
+  end
+  inherited QryEPlant: TFDQuery
+    Left = 412
+    Top = 275
+  end
+end

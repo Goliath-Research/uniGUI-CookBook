@@ -1,0 +1,128 @@
+unit Snd_Cost;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  Vcl.Forms,
+  Vcl.Buttons,
+  MainModule,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniButton,
+  uniBitBtn,
+  uniEdit,
+  uniPanel,
+  uniSplitter,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniLabel,
+  System.Classes,
+  Vcl.Controls;
+
+type
+  TSndCost = class(TUniForm)
+    Panel1: TUniPanel;
+    BitBtn1: TUniBitBtn;
+    BitBtn2: TUniBitBtn;
+    PnlMain: TUniPanel;
+    Splitter1: TUniSplitter;
+    PnlLeft: TUniPanel;
+    Panel4: TUniPanel;
+    Label1: TUniLabel;
+    Label2: TUniLabel;
+    Label3: TUniLabel;
+    Label4: TUniLabel;
+    Label5: TUniLabel;
+    eLabor: TUniEdit;
+    eOverHead: TUniEdit;
+    eMaterials: TUniEdit;
+    eOutSourced: TUniEdit;
+    eCost: TUniEdit;
+    Bevel1: TUniPanel;
+    Bevel2: TUniPanel;
+    procedure FormShow(Sender: TObject);
+    procedure UniFormDestroy(Sender: TObject);
+    procedure UniFormCreate(Sender: TObject);
+  private
+    FSndID:Real;
+    FQty  :Real;
+  public
+    { Public declarations }
+    property SndID : Real write FSndID;
+	property Qty   : Real write FQty;
+  end;
+
+procedure ShowOperatingCost(aSndID, aQty : Real);
+
+implementation
+
+{$R *.DFM}
+
+uses
+  IQMS.Common.DataLib,
+  IQMS.Common.RegFrm;
+
+procedure ShowOperatingCost(aSndID, aQty : Real);
+var
+  frm : TSdnCost;
+begin
+  frm := TSndCost.Create(UniApplication);
+  frm.SndID := aSndID;
+  frm.Qty   := aQty;
+  
+  frm.ShowModal;
+end;
+
+procedure TSndCost.UniFormCreate(Sender: TObject);
+begin
+  IQRegFormRead(Self, [PnlLeft]);
+end;
+
+procedure TSndCost.UniFormDestroy(Sender: TObject);
+begin
+  IQRegFormWrite(Self, [PnlLeft]);
+end;
+
+procedure TSndCost.FormShow(Sender: TObject);
+var
+  nLabor     : Real;
+  nOverHead  : Real;
+  nMaterials : Real;
+  nOutSourced: Real;
+  nCost      : Real;
+
+  cSndOpTable    : string;
+  cSndOpIDname   : string;
+  cLBR_RATEtable : string;
+  cOpMatTable    : string;
+  cBreakTable    : string;
+  cBreakIDname   : string;
+begin
+  cSndOpTable    := 'SNDOP';
+  cSndOpIDname   := 'SNDOP_ID';
+  cLBR_RATEtable := 'LABOR_RATES';
+  cOpMatTable    := 'OPMAT';
+  cBreakTable    := 'SNDOP_QTY_BREAKS';
+  cBreakIDname   := 'SNDOP_ID';
+
+  nLabor     := StdOpLbr( nSndID, cSndOpTable, cLBR_RATEtable );
+  nOverHead  := StdOpOH ( nSndID, cSndOpTable );
+  nMaterials := StdOpMat( nSndID, nQty );
+  nOutSourced:= StdOpOut( nSndID, nQty, cSndOpTable, cBreakTable, cBreakIDname );
+
+  nCost:=  nLabor + nOverHead + nMaterials + nOutSourced;
+
+
+  eLabor     .Text:= FormatFloat('###,###,##0.00####;; ', nLabor     );
+  eOverHead  .Text:= FormatFloat('###,###,##0.00####;; ', nOverHead  );
+  eMaterials .Text:= FormatFloat('###,###,##0.00####;; ', nMaterials );
+  eOutSourced.Text:= FormatFloat('###,###,##0.00####;; ', nOutSourced);
+  eCost      .Text:= FormatFloat('###,###,##0.00####;; ', nCost      );
+end;
+
+end.
+

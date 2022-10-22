@@ -1,0 +1,35 @@
+Tax Code Maintenance
+WTC 5/17/97
+
+How it works:
+1) User creates one or more TAX ELEMENTS. Can include an element code, a description and a rate for the particular element. Should create as many as needed to account for all individual types of accounts he must track. Can include (at this point) a GL account number.
+
+2) User creates a TAX CODE, and links in as many elements as necessary to make up the whole code. 
+
+3) Any single Element may be used multiple times in any Tax Code, but only once within the Tax Code.
+
+What needs to be done:
+
+1) We have a table called TblTaxCodeLink. It consists of only two columns: TaxCode_ID and TaxElement_ID. We need to create the display so that the DBGrid shows the Element, Description and Rate. 
+
+2) Need to create a calculated value (and store it) of the total tax elements per tax Code. The value is stored in tblTaxCode, but cannot be directly edited by the end user.
+
+Example:
+TaxCode: LA County
+	Tax Elements:
+		Calif State Tax - 5.0%
+		LA County Tax   - .75%
+		Transportation  - .5
+		Municipal Bond  - .25
+		City Tax        - .5
+ Total Tax Rate: 7.0% (Calculated from above)	     
+
+3) Tie in the GL account number. I see a simple pulldown comboBox right in the grid. Need to add the account table to the DM.
+
+How to link one or more Tax Elements to a Tax code
+1) User creates a tax code
+2) moves to lower grid and adds a tax element by pressing plus (+) on local dbnavigator, or we can add a right mouse popup thing.
+3) Selects element from list
+4) bottom grid re-displays selection
+5) Same concept to remove an element (-).
+

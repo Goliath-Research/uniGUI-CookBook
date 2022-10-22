@@ -1,0 +1,148 @@
+unit IQMS.Common.ConfirmWithSecurity;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  Vcl.Controls,
+  Vcl.Forms,
+  IQMS.Common.ConfBas,
+  Vcl.Buttons,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniButton,
+  uniBitBtn,
+  uniPanel, IQMS.WebVcl.SecurityRegister, uniCheckBox, uniLabel;
+
+type
+  TFrmConfirmWithSecurity = class(TIQDialogCheckBox)
+    PnlButtonsRight: TUniPanel;
+    btnYes: TUniBitBtn;
+    btnNo: TUniBitBtn;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
+    strict private
+      { Private declarations }
+      FDonotUseSR:boolean;
+    protected
+      { Protected declarations }
+      procedure SetShowCheckBox(const Value: Boolean); override;
+      procedure SetKey(const Value: string); override;
+    public
+      { Public declarations }
+      // constructor Create(AStr, AKey: string); override;
+      constructor Create(AStr, AKey: string; AShowCheckBox: Boolean; ADonotUseSR: Boolean = False); reintroduce;
+      class function DoShowModal (APrompt, AKey: string; AShowCheckBox: Boolean): Boolean;
+      class function DoShowModal2(APrompt, AKey: string; AShowCheckBox: Boolean): Boolean;
+
+      property MsgText;
+      property Key;
+      property ShowCheckBox;
+      property DoNotUserSR : boolean write FDonotUseSR;
+  end;
+
+  function DoShowModalConfirmWithSecurity(AStr, AKey: string; AShowCheckBox: Boolean = false; ADonotUseSR: boolean = false) : boolean;
+
+implementation
+{$R *.dfm}
+
+uses
+  uniGUIApplication,
+  IQMS.Common.Controls,
+  IQMS.Common.RegFrm,
+  IQMS.Common.StringUtils;
+
+function DoShowModalConfirmWithSecurity(AStr, AKey: string; AShowCheckBox: Boolean = false; ADonotUseSR: boolean = false) : boolean;
+var
+  AChecked: Boolean;
+  AModalResult: TModalResult;
+  AMessageText: string;
+  AShowDialog: Boolean;
+  frm : TFrmConfirmWithSecurity;
+begin
+  // Make sure the key values are 35 characters or less
+  if Length(AKey) > 35 then
+   raise Exception.Create('Application Error:  Registry key value length is too ' +
+      'long.  Values must be 35 characters or less.');
+
+  // Get saved values
+  IQMS.Common.RegFrm.GetDialogCheckBoxResult(IQMS.Common.StringUtils.StrTran(AKey, ' ', '_'),
+    {var} AChecked, AModalResult, AMessageText, AShowDialog);
+
+  // If the user does not want the dialog to display, then pass the
+  // last result values, and exit the method
+  if not AShowDialog then
+    Result := AModalResult = mrOk
+  else
+  begin
+
+    frm := TFrmConfirmWithSecurity.Create(UniApplication);
+    frm.MsgText       := AStr;
+    frm.Key           := AKey;
+    frm.ShowCheckBox  := AShowCheckBox;
+    frm.DoNotUserSR   := ADoNotUseSR;
+
+    Result := frm.ShowModal = mrOk;
+  end;
+end;
+
+  { TFrmConfirmWithSecurity }
+
+procedure TFrmConfirmWithSecurity.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+//  if Self.ShowCheckBox then
+//    IQRegFormWrite(Self, [CheckBox]);
+
+  IQMS.Common.RegFrm.SetDialogCheckBoxResult(Self.Name, CheckBox.Checked,
+    Self.ModalResult, lblConfBasMsgText.Caption);
+
+  inherited;
+
+end;
+
+procedure TFrmConfirmWithSecurity.FormShow(Sender: TObject);
+begin
+  if not FDonotUseSR then
+    inherited
+  else
+  begin
+    IQMS.Common.Controls.ResizeCheckBoxes(Self, Panel2);
+  end;
+
+end;
+
+procedure TFrmConfirmWithSecurity.SetKey(const Value: string);
+begin
+  inherited;
+
+  if Value <> '' then
+  begin
+    SR.SecurityCode := UpperCase(Value);
+    SR.ForceAccessItems.Add(Value);
+    SR.RemoveSecurityItem('FRMCONFIRMWITHSECURITY');
+    SR.Refresh;
+  end;
+end;
+
+procedure TFrmConfirmWithSecurity.SetShowCheckBox(const Value: Boolean);
+begin
+  inherited;
+
+  if not Value then
+    SR.RemoveSecurityItem('CheckBox');
+
+  // if the user does not have rights to click the Yes button,
+  // then he doesn't have rights to check the check box.
+  if not SR.Enabled['btnYes'] then
+    begin
+      CheckBox.Checked := FALSE;
+      CheckBox.Enabled := FALSE;
+    end;
+
+  if Value then
+    IQRegFormRead(Self, [CheckBox]);
+end;
+
+end.

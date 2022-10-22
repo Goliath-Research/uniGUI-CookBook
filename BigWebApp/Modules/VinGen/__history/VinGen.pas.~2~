@@ -1,0 +1,31 @@
+unit VinGen;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics,
+  Controls, Forms, Dialogs, uniGUITypes, uniGUIAbstractClasses,
+  uniGUIClasses, uniGUIFrame, uniGUIBaseClasses, uniURLFrame;
+
+type
+  TUniVinGen = class(TUniFrame)
+    UniURLFrame1: TUniURLFrame;
+    procedure UniFrameCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+
+
+procedure TUniVinGen.UniFrameCreate(Sender: TObject);
+begin
+  SetURL;
+end;
+
+end.

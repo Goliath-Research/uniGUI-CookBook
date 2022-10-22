@@ -1,0 +1,111 @@
+unit EdiExprt;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.Buttons,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniLabel,
+  uniPanel,
+  uniGroupBox,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniEdit,
+  uniButton,
+  uniBitBtn,
+  uniSpeedButton;
+
+type
+  TFrmEdiExport = class(TUniForm)
+    GroupBox1: TUniGroupBox;
+    Label1: TUniLabel;
+    Label2: TUniLabel;
+    Label3: TUniLabel;
+    edEdiTS: TUniEdit;
+    edEdiSeg: TUniEdit;
+    edEdiToken: TUniEdit;
+    btnEdiTS: TUniSpeedButton;
+    btnEdiSeg: TUniSpeedButton;
+    btnEdiToken: TUniSpeedButton;
+    SaveDialog1: TSaveDialog;
+    Label4: TUniLabel;
+    edEdiValue: TUniEdit;
+    btnEdiValue: TUniSpeedButton;
+    PnlButtons: TUniPanel;
+    PnlButtonsInner: TUniPanel;
+    btnOK: TUniButton;
+    btnCancel: TUniButton;
+    procedure btnOKClick(Sender: TObject);
+    procedure btnEdiTSClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+function GetEdiDBFNames( var A, B, C, D : string ):Boolean;
+
+implementation
+
+{$R *.DFM}
+
+uses
+  edi_rscstr, MainModule;
+
+function GetEdiDBFNames(var A, B, C, D : string ):Boolean;
+var
+  aFrmEdiExport : TFrmEdiExport;
+begin
+  aFrmEdiExport := UniMainModule.GetFormInstance(TFrmEdiExport) as TFrmEdiExport;
+  Result:= FALSE;
+  with aFrmEdiExport do
+  begin
+      edEdiTS.Text    := ExpandFileName(edEdiTS.Text   );
+      edEdiSeg.Text   := ExpandFileName(edEdiSeg.Text  );
+      edEdiToken.Text := ExpandFileName(edEdiToken.Text);
+      edEdiValue.Text := ExpandFileName(edEdiValue.Text);
+      if ShowModal = mrOK then
+      begin
+         A := edEdiTS.Text;
+         B := edEdiSeg.Text;
+         C := edEdiToken.Text;
+         D := edEdiValue.Text;
+         Result := TRUE;
+      end;
+  end;
+end;
+
+procedure TFrmEdiExport.btnOKClick(Sender: TObject);
+begin
+  if (Trim(edEdiTS.Text) = '') or (Trim(edEdiSeg.Text)='') or (Trim(edEdiToken.Text)='') or (Trim(edEdiValue.Text)='') then
+     raise Exception.Create(edi_rscstr.cTXT0000181{'Please enter all file names.'});
+  ModalResult:= mrOK;
+end;
+
+procedure TFrmEdiExport.btnEdiTSClick(Sender: TObject);
+var
+  e : TUniEdit;
+  S : TStringStream;
+begin
+  if      Sender = btnEdiTS    then e := edEdiTS
+  else if Sender = btnEdiSeg   then e := edEdiSeg
+  else if Sender = btnEdiToken then e := edEdiToken
+  else if Sender = btnEdiValue then e := edEdiValue;
+
+  with SaveDialog1 do
+  begin
+    FileName:= ed.Text;
+    if Execute then
+       ed.Text:= FileName;
+  end;
+end;
+
+end.

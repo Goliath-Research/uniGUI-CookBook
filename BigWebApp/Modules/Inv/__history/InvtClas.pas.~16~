@@ -1,0 +1,151 @@
+unit InvtClas;
+
+interface
+
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  Vcl.Controls,
+  Vcl.Forms,
+  wwdblook,
+  Data.DB,
+  IQMS.WebVcl.SecurityRegister,
+  FireDAC.Comp.Client,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Param,
+  FireDAC.Stan.Error,
+  FireDAC.DatS,
+  FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf,
+  FireDAC.Stan.Async,
+  FireDAC.DApt,
+  FireDAC.Comp.DataSet,
+  System.Classes,
+  uniGUIBaseClasses,
+  uniGUIClasses,
+  uniLabel,
+  uniPanel,
+  uniGUITypes,
+  uniGUIAbstractClasses,
+  uniGUIForm,
+  uniGUIApplication,
+  uniButton,
+  uniMultiItem,
+  uniListBox,
+  uniDBLookupComboBox, uniComboBox, uniDBComboBox;
+
+type
+  TInvClassFilterKind = (ifNone, ifClass, ifManufactured, ifPurchased, ifThisItem );
+
+  TInvClassFilter = record
+    Kind       : TInvClassFilterKind;
+    InvClass   : string;
+    Division_ID: Real;
+    Buyer_Code_ID: Real;
+
+    {for material exceptions}
+    IncludeAll    : Boolean;
+    ExceptionScope: Real;
+    ConsolidateDivReq: Boolean;
+    MfgType: string;
+  end;
+
+  TFrmInvClass = class(TUniForm)
+    Label1: TUniLabel;
+    pnlMainInvParams: TUniPanel;
+    wwLookupClass: TUniDBLookupComboBox;
+    wwQuery1: TFDQuery;
+    wwQuery1CLASS: TStringField;
+    wwQuery1DESCRIP: TStringField;
+    PnlButtons: TUniPanel;
+    btnOK: TUniButton;
+    btnCancel: TUniButton;
+    SR: TIQWebSecurityRegister;
+    ds_wwQuery1: TDataSource;
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnOKClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    function GetSelectedClass: string;
+    procedure SetSelectedClass(const Value: string);
+    { Private declarations }
+  protected
+    procedure Validate; virtual;
+  public
+    { Public declarations }
+    property SelectedClass : string read GetSelectedClass write SetSelectedClass;
+  end;
+
+function GetInventoryClass( var AClass:string ):Boolean;
+
+
+implementation
+{$R *.DFM}
+
+uses
+  IQMS.Common.RegFrm,
+  inv_rscstr,
+  IQMS.Data.Lib;
+
+function GetInventoryClass( var AClass:string ):Boolean;
+var
+  FrmInvClass: TFrmInvClass;
+begin
+  FrmInvClass:=TFrmInvClass.Create(uniGUIApplication.UniApplication);
+  Result:= FrmInvClass.ShowModal = mrOK;
+  if Result then
+     AClass :=  FrmInvClass.SelectedClass;
+end;
+
+procedure TFrmInvClass.FormCreate(Sender: TObject);
+var
+  AClass: string;
+begin
+  IQRegFormRead( self, [ self ]);
+
+  // wwQuery1.Open;
+  // 04-27-2006
+  IQSetTablesActive(TRUE, self);
+  if IQRegStringScalarRead( self, 'AClass', AClass ) then
+     wwLookupClass.DataSource.DataSet.FieldByName(wwLookupClass.DataField).AsString:= AClass;
+//  wwLookupClass.PerformSearch;
+end;
+
+procedure TFrmInvClass.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  IQRegFormWrite( self, [ self ]);
+end;
+
+procedure TFrmInvClass.Validate;
+begin
+  if wwLookupClass.Text = '' then
+    raise Exception.Create(inv_rscstr.cTXT0000007 {'Please enter a class.'});
+end;
+
+procedure TFrmInvClass.btnOKClick(Sender: TObject);
+begin
+//   if wwQuery1CLASS.asString = '' then
+  Validate;
+  IQRegStringScalarWrite( self, 'AClass', wwQuery1CLASS.asString );
+  ModalResult:= mrOK;
+end;
+
+procedure TFrmInvClass.FormShow(Sender: TObject);
+begin
+//  EnsureSecurityInspectorOnTopOf( self );
+end;
+
+function TFrmInvClass.GetSelectedClass: string;
+begin
+  Result := wwLookupClass.Text;
+end;
+
+procedure TFrmInvClass.SetSelectedClass(const Value: string);
+begin
+  wwLookupClass.Text := Value;
+end;
+
+end.
