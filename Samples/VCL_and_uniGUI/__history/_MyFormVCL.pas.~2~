@@ -1,0 +1,31 @@
+unit _MyFormVCL;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
+  _MyFormIntf;
+
+type
+  TMyFormVCL = class(TForm, IMyForm)
+    Label1: TLabel;
+    Edit1: TEdit;
+    btnOK: TButton;
+    btnCancel: TButton;
+  private
+    function GetSomeText: string;
+    procedure SetSomeText(const Value: string);
+  public
+
+    property SomeText : string read GetSomeText write SetSomeText;
+  end;
+
+var
+  MyFormVCL: TMyFormVCL;
+
+implementation
+
+{$R *.dfm}
+
+end.
