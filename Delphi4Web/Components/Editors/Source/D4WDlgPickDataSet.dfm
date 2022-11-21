@@ -9,8 +9,7 @@ object D4WDlgPickDataSetForm: TD4WDlgPickDataSetForm
   Font.Height = -13
   OnCreate = UniFormCreate
   OnDestroy = UniFormDestroy
-  PixelsPerInch = 96
-  TextHeight = 16
+  TextHeight = 17
   object upnlTop: TUniPanel
     Left = 0
     Top = 0
@@ -18,7 +17,6 @@ object D4WDlgPickDataSetForm: TD4WDlgPickDataSetForm
     Height = 57
     Hint = ''
     Align = alTop
-    Anchors = [akLeft, akTop, akRight]
     TabOrder = 0
     Caption = ''
     object upnlSpeedButtons: TUniPanel
@@ -28,7 +26,6 @@ object D4WDlgPickDataSetForm: TD4WDlgPickDataSetForm
       Height = 55
       Hint = ''
       Align = alRight
-      Anchors = [akTop, akRight, akBottom]
       TabOrder = 1
       BorderStyle = ubsNone
       Caption = ''
@@ -285,7 +282,6 @@ object D4WDlgPickDataSetForm: TD4WDlgPickDataSetForm
       Height = 55
       Hint = ''
       Align = alRight
-      Anchors = [akTop, akRight, akBottom]
       TabOrder = 2
       BorderStyle = ubsNone
       Caption = ''
@@ -345,7 +341,6 @@ object D4WDlgPickDataSetForm: TD4WDlgPickDataSetForm
       Height = 55
       Hint = ''
       Align = alClient
-      Anchors = [akLeft, akTop, akRight, akBottom]
       TabOrder = 3
       BorderStyle = ubsNone
       Caption = ''
@@ -393,7 +388,6 @@ object D4WDlgPickDataSetForm: TD4WDlgPickDataSetForm
     Panels = <>
     SizeGrip = False
     Align = alBottom
-    Anchors = [akLeft, akRight, akBottom]
     ParentColor = False
     Color = clWindow
   end
@@ -404,7 +398,6 @@ object D4WDlgPickDataSetForm: TD4WDlgPickDataSetForm
     Height = 39
     Hint = ''
     Align = alBottom
-    Anchors = [akLeft, akRight, akBottom]
     TabOrder = 2
     Caption = ''
     object upnlButtons: TUniPanel
@@ -414,7 +407,6 @@ object D4WDlgPickDataSetForm: TD4WDlgPickDataSetForm
       Height = 37
       Hint = ''
       Align = alRight
-      Anchors = [akTop, akRight, akBottom]
       TabOrder = 1
       BorderStyle = ubsNone
       Caption = ''
@@ -426,7 +418,6 @@ object D4WDlgPickDataSetForm: TD4WDlgPickDataSetForm
       Height = 37
       Hint = ''
       Align = alClient
-      Anchors = [akLeft, akTop, akRight, akBottom]
       TabOrder = 2
       BorderStyle = ubsNone
       Caption = ''
@@ -473,7 +464,7 @@ object D4WDlgPickDataSetForm: TD4WDlgPickDataSetForm
         FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
         FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00}
       Caption = 'Select'
-      ModalResult = 1
+      ModalResult = mrOk
       TabOrder = 3
       OnClick = ubbSelectClick
     end
@@ -501,7 +492,7 @@ object D4WDlgPickDataSetForm: TD4WDlgPickDataSetForm
         3333333333333333333888330000333333333333333333333333333333333333
         0000}
       Caption = 'Cancel'
-      ModalResult = 2
+      ModalResult = mrCancel
       TabOrder = 4
     end
     object ubbNew: TUniBitBtn
@@ -553,7 +544,6 @@ object D4WDlgPickDataSetForm: TD4WDlgPickDataSetForm
     ReadOnly = True
     LoadMask.Message = 'Loading data...'
     Align = alClient
-    Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 3
     OnColumnSort = UniDBGrid1ColumnSort
     OnTitleClick = UniDBGrid1TitleClick
@@ -1232,5 +1222,18 @@ object D4WDlgPickDataSetForm: TD4WDlgPickDataSetForm
   object ds: TDataSource
     Left = 424
     Top = 136
+  end
+  object UniNativeImageList1: TUniNativeImageList
+    Left = 328
+    Top = 192
+    Images = {
+      10000000000000000705000000302E626D70000000000705000000312E626D70
+      000000000705000000322E626D70000000000705000000332E626D7000000000
+      0705000000342E626D70000000000705000000352E626D700000000007050000
+      00362E626D70000000000705000000372E626D70000000000705000000382E62
+      6D70000000000705000000392E626D7000000000070600000031302E626D7000
+      000000070600000031312E626D7000000000070600000031322E626D70000000
+      00070600000031332E626D7000000000070600000031342E626D700000000007
+      0600000031352E626D70}
   end
 end

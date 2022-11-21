@@ -12,11 +12,9 @@ object D4WEditorsDesignDlg: TD4WEditorsDesignDlg
   Font.Name = 'Tahoma'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   OnClose = FormClose
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
-  PixelsPerInch = 96
   TextHeight = 13
   object LBox: TListBox
     Left = 0

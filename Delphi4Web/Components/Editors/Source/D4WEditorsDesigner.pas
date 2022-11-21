@@ -130,7 +130,8 @@ procedure TD4WEditorsDesignDlg.FormClose(Sender: TObject;
 begin
   Action:=caFree;
 
-  if Assigned(FHyperGrid) then FHyperGrid.Designer:=nil;
+  if Assigned(FHyperGrid) then
+    FHyperGrid.Designer:=nil;
 
   LBox.Clear;
   UpdateSelection;
@@ -158,7 +159,7 @@ begin
       D4WCategoryForm     : sl := TUniFormControlClass(F.ShowList('Select a Form Type', RegisteredForms, I));
       D4WCategoryPanel    : sl := TUniFormControlClass(F.ShowList('Select a Panel Type', RegisteredPanels, I));
       D4WCategoryEditor   : sl := TUniFormControlClass(F.ShowList('Select an Editor Type', RegisteredEditors, I));
-      D4WCategoryFieldSet : sl := TUniFormControlClass(F.ShowList('Select an Editor Type', RegisteredFieldSets, I));
+      D4WCategoryFieldSet : sl := TUniFormControlClass(F.ShowList('Select a FieldSet Type', RegisteredFieldSets, I));
     else
       sl := nil;
     end;
@@ -169,7 +170,7 @@ begin
       try
         FHyperGrid.PopulateParents(F1.ListBox.Items, Cat);
         S := F1.ShowList('Select a Target', I);
-        if S<>'' then
+        if S <> '' then
           Pnl := FHyperGrid.FindComponent(S) as TWinControl
         else
           Exit;

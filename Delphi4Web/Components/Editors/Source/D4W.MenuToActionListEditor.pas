@@ -48,7 +48,7 @@ begin
       end;
 
       if sl.Count > 0 then
-        ShowMessage('The following ations do not have an OnExecute event: ' + #13#10 + sl.Text)
+        ShowMessage('The following actions do not have an OnExecute event: ' + #13#10 + sl.Text)
       else if ActionCount = 0 then
         ShowMessage('There are no actions in the list')
       else

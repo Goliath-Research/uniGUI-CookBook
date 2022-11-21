@@ -89,7 +89,7 @@ var
   RegisteredEditors : TStrings = nil;
 
 procedure D4WRegisterEditor(const AName: string; const AClassType: TUniFormControlClass);
-procedure D4WRegisterClass(var AList: TStrings; const AName: string; const AClassType: TPersistentClass); overload;
+procedure D4WRegisterClass (var AList: TStrings; const AName: string; const AClassType: TPersistentClass); overload;
 
 implementation
 
@@ -167,7 +167,7 @@ end;
 
 procedure D4WRegisterClass(var AList: TStrings; const AName: string; const AClassType: TPersistentClass);
 begin
-  if AList = nil then
+  if not Assigned(AList) then
     AList := TStringList.Create;
 
   if AClassType = nil then
@@ -185,10 +185,9 @@ begin
 end;
 
 initialization
-
+  RegisteredEditors := TStringList.Create;
 
 finalization
-  RegisteredEditors.Free;
-  RegisteredEditors := nil;
+  FreeAndNil(RegisteredEditors);
 
 end.

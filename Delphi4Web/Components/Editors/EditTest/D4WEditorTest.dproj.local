@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>2019/12/22 13:39:26.000.216,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\ActionEditors.pas</Transaction>
     <Transaction>2019/12/22 13:39:26.000.349,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\CommonOptionStrs.pas</Transaction>
-    <Transaction>2019/12/22 13:39:26.000.686,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\ExptIntf.pas</Transaction>
     <Transaction>2019/12/22 13:39:26.000.804,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\IStreams.pas</Transaction>
+    <Transaction>2019/12/22 13:39:26.000.686,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\ExptIntf.pas</Transaction>
+    <Transaction>2019/12/22 13:39:26.000.216,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\ActionEditors.pas</Transaction>
     <Transaction>2019/12/22 13:39:26.000.460,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\DeploymentAPI.pas</Transaction>
     <Transaction>2019/12/22 13:39:26.000.570,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\DesignIntf.pas</Transaction>
     <Transaction>2019/12/22 13:39:26.000.773,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\ILinkStrs.pas</Transaction>
@@ -17,28 +17,28 @@
     <Transaction>2019/12/22 13:39:26.000.934,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\PropertyCategories.pas</Transaction>
     <Transaction>2019/12/22 13:39:26.000.508,=c:\program files (x86)\embarcadero\studio\19.0\source\ToolsAPI\DesignEditors.pas</Transaction>
     <Transaction>2019/12/22 13:39:26.000.534,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\DesignerTypes.pas</Transaction>
-    <Transaction>2019/12/22 13:39:26.000.590,=c:\program files (x86)\embarcadero\studio\19.0\source\ToolsAPI\DesignMenus.pas</Transaction>
+    <Transaction>2019/12/22 13:39:26.000.241,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\BCCStrs.pas</Transaction>
     <Transaction>2019/12/22 13:39:26.000.374,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\CPPCOMMONStrs.pas</Transaction>
     <Transaction>2019/12/22 13:39:26.000.625,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\DesignWindows.pas</Transaction>
     <Transaction>2019/12/22 13:39:26.000.266,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\BRCCStrs.pas</Transaction>
     <Transaction>2019/12/22 13:39:26.000.321,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\CodeTemplateAPI.pas</Transaction>
     <Transaction>2019/12/22 13:39:26.000.873,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\PlatformAPI.pas</Transaction>
     <Transaction>2019/12/22 13:39:26.000.903,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\PlatformConst.pas</Transaction>
-    <Transaction>2019/12/22 13:39:26.000.715,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\FileHistoryAPI.pas</Transaction>
     <Transaction>2019/12/22 13:39:26.000.403,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\DataExplorerAPI.pas</Transaction>
-    <Transaction>2019/12/22 13:39:26.000.241,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\BCCStrs.pas</Transaction>
+    <Transaction>2019/12/22 13:39:26.000.715,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\FileHistoryAPI.pas</Transaction>
+    <Transaction>2019/12/22 13:39:26.000.590,=c:\program files (x86)\embarcadero\studio\19.0\source\ToolsAPI\DesignMenus.pas</Transaction>
     <Transaction>2019/12/22 13:39:26.000.487,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\DesignConst.pas</Transaction>
+    <Transaction>2019/12/22 13:39:27.000.028,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\TasmStrs.pas</Transaction>
+    <Transaction>2019/12/22 13:39:27.000.000,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\StructureViewAPI.pas</Transaction>
+    <Transaction>2019/12/22 13:39:27.000.385,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\VirtIntf.pas</Transaction>
     <Transaction>2019/12/22 13:39:27.000.089,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\ToolIntf.pas</Transaction>
     <Transaction>2019/12/22 13:39:27.000.354,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\VCLSprigs.pas</Transaction>
-    <Transaction>2019/12/22 13:39:27.000.028,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\TasmStrs.pas</Transaction>
-    <Transaction>2019/12/22 13:39:27.000.385,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\VirtIntf.pas</Transaction>
-    <Transaction>2019/12/22 13:39:27.000.000,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\StructureViewAPI.pas</Transaction>
-    <Transaction>2019/12/22 13:39:27.000.418,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\VisualizationServicesAPI.pas</Transaction>
+    <Transaction>2019/12/22 13:39:27.000.322,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\VCLEditors.pas</Transaction>
     <Transaction>2019/12/22 13:39:27.000.057,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\TlibStrs.pas</Transaction>
     <Transaction>2019/12/22 13:39:27.000.144,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\ToolsAPI.pas</Transaction>
     <Transaction>2019/12/22 13:39:27.000.286,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\TreeIntf.pas</Transaction>
     <Transaction>2019/12/22 13:39:27.000.246,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\ToolWnds.pas</Transaction>
-    <Transaction>2019/12/22 13:39:27.000.322,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\VCLEditors.pas</Transaction>
+    <Transaction>2019/12/22 13:39:27.000.418,=C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\VisualizationServicesAPI.pas</Transaction>
     <Transaction>2019/12/22 13:40:27.000.650,C:\Program Files (x86)\Embarcadero\Studio\19.0\source\ToolsAPI\ToolsAPI.pas=</Transaction>
   </Transactions>
 </BorlandProject>

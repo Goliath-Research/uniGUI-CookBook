@@ -32,7 +32,7 @@ package D4WEditorsD;
 requires
   rtl,
   designide,
-  uniGUI25dcl,
+  uniGUI28dcl,
   D4WEditorsR;
 
 contains

@@ -10,8 +10,7 @@ object D4WDlgMemoForm: TD4WDlgMemoForm
   DesignSize = (
     635
     288)
-  PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object UniMemo1: TUniMemo
     Left = 0
     Top = 0
@@ -31,7 +30,7 @@ object D4WDlgMemoForm: TD4WDlgMemoForm
     Height = 25
     Hint = ''
     Caption = 'OK'
-    ModalResult = 1
+    ModalResult = mrOk
     Anchors = [akRight, akBottom]
     TabOrder = 1
   end
@@ -42,7 +41,7 @@ object D4WDlgMemoForm: TD4WDlgMemoForm
     Height = 25
     Hint = ''
     Caption = 'Cancel'
-    ModalResult = 2
+    ModalResult = mrCancel
     Anchors = [akLeft, akBottom]
     TabOrder = 2
   end

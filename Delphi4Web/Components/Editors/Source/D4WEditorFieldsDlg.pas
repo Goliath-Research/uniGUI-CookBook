@@ -9,20 +9,21 @@ uses
   uniToolBar, DB, uniImageList;
 
 type
+
   TD4WFieldSelect = class(TUniForm)
     FieldsListBox: TUniListBox;
     UniToolBar1: TUniToolBar;
-    UniToolButton1: TUniToolButton;
+    utbSelectAll: TUniToolButton;
     UniToolButton2: TUniToolButton;
     UniToolButton3: TUniToolButton;
     UniToolButton4: TUniToolButton;
-    UniToolButton5: TUniToolButton;
-    UniToolButton6: TUniToolButton;
+    utbOk: TUniToolButton;
+    utbCancel: TUniToolButton;
     UniNativeImageList1: TUniNativeImageList;
-    procedure UniToolButton6Click(Sender: TObject);
-    procedure UniToolButton5Click(Sender: TObject);
+    procedure utbCancelClick(Sender: TObject);
+    procedure utbOkClick(Sender: TObject);
     procedure UniFormBeforeShow(Sender: TObject);
-    procedure UniToolButton1Click(Sender: TObject);
+    procedure utbSelectAllClick(Sender: TObject);
     procedure UniFormClose(Sender: TObject; var Action: TCloseAction);
     procedure UniFormCreate(Sender: TObject);
     procedure UniFormDestroy(Sender: TObject);
@@ -47,8 +48,7 @@ uses
 
 {$R *.dfm}
 
-
-{ TUniForm2 }
+{ TD4WFieldSelect }
 
 procedure TD4WFieldSelect.PopulateList;
 var
@@ -65,9 +65,7 @@ begin
     FieldsListBox.Clear;
 
     for I := 0 to ds.Fields.Count - 1 do
-    begin
       FieldsListBox.Items.AddObject(ds.Fields[I].FieldName, ds.Fields[I]);
-    end;
   end;
 end;
 
@@ -111,17 +109,17 @@ begin
   FSelectedFields.Free;
 end;
 
-procedure TD4WFieldSelect.UniToolButton1Click(Sender: TObject);
+procedure TD4WFieldSelect.utbSelectAllClick(Sender: TObject);
 begin
   FieldsListBox.SelectAll;
 end;
 
-procedure TD4WFieldSelect.UniToolButton5Click(Sender: TObject);
+procedure TD4WFieldSelect.utbOkClick(Sender: TObject);
 begin
   ModalResult := mrOK;
 end;
 
-procedure TD4WFieldSelect.UniToolButton6Click(Sender: TObject);
+procedure TD4WFieldSelect.utbCancelClick(Sender: TObject);
 begin
   ModalResult := mrCancel;
 end;

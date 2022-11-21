@@ -1,5 +1,4 @@
 package D4WEditorsR;
-
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
@@ -25,12 +24,12 @@ package D4WEditorsR;
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'IQ Editors Runtime Package'}
+{$DESCRIPTION 'D4W Editors Runtime Package'}
 {$RUNONLY}
 {$IMPLICITBUILD OFF}
 
 requires
-  uniGUI25;
+  uniGUI28;
 
 contains
   D4WEditor in '..\Source\D4WEditor.pas',

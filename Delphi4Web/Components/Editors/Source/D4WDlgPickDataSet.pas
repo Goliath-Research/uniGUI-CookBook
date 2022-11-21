@@ -40,6 +40,7 @@ type
     UniDBGrid1: TUniDBGrid;
     UniImageList1: TUniImageList;
     ds: TDataSource;
+    UniNativeImageList1: TUniNativeImageList;
     procedure UniDBGrid1TitleClick(Column: TUniDBGridColumn);
     procedure usbtnSearchClick(Sender: TObject);
     procedure usbtnFilterClick(Sender: TObject);
@@ -55,6 +56,7 @@ type
     FSrcDataSet     : TDataSet;
     FSrcKeyField    : string;
     FSrcListField   : string;
+    FDataServiceID  : string;
     FActiveColumn   : TUniDBGridColumn;
     FD4WDataServices : ID4WDataServices;
 
@@ -64,6 +66,7 @@ type
     procedure SetSrcDataSet   (const Value : TDataSet);
     procedure SetSrcKeyField  (const Value : string);
     procedure SetSrcListField (const Value : string);
+    procedure SetDataServiceID(const Value: string);
 
     property ActiveColumn : TUniDBGridColumn read FActiveColumn write SetActiveColumn;
   protected
@@ -76,9 +79,10 @@ type
   public
     { Public declarations }
 
-    property SrcDataset   : TDataSet  read FSrcDataSet    write SetSrcDataSet;
-    property SrcKeyField  : string    read FSrcKeyField   write SetSrcKeyField;
-    property SrcListField : string    read FSrcListField  write SetSrcListField;
+    property DataServiceID : string    read FDataServiceID write SetDataServiceID;
+    property SrcDataset    : TDataSet  read FSrcDataSet    write SetSrcDataSet;
+    property SrcKeyField   : string    read FSrcKeyField   write SetSrcKeyField;
+    property SrcListField  : string    read FSrcListField  write SetSrcListField;
   end;
 
 implementation
@@ -95,7 +99,7 @@ procedure TD4WDlgPickDataSetForm.UniFormCreate(Sender: TObject);
 begin
   // Locate the corresponding DataServices
   // Just for now, it is hard-coded to FireDAC and Oracle
-  FD4WDataServices := ServiceLocator.GetService<ID4WDataServices>('FireDAC-Oracle');
+  FD4WDataServices := ServiceLocator.GetService<ID4WDataServices>(FDataServiceID);
 end;
 
 procedure TD4WDlgPickDataSetForm.UniFormDestroy(Sender: TObject);
@@ -126,9 +130,17 @@ begin
   FSrcListField := Value;
 end;
 
+procedure TD4WDlgPickDataSetForm.SetDataServiceID(const Value: string);
+begin
+  if Value <> '' then
+    FDataServiceID := Value
+  else
+    FDataServiceID := 'FireDAC-Oracle'
+end;
+
 procedure TD4WDlgPickDataSetForm.ubbSelectClick(Sender: TObject);
 begin
-
+  //
 end;
 
 // Call from TD4WCustomEditorDlg.DoHandleTriggerClick after requesting
@@ -218,7 +230,6 @@ begin
 
   if FActiveColumn = nil then
     FActiveColumn := TUniDBGridColumn(uniDBGrid1.Columns[0]);
-
 
   FClonedDataSet.Locate(FActiveColumn.FieldName, uedtSearch.Text, loOptions);
 end;

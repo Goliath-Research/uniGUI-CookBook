@@ -11,8 +11,7 @@ object D4WFieldSelect: TD4WFieldSelect
   OnBeforeShow = UniFormBeforeShow
   OnCreate = UniFormCreate
   OnDestroy = UniFormDestroy
-  PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object FieldsListBox: TUniListBox
     Left = 0
     Top = 29
@@ -20,9 +19,9 @@ object D4WFieldSelect: TD4WFieldSelect
     Height = 435
     Hint = ''
     Align = alClient
-    Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 0
     MultiSelect = True
+    SelectionMode = smMulti
   end
   object UniToolBar1: TUniToolBar
     Left = 0
@@ -31,19 +30,17 @@ object D4WFieldSelect: TD4WFieldSelect
     Height = 29
     Hint = ''
     Images = UniNativeImageList1
-    Anchors = [akLeft, akTop, akRight]
-    Align = alTop
     TabOrder = 1
     ParentColor = False
     Color = clBtnFace
-    object UniToolButton1: TUniToolButton
+    object utbSelectAll: TUniToolButton
       Left = 0
       Top = 0
       Hint = 'Select All'
       ImageIndex = 0
-      Caption = 'UniToolButton1'
+      Caption = 'utbSelectAll'
       TabOrder = 1
-      OnClick = UniToolButton1Click
+      OnClick = utbSelectAllClick
     end
     object UniToolButton2: TUniToolButton
       Left = 23
@@ -68,23 +65,23 @@ object D4WFieldSelect: TD4WFieldSelect
       Caption = 'UniToolButton4'
       TabOrder = 4
     end
-    object UniToolButton5: TUniToolButton
+    object utbOk: TUniToolButton
       Left = 77
       Top = 0
       Hint = 'Add Editors'
       ImageIndex = 2
-      Caption = 'UniToolButton5'
+      Caption = 'Ok'
       TabOrder = 5
-      OnClick = UniToolButton5Click
+      OnClick = utbOkClick
     end
-    object UniToolButton6: TUniToolButton
+    object utbCancel: TUniToolButton
       Left = 100
       Top = 0
       Hint = 'Exit'
       ImageIndex = 1
-      Caption = 'UniToolButton6'
+      Caption = 'Cancel'
       TabOrder = 6
-      OnClick = UniToolButton6Click
+      OnClick = utbCancelClick
     end
   end
   object UniNativeImageList1: TUniNativeImageList
