@@ -152,6 +152,11 @@ const
   FOLDERID_LocalAppData           : KNOWNFOLDERID = '{F1B32785-6FBA-4FCF-9D55-7B8E7F157091}';
   FOLDERID_RoamingAppData         : KNOWNFOLDERID = '{3EB685DB-65F9-4CF6-A03A-E3EF65729F3D}';
 
+resourcestring
+  cServiceUserPasswordNotConfigured =
+    'The RTBox service password is not configured for %s. Store it encrypted in the ServiceUser registry value.';
+  cIQMSPasswordNotConfigured = 'The IQMS schema password is not configured.';
+
 var
   _IniFiles_ : array[1..4] of string;
   _IniLevel_ : Integer;
@@ -549,10 +554,13 @@ begin
   with RegistryValues[1] do
     EncryptedPassword := GetRegistryValue(fRootKey, Format(fKey, [WebIQDatabase]), fName, fDataType, '');
 
-  if EncryptedPassword = '' then
-    Result := 'iqms'
+  if EncryptedPassword <> '' then
+    Result := AESCSharpCompatibleDecrypt(EncryptedPassword)
   else
-    Result := AESCSharpCompatibleDecrypt(EncryptedPassword);
+    Result := '';
+
+  if Result = '' then
+    raise Exception.CreateFmt(cServiceUserPasswordNotConfigured, [WebIQDatabase]);
 end;
 
 function TIQMS_Params.GetRTBoxConnection: TFDConnection;
@@ -575,6 +583,8 @@ begin
   try
     // Get the "slightly" encrypted password
     Result := RtBoxConn.ExecSQLScalar('select iqms_log from iqms.iqorder2');
+    if string.IsNullOrWhiteSpace(Result) then
+      raise Exception.Create(cIQMSPasswordNotConfigured);
     // Decrypt and return the password
     Result := CharXOR( Result );
   finally

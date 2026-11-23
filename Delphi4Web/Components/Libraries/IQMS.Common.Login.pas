@@ -105,10 +105,17 @@ uses
   IQMS.WebVcl.ResourceStrings,
   IQMS.Common.DataLib,
   IQMS.Common.Miscellaneous,
-  IQMS.Common.StandardExceptions;
+  IQMS.Common.StandardExceptions,
+  IQMS.Common.Registry,
+  IQMS.Common.Encrypt;
 
 const
   CRLF = #13#10;
+
+resourcestring
+  cServiceUserPasswordNotConfigured =
+    'The RTBox service password is not configured for %s. Store it encrypted in the ServiceUser registry value.';
+  cIQMSPasswordNotConfigured = 'The IQMS schema password is not configured.';
 
 { TLogin }
 
@@ -472,7 +479,7 @@ function TLogin.GetIQMSPassword: string;
 begin
   Result := SelectValueAsString('select iqms_log from iqms.iqorder2');
   if string.IsNullOrWhiteSpace(Result) then
-    Exit('iqms');
+    raise Exception.Create(cIQMSPasswordNotConfigured);
   Result := CharXOR(Result);
 end;
 
@@ -585,22 +592,14 @@ begin
     raise Exception.Create( IQMS.WebVcl.ResourceStrings.cTXT0000426 ); // 'The IQWIN95 BDE Alias is incompatible with Service User authentication.
 
   //EIQ-2434 IQAlert, EServer, IQClock, allow RTBox to use Service User Pwd set via IQStatus AB 03-06-14
-  Result:= 'IQMS'; //Default for users not using Service User Password in IQStatus ;
-//
-(*UG_rem_AMB*)
-//This needs to be read in from an encrypted ini file or something. The part below
-//is what we did for the IQStatus "service user authentication" feature for GE
+  ATmp:= LoadStrFromLocalMachineRegistry(
+    Format('%siqms\shared\%s', [ RegPathSoftwareCheckWow6432Node, ConnectionName ] ), 'ServiceUser' );
+  if ATmp <> '' then
+    ATmp:= AESCSharpCompatibleDecrypt(ATmp);
+  if ATmp = '' then
+    raise Exception.CreateFmt(cServiceUserPasswordNotConfigured, [ ConnectionName ]);
 
-//  ATmp:= LoadStrFromLocalMachineRegistry(
-//    Format('%siqms\shared\%s', [ RegPathSoftwareCheckWow6432Node, AAlias ] ), 'ServiceUser' );
-//  if ATmp = '' then
-//    EXIT;
-//
-//  ATmp:= AESCSharpCompatibleDecrypt(ATmp);
-//  if ATmp = '' then
-//    EXIT;
-//
-//  Result:= ATmp;
+  Result:= ATmp;
 end;
 
 procedure TLogin.RecordTooManyFailedLoginAttempts(aUserName: string);

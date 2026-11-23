@@ -11,7 +11,6 @@ object UD_DataModule: TUD_DataModule
     Params.Strings = (
       'Database=IQORA'
       'User_Name=IQMS'
-      'Password=IQMS'
       'DriverID=Ora')
     ResourceOptions.AssignedValues = [rvAutoConnect]
     ResourceOptions.AutoConnect = False

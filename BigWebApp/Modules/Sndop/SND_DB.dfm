@@ -4,8 +4,7 @@ object SndDB: TSndDB
   Width = 175
   object Database1: TFDConnection
     Params.Strings = (
-      'user name=IQMS'
-      'password=IQMS')
+      'user name=IQMS')
     LoginPrompt = False
     Left = 12
     Top = 6

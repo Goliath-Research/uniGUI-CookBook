@@ -151,7 +151,6 @@ inherited FrmDBTransImportAlias: TFrmDBTransImportAlias
       'DriverName=Oracle'
       'DataBase=IQORA'
       'User_Name=IQMS'
-      'Password=IQMS'
       'RowsetSize=20'
       'BlobSize=-1'
       'ErrorResourceFile='
