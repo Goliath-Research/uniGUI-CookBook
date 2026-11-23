@@ -72,7 +72,8 @@ procedure TFrmShipManAccountUPS.SaveOptions;
 begin
   // inherited; // nothing
   CarrierOptions.ParamByName('AccountNumber').AsString := edtAccount.Text;
-  ExecuteCommandFmt('update freight_carrier set acct = ''%s'' where id = %.0f', [edtAccount.Text, FCarrierID]);
+  ExecuteCommandParam('update freight_carrier set acct = :ACCT where id = :ID',
+    ['ACCT;STRING', 'ID;FLOAT'], [edtAccount.Text, FCarrierID]);
   CarrierOptions.ParamByName('Username').AsString := edtMyUPSID.Text;
   CarrierOptions.ParamByName('Password').AsString := edtPassword.Text;
 end;
