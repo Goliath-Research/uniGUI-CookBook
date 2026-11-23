@@ -31,12 +31,6 @@ object dUsersForm: TdUsersForm
         Width = 100
       end
       item
-        FieldName = 'Password'
-        Title.Alignment = taCenter
-        Title.Caption = 'Password'
-        Width = 196
-      end
-      item
         FieldName = 'Admin'
         Title.Alignment = taCenter
         Title.Caption = 'Admin'
@@ -79,6 +73,28 @@ object dUsersForm: TdUsersForm
       LayoutConfig.Margin = '5px'
       Layout = 'border'
       TabOrder = 2
+      object edtNewPassword: TUniEdit
+        Left = 0
+        Top = 2
+        Width = 121
+        Hint = ''
+        PasswordChar = '*'
+        Text = ''
+        LayoutConfig.Region = 'west'
+        TabOrder = 2
+        EmptyText = 'New password'
+      end
+      object btnSetPassword: TUniButton
+        Left = 125
+        Top = 0
+        Width = 80
+        Height = 26
+        Hint = ''
+        Caption = 'Set Password'
+        LayoutConfig.Region = 'center'
+        TabOrder = 3
+        OnClick = btnSetPasswordClick
+      end
       object dbnCustomers: TUniDBNavigator
         Left = 209
         Top = 0

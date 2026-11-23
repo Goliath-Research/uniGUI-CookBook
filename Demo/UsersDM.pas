@@ -28,7 +28,7 @@ type
     procedure actToggleAdminExecute(Sender: TObject);
   private
   public
-    { Public declarations }
+    procedure SetPassword(const aPassword: string);
   end;
 
 function dmUsers: TdmUsers;
@@ -38,6 +38,7 @@ implementation
 {$R *.dfm}
 
 uses
+  Variants,
   uniGUIDialogs,
   UniGUIVars, uniGUIMainModule, MainModule;
 
@@ -73,6 +74,21 @@ begin
     end;
 end;
 
+procedure TdmUsers.SetPassword(const aPassword: string);
+begin
+  if aPassword = '' then
+    ShowMessage('Type the new password first!')
+  else if tblUsersUsername.AsString = '' then
+    ShowMessage('Select or enter a user before setting its password!')
+  else
+  begin
+    if tblUsers.State = dsBrowse then
+      tblUsers.Edit;
+    tblUsersPassword.AsString := HashPassword(tblUsersUsername.AsString, aPassword);
+    tblUsers.Post;
+  end;
+end;
+
 procedure TdmUsers.DataModuleCreate(Sender: TObject);
 begin
   tblRoles.Open;
@@ -93,6 +109,15 @@ var
   oldAdmin : boolean;
   newAdmin : boolean;
 begin
+  // The stored verifier is salted with the username, so a rename needs a new password
+  if (tblUsers.State = dsEdit) and
+     (tblUsersUsername.AsString <> VarToStr(tblUsersUsername.OldValue)) and
+     (tblUsersPassword.AsString = VarToStr(tblUsersPassword.OldValue)) then
+  begin
+    ShowMessage('Set a new password when renaming a user!');
+    Abort;
+  end;
+
   AdminQty := tblUsers.Connection.ExecSQLScalar('SELECT count(*) FROM Users WHERE RoleID = 1');
 
   oldAdmin := tblUsersRoleId.CurValue = Admin_Role;

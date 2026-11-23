@@ -60,11 +60,41 @@ object mUsersForm: TmUsersForm
         end
       end
     end
-    object dbgUsers: TUnimDBGrid
+    object pnlNewPassword: TUnimContainerPanel
       Left = 0
       Top = 48
       Width = 600
-      Height = 929
+      Height = 56
+      Hint = ''
+      Align = alTop
+      Anchors = [akLeft, akTop, akRight]
+      object edtNewPassword: TUnimEdit
+        Left = 0
+        Top = 0
+        Width = 440
+        Height = 56
+        Hint = ''
+        Align = alClient
+        Text = ''
+        PasswordChar = '*'
+        FieldLabel = 'New Password'
+      end
+      object btnSetPassword: TUnimButton
+        Left = 440
+        Top = 0
+        Width = 160
+        Height = 56
+        Hint = ''
+        Align = alRight
+        Caption = 'Set Password'
+        OnClick = btnSetPasswordClick
+      end
+    end
+    object dbgUsers: TUnimDBGrid
+      Left = 0
+      Top = 104
+      Width = 600
+      Height = 873
       Hint = ''
       Align = alClient
       Anchors = [akLeft, akTop, akRight, akBottom]
@@ -78,14 +108,6 @@ object mUsersForm: TmUsersForm
           Title.Font.Height = -21
           FieldName = 'Username'
           Width = 147
-        end
-        item
-          EditorType = ceText
-          Title.Alignment = taCenter
-          Title.Caption = 'Password'
-          Title.Font.Height = -21
-          FieldName = 'Password'
-          Width = 142
         end
         item
           EditorType = ceCheck

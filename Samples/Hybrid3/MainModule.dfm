@@ -186,6 +186,7 @@ object UniMainModule: TUniMainModule
     Top = 176
   end
   object tblUsers: TFDTable
+    BeforePost = tblUsersBeforePost
     IndexFieldNames = 'Username'
     Connection = Conn
     UpdateOptions.UpdateTableName = 'Users'
@@ -202,8 +203,9 @@ object UniMainModule: TUniMainModule
     object tblUsersPassword: TStringField
       FieldName = 'Password'
       Origin = 'Password'
+      Visible = False
       Required = True
-      Size = 32
+      Size = 64
     end
     object tblUsersAdmin: TBooleanField
       FieldName = 'Admin'

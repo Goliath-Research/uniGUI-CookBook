@@ -71,12 +71,14 @@ type
 
 function UniMainModule: TUniMainModule;
 
+function HashPassword(const aUsername, aPassword: string): string; inline;
+
 implementation
 
 {$R *.dfm}
 
 uses
-  Variants,
+  Variants, System.Hash,
   UniGUIVars, ServerModule, uniGUIApplication,
   Messages,
   uniGUIDialogs,
@@ -86,6 +88,14 @@ uses
 function UniMainModule: TUniMainModule;
 begin
   Result := TUniMainModule(UniApplication.UniMainModule)
+end;
+
+// Users.Password holds this verifier, never the password itself. The account
+// name salts it so equal passwords do not share a stored value; it is
+// lowercased because the Username lookup may be case-insensitive.
+function HashPassword(const aUsername, aPassword: string): string; inline;
+begin
+  Result := UpperCase(THashSHA2.GetHashString('uniGUI-CookBook:' + LowerCase(aUsername) + ':' + aPassword));
 end;
 
 { TUniMainModule }
@@ -121,7 +131,7 @@ begin
       Format
       (
         'SELECT RoleID FROM Users WHERE Username = ''%s'' AND Password = ''%s''',
-        [aUserName, aPassword]
+        [aUserName, HashPassword(aUserName, aPassword)]
       )
     ) = 1;
 

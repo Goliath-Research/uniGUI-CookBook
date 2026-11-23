@@ -27,7 +27,7 @@
   <Table Name="&quot;main&quot;.Users" Member="Users">
     <Type Name="User" ed:Guid="825145cf-e048-4ad9-8323-1cf8d4ea4cfe">
       <Column Name="Username" Type="String" IsPrimaryKey="true" CanBeNull="false" MaxLength="16" ed:ValidateMaxLength="16" ed:ValidateRequired="true" ed:Guid="c3b8a71e-3589-4b11-993b-e336193623e9" />
-      <Column Name="Password" Type="String" CanBeNull="false" UpdateCheck="Never" MaxLength="32" ed:ValidateMaxLength="32" ed:ValidateRequired="true" ed:Guid="40624bb9-0747-4ad9-a533-3ff97d9db190" />
+      <Column Name="Password" Type="String" CanBeNull="false" UpdateCheck="Never" MaxLength="64" ed:ValidateMaxLength="64" ed:ValidateRequired="true" ed:Guid="40624bb9-0747-4ad9-a533-3ff97d9db190" />
       <Column Name="Admin" Type="Boolean" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="f4ada277-cd11-476e-b5b5-7d21dc3ccbcf" />
     </Type>
   </Table>
