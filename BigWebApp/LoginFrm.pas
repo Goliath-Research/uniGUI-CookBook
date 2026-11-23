@@ -70,7 +70,7 @@ procedure TUniLoginForm1.UniLoginFormCreate(Sender: TObject);
 begin
   FLoginAttemptsCounter := 0;
   UserNameEdit.Text := UniApplication.Parameters.Values['username'];
-  PasswordEdit.Text := UniApplication.Parameters.Values['password'];
+  PasswordEdit.Text := '';
 end;
 
 procedure TUniLoginForm1.UserNameEditKeyDown(Sender: TObject; var Key: Word;

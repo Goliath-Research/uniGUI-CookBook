@@ -49,7 +49,6 @@ end;
 procedure TmLoginForm.UnimLoginFormCreate(Sender: TObject);
 begin
   edtUsername.Text := UniApplication.Parameters.Values['username'];
-  edtPassword.Text := UniApplication.Parameters.Values['password'];
 end;
 
 initialization
