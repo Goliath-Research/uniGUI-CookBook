@@ -95,7 +95,8 @@ end;
 procedure TFrmProcess.bbtnOKClick(Sender: TObject);
 begin
   IQRegStringScalarWrite( Application, constDNETWNT,             edCommandLine.Text);
-  ExecuteCommandFmt('update params set dart_status_filename = ''%s'' ', [ edStatusFileName.Text ]);
+  ExecuteCommandParam('update params set dart_status_filename = :dart_status_filename',
+                      ['dart_status_filename'], [ edStatusFileName.Text ]);
   IQRegStringScalarWrite( Application, constDNETGRAPHICNAME,     edGraphicName.Text);
   Close;
 end;
