@@ -155,6 +155,7 @@
             <FormType>dfm</FormType>
             <DesignClass>TUniLoginForm</DesignClass>
         </DCCReference>
+        <DCCReference Include="GoogleIdToken.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

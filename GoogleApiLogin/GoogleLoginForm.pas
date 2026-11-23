@@ -27,7 +27,11 @@ implementation
 {$R *.dfm}
 
 uses
-  uniGUIVars, MainModule, uniGUIApplication;
+  uniGUIVars, MainModule, uniGUIApplication, GoogleIdToken;
+
+const
+  { Must match the google-signin-client_id meta tag in GoogleLoginForm.dfm. }
+  GoogleClientId = '679905286098-4der25sucnu0lkhlgiipuul48m0gp979.apps.googleusercontent.com';
 
 function UniGoogleLoginForm: TUniGoogleLoginForm;
 begin
@@ -41,14 +45,18 @@ end;
 
 procedure TUniGoogleLoginForm.UniLoginFormAjaxEvent(Sender: TComponent;
   EventName: string; Params: TUniStrings);
+var
+  Identity: TGoogleIdentity;
 begin
   if EventName = 'success' then
   begin
-    UniMainModule.UserFullName := Params.Values['Name'];
-    UniMainModule.UserEmail    := Params.Values['Email'];
-    UniMainModule.UserImageURL := Params.Values['ImageURL'];
-    UniMainModule.UserIdToken  := Params.Values['Token'];
-    ModalResult := mrOk;
+    if VerifyGoogleIdToken(Params.Values['Token'], GoogleClientId, Identity) then
+    begin
+      UniMainModule.SignIn(Identity);
+      ModalResult := mrOk;
+    end
+    else
+      ShowMessage('Google sign-in could not be verified.');
   end;
   if EventName = 'failure' then
   begin

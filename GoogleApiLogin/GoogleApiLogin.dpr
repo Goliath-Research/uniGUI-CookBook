@@ -5,7 +5,8 @@ uses
   ServerModule in 'ServerModule.pas' {UniServerModule: TUniGUIServerModule},
   MainModule in 'MainModule.pas' {UniMainModule: TUniGUIMainModule},
   Main in 'Main.pas' {MainForm: TUniForm},
-  GoogleLoginForm in 'GoogleLoginForm.pas' {UniGoogleLoginForm: TUniLoginForm};
+  GoogleLoginForm in 'GoogleLoginForm.pas' {UniGoogleLoginForm: TUniLoginForm},
+  GoogleIdToken in 'GoogleIdToken.pas';
 
 {$R *.res}
 
