@@ -140,7 +140,8 @@ procedure TFrmShipManAccountFedExExpress.SaveOptions;
 begin
   // inherited; // nothing
   CarrierOptions.ParamByName('AccountNumber').AsString := edtAccountNumber.Text;
-  ExecuteCommandFmt('update freight_carrier set acct = ''%s'' where id = %.0f', [edtAccountNumber.Text, FCarrierID]);
+  ExecuteCommandParam('update freight_carrier set acct = :ACCT where id = :ID',
+    ['ACCT;STRING', 'ID;FLOAT'], [edtAccountNumber.Text, FCarrierID]);
   CarrierOptions.ParamByName('MeterNumber').AsString := edtMeterNumber.Text;
   CarrierOptions.ParamByName('FreightEnabled').AsString := IQMS.Common.Boolean.boolToYN(chkFreightEnabled.Checked);
   if (chkFreightEnabled.Checked) then

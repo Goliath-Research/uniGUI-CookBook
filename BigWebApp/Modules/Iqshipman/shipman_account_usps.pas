@@ -241,7 +241,8 @@ begin
   // inherited; // nothing
   CarrierOptions.ParamByName('UserName').AsString := edtUserName.Text;
   CarrierOptions.ParamByName('Password').AsString := edtPassword.Text;
-  ExecuteCommandFmt('update freight_carrier set acct = ''%s'' where id = %.0f', [edtUserName.Text, FCarrierID]);
+  ExecuteCommandParam('update freight_carrier set acct = :ACCT where id = :ID',
+    ['ACCT;STRING', 'ID;FLOAT'], [edtUserName.Text, FCarrierID]);
 end;
 
 procedure TFrmShipManAccountUSPS.ValidateOptions;
