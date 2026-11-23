@@ -39,10 +39,6 @@ object UniGoogleLoginForm: TUniGoogleLoginForm
         '"dark"></div>'
       '    <script>'
       '        function onSignIn(googleUser) {'
-      '            var profile = googleUser.getBasicProfile();'
-      '            var name = profile.getName();'
-      '            var email = profile.getEmail();'
-      '            var image = profile.getImageUrl();'
       
         '            var id_token = googleUser.getAuthResponse().id_token' +
         ';'
@@ -51,9 +47,7 @@ object UniGoogleLoginForm: TUniGoogleLoginForm
       '            ('
       '               UniGoogleLoginForm.form, '
       '               "success", '
-      
-        '               ["Name=" + name, "Email=" + email, "ImageURL=" + ' +
-        'image, "Token=" + id_token]'
+      '               ["Token=" + id_token]'
       '            );'
       '        }'
       ''
