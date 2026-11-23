@@ -127,14 +127,17 @@ end;
 
 procedure TFrm1099NewYear.Insert1099;
 begin
-  ExecuteCommandFmt('insert into ap1099_years (id, year, descrip) values (%f, ''%d'', ''%s'')',
-                                     [FID, seYear.Value, edDescrip.Text]);
+  ExecuteCommandParam('insert into ap1099_years (id, year, descrip) values (:ID, :YEAR, :DESCRIP)',
+                      ['ID;F', 'YEAR', 'DESCRIP'],
+                      [FID, IntToStr(seYear.Value), edDescrip.Text]);
 
   if FEINId <> 0 then
     ExecuteCommandFmt('update ap1099_years set ein_id = %f where id = %f', [FEINId, FID]);
 
 
-  ExecuteCommandFmt('begin ap.Populate_AP1099_Detil(''%s'', %f, %f, ''%s''); end;', [IntToStr(seYear.Value), FID, FEINId, FEINDescrip]);
+  ExecuteCommandParam('begin ap.Populate_AP1099_Detil(:ADATE, :NID, :AEIN_ID, :AEIN_DESCRIP); end;',
+                      ['ADATE', 'NID;F', 'AEIN_ID;F', 'AEIN_DESCRIP'],
+                      [IntToStr(seYear.Value), FID, FEINId, FEINDescrip]);
 
 //  with Qry1099 do
 //  begin
