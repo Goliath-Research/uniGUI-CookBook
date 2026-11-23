@@ -37,7 +37,7 @@
   <Table Name="dbo.Users" Member="Users">
     <Type Name="User" ed:Guid="438228cc-5dfa-46eb-9b39-aaa199f21948">
       <Column Name="Username" Type="String" IsPrimaryKey="true" CanBeNull="false" MaxLength="16" ed:ValidateMaxLength="16" ed:ValidateRequired="true" ed:Guid="adf24260-5a73-4a9f-a436-a98d06d0ef82" />
-      <Column Name="Password" Type="String" CanBeNull="false" UpdateCheck="Never" MaxLength="32" ed:ValidateMaxLength="32" ed:ValidateRequired="true" ed:Guid="3fa6a9d3-171f-408b-be03-f852e7ac3c04" />
+      <Column Name="Password" Type="String" CanBeNull="false" UpdateCheck="Never" MaxLength="64" ed:ValidateMaxLength="64" ed:ValidateRequired="true" ed:Guid="3fa6a9d3-171f-408b-be03-f852e7ac3c04" />
       <Column Name="Admin" Type="Boolean" CanBeNull="true" UpdateCheck="Never" ed:ValidateRequired="false" ed:Guid="198e1e5d-f3e4-467c-8a06-481cf29ed466" />
     </Type>
   </Table>

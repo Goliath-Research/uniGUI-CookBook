@@ -246,7 +246,7 @@ type
   private
     [Column('Username', 16)]
     FUsername: String;
-    [Column('Password', 32)]
+    [Column('Password', 64)]
     FPassword: String;
     [Column('Admin', [CanBeNull])]
     FAdmin: BooleanNullable;

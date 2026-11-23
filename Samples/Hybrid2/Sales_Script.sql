@@ -256,6 +256,9 @@ INSERT INTO Items (
 
 -- Table: Users
 
+-- Password holds HashPassword(Username, password) from MainModule.pas
+ALTER TABLE Users ALTER COLUMN Password VARCHAR(64) NOT NULL;
+
 INSERT INTO Users (
                       Username,
                       Password,
@@ -263,7 +266,7 @@ INSERT INTO Users (
                   )
                   VALUES (
                       'admin',
-                      'password',
+                      '26510D7032E5F7C7A0867B773B397195545AA6B8FBDA16426F22CA20C48C3BC5',
                       1
                   );
 
@@ -274,7 +277,7 @@ INSERT INTO Users (
                   )
                   VALUES (
                       'user',
-                      'password',
+                      'D3C38A3503DD32CFE525FF232A5B8C4C8B414B42E8BDC61030D5935BF4E6D7B8',
                       0
                   );
 

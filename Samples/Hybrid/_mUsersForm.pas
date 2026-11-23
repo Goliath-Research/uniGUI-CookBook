@@ -7,7 +7,8 @@ uses
   Controls, Forms, uniGUITypes, uniGUIAbstractClasses,
   uniGUIClasses, uniGUImClasses, uniGUIForm, uniGUImForm, uniGUImJSForm,
   uniBasicGrid, uniDBGrid, unimDBListGrid, unimDBGrid, uniGUIBaseClasses,
-  uniDBNavigator, unimDBNavigator, uniToolBar, unimToolbar;
+  uniDBNavigator, unimDBNavigator, uniToolBar, unimToolbar,
+  uniEdit, unimEdit, uniButton, unimButton;
 
 type
   TmUsersForm = class(TUnimForm)
@@ -17,8 +18,12 @@ type
     UnimContainerPanel1: TUnimContainerPanel;
     UnimToolButton1: TUnimToolButton;
     dbnUsers: TUnimDBNavigator;
+    pnlNewPassword: TUnimContainerPanel;
+    edtNewPassword: TUnimEdit;
+    btnSetPassword: TUnimButton;
     procedure UnimFormCreate(Sender: TObject);
     procedure UnimFormDestroy(Sender: TObject);
+    procedure btnSetPasswordClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -47,6 +52,12 @@ end;
 procedure TmUsersForm.UnimFormDestroy(Sender: TObject);
 begin
   UniMainModule.OnDestroyUsersEditor(Sender);
+end;
+
+procedure TmUsersForm.btnSetPasswordClick(Sender: TObject);
+begin
+  UniMainModule.SetPassword(edtNewPassword.Text);
+  edtNewPassword.Text := '';
 end;
 
 end.

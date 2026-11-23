@@ -27,8 +27,9 @@ object dmUsers: TdmUsers
     object tblUsersPassword: TStringField
       FieldName = 'Password'
       Origin = 'Password'
+      Visible = False
       Required = True
-      Size = 32
+      Size = 64
     end
     object tblUsersRoleId: TIntegerField
       FieldName = 'RoleId'

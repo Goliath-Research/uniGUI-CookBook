@@ -69,11 +69,11 @@ type
     procedure UniGUIMainModuleNewComponent(AComponent: TComponent);
     procedure tblOrdersCalcFields(DataSet: TDataSet);
     procedure tblItemsAfterPost(DataSet: TDataSet);
+    procedure tblUsersBeforePost(DataSet: TDataSet);
   private
     FContainer  : TContainer;
     FServices   : TServices;
     FUsername   : string;
-    FPassword   : string;
     FIsAdmin    : boolean;
 
     procedure SetAsMobile;
@@ -87,23 +87,26 @@ type
     procedure OnCreateUsersEditor (Sender: TObject);
     procedure OnDestroyUsersEditor(Sender: TObject);
 
+    procedure SetPassword(const aPassword: string);
+
     function  ExportSalesReportToPDF : string;
 
     property Container  : TContainer  read FContainer;
     property Services   : TServices   read FServices;
     property Username   : string      read FUsername;
-    property Password   : string      read FPassword;
     property IsAdmin    : boolean     read FIsAdmin;
   end;
 
 function UniMainModule: TUniMainModule;
+
+function HashPassword(const aUsername, aPassword: string): string; inline;
 
 implementation
 
 {$R *.dfm}
 
 uses
-  Variants,
+  Variants, System.Hash,
   UniGUIVars, ServerModule, uniGUIApplication,
   Messages,
   uniGUIDialogs,
@@ -113,6 +116,14 @@ uses
 function UniMainModule: TUniMainModule;
 begin
   Result := TUniMainModule(UniApplication.UniMainModule)
+end;
+
+// Users.Password holds this verifier, never the password itself. The account
+// name salts it so equal passwords do not share a stored value; it is
+// lowercased because the Username lookup may be case-insensitive.
+function HashPassword(const aUsername, aPassword: string): string; inline;
+begin
+  Result := UpperCase(THashSHA2.GetHashString('uniGUI-CookBook:' + LowerCase(aUsername) + ':' + aPassword));
 end;
 
 { TUniMainModule }
@@ -147,7 +158,7 @@ begin
       Format
       (
         'SELECT Admin FROM Users WHERE Username = ''%s'' AND Password = ''%s''',
-        [aUserName, aPassword]
+        [aUserName, HashPassword(aUserName, aPassword)]
       )
     );
 
@@ -155,7 +166,6 @@ begin
   if UserFound then
   begin
     FUsername := aUsername;
-    FPassword := aPassword;
 
     FIsAdmin := not VarIsNull(IsAdmin) and IsAdmin;
 
@@ -264,6 +274,18 @@ begin
   tblOrders.Post;
 end;
 
+procedure TUniMainModule.tblUsersBeforePost(DataSet: TDataSet);
+begin
+  // The stored verifier is salted with the username, so a rename needs a new password
+  if (tblUsers.State = dsEdit) and
+     (tblUsersUsername.AsString <> VarToStr(tblUsersUsername.OldValue)) and
+     (tblUsersPassword.AsString = VarToStr(tblUsersPassword.OldValue)) then
+  begin
+    ShowMessage('Set a new password when renaming a user!');
+    Abort;
+  end;
+end;
+
 procedure TUniMainModule.tblItemsCalcFields(DataSet: TDataSet);
 begin
   if Conn.Connected and not tblItemsQuantity.IsNull and not tblItemsPrice.IsNull then
@@ -325,6 +347,21 @@ begin
       tblUsersAdmin.Value := tblUsersAdmin.IsNull or not tblUsersAdmin.Value;
       tblUsers.Post;
     end;
+  end;
+end;
+
+procedure TUniMainModule.SetPassword(const aPassword: string);
+begin
+  if aPassword = '' then
+    ShowMessage('Type the new password first!')
+  else if tblUsersUsername.AsString = '' then
+    ShowMessage('Select or enter a user before setting its password!')
+  else
+  begin
+    if tblUsers.State = dsBrowse then
+      tblUsers.Edit;
+    tblUsersPassword.AsString := HashPassword(tblUsersUsername.AsString, aPassword);
+    tblUsers.Post;
   end;
 end;
 

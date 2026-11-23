@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
   Controls, Forms, uniGUITypes, uniGUIAbstractClasses,
   uniGUIClasses, uniGUIForm, uniBasicGrid, uniDBGrid, uniDBNavigator,
-  uniGUIBaseClasses, uniPanel, uniToolBar,
+  uniGUIBaseClasses, uniPanel, uniToolBar, uniEdit, uniButton,
   Interfaces,
   UsersDM;
 
@@ -17,6 +17,9 @@ type
     barTop: TUniToolBar;
     btnToggleAdmin: TUniToolButton;
     cntUsers: TUniToolButton;
+    edtNewPassword: TUniEdit;
+    btnSetPassword: TUniButton;
+    procedure btnSetPasswordClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -41,6 +44,12 @@ end;
 procedure TdUsersForm.ShowAsModal;
 begin
   ShowModal;
+end;
+
+procedure TdUsersForm.btnSetPasswordClick(Sender: TObject);
+begin
+  dmUsers.SetPassword(edtNewPassword.Text);
+  edtNewPassword.Text := '';
 end;
 
 end.
