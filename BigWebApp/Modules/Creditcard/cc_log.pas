@@ -71,6 +71,29 @@ uses
   IQMS.Common.StringUtils,
   IQMS.Common.SysInfo;
 
+// Merchant credentials are stored encrypted in the account parameters, but
+// the log must not hold a copy of them in any form.
+function IsMerchantSecretParam(const ACode: string): Boolean;
+var
+  AUpperCode: string;
+begin
+  AUpperCode := UpperCase(ACode);
+  Result := (Pos('PASSWORD', AUpperCode) > 0) or
+    (Pos('KEY', AUpperCode) > 0) or
+    (Pos('HASH', AUpperCode) > 0) or
+    (Pos('SECRET', AUpperCode) > 0) or
+    (AUpperCode = 'SECURITY_CODE');
+end;
+
+procedure RedactMerchantSecrets(ALines: TStringList);
+var
+  i: Integer;
+begin
+  for i := 0 to ALines.Count - 1 do
+    if IsMerchantSecretParam(ALines.Names[i]) then
+      ALines.ValueFromIndex[i] := '********';
+end;
+
 procedure WriteToLog(const ACreditCardAccountID: Real;
   const ASource: TLogSource; const AClass: TLogClass; const ADetails: string;
   const ARequestData: string; const AResponseData: string;
@@ -97,6 +120,7 @@ begin
       // cc_rscstr.cTXT0000718 = 'Gateway=%s';
       ALines.Add(Format(cc_rscstr.cTXT0000718, [o.GatewayDescription]));
       o.AsNameValues(ALines);
+      RedactMerchantSecrets(ALines);
       AMerchantData := IQMS.Common.StringUtils.StrTran(ALines.Text, NL, ';');
     finally
       if Assigned(ALines) then
