@@ -184,6 +184,7 @@ implementation
 uses IQMS.Common.DataLib,
      IQMS.Common.Dialogs,
      IQMS.Common.StringUtils,
+     IQMS.Common.GuidUtils,
 //     PanelMsg,
 //     IQSecMan,
      IQMS.Common.Numbers,
@@ -2197,6 +2198,8 @@ begin
 end;
 
 procedure CheckRTBOXUserCreated(ADatabase: string);
+var
+  AInitialPassword: string;
 
   function tableSpaceExists(const ATablespace: string): Boolean;
   begin
@@ -2209,15 +2212,23 @@ procedure CheckRTBOXUserCreated(ADatabase: string);
 
 begin
   // If the user, RTBOX, does not exist, then create it.
+  // The account is created locked with a random password. An administrator
+  // must set the service password, unlock the account and store the
+  // encrypted password in the ServiceUser registry value before it is used.
   try
     if (SelectValueAsInteger(
       'SELECT 1 FROM dba_users WHERE username = ''RTBOX'' AND ROWNUM < 2',
       ADatabase) = 0) and
       tableSpaceExists('USERS') and tableSpaceExists('TEMP') then
       begin
-        ExecuteCommand(
-          'CREATE USER RTBOX IDENTIFIED BY IQMS ' +
-          'DEFAULT TABLESPACE USERS TEMPORARY TABLESPACE TEMP', ADatabase);
+        // Oracle passwords are limited to 30 characters
+        AInitialPassword := Copy(GetGUIDAlphaNumeric, 1, 30);
+        if Length(AInitialPassword) < 30 then
+          Exit;
+        ExecuteCommand(Format(
+          'CREATE USER RTBOX IDENTIFIED BY "%s" ' +
+          'DEFAULT TABLESPACE USERS TEMPORARY TABLESPACE TEMP ACCOUNT LOCK',
+          [AInitialPassword]), ADatabase);
         ExecuteCommand('GRANT CONNECT TO "RTBOX"', ADatabase);
         ExecuteCommand('GRANT CREATE SESSION TO "RTBOX"', ADatabase);
         ExecuteCommand('GRANT SELECT ON iqorder2 TO "RTBOX"', ADatabase);
