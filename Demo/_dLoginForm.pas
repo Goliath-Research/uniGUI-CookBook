@@ -49,10 +49,9 @@ end;
 
 procedure TdLoginForm.UniLoginFormCreate(Sender: TObject);
 // Just for testing...
-// http://www.<website>.com?username=<username>&password=<password>
+// http://www.<website>.com?username=<username>
 begin
   edtUsername.Text := UniApplication.Parameters.Values['username'];
-  edtPassword.Text := UniApplication.Parameters.Values['password'];
 end;
 
 initialization
