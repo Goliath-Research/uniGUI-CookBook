@@ -690,6 +690,15 @@ type
     { Virtuals }
     function FormatFloatValue(const AValue: Real): string; virtual;
     function FixText(const AValue: string): string; virtual;
+    /// <summary> Add each merchant credential (password, PIN, key,
+    /// signature) that can appear in a request or response.  These values
+    /// are masked before the request or response is written to the log.
+    /// </summary>
+    procedure GetMerchantSecrets(ASecrets: TStringList); virtual;
+    /// <summary> Mask the card number, merchant credentials and card
+    /// security code in a request or response.
+    /// </summary>
+    function MaskSensitiveData(const AText: string): string;
     /// <summary> Append a field/value pair to the command, using default
     /// settings.
     /// </summary>
@@ -874,6 +883,7 @@ type
     function FormatFloatValue(const AValue: Real): string; override;
     function FormatFloatValue_API_1(const AValue: Real): string;
     procedure Validate; override;
+    procedure GetMerchantSecrets(ASecrets: TStringList); override;
   public
     { Public declarations }
     constructor Create(AOwner: TComponent);
@@ -949,6 +959,7 @@ type
     procedure ParseResponseText; override;
     procedure Validate; override;
     function FormatFloatValue(const AValue: Real): string; override;
+    procedure GetMerchantSecrets(ASecrets: TStringList); override;
   public
     { Public declarations }
     constructor Create(AOwner: TComponent);
@@ -1017,6 +1028,7 @@ type
       var AResponseClass: TResponseClass); override;
     procedure ParseResponseText; override;
     procedure Validate; override;
+    procedure GetMerchantSecrets(ASecrets: TStringList); override;
   public
     { Public declarations }
     constructor Create(AOwner: TComponent);
@@ -1076,6 +1088,7 @@ type
     procedure Validate; override;
     function FormatFloatValue(const AValue: Real): string; override;
     function FormatTaxRateValue(const AValue: Real): string;
+    procedure GetMerchantSecrets(ASecrets: TStringList); override;
   public
     { Public declarations }
     constructor Create(AOwner: TComponent);
@@ -1129,6 +1142,7 @@ type
     procedure Validate; override;
     function CanSendCardData(const ATransactionType: TTransactionType)
       : Boolean; override;
+    procedure GetMerchantSecrets(ASecrets: TStringList); override;
   public
     { Public declarations }
     constructor Create(AOwner: TComponent);
@@ -1175,6 +1189,7 @@ type
     { Protected declarations }
     function FixText(const AValue: string): string; override;
     procedure Validate; override;
+    procedure GetMerchantSecrets(ASecrets: TStringList); override;
     // procedure BuildCommand; virtual; abstract;
     procedure ProcessResponseStatusCode(const AResponse: ShortString;
       var ACode: ShortString; var ADescription: string;
@@ -1286,6 +1301,7 @@ type
       var ACode: ShortString; var ADescription: string;
       var AResponseClass: TResponseClass); override;
     function FormatFloatValue(const AValue: Real): string; override;
+    procedure GetMerchantSecrets(ASecrets: TStringList); override;
   public
     { Public declarations }
     constructor Create(AOwner: TComponent);
@@ -1335,6 +1351,7 @@ type
     procedure GetURL(var AURL: string; var APort: Integer); override;
     procedure BuildCommand(const ATransactionType: TTransactionType); override;
     procedure Validate; override;
+    procedure GetMerchantSecrets(ASecrets: TStringList); override;
     procedure ParseResponseText; override;
     procedure ProcessResponseStatusCode(const AResponse: ShortString;
       var ACode: ShortString; var ADescription: string;
@@ -1468,6 +1485,7 @@ type
     procedure GetURL(var AURL: string; var APort: Integer); override;
     procedure BuildCommand(const ATransactionType: TTransactionType); override;
     procedure Validate; override;
+    procedure GetMerchantSecrets(ASecrets: TStringList); override;
     procedure ParseResponseText; override;
     procedure ProcessResponseStatusCode(const AResponse: ShortString;
       var ACode: ShortString; var ADescription: string;
@@ -2956,47 +2974,89 @@ begin
 end;
 
 function TEPaymentProcessor.LastRequest: string;
-var
-  AReplace: string;
 begin
-  // Last request
-  Result := FLastRequest;
-  // We are required by PA-DSS regulations to mask the cvv2 and account
-  // number even in the logged request/response text.
-  // Mask the security code
-  if Length(CreditCard.SecurityCode) > 0 then
-  begin
-    AReplace := Repl('*', Length(CreditCard.SecurityCode));
-    Result := IQMS.Common.StringUtils.StrTranStrict(Result, CreditCard.SecurityCode,
-      AReplace);
-  end;
-  // Mask the card number
-  if Length(CreditCard.CardNumber) > 0 then
-  begin
-    AReplace := cc_share.GetMaskedAccount(CreditCard.CardNumber);
-    Result := IQMS.Common.StringUtils.StrTranStrict(Result, CreditCard.CardNumber, AReplace);
-  end;
+  Result := MaskSensitiveData(FLastRequest);
 end;
 
 function TEPaymentProcessor.LastResponse: string;
-var
-  AReplace: string;
 begin
-  Result := FLastResponse; // Response.ResponseData;
+  Result := MaskSensitiveData(FLastResponse); // Response.ResponseData;
+end;
+
+procedure TEPaymentProcessor.GetMerchantSecrets(ASecrets: TStringList);
+begin
+  // provided by descendent
+end;
+
+function TEPaymentProcessor.MaskSensitiveData(const AText: string): string;
+const
+  SECRET_MASK = '********';
+var
+  ASecrets: TStringList;
+  ACount, ALongest, ALength, i: Integer;
+  AReplace: string;
+  // --------------------------------------------------------------------------
+  // Replace every occurrence, not only the "isolated" ones StrTranStrict
+  // replaces:  a card number or credential can be adjacent to any character.
+  function _ReplaceAll(const ASource, AFind, AReplace: string): string;
+  var
+    APos: Integer;
+    ARest: string;
+  begin
+    Result := '';
+    ARest := ASource;
+    APos := Pos(AFind, ARest);
+    while APos > 0 do
+    begin
+      Result := Result + Copy(ARest, 1, APos - 1) + AReplace;
+      ARest := Copy(ARest, APos + Length(AFind), Length(ARest));
+      APos := Pos(AFind, ARest);
+    end;
+    Result := Result + ARest;
+  end;
+// --------------------------------------------------------------------------
+begin
+  Result := AText;
+  if Result.IsEmpty then
+    Exit;
   // We are required by PA-DSS regulations to mask the cvv2 and account
   // number even in the logged request/response text.
+  // Mask the card number
+  if Length(CreditCard.CardNumber) > 0 then
+  begin
+    AReplace := cc_share.GetMaskedAccount(CreditCard.CardNumber);
+    Result := _ReplaceAll(Result, CreditCard.CardNumber, AReplace);
+  end;
+
+  // Mask the merchant credentials before the security code, so a security
+  // code that occurs inside a credential cannot leave the rest of the
+  // credential unmasked.
+  ASecrets := TStringList.Create;
+  try
+    GetMerchantSecrets(ASecrets);
+    // AddFieldA and AddFieldB send the value through FixText
+    ACount := ASecrets.Count;
+    for i := 0 to ACount - 1 do
+      ASecrets.Add(FixText(ASecrets[i]));
+    ALongest := 0;
+    for i := 0 to ASecrets.Count - 1 do
+      if Length(ASecrets[i]) > ALongest then
+        ALongest := Length(ASecrets[i]);
+    // Longest first, so a credential that contains another is masked whole
+    for ALength := ALongest downto 1 do
+      for i := 0 to ASecrets.Count - 1 do
+        if Length(ASecrets[i]) = ALength then
+          Result := _ReplaceAll(Result, ASecrets[i], SECRET_MASK);
+  finally
+    FreeAndNil(ASecrets);
+  end;
+
   // Mask the security code
   if Length(CreditCard.SecurityCode) > 0 then
   begin
     AReplace := Repl('*', Length(CreditCard.SecurityCode));
     Result := IQMS.Common.StringUtils.StrTranStrict(Result, CreditCard.SecurityCode,
       AReplace);
-  end;
-  // Mask the card number
-  if Length(CreditCard.CardNumber) > 0 then
-  begin
-    AReplace := cc_share.GetMaskedAccount(CreditCard.CardNumber);
-    Result := IQMS.Common.StringUtils.StrTranStrict(Result, CreditCard.CardNumber, AReplace);
   end;
 end;
 
@@ -3531,6 +3591,11 @@ begin
   end;
 end;
 
+procedure TEPaymentMerchantAccountsCa.GetMerchantSecrets(ASecrets: TStringList);
+begin
+  ASecrets.Add(MerchantPassword);
+end;
+
 procedure TEPaymentMerchantAccountsCa.Validate;
 begin
   inherited Validate;
@@ -3913,6 +3978,12 @@ begin
     ccChinaUnionPay:
       Result := 'CUP';
   end; // end case
+end;
+
+procedure TEPaymentTSYS.GetMerchantSecrets(ASecrets: TStringList);
+begin
+  ASecrets.Add(MerchantPassword);
+  ASecrets.Add(MerchantTransactionKey);
 end;
 
 procedure TEPaymentTSYS.Validate;
@@ -5146,6 +5217,11 @@ begin
   FGateway := cgwSterling;
 end;
 
+procedure TEPaymentSterling.GetMerchantSecrets(ASecrets: TStringList);
+begin
+  ASecrets.Add(MerchantSecurityCode);
+end;
+
 procedure TEPaymentSterling.Validate;
 begin
   inherited Validate;
@@ -5557,6 +5633,11 @@ begin
   FGateway := cgwMerchantESolutions;
 end;
 
+procedure TEPaymentMES.GetMerchantSecrets(ASecrets: TStringList);
+begin
+  ASecrets.Add(MerchantProfileKey);
+end;
+
 procedure TEPaymentMES.Validate;
 begin
   inherited Validate;
@@ -5887,6 +5968,12 @@ begin
   else
     AURL := 'https://secure2.authorize.net/gateway/transact.dll';
     // 03/17/2016 old AURL := 'https://secure.authorize.net/gateway/transact.dll';
+end;
+
+procedure TEPaymentAuthorizeNet.GetMerchantSecrets(ASecrets: TStringList);
+begin
+  ASecrets.Add(MerchantTransKey);
+  ASecrets.Add(MerchantHashValue);
 end;
 
 procedure TEPaymentAuthorizeNet.Validate;
@@ -6338,6 +6425,11 @@ begin
     AResponseClass := rcError;
     ADescription := 'Error';
   end;
+end;
+
+procedure TEPaymentMoneris.GetMerchantSecrets(ASecrets: TStringList);
+begin
+  ASecrets.Add(MerchantPassword);
 end;
 
 procedure TEPaymentMoneris.Validate;
@@ -6911,6 +7003,11 @@ begin
   end;
 end;
 
+procedure TEPaymentElavon.GetMerchantSecrets(ASecrets: TStringList);
+begin
+  ASecrets.Add(MerchantPassword);
+end;
+
 procedure TEPaymentElavon.Validate;
 begin
   // cc_rscstr.cTXT0000438 =
@@ -6949,6 +7046,12 @@ begin
     AURL := 'https://api-3t.sandbox.paypal.com/nvp'
   else
     AURL := 'https://api-3t.paypal.com/nvp';
+end;
+
+procedure TEPaymentPayPal.GetMerchantSecrets(ASecrets: TStringList);
+begin
+  ASecrets.Add(MerchantPassword);
+  ASecrets.Add(MerchantSignature);
 end;
 
 procedure TEPaymentPayPal.Validate;
@@ -8675,6 +8778,11 @@ begin
     AURL := 'https://pilot-payflowpro.paypal.com'
   else
     AURL := 'https://payflowpro.paypal.com';
+end;
+
+procedure TEPaymentPayFlowPro.GetMerchantSecrets(ASecrets: TStringList);
+begin
+  ASecrets.Add(MerchantPassword);
 end;
 
 procedure TEPaymentPayFlowPro.Validate;
