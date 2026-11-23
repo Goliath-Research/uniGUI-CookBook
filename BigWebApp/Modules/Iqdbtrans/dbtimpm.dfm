@@ -130,7 +130,6 @@ inherited FrmDBTransImportMDB: TFrmDBTransImportMDB
       'DriverName=Oracle'
       'DataBase=IQORA'
       'User_Name=IQMS'
-      'Password=IQMS'
       'RowsetSize=0'
       'BlobSize=-1'
       'ErrorResourceFile='
