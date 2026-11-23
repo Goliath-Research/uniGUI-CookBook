@@ -444,7 +444,8 @@ procedure TFrm1099.sbRecalcClick(Sender: TObject);
 begin
   with Tbl1099 do
   begin
-    ExecuteCommandFmt('begin ap.Populate_AP1099_Detil_Vend(''%s'', %f, %f, %f); end;',
+    ExecuteCommandParam('begin ap.Populate_AP1099_Detil_Vend(:AYEAR, :AEIN_ID, :AVENDOR_ID, :AID); end;',
+    ['AYEAR', 'AEIN_ID;F', 'AVENDOR_ID;F', 'AID;F'],
     [TblYearYEAR.asString, TblYearEIN_ID.AsFloat, Tbl1099VENDOR_ID.AsFloat, Tbl1099ID.asFloat]);
     Tbl1099.Refresh;
   end
